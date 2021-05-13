@@ -25,12 +25,10 @@ public class ImgUploadservice {
     private final String path = "D:\\ImageUpload example\\src\\main\\downloads\\";
 
     private String generateFileName(MultipartFile file){
-
         Calendar car = Calendar.getInstance();
         Date date = car.getTime();
         String fileName = new SimpleDateFormat("yyyyMMdd").format(date) +
                             "_" + file.getOriginalFilename();
-        
         return fileName;
     }
 
@@ -56,15 +54,15 @@ public class ImgUploadservice {
                     .file_size(file.getSize())
                     .build();
 
-                ImgJpaRepsitory.save(mapper);
+             //   ImgJpaRepsitory.save(mapper);
             }catch(Exception e){
                 e.printStackTrace();
                 return false;
             }
         }
-
         return true;
-
     }
+
+    
 
 }
