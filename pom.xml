@@ -8,18 +8,46 @@
 		<version>2.4.5</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.imageupload.example</groupId>
-	<artifactId>imageupload</artifactId>
+	<groupId>com.cos.blog</groupId>
+	<artifactId>blog</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>imageupload</name>
+	<packaging>jar</packaging>
+	<name>blog</name> 
 	<description>Demo project for Spring Boot</description>
-	
-	<properties>
-		<java.version>11</java.version>
-	</properties>
 
+	<properties>
+		<java.version>8</java.version>
+	</properties>
 	<dependencies>
 
+		<!-- 추가 라이브러리 시작-->
+
+		<!-- 시큐리티 태그 라이브러리 -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>5.4.6</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>5.4.6</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+			<version>5.4.6</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-taglibs</artifactId>
+			<version>5.0.7.RELEASE</version>
+		</dependency>
+
+		<!-- JSP 템플릿 엔진 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-tomcat</artifactId>
@@ -31,22 +59,19 @@
 			<artifactId>tomcat-embed-jasper</artifactId>
 			<scope>provided</scope>
 		</dependency>
-
+		
+		<!-- JSTL -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
 		</dependency>
 
+		<!-- 추가 라이브러리 종료-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-
-		<!-- <dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency> -->
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -65,24 +90,29 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-
+		
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
 
-		<!-- <dependency>
+		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
-			<scope>test</scope>
-		</dependency> -->
+			<version>4.2.3.RELEASE</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-remote-shell</artifactId>
+			<version>1.2.0.RELEASE</version>
+		</dependency>   
 
 	</dependencies>
 
