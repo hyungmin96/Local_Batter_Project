@@ -29,7 +29,7 @@ $(document).ready(function(){
                 }
             }
         }).done(function(resp){
-            alert(JSON.stringify(resp));
+            
         }).fail(function(error){
             alert(JSON.stringify(error));
         });
