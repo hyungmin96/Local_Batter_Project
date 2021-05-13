@@ -1,4 +1,4 @@
-package com.imageupload.example.imageupload.controller;
+package com.imageupload.example.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

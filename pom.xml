@@ -23,7 +23,7 @@
 		<!-- 추가 라이브러리 시작-->
 
 		<!-- 시큐리티 태그 라이브러리 -->
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-web</artifactId>
 			<version>5.4.6</version>
@@ -45,7 +45,7 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-taglibs</artifactId>
 			<version>5.0.7.RELEASE</version>
-		</dependency>
+		</dependency> -->
 
 		<!-- JSP 템플릿 엔진 -->
 		<dependency>
