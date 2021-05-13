@@ -1,0 +1,37 @@
+server:
+  port: 8000
+  servlet:
+    context-path: /
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+    
+spring:
+  mvc:
+    view:
+      prefix: /WEB-INF/views/
+      suffix: .jsp
+  
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/blog?serverTimezone=Asia/Seoul
+    username: root
+    password: cos1234
+    
+  jpa:
+    open-in-view: true
+    hibernate:
+      ddl-auto: create #프로젝트 실행마다 테이블을 생성(초기화)
+      naming:
+        #테이블을 생성시에 변수명 그대로 Column을 생성해줌
+        #org.hibernate.boot.model.naming.SpringPhysicalNamingStrategy는 _를 활용하여 변수명을 만듦
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      use-new-id-generator-mappings: false
+    show-sql: true #sql에 실행된 결과를 로그창에 표시
+    properties:
+      hibernate.format_sql: true #로그창에 표시되는 메세지를 정리해줌
+
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
