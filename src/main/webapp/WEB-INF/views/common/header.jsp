@@ -23,7 +23,9 @@
         <link rel="stylesheet" href="/css/imgWrap.css" >
         <link rel="stylesheet" href="/css/articleList.css">
         <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+        <link rel="stylesheet" href="/css/articleDetail.css">
         <script src="/js/boardPost.js"></script>
+        <script src="/js/imageSlider.js"></script>
         <script src="/js/board.js"></script>
 </head>
 
