@@ -30,7 +30,7 @@ public class boardVo {
     @Column(nullable = false, length = 25)
     private String title;
     
-    @Column(nullable = false)
+    @Column(nullable = false, length = 10)
     private String price;
 
     @Column(nullable = false, length = 1000)

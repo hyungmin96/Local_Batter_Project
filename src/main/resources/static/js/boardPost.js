@@ -16,9 +16,9 @@ function post() {
     
     const formData = new FormData();
 
-    if ($('#inputTitle').val() ||
-        $('#inputPrice').val() ||
-        $('#inputDescript').val()){
+    if ($('#inputTitle').val().length > 0 &&
+        $('#inputPrice').val().length > 0 &&
+        $('#inputDescript').val().length > 0){
             
         formData.append('title', $('#inputTitle').val());
         formData.append('price', $('#inputPrice').val());

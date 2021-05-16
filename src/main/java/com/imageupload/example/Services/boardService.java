@@ -31,7 +31,6 @@ public class boardService {
     }
 
     public void boardDelete(int id) {
-
         boardVo vo = boardRep.findById(id).orElse(null);
         if (vo != null)
             vo.getFiles().forEach(element -> new File(element.getFilePath()).delete());
