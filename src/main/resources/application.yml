@@ -1,3 +1,8 @@
+custom:
+  path:
+    resource: file:///D:/ImageUpload example/src/main/downloads/
+    upload: /upload/**
+
 server:
   port: 8000
   servlet:

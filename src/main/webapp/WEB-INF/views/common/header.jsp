@@ -21,8 +21,10 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         <link rel="stylesheet" href="/css/imgWrap.css" >
+        <link rel="stylesheet" href="/css/articleList.css">
         <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
         <script src="/js/boardPost.js"></script>
+        <script src="/js/board.js"></script>
 </head>
 
 <body>
@@ -35,7 +37,7 @@
             <div class="collapse navbar-collapse" id="collapsibleNavbar">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="/article/write">글작성</a>
+                        <a class="nav-link" href="/board/article/write">글작성</a>
                     </li>
                 </ul>
             </div>

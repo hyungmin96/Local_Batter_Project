@@ -5,8 +5,6 @@
         <h1>${msg}</h1>
 
 
-        <script src="/js/imgSlider.js"></script>
-
     </body>
 
 </html>

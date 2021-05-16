@@ -67,6 +67,33 @@
 			<version>1.2</version>
 		</dependency>
 
+		<!-- jpa @notnull @valid 사용 라이브러리 -->
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>2.0.1.Final</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate.validator</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>7.0.1.Final</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.glassfish</groupId>
+			<artifactId>javax.el</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator-annotation-processor</artifactId>
+			<version>6.0.11.Final</version>
+		</dependency>
+
+		<!--  -->
+		
 		<!-- 추가 라이브러리 종료-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
