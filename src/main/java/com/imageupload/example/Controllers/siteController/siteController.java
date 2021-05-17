@@ -21,7 +21,6 @@ public class siteController {
     @GetMapping("/")
     public String home(Model model){
         List<boardVo> boards = BoardService.getBoardList();
-
         model.addAttribute("board", boards);
         return "/board/articleList";
     }
@@ -31,15 +30,19 @@ public class siteController {
         return "/board/articleWrite";
     }
 
+    @GetMapping("/board/article/update/{id}")
+    public String articleUpdate(Model model, @PathVariable int id){
+        boardVo vo = BoardService.findBoard(id);
+        model.addAttribute("updateData", vo);
+        model.addAttribute("boardId", id);
+        return "/board/articleUpdate";
+    }
+
     @GetMapping("/board/article/{id}")
     public String viewBoard(Model model, @PathVariable int id) throws IOException{
-
         boardVo board = BoardService.findBoard(id);
-
         model.addAttribute("board", board);
-
         model.addAttribute("img", board.getFiles());
-
         return "/board/article";
     }
 

@@ -1,48 +1,84 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%-- <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<sec:authorize access="isAuthenticated()">
-    <sec:authentication property="principal" var="principal"/>
-</sec:authorize> --%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+        <%-- <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+            <sec:authorize access="isAuthenticated()">
+                <sec:authentication property="principal" var="principal" />
+            </sec:authorize> --%>
 
-<!DOCTYPE html>
-<html lang="en">
+            <!DOCTYPE html>
+            <html lang="en">
 
-<head>
-    <title>이미지 게시판</title>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="_csrf" th:content="${_csrf.token}">
-        <meta name="_csrf_header" th:content="${_csrf.headerName}"> 
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-        <link rel="stylesheet" href="/css/imgWrap.css" >
-        <link rel="stylesheet" href="/css/articleList.css">
-        <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-        <link rel="stylesheet" href="/css/articleDetail.css">
-        <script src="/js/boardPost.js"></script>
-        <script src="/js/imageSlider.js"></script>
-        <script src="/js/board.js"></script>
-</head>
+            <head>
+                <title>로컬바터 - 지역 물품교환 및 거래</title>
+                <meta charset="UTF-8">
+                <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                <meta name="_csrf" th:content="${_csrf.token}">
+                <meta name="_csrf_header" th:content="${_csrf.headerName}">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<body>
-    <nav class="navbar navbar-expand-md bg-dark navbar-dark">
-            <a class="navbar-brand" href="/">홈</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+                <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+                <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+                <link rel="stylesheet" href="/css/imgWrap.css">
+                <link rel="stylesheet" href="/css/articleList.css">
+                <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+                <link rel="stylesheet" href="/css/articleDetail.css">
+                <link rel="stylesheet" href="/css/header.css">
+                <link rel="stylesheet" href="/css/articleWrite.css">
+                <script src="/js/boardPost.js"></script>
+                <script src="/js/imageSlider.js"></script>
+                <script src="/js/board.js"></script>
+            </head>
 
-            <div class="collapse navbar-collapse" id="collapsibleNavbar">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/board/article/write">글작성</a>
-                    </li>
-                </ul>
-            </div>
+            <body>
 
-    </nav>
-<br/>
+                <div class="header">
+                    <div class="container">
+                        <div class="header_box">
+                            <a class="site_icon" href="/">
+                                <img src="/images/header/icon.png" alt="번개장터 로고">로컬바터
+                            </a>
+                            <div>
+                                <div class="wrapper">
+                                    <div class="search-input">
+                                        <a href="" target="_blank" hidden></a>
+                                        <input type="text" placeholder="search..">
+                                        <div class="autocom-box">
+                                        </div>
+                                        <div class="icon">
+                                            <i class="fas fa-search" img src="/images/search.png"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+ 
+                            <div class="btn-header-btns">
+                                <div class="btn-board-reg">
+                                    <button class="header-product-reg" onclick="location.href='/board/article/write'">
+                                        <img src="/images/header/money.png"/>
+                                        판매하기
+                                    </button>
+                                </div>
+
+                                <div class="btn-profile">
+                                    <button class="header-product-reg">
+                                        <img src="/images/header/profile.png"/>
+                                        <span>프로필</span>
+                                        <!-- <a href="/board/article/write"></a> -->
+                                    </button>
+                                </div>
+
+                                <div class="btn-chat">
+                                    <button class="header-product-reg">
+                                        <img src="/images/header/message.png"/>
+                                        <span>채팅</span>
+                                        <!-- <a href="/board/article/write"></a> -->
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <br />

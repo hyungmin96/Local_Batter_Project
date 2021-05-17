@@ -30,6 +30,26 @@ public class boardService {
         }
     }
 
+    public void boardUpdate(boardVo vo, MultipartFile[] uploadFiles) {
+        
+        boardVo inputVo = boardRep.findById(vo.getId()).orElse(null);
+
+        if(inputVo != null){
+            inputVo.setTitle(vo.getTitle());
+            inputVo.setPrice(vo.getPrice());
+            inputVo.setDescryption(vo.getDescryption());
+            inputVo.setLocation(vo.getLocation());
+            inputVo.setFiles(vo.getFiles());
+    
+            boardRep.save(vo);
+            if (uploadFiles != null && uploadFiles.length > 0) {
+                generateFile gen = new generateFile(vo, uploadFiles);
+                fileRep.saveAll(gen.generateFileVoList());
+            }
+        }
+
+    }
+
     public void boardDelete(int id) {
         boardVo vo = boardRep.findById(id).orElse(null);
         if (vo != null)
@@ -41,7 +61,7 @@ public class boardService {
     public List<boardVo> getBoardList(){
         return boardRep.findAllByOrderByIdDesc();
     }
-
+    
     public boardVo findBoard(int id){
         return boardRep.findById(id).orElseThrow(()->{
             return new IllegalArgumentException("정보없음");

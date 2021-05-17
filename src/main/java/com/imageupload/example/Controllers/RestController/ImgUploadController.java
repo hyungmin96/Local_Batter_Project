@@ -9,6 +9,7 @@ import com.imageupload.example.Vo.boardVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,6 +30,12 @@ public class ImgUploadController {
         int boardId = Integer.parseInt(param.get("boardId"));
         BoardService.boardDelete(boardId);
         return "삭제 성공";
+    }
+
+    @PostMapping("/update")
+    public String updatePost(boardVo vo, MultipartFile[] uploadFiles){
+        BoardService.boardUpdate(vo, uploadFiles);
+        return "수정 성공";
     }
 
 }

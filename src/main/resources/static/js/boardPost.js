@@ -62,6 +62,54 @@ function post() {
     }
 }
 
+function updatePost() {    
+    const formData = new FormData();
+
+    if ($('#inputTitle').val().length > 0 &&
+        $('#inputPrice').val().length > 0 &&
+        $('#inputDescript').val().length > 0){
+            
+        formData.append('id', $('.boardId').val());
+        formData.append('title', $('#inputTitle').val());
+        formData.append('price', $('#inputPrice').val());
+        formData.append('descryption', $('#inputDescript').val());
+        formData.append('writer', 'hyungmin96');
+        formData.append('location', $('#inputLocation').val());
+
+        for(let i = infoImgs.length - 1; i > -1; i--){
+            if(infoImgs[i] == null)
+                infoImgs.splice(i, 1);
+        }
+
+        for (var i = 0; i < infoImgs.length; i++) {
+            formData.append('uploadFiles', infoImgs[i]);
+            console.log(infoImgs);
+        }
+
+        $.ajax({
+            // 일반적으로 Data는 query String 형태로 전달되기때문에 아래 2가지 파라미터는
+            // false로 설정해주어야 하낟.
+            type: 'POST',
+            url: '/update',
+            data: formData,
+            dataType: 'text',
+            contentType: false,
+            processData: false,
+            success: function (result) {
+                if (result === '수정 성공') {
+                    location.href = '/';
+                }
+            },
+        }).fail(function(error) {
+            alert(JSON.stringify(error));
+            if (JSON.stringify(error).includes('Data too long for column')) 
+                alert('제목은 15자 이하로만 작성이 가능합니다.');
+        });
+    } else {
+        alert('필수항목을 입력 후 다시 시도해주세요.');
+    }
+}
+
 function preview(e){
 
     $(".imgs_wrap").empty();
