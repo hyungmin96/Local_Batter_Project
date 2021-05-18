@@ -41,8 +41,9 @@ public class boardService {
         if (deleteArr != null) {
             for (Integer index : deleteArr) {
                 if (index >= 0) {
-                    Integer sd = inputVo.getFiles().get(index).getFileid();
-                    fileRep.deleteById(sd);
+                    Integer item = inputVo.getFiles().get(index).getFileid();
+                    new File(inputVo.getFiles().get(index).getFilePath()).delete();
+                    fileRep.deleteById(item);
                 }
             }
         }
@@ -68,6 +69,12 @@ public class boardService {
             vo.getFiles().forEach(element -> new File(element.getFilePath()).delete());
 
         boardRep.deleteById(id);
+    }
+
+    public List<boardVo> search(String search){
+
+        List<boardVo> items = boardRep.findByTitleContaining(search);
+        return items;
     }
 
     public List<boardVo> getBoardList(){

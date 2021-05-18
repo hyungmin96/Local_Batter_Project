@@ -37,5 +37,6 @@ public class ImgUploadController {
         BoardService.boardUpdate(vo, uploadFiles, deleteIndex);
         return "수정 성공";
     }
+    
 
 }

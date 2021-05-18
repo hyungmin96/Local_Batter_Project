@@ -1,8 +1,6 @@
 package com.imageupload.example.Controllers.siteController;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.List;
 import com.imageupload.example.Services.boardService;
 import com.imageupload.example.Vo.boardVo;
@@ -23,6 +21,14 @@ public class siteController {
         List<boardVo> boards = BoardService.getBoardList();
         model.addAttribute("board", boards);
         return "/board/articleList";
+    }
+
+    @GetMapping("/board/article/search={search}")
+    public String searchArticle(Model model, @PathVariable String search){
+
+        List<boardVo> searchBoards = BoardService.search(search);
+        model.addAttribute("searchBoards", searchBoards);
+        return "/board/searchList";
     }
 
     @GetMapping("/board/article/write")
