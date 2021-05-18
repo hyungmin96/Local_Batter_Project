@@ -33,7 +33,7 @@ spring:
         #org.hibernate.boot.model.naming.SpringPhysicalNamingStrategy는 _를 활용하여 변수명을 만듦
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
       use-new-id-generator-mappings: false
-    show-sql: true #sql에 실행된 결과를 로그창에 표시
+    show-sql: false #sql에 실행된 결과를 로그창에 표시
     properties:
       hibernate.format_sql: true #로그창에 표시되는 메세지를 정리해줌
 

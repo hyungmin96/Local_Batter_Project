@@ -2,7 +2,10 @@ package com.imageupload.example.Services;
 
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
+
+import javax.transaction.Transactional;
 
 import com.imageupload.example.Components.boardServiceMethod.generateFile;
 import com.imageupload.example.JpaRepositories.boardRepository;
@@ -30,9 +33,19 @@ public class boardService {
         }
     }
 
-    public void boardUpdate(boardVo vo, MultipartFile[] uploadFiles) {
+    @Transactional
+    public void boardUpdate(boardVo vo, MultipartFile[] uploadFiles, Integer[] deleteArr) {
         
         boardVo inputVo = boardRep.findById(vo.getId()).orElse(null);
+
+        if (deleteArr != null) {
+            for (Integer index : deleteArr) {
+                if (index >= 0) {
+                    Integer sd = inputVo.getFiles().get(index).getFileid();
+                    fileRep.deleteById(sd);
+                }
+            }
+        }
 
         if(inputVo != null){
             inputVo.setTitle(vo.getTitle());
@@ -41,13 +54,12 @@ public class boardService {
             inputVo.setLocation(vo.getLocation());
             inputVo.setFiles(vo.getFiles());
     
-            boardRep.save(vo);
             if (uploadFiles != null && uploadFiles.length > 0) {
                 generateFile gen = new generateFile(vo, uploadFiles);
                 fileRep.saveAll(gen.generateFileVoList());
             }
+            boardRep.save(vo);
         }
-
     }
 
     public void boardDelete(int id) {

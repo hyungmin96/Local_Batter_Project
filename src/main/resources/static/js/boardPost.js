@@ -1,5 +1,6 @@
 let index = 0;
 var infoImgs = [];
+var imgDeleteIndex = [-1];
 
 $(document).ready(function () {
     $('#btn_upload').on('click', post);
@@ -76,6 +77,10 @@ function updatePost() {
         formData.append('writer', 'hyungmin96');
         formData.append('location', $('#inputLocation').val());
 
+        for(let i = 0; i < imgDeleteIndex.length; i++){
+            formData.append('deleteIndex', imgDeleteIndex[i]);
+        }
+        
         for(let i = infoImgs.length - 1; i > -1; i--){
             if(infoImgs[i] == null)
                 infoImgs.splice(i, 1);
@@ -83,7 +88,6 @@ function updatePost() {
 
         for (var i = 0; i < infoImgs.length; i++) {
             formData.append('uploadFiles', infoImgs[i]);
-            console.log(infoImgs);
         }
 
         $.ajax({
@@ -101,7 +105,6 @@ function updatePost() {
                 }
             },
         }).fail(function(error) {
-            alert(JSON.stringify(error));
             if (JSON.stringify(error).includes('Data too long for column')) 
                 alert('제목은 15자 이하로만 작성이 가능합니다.');
         });
@@ -144,9 +147,8 @@ function preview(e){
 }
 
 function previewDelete(index){
-
     infoImgs[index] = null;
     var img_id = "#img_id_" + index;
     $(img_id).remove();
-
+    imgDeleteIndex.push(index);
 }

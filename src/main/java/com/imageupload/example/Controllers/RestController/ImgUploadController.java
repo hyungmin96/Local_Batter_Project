@@ -33,8 +33,8 @@ public class ImgUploadController {
     }
 
     @PostMapping("/update")
-    public String updatePost(boardVo vo, MultipartFile[] uploadFiles){
-        BoardService.boardUpdate(vo, uploadFiles);
+    public String updatePost(boardVo vo, MultipartFile[] uploadFiles, @RequestParam Integer[] deleteIndex){
+        BoardService.boardUpdate(vo, uploadFiles, deleteIndex);
         return "수정 성공";
     }
 
