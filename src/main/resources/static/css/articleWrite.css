@@ -1,0 +1,15 @@
+
+.container-write .container{
+    background-color: #fff;
+    border-radius: 6px;
+    box-shadow: 7px 7px 7px rgba(0, 0, 0, 0.12);
+    padding: 55px;
+    margin-bottom: 40px;
+}
+
+.write-info{
+    font-family: paybooc-Bold;
+    letter-spacing: 1.5px;
+    justify-content: center;
+    margin-left: 55px;
+}
