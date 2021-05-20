@@ -2,11 +2,13 @@ package com.imageupload.example.Services;
 
 
 import java.io.File;
+import java.text.ParseException;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
+import com.imageupload.example.Components.boardServiceMethod.createTime;
 import com.imageupload.example.Components.boardServiceMethod.generateFile;
 import com.imageupload.example.JpaRepositories.boardRepository;
 import com.imageupload.example.JpaRepositories.fileRepository;
@@ -77,7 +79,16 @@ public class boardService {
     }
 
     public List<boardVo> getBoardList(){
-        return boardRep.findAllByOrderByIdDesc();
+        List<boardVo> boards = boardRep.findAllByOrderByIdDesc();
+        boards.forEach(action -> {
+            try {
+                action.setDisplayDate(new createTime(action.getCreateTime()).getTimeDiff());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        });
+        return boards;
+
     }
     
     public boardVo findBoard(int id){

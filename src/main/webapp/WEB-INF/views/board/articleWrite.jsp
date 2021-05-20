@@ -3,29 +3,30 @@
 <%@ include file="../common/header.jsp" %>
 
 <div class="container-write">
-    <div class="container">
+    <div id="content-box" class="container">
         <form action="/upload" method="post" class="was-validated" encrtype="multipart/form-data"
             required="required">
 
+
             <label for="inputTitle"><strong>상품 이미지 등록</strong></label>
-            <div class="wrapper" id="wrapper">
-               
-                <div class="card">
-                    <img src="/images/upload.png" id="file_add" />
-                    <input id="input_imgs" type="file" accept="image/jpg, image/jpeg, image/png"
-                        class="custom-file-input" name="upload_file" multiple>
+                <div>
+                    <div class="upload-info">
+                        <div class="upload-btn">
+                            <img src="/images/upload.png" id="file_add" />
+                            <input id="input_imgs" type="file" accept="image/jpg, image/jpeg, image/png"
+                                class="custom-file-input" name="upload_file" multiple style="width: 50px;">
+                        </div>
+                        
+                        <div class="write-info" id="info">
+                            <b>* 상품 이미지는 640x640에 최적화 되어 있습니다.</b>
+                            <br>- 이미지는 상품등록 시 정사각형으로 짤려서 등록됩니다.<br>
+                            - 이미지를 클릭 할 경우 원본이미지를 확인할 수 있습니다.<br>
+                            - 이미지를 클릭 후 이동하여 등록순서를 변경할 수 있습니다.<br>
+                            - 큰 이미지일경우 이미지가 깨지는 경우가 발생할 수 있습니다.
+                            <br>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="write-info" id="info">
-                    <b>* 상품 이미지는 640x640에 최적화 되어 있습니다.</b>
-                    <br>- 이미지는 상품등록 시 정사각형으로 짤려서 등록됩니다.<br>
-                    - 이미지를 클릭 할 경우 원본이미지를 확인할 수 있습니다.<br>
-                    - 이미지를 클릭 후 이동하여 등록순서를 변경할 수 있습니다.<br>
-                    - 큰 이미지일경우 이미지가 깨지는 경우가 발생할 수 있습니다.
-                    <br>
-                </div>
-
-            </div>
 
             <hr />
             <label for="inputTitle"><strong>물품 이미지 미리보기</strong></label>

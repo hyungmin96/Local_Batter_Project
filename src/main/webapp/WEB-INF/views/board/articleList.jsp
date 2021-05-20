@@ -19,11 +19,10 @@
                             <div class="detail-box">
                                 <div class="type">
                                     <div class="title">${board.title}</div>
-                                    <div class=board-line>
-                                    </div>
+                                    <div class=board-line></div>
                                     <div class="line">
                                         <div class="price">${board.price}</div>
-                                        <span class="time">11시간 전</span>
+                                        <div class="time">${board.displayDate}</div>
                                     </div>
                                 </div>
                             </div>

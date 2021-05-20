@@ -1,9 +1,23 @@
 
+.upload-info{
+    display: inline-flex;
+}
+
+.upload-btn{
+    width: 200px;
+    height: 200px;
+    border: 1px solid rgb(185, 185, 185);
+}
+
+.write-info{
+    margin-left: 30px;
+}
+
 .container-write .container{
     background-color: #fff;
     border-radius: 6px;
     box-shadow: 7px 7px 7px rgba(0, 0, 0, 0.12);
-    padding: 55px;
+    padding: 35px;
     margin-bottom: 40px;
 }
 
@@ -11,5 +25,4 @@
     font-family: paybooc-Bold;
     letter-spacing: 1.5px;
     justify-content: center;
-    margin-left: 55px;
 }
