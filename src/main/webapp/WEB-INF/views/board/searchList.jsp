@@ -2,35 +2,43 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ include file="../common/header.jsp" %>
 
-    <div id="item" class="container">
-        <div class="item-list">
-            <c:forEach var="board" items="${searchBoards}" varStatus="i">
-                <span class="container-item">
-                    <div class="container">
+<div id="item" class="container">
+    <c:choose> 
+        <c:when test="${searchBoards.size() > 0}">
+                <div class="item-list">
+                    <c:forEach var="board" items="${searchBoards}" varStatus="i">
+                    <span class="container-item">
+                        <div class="container">
 
-                        <div class="box">
-                            <div class="slide-img">
-                                <img src="/upload/${board.files[0].tempName}" style="height: 180px">
-                                <div class="overlay">
+                            <div class="box">
+                                <div class="slide-img">
+                                    <img src="/upload/${board.files[0].tempName}" style="height: 180px">
+                                    <div class="overlay">
                                     <a href="/board/article/${board.id}" class="buy-btn">상세보기</a>
-                                </div>
-                            </div>
-
-                            <div class="detail-box">
-                                <div class="type">
-                                    <div class="title">${board.title}</div>
-                                    <div class=board-line>
                                     </div>
-                                    <div class="line">
+                                </div>
+
+                                <div class="detail-box">
+                                    <div class="type">
+                                    <div class="title">${board.title}</div>
+                                        <div class=board-line>
+                                        </div>
+                                        <div class="line">
                                         <div class="price">${board.price}</div>
                                         <span class="time">11시간 전</span>
                                     </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                    </div>
-                </span>   
-            </c:forEach>
-        </div>
-    </div>
+                        </div>
+                    </span>   
+                    </c:forEach>
+                </div>
+        </c:when>
+
+        <c:otherwise>
+        <h1 style="text-align: center;">검색결과가 존재하지 않습니다.</h1>
+        </c:otherwise>
+    </c:choose>
+</div>

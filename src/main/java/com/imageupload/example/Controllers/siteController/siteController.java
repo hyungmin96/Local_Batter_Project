@@ -26,7 +26,7 @@ public class siteController {
     @GetMapping("/board/article/search={search}")
     public String searchArticle(Model model, @PathVariable String search){
 
-        List<boardVo> searchBoards = BoardService.search(search);
+        List<boardVo> searchBoards = BoardService.searchBoards(search);
         model.addAttribute("searchBoards", searchBoards);
         return "/board/searchList";
     }

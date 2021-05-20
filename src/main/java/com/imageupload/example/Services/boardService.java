@@ -71,9 +71,8 @@ public class boardService {
         boardRep.deleteById(id);
     }
 
-    public List<boardVo> search(String search){
-
-        List<boardVo> items = boardRep.findByTitleContaining(search);
+    public List<boardVo> searchBoards(String search){
+        List<boardVo> items = boardRep.findByTitleContainingOrderByIdDesc(search);
         return items;
     }
 
