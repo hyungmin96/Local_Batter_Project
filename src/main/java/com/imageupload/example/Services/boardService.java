@@ -2,8 +2,10 @@ package com.imageupload.example.Services;
 
 
 import java.io.File;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -61,6 +63,8 @@ public class boardService {
                 generateFile gen = new generateFile(vo, uploadFiles);
                 fileRep.saveAll(gen.generateFileVoList());
             }
+
+            vo.setCreateTime(inputVo.getCreateTime());
             boardRep.save(vo);
         }
     }

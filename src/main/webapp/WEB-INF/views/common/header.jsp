@@ -14,7 +14,7 @@
                 <meta http-equiv="X-UA-Compatible" content="IE=edge">
                 <meta name="_csrf" th:content="${_csrf.token}">
                 <meta name="_csrf_header" th:content="${_csrf.headerName}">
-                <%-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> --%>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
                 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -23,6 +23,8 @@
                 <link rel="stylesheet" href="/css/imgWrap.css">
                 <link rel="stylesheet" href="/css/articleList.css">
                 <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+                <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+                <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
                 <link rel="stylesheet" href="/css/articleDetail.css">
                 <link rel="stylesheet" href="/css/header.css">
                 <link rel="stylesheet" href="/css/articleWrite.css">
@@ -30,10 +32,12 @@
                 <script src="/js/imageSlider.js"></script>
                 <script src="/js/board.js"></script>
                 <script src="/js/search.js"></script>
+                <script type="text/javascript" src="/js/slider.js"></script>
             </head>
 
             <body>
 
+            <div class="wrap-main">
                 <div class="header">
                     <div class="container">
                         <div class="header_box">
@@ -78,5 +82,3 @@
                         </div>
                     </div>
                 </div>
-
-                <br />
