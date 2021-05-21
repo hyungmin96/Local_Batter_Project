@@ -29,6 +29,9 @@ public class boardVo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(nullable = false)
+    private String category;
+
     @Column(nullable = false, length = 25)
     private String title;
     
@@ -41,7 +44,7 @@ public class boardVo {
     @Column(nullable = false)
     private String writer;
 
-    @Column()
+    @Column
     private String location;
 
     @OneToMany(mappedBy = "board", fetch = FetchType.EAGER)
@@ -49,8 +52,8 @@ public class boardVo {
     @Cascade(value = CascadeType.ALL)
     private List<fileVo> files;
 
-    @CreationTimestamp()
     @Column
+    @CreationTimestamp()
     private Timestamp createTime;
 
     private String displayDate;

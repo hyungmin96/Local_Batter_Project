@@ -2,6 +2,7 @@ $(document).ready(function () {
     $('#delete-Post').on('click', deletePost);
     $('#update-Post').on('click', moveUpdate);
     $('#btn_update').on('click', updatePost);
+    $('#toggleBtn').on('click', dropBtnSelect);
 });
 
 function deletePost() {
@@ -38,4 +39,19 @@ function moveUpdate() {
     });
 
     location.href = '/board/article/update/' + boardId;
+}
+
+function dropBtnSelect(){
+
+    let div = document.getElementsByClassName('dropdown-menu');
+  
+    for (var i = 0; i < div.length; i++) {
+        for (var j = 0; j < div[i].children.length; j++) {
+            div[i].children[j].addEventListener('click', function () {
+                this.parentNode.previousElementSibling.innerHTML =
+                    this.innerHTML;
+            });
+        }
+    }
+
 }

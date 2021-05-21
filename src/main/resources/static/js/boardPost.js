@@ -20,7 +20,8 @@ function post() {
     if ($('#inputTitle').val().length > 0 &&
         $('#inputPrice').val().length > 0 &&
         $('#inputDescript').val().length > 0){
-            
+
+        formData.append('category', $('#toggleBtn').text());
         formData.append('title', $('#inputTitle').val());
         formData.append('price', $('#inputPrice').val());
         formData.append('descryption', $('#inputDescript').val());
@@ -71,6 +72,7 @@ function updatePost() {
         $('#inputDescript').val().length > 0){
             
         formData.append('id', $('.boardId').val());
+        formData.append('category', $('#toggleBtn').text());
         formData.append('title', $('#inputTitle').val());
         formData.append('price', $('#inputPrice').val());
         formData.append('descryption', $('#inputDescript').val());

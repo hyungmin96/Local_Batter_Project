@@ -3,6 +3,10 @@ body{
     padding: 0;
 }
 
+.detail-wraper{
+    margin-top: 155px;
+}
+
 .product-small-img img{
     border: 1px solid #d8d8d8;
     height: 85px;

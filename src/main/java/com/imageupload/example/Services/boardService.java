@@ -2,11 +2,12 @@ package com.imageupload.example.Services;
 
 
 import java.io.File;
-import java.sql.Timestamp;
 import java.text.ParseException;
-import java.util.Arrays;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.transaction.Transactional;
 
@@ -15,7 +16,6 @@ import com.imageupload.example.Components.boardServiceMethod.generateFile;
 import com.imageupload.example.JpaRepositories.boardRepository;
 import com.imageupload.example.JpaRepositories.fileRepository;
 import com.imageupload.example.Vo.boardVo;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -53,12 +53,6 @@ public class boardService {
         }
 
         if(inputVo != null){
-            inputVo.setTitle(vo.getTitle());
-            inputVo.setPrice(vo.getPrice());
-            inputVo.setDescryption(vo.getDescryption());
-            inputVo.setLocation(vo.getLocation());
-            inputVo.setFiles(vo.getFiles());
-    
             if (uploadFiles != null && uploadFiles.length > 0) {
                 generateFile gen = new generateFile(vo, uploadFiles);
                 fileRep.saveAll(gen.generateFileVoList());
@@ -82,16 +76,31 @@ public class boardService {
         return items;
     }
 
-    public List<boardVo> getBoardList(){
+    public LinkedHashMap<String, List<boardVo>> getBoardList(){
+
         List<boardVo> boards = boardRep.findAllByOrderByIdDesc();
+
+        List<boardVo> generalBoards = new ArrayList<>();
+        List<boardVo> fastBoards = new ArrayList<>();
+
+        LinkedHashMap<String, List<boardVo>> map = new LinkedHashMap<>();
+
         boards.forEach(action -> {
             try {
                 action.setDisplayDate(new createTime(action.getCreateTime()).getTimeDiff());
+                if(action.getCategory().equals("일반"))
+                    generalBoards.add(action);
+                else
+                    fastBoards.add(action);
+
             } catch (ParseException e) {
                 e.printStackTrace();
             }
         });
-        return boards;
+
+        map.put("general", generalBoards);
+        map.put("fast", fastBoards);
+        return map;
 
     }
     

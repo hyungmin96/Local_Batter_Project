@@ -81,7 +81,17 @@
             </div>
 
             <div class="form-group row float-right">
-                <button type="button" id="btn_upload" class="btn btn-secondary btn-lg">상품등록</button>
+                <button type="button" id="btn_upload" class="btn btn-secondary">상품등록</button>
+            </div>
+
+            <div class="dropdown" style="float: right; margin-right: 35px;">
+                <button type="button" id="toggleBtn" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                    게시판 설정
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item">일반</a>
+                    <a class="dropdown-item">긴급</a>
+                </div>
             </div>
 
             <br />
