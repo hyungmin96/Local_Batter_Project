@@ -154,3 +154,28 @@ function previewDelete(index){
     $(img_id).remove();
     imgDeleteIndex.push(index);
 }
+
+function convertM(object){
+
+    var len, point, str;  
+
+    var num = object.value.replaceAll(',', '');
+
+    num = num + ""; 
+    point = num.length % 3 ;
+    len = num.length; 
+   
+    if(num.length < 9){
+
+        str = num.substring(0, point); 
+        while (point < len) { 
+            if (str != "") str += ","; 
+            str += num.substring(point, point + 3); 
+            point += 3; 
+        } 
+        object.value = str;
+    }else{
+        alert('최대 입력가능한 숫자를 초과하였습니다.');
+    }
+        
+}

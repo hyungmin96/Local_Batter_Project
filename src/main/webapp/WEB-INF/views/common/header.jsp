@@ -27,11 +27,14 @@
                 <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
                 <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
                 <link rel="stylesheet" href="/css/articleDetail.css">
+                <link rel="stylesheet" href="/css/join.css">
                 <link rel="stylesheet" href="/css/header.css">
                 <link rel="stylesheet" href="/css/articleWrite.css">
                 <script src="/js/boardPost.js"></script>
                 <script src="/js/imageSlider.js"></script>
+                <script src="/js/join.js"></script>
                 <script src="/js/board.js"></script>
+                <script... src="/js/login.js"></script...>
                 <script src="/js/search.js"></script>
                 <script type="text/javascript" src="/js/slider.js"></script>
             </head>
@@ -40,10 +43,18 @@
 
             <div class="wrap-main">
                 <div class="header">
+                    
+                    <div class="user-info-box">
+                        <div class="container">
+                            <a href="/user/join" style="float: right; margin-top: 10px; margin-right: 35px;">회원가입</a>
+                            <a href="/user/login" style="float: right; margin-top: 10px; margin-right: 15px;">로그인</a>
+                        </div>
+                    </div>
+
                     <div class="container">
                         <div class="header_box">
                             <a class="site_icon" href="/">
-                            <img src="/images/header/icon.png" alt="번개장터 로고">로컬바터</a>
+                            <img src="/images/header/icon.png">로컬바터</a>
 
                                 <div class="wrapper">
                                     <div class="search-input">
@@ -58,7 +69,7 @@
  
                             <div class="btn-header-btns">
                                 <div class="btn-board-reg">
-                                    <button class="header-product-reg" onclick="location.href='/board/article/write'">
+                                    <button class="header-product-reg" onclick="location.href='/write'">
                                         <img src="/images/header/money.png"/>
                                         판매하기
                                     </button>

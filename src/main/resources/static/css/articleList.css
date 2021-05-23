@@ -1,6 +1,6 @@
 @font-face {
-    font-family: 'paybooc-Light';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.0/paybooc-Light.woff') format('woff');
+    font-family: 'SLEIGothicTTF';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2104@1.0/SLEIGothicTTF.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }
@@ -10,12 +10,11 @@
 }
 
 .category-content{
-    margin: 20px 15px;
+    margin: 5px 5px;
     font-size: 25px;
     font-weight: 800;
     font-family: paybooc-Bold;
     letter-spacing: 0.5px;
-    line-height: 1.2; 
 }
 
 a:link{
@@ -23,7 +22,7 @@ a:link{
 }
 
 #slider-div{
-    margin: 35px 30px;
+    margin: 15px 10px;
     width: 100%;
     height: 100%;
     display: inline-block;
@@ -34,7 +33,6 @@ a:link{
     height: 100%;
     background-color: #ffffff;
     border-radius: 7px;
-    box-shadow: 6px 9px 12px rgba(0, 0, 0, 0.12);
 }
 
 .fast-box{
@@ -62,7 +60,7 @@ a:link{
 .fast-detail-box{
     background-color: #ffffff;
     align-items: center;
-    padding: 10px 18px;
+    padding: 3px 0px;
     box-sizing: border-box;
     font-family: paybooc-Light;
 }
@@ -71,14 +69,21 @@ a:link{
     color:rgba(26, 26, 26, 0.5);
 }
 
+.type{
+    padding: 5px;
+}
+@font-face {
+    font-family: 'NanumBarunGothic';
+    font-style: normal;
+    font-weight: bold;
+    src: url('//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.eot');
+    src: url('//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.eot?#iefix') format('embedded-opentype'), url('//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.woff') format('woff'), url('//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.ttf') format('truetype');
+   }
 .type .title{
     width: 180px;
-    color: #000000;
-    font-size: 0.9rem;
-    font-weight: 600;
-    font-family: paybooc-Light;
-    letter-spacing: 0.5px;
-    line-height: 1.2; 
+    color: #303030;
+    font-size: 15px;
+    font-family: 'NanumBarunGothic';
     text-align: left; 
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
@@ -96,9 +101,15 @@ a:link{
 
 .price{
     color: #333333;
-    font-weight: bold;
-    font-family: paybooc-Bold;
-    font-size: 1.1rem;
+    font-family: SLEIGothicTTF;
+    font-size: 16px;
+}
+
+.k-money{
+    color: #333333;
+    font-size: 14px;
+    font-weight: 100;
+    margin-left: 2px;
 }
 
 .line .time{
@@ -115,7 +126,7 @@ a:link{
     height: 240px;
     background-color: #ffffff;
     border-radius: 7px;
-    box-shadow: 6px 9px 12px rgba(0, 0, 0, 0.12);
+    /* box-shadow: 6px 9px 12px rgba(0, 0, 0, 0.12); */
 }
 
 .overlay{
@@ -143,12 +154,12 @@ a:link{
     letter-spacing: 1px;
     font-family: paybooc-Light;
     border-radius: 15px;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+    /* box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2); */
 }
 
 .buy-btn:hover{
     color: #ffffff;
-    background-color: #f15fa3;
+    background-color: #8d8d8d;
     transition: all ease 0.3s;
 }
 
@@ -164,11 +175,13 @@ a:link{
     display: inline-flex;
     flex-direction: row;
     flex-wrap: wrap;
+    margin-bottom: 40px;
 }
 
 .today-item-box{
-    margin: 15px 15px;
+    margin: 10px 7px;
     border: 1px solid #e2e2e2;
+    cursor: pointer;
 }
 
 .today-detail-box{
@@ -178,7 +191,7 @@ a:link{
 
 .today-box{
     height: 210px;
-    width: 190px;
+    width: 205px;
 }
 
 .today-box img{

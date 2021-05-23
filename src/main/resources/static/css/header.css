@@ -12,7 +12,7 @@
 }
 
 body{
-    background-color: #f3f3f3;
+    background-color: #ffffff;
 }
 
 .header{
@@ -22,19 +22,32 @@ body{
     right:0;
     top: 0;
     background-color: rgb(255, 255, 255);
-    box-shadow: 1px 1px 5px rgba(0,0,0,0.2);
+    box-shadow: 1px 1px 1px rgba(0,0,0,0.2);
 }
 
-::selection{
-    color: #fff;
-    background: rgb(75, 109, 223);
+.user-info-box{
+    background-color: rgb(231, 231, 231);
+    margin-bottom: 2px;
 }
+
+
+.user-info-box a{
+    color: rgb(17, 17, 17);
+    font-size: 12px;
+    font-family: NanumBarunGothic;
+    text-decoration: none;
+}
+
+.user-info-box a:hover {color: rgb(17, 17, 17)}
+.user-info-box a.active {color: rgb(17, 17, 17)}
+
 
 .header_box{
-    height: 120px;
+    height: 70px;
     width: 100%;
     display: inline-flex;
     align-items: center;
+    margin-bottom: 15px;
 }
 
 .btn-header-btns{

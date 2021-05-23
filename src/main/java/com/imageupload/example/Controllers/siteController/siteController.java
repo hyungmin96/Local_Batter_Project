@@ -1,4 +1,4 @@
-package com.imageupload.example.Controllers.siteController;
+package com.imageupload.example.Controllers.SiteController;
 
 import java.io.IOException;
 import java.util.LinkedHashMap;
@@ -6,7 +6,6 @@ import java.util.List;
 import com.imageupload.example.Services.boardService;
 import com.imageupload.example.Vo.boardVo;
 
-import org.hibernate.mapping.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,11 +23,8 @@ public class siteController {
 
         LinkedHashMap<String, List<boardVo>> map = BoardService.getBoardList();
 
-        List<boardVo> general = map.get("general");
-        List<boardVo> fast = map.get("fast");
-        
-        model.addAttribute("general", general);
-        model.addAttribute("fast", fast);
+        model.addAttribute("general", map.get("general"));
+        model.addAttribute("fast", map.get("fast"));
 
         return "/board/articleList";
     }
@@ -41,7 +37,7 @@ public class siteController {
         return "/board/searchList";
     }
 
-    @GetMapping("/board/article/write")
+    @GetMapping("/write")
     public String articleWrite(){
         return "/board/articleWrite";
     }

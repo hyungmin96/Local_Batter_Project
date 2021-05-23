@@ -49,8 +49,8 @@
                 <div class="form-group row">
                     <label for="inputTitle" class="col-sm-2 col-form-label"><strong>가격</strong></label>
                     <div class="col-sm-10">
-                        <input type="text" name="title" class="form-control" id="inputPrice"
-                            placeholder="물품에 대한 판매가격을 입력해주세요" required>
+                        <input type="text" name="title" class="form-control" id="inputPrice" value=""
+                        onkeyup="convertM(this);" placeholder="물품에 대한 판매가격을 입력해주세요" required>
                         <div class="invalid-feedback">* 필수항목</div>
                     </div>
                 </div>

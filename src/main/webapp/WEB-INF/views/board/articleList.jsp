@@ -25,8 +25,7 @@
                                     <div class="title">${board.title}</div>
                                     <div class="board-line"></div>
                                     <div class="line">
-                                        <div class="price">${board.price}</div>
-                                        <span class="time">${board.displayDate}</span>
+                                        <div class="price">${board.price}<span class="k-money">원</span></div>
                                     </div>
                                 </div>
                             </div>
@@ -42,7 +41,7 @@
         <div class="category-content">오늘의 물품</div>
             <div class="today-item-list">
                 <c:forEach var="board" items="${general}" varStatus="i">
-                    <div class="today-item-box">
+                    <div OnClick="location.href = '/board/article/${board.id}'" class="today-item-box">
                         <div class="today-box">
                             <img src="/upload/${board.files[0].tempName}">
                             <div class="overlay">
@@ -54,7 +53,7 @@
                                 <div class="title">${board.title}</div>
                                 <div class="board-line"></div>
                                 <div class="line">
-                                    <div class="price">${board.price}</div>
+                                    <div class="price">${board.price}<span class="k-money">원</span></div>
                                     <span class="time">${board.displayDate}</span>
                                 </div>
                             </div>
