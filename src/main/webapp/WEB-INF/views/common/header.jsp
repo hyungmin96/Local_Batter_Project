@@ -44,20 +44,24 @@
 
             <div class="wrap-main">
                 <div class="header">
-                    
                     <div class="user-info-box">
                         <div class="container">
                             <c:choose>
                                 <c:when test="${empty principal}">
-                                    <a href="/user/join" style="float: right; margin-top: 10px; margin-right: 35px;">회원가입</a>
-                                    <a href="/user/login" style="float: right; margin-top: 10px; margin-right: 15px;">로그인</a>
+                                    <div class="none-login">
+                                        <a href="/user/login" style="color: rgb(255, 255, 255);">로그인</a>
+                                        <a href="/user/join" style="color: rgb(255, 255, 255);">회원가입</a>
+                                    </div>
                                 </c:when>
                                 <c:otherwise>
-                                    <a href="/user/mypage" style="float: right; margin-top: 10px; margin-right: 35px;">마이페이지</a>
-                                    <a href="/user/logout" style="float: right; margin-top: 10px; margin-right: 15px;">로그아웃</a>
+                                    <div class="on-login">
+                                        <a href="/user/logout" style="color: rgb(255, 255, 255);">로그아웃</a>
+                                        <a href="/user/mypage" style="color: rgb(255, 255, 255);">마이페이지</a>
+                                    </div>
                                 </c:otherwise>
                             </c:choose>
                         </div>
+                        <hr />
                     </div>
 
                     <div class="container">
@@ -86,8 +90,8 @@
 
                                 <div class="btn-profile">
                                     <button class="header-product-reg">
-                                        <img src="/images/header/profile.png"/>
-                                        <span>프로필</span>
+                                        <img src="/images/header/shopping.png"/>
+                                        <span>장바구니</span>
                                         <!-- <a href="/board/article/write"></a> -->
                                     </button>
                                 </div>

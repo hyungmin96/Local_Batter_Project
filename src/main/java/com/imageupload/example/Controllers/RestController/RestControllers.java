@@ -7,10 +7,11 @@ import com.imageupload.example.Vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class userRestController {
+public class RestControllers {
     
     @Autowired
     private UserService userService;
@@ -26,6 +27,11 @@ public class userRestController {
         vo.setRole(Role.ROLE_USER);
         userService.userSave(vo);
         return "회원가입 성공";
+    }
+
+    @PostMapping("/api/checkUserName")
+    public boolean duplicatedItemCheck(@RequestParam String username){
+        return userService.checkUserName(username);
     }
 
 }

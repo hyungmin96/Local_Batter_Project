@@ -24,11 +24,16 @@ public class UserService implements UserDetailsService{
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
-
-        UserVo userVo = userRepository.findByUsername(username);
-
+        UserVo userVo = userRepository.findByUsername(username).orElse(null);
         return new UserPrincipalVo(userVo);
-        
+    }
+
+    public boolean checkUserName(String Email){
+        UserVo userVo = userRepository.findByUsername(Email).orElse(null);
+        if(userVo == null)
+            return true;
+        else
+            return false;
     }
 
 }

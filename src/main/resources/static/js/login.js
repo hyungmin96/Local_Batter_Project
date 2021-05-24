@@ -3,8 +3,8 @@ $(document).ready(function(){
     $('#login-btn').on("click", function(){
 
         let data = {
-            username: $('#input-id').val(),
-            password: $('#input-pw').val()
+            username: $('#username').val(),
+            password: $('#pw').val()
         }
 
         $.ajax({

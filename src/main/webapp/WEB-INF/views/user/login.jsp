@@ -2,27 +2,41 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ include file="../common/header.jsp" %>
 
-<div class="login-wrapper" style="margin-top: 155px;">
+<div class="login__wrapper" style="margin-top: 175px;">
     <div class="container">
         <div class="panel-body">
-            <fieldset>
-            
-            <div class="form-group">
-                <input type="text" name="username" id="input-id" class="form-control" placeholder="ID" path="id"/>
-            </div>
+            <div class="mb-3">
+                <label for="username">아이디(Email)</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="username" placeholder="" name="user-id" required="required">
+                        <div class="invalid-feedback" style="width: 100%;">Your username is required.</div>
+                    </div>
+                </div>
 
-            <div class="form-group">
-                <input type="password" name="pw" id="input-pw" class="form-control" placeholder="Password" path="pw"/>
-            </div>
+                <div class="mb-3">
+                    <label for="username">비밀번호</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="pw" placeholder="" name="user-id" required="required">
+                            <div class="invalid-feedback" style="width: 100%;">Your username is required.</div>
+                        </div>
+                    </div>
+                </div>
 
-            <div class="checkbox">
-                <label>
-                    <input type="checkbox" path="rememberId"/>아이디 기억
-                </label>
-            </div>
+                    <hr/>
+                        <button id="login-btn" class="btn btn-primary btn-lg" style="width: 100%">로그인</button>
+                    <hr/>
 
-            <button id="login-btn" class="btn btn-lg btn-success btn-block">로그인</button>
-            </fieldset>
+                    <div class="sign__box">
+                        <span>아직 회원이 아니신가요?</span>
+                        <a href="#">회원가입</a>
+                    </div>
+
+                    <div class="sns__login_container">
+                        <a href="#"><img src="/images/naverlogin.png"></a>
+                        <a href="#"><img src="/images/kakao.png"></a>
+                        <a href="#"><img src="/images/google.png"></a>
+                        <a href="#"><img src="/images/daum.png"></a>
+                    </div>
+
         </div>
-    </div>
-</div>
+

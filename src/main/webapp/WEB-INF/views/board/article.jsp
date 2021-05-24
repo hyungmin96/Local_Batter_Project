@@ -7,6 +7,7 @@
 
             <div class="product_info">
                 <div class="product">
+
                     <div class="img-container">
                         <img id="imgBox" src="/upload/${board.files[0].tempName}">
                     </div>

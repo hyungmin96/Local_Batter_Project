@@ -7,7 +7,6 @@
         <form action="/upload" method="post" class="was-validated" encrtype="multipart/form-data"
             required="required">
 
-
             <label for="inputTitle"><strong>상품 이미지 등록</strong></label>
                 <div>
                     <div class="upload-info">

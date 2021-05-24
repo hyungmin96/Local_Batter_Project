@@ -4,7 +4,21 @@
 
 <div id="products" class="container">
     <div class="content-wrapper">
-        <div class="category-content">빠른판매 물품</div>
+
+            <div class="banner__container">
+                <img src="/images/logo.gif">
+                <div class="container">
+                    <div class="group__buying__title">공동구매 목록</div>
+                    <hr />
+                    <div class="group-item-list"></div>
+
+                </div>
+            </div>
+
+           <div class="fast__sale_products">
+                <div class="fast__category">오늘의 긴급판매</div>
+                <hr />
+           </div>
 
         <div class="item-list">
             <div id="slider-div">
@@ -35,10 +49,11 @@
             </div>
         </div>
 
-        <div class="category-content">공동구매 게시글</div>
-        <div class="group-item-list"></div>
+            <div class="fast__sale_products">
+                <div class="fast__category">오늘의 등록물품</div>
+                <hr />
+            </div>
 
-        <div class="category-content">오늘의 물품</div>
             <div class="today-item-list">
                 <c:forEach var="board" items="${general}" varStatus="i">
                     <div OnClick="location.href = '/board/article/${board.id}'" class="today-item-box">

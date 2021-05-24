@@ -9,14 +9,6 @@
     margin-top: 155px;
 }
 
-.category-content{
-    margin: 5px 5px;
-    font-size: 25px;
-    font-weight: 800;
-    font-family: paybooc-Bold;
-    letter-spacing: 0.5px;
-}
-
 a:link{
     text-decoration: none;
 }
@@ -37,7 +29,7 @@ a:link{
 
 .fast-box{
     width: 100%;
-    height: 260px;
+    height: 230px;
     border-radius: 5px;
     transform: translate(0%, 0%);
 }
@@ -60,7 +52,7 @@ a:link{
 .fast-detail-box{
     background-color: #ffffff;
     align-items: center;
-    padding: 3px 0px;
+    padding: 5px;
     box-sizing: border-box;
     font-family: paybooc-Light;
 }
@@ -197,4 +189,55 @@ a:link{
 .today-box img{
     width: 100%;
     height: 100%;
+}
+
+.banner__container{
+    display: flex;
+    justify-items: space-between;
+}
+
+.banner__container hr{
+    margin: 0px;
+}
+
+.banner__container .container{
+    border: 1px solid #ebebeb;
+    margin-left: 25px;
+}
+
+@font-face {
+    font-family: 'GongGothicMedium';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10@1.0/GongGothicMedium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.fast__sale_products{
+    margin-top: 35px;
+}
+
+.fast__category{
+    margin: 10px;
+    font-size: 24px;
+    font-family: GongGothicMedium;
+    display: inline-block;
+}
+
+.fast__sale_products hr{
+    border: 2px solid #474747;
+    width: 100%;
+    margin: 0;
+}
+
+@font-face {
+    font-family: 'Arita-dotum-Medium';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/Arita-dotum-Medium.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+}
+.group__buying__title{
+    margin: 10px;
+    font-size: 16px;
+    font-family: Arita-dotum-Medium;
+    display: inline-block;
 }

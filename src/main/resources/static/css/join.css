@@ -9,3 +9,65 @@
 }
 
 .id-certification:focus {outline:0;}
+
+.join-wrapper .container{
+    box-shadow: 1px 1px 10px 3px rgba(0, 0, 0, 0.12);
+    padding: 40px;
+}
+
+.join__title{
+    font-family: paybooc-Bold;
+    font-size: 24px;
+}
+
+.join__subject{
+    font-size: 16px;
+    color: rgb(153, 153, 153);
+}
+
+.pwd__check__false{
+    color: red;
+    margin: 4px 4px;
+    font-size: 14px;
+}
+
+.pwd__check__true{
+    color: rgb(92, 184, 112);
+    margin: 4px 4px;
+    font-size: 14px;
+}
+
+/* Login form Css */
+
+.login__wrapper .container{
+    width: 550px;
+    box-shadow: 1px 1px 10px 3px rgba(0, 0, 0, 0.12);
+    padding: 30px;
+}
+
+.sign__box{
+    width: 100%;
+    text-align: center;
+}
+
+.sign__box span{
+    display: inline-block;
+    font-size: 14px;
+    margin-right: 10px;
+}
+
+.sign__box a{
+    display: inline-block;
+    font-size: 14px;
+}
+
+.sns__login_container{
+    text-align: center;
+}
+
+.sns__login_container img{
+    width: 35px;
+    height: 35px;
+    margin: 10px 5px;
+    object-fit: contain;
+}
