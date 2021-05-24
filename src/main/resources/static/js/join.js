@@ -1,10 +1,9 @@
-$(document).ready(function(){
+    $(document).ready(function(){
 
     $('#join-btn').on("click", function(){
 
         let data = {
-            email: $('#username').val(),
-            account: $('#input-id').val(),
+            username: $('#username').val(),
             password: $('#password-chk').val(),
             nickname: $('#nickname').val(),
             phoneNum: $('#phone').val(),
@@ -23,8 +22,9 @@ $(document).ready(function(){
             }
         }).done(function(resp){
             console.log(resp);
+            
         }).fail(function(error){
-            console.log(error);
+            console.log('error');
         });
 
     })

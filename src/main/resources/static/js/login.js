@@ -3,25 +3,20 @@ $(document).ready(function(){
     $('#login-btn').on("click", function(){
 
         let data = {
-            email: 'bana_na21@naver.com',
-            account: $('#input-id').val(),
-            password: $('#input-pw').val(),
-            nickname: "hyungmin96",
-            mannerScore: 1,
-            mileage: 1
+            username: $('#input-id').val(),
+            password: $('#input-pw').val()
         }
 
         $.ajax({
-
             url: '/api/login',
             type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(data),
+            contentType: 'application/x-www-form-urlencoded',
+            data: data,
             success: function(result){
-                alert(result);
+                location.href = '/';
             }
         }).done(function(resp){
-            console.log(resp);
+            console.log(JSON.stringify(resp));
         }).fail(function(error){
             console.log(error);
         });

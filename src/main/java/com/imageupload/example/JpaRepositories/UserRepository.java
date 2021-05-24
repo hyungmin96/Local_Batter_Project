@@ -7,6 +7,6 @@ import com.imageupload.example.Vo.UserVo;
 
 public interface UserRepository extends JpaRepository<UserVo, Long>{
     
-    UserVo findByemail(@Param("email") String email);
+    UserVo findByUsername(@Param("username") String username);
 
 }

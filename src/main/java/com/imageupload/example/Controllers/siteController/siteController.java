@@ -4,9 +4,12 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import com.imageupload.example.Services.boardService;
+import com.imageupload.example.Vo.UserPrincipalVo;
 import com.imageupload.example.Vo.boardVo;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +25,12 @@ public class siteController {
     public String home(Model model){
 
         LinkedHashMap<String, List<boardVo>> map = BoardService.getBoardList();
+
+        // try{
+        //     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        //     UserPrincipalVo userPrincipalVo = (UserPrincipalVo) auth.getPrincipal();
+        //     model.addAttribute("principal", userPrincipalVo);
+        // }catch(Exception ex){}
 
         model.addAttribute("general", map.get("general"));
         model.addAttribute("fast", map.get("fast"));

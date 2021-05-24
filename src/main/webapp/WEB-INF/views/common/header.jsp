@@ -1,9 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-        <%-- <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+
             <sec:authorize access="isAuthenticated()">
                 <sec:authentication property="principal" var="principal" />
-            </sec:authorize> --%>
+            </sec:authorize>
 
             <!DOCTYPE html>
             <html lang="en">
@@ -30,11 +31,11 @@
                 <link rel="stylesheet" href="/css/join.css">
                 <link rel="stylesheet" href="/css/header.css">
                 <link rel="stylesheet" href="/css/articleWrite.css">
+                <script type="text/javascript" src="/js/Login.js"></script>
                 <script src="/js/boardPost.js"></script>
                 <script src="/js/imageSlider.js"></script>
                 <script src="/js/join.js"></script>
                 <script src="/js/board.js"></script>
-                <script... src="/js/login.js"></script...>
                 <script src="/js/search.js"></script>
                 <script type="text/javascript" src="/js/slider.js"></script>
             </head>
@@ -46,8 +47,16 @@
                     
                     <div class="user-info-box">
                         <div class="container">
-                            <a href="/user/join" style="float: right; margin-top: 10px; margin-right: 35px;">회원가입</a>
-                            <a href="/user/login" style="float: right; margin-top: 10px; margin-right: 15px;">로그인</a>
+                            <c:choose>
+                                <c:when test="${empty principal}">
+                                    <a href="/user/join" style="float: right; margin-top: 10px; margin-right: 35px;">회원가입</a>
+                                    <a href="/user/login" style="float: right; margin-top: 10px; margin-right: 15px;">로그인</a>
+                                </c:when>
+                                <c:otherwise>
+                                    <a href="/user/mypage" style="float: right; margin-top: 10px; margin-right: 35px;">마이페이지</a>
+                                    <a href="/user/logout" style="float: right; margin-top: 10px; margin-right: 15px;">로그아웃</a>
+                                </c:otherwise>
+                            </c:choose>
                         </div>
                     </div>
 

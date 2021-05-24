@@ -9,31 +9,40 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import lombok.AllArgsConstructor;
+
 @Configuration
 @EnableWebSecurity
+@AllArgsConstructor
 public class webSecirityConfig extends WebSecurityConfigurerAdapter {
+
+    private final  String RESOURCE_ROOT = "/resources/**";
 
     @Override
     public void configure(WebSecurity web) {
+        // 이미지, 뷰, js 등 접근가능한 리소스를 설정
         web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        // URL, Login, Session 등 http 접근 보안관련 설정
         http.csrf().disable()
             .authorizeRequests()
+                .antMatchers("/", RESOURCE_ROOT).permitAll()
                 .antMatchers("/write").authenticated()
-            .anyRequest().permitAll()
             .and()
                 .formLogin()
                     .loginPage("/user/login")
-                    .successForwardUrl("/")
-                    .failureForwardUrl("/user/login")
-                    .permitAll()
+                    .loginProcessingUrl("/api/login")
+                    .defaultSuccessUrl("/")
             .and()
                 .logout()
-                    .logoutUrl("/")
-                    .deleteCookies("JSESSIONID");
+                    .logoutUrl("/user/logout")
+                    .logoutSuccessUrl("/")
+                    .invalidateHttpSession(true)
+            .and()
+                .exceptionHandling().accessDeniedPage("/error");
     }
 
     @Bean
