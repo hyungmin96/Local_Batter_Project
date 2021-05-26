@@ -18,7 +18,7 @@ $(document).ready(function(){
         }).done(function(resp){
             console.log(JSON.stringify(resp));
         }).fail(function(error){
-            console.log(error);
+            alert('로그인 실패 확인 후 다시 시도해주세요.');
         });
 
     })

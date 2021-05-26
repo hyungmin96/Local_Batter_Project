@@ -76,7 +76,7 @@ function updatePost() {
         formData.append('title', $('#inputTitle').val());
         formData.append('price', $('#inputPrice').val());
         formData.append('descryption', $('#inputDescript').val());
-        formData.append('writer', 'hyungmin96');
+        formData.append('writer', $('.writer__user_name').val());
         formData.append('location', $('#inputLocation').val());
 
         for(let i = 0; i < imgDeleteIndex.length; i++){

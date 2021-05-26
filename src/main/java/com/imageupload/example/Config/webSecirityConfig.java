@@ -31,6 +31,7 @@ public class webSecirityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
                 .antMatchers("/", RESOURCE_ROOT).permitAll()
                 .antMatchers("/write").authenticated()
+                .antMatchers("/board/article/update/**").authenticated()
             .and()
                 .formLogin()
                     .loginPage("/user/login")

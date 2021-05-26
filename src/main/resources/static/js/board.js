@@ -7,7 +7,8 @@ $(document).ready(function () {
 
 function deletePost() {
     let data = {
-        boardId: $('.boardId').text(),
+        boardId: $('.boardId').val(),
+        writerId: $('.item__writer').text()
     };
 
     $.ajax({
@@ -23,7 +24,9 @@ function deletePost() {
         },
     })
         .done(function (resp) {
-            console.log(resp);
+            if(resp.includes("권한")){
+                alert('권한이 없습니다');
+            }
         })
         .fail(function (error) {
             console.log(error);
@@ -31,7 +34,7 @@ function deletePost() {
 }
 
 function moveUpdate() {
-    var boardId = $('.boardId').text();
+    var boardId = $('.boardId').val();
 
     $.ajax({
         type: 'GET',

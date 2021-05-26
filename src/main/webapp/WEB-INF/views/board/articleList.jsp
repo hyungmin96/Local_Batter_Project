@@ -6,12 +6,17 @@
     <div class="content-wrapper">
 
             <div class="banner__container">
-                <img src="/images/logo.gif">
-                <div class="container">
-                    <div class="group__buying__title">공동구매 목록</div>
-                    <hr />
-                    <div class="group-item-list"></div>
-
+                <div class="image__banner">
+                    <img src="/images/logo.gif">
+                </div>
+                <div class="group__buy">
+                    <div class="container">
+                        <div class="group__buying__title">공동구매 목록</div>
+                        <hr />
+                        <div class="group-item-list">
+                            
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -78,5 +83,6 @@
             </div>
         </div>
 
+<%@ include file="../common/footer.jsp" %>
 
 

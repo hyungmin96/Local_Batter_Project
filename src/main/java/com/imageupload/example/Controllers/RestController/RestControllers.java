@@ -5,6 +5,7 @@ import com.imageupload.example.Vo.Role;
 import com.imageupload.example.Vo.UserVo;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,8 +19,11 @@ public class RestControllers {
 
     @PostMapping("/api/login")
     public String login(@RequestBody UserVo vo){
-        userService.loadUserByUsername(vo.getUsername());
-        return "로그인 성공";
+        UserDetails account = userService.loadUserByUsername(vo.getUsername());
+        if(account != null)
+            return "로그인 성공";
+        else
+            return "로그인 실패";
     }
 
     @PostMapping("/api/join")

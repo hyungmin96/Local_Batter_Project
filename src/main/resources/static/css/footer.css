@@ -1,0 +1,25 @@
+@font-face {
+    font-family: 'NanumBarunGothic';
+    font-style: normal;
+    font-weight: bold;
+    src: url('//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.eot');
+    src: url('//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.eot?#iefix') format('embedded-opentype'), url('//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.woff') format('woff'), url('//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.ttf') format('truetype');
+}
+
+.footer__section{
+    margin: auto;
+    height: 120px;
+    width: 100%;
+    background-color: rgb(250, 250, 250);
+}
+
+.footer__section .container .t1{
+    margin: 15px 15px;
+}   
+
+.footer__section h1{
+    margin: 0;
+    font-size: 15px;
+    color: rgb(165, 165, 165);
+    font-family: NanumBarunGothic;
+}

@@ -16,7 +16,6 @@
                 <meta name="_csrf" th:content="${_csrf.token}">
                 <meta name="_csrf_header" th:content="${_csrf.headerName}">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
                 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
                 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -31,6 +30,7 @@
                 <link rel="stylesheet" href="/css/join.css">
                 <link rel="stylesheet" href="/css/header.css">
                 <link rel="stylesheet" href="/css/articleWrite.css">
+                <link rel="stylesheet" href="/css/footer.css">
                 <script type="text/javascript" src="/js/Login.js"></script>
                 <script src="/js/boardPost.js"></script>
                 <script src="/js/imageSlider.js"></script>
@@ -55,6 +55,7 @@
                                 </c:when>
                                 <c:otherwise>
                                     <div class="on-login">
+                                        <div class="user_name_info" style="color: rgb(255, 255, 255);">[${principal.username}]님</div>
                                         <a href="/user/logout" style="color: rgb(255, 255, 255);">로그아웃</a>
                                         <a href="/user/mypage" style="color: rgb(255, 255, 255);">마이페이지</a>
                                     </div>
@@ -67,7 +68,7 @@
                     <div class="container">
                         <div class="header_box">
                             <a class="site_icon" href="/">
-                            <img src="/images/header/icon.png">로컬바터</a>
+                            <img src="/images/header/icon.png"><span class="logo__text">로컬바터</span></a>
 
                                 <div class="wrapper">
                                     <div class="search-input">
@@ -84,14 +85,14 @@
                                 <div class="btn-board-reg">
                                     <button class="header-product-reg" onclick="location.href='/write'">
                                         <img src="/images/header/money.png"/>
-                                        판매하기
+                                        <span class="btn__text">판매하기</span>
                                     </button>
                                 </div>
 
                                 <div class="btn-profile">
                                     <button class="header-product-reg">
                                         <img src="/images/header/shopping.png"/>
-                                        <span>장바구니</span>
+                                        <span class="btn__text">장바구니</span>
                                         <!-- <a href="/board/article/write"></a> -->
                                     </button>
                                 </div>
@@ -99,7 +100,7 @@
                                 <div class="btn-chat">
                                     <button class="header-product-reg">
                                         <img src="/images/header/message.png"/>
-                                        <span>채팅</span>
+                                        <span class="btn__text">채팅하기</span>
                                         <!-- <a href="/board/article/write"></a> -->
                                     </button>
                                 </div>

@@ -6,6 +6,7 @@
     <div class="container">
 
     <input class="boardId" type="hidden" value="${boardId}"/>
+    <input type="hidden" class="writer__user_name" value="${updateData.writer}">
 
         <form action="/upload" method="post" class="was-validated" encrtype="multipart/form-data"
             required="required">
@@ -111,3 +112,5 @@
         </form>
     </div>
 </div>
+
+<%@ include file="../common/footer.jsp" %>

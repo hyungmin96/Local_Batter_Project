@@ -64,13 +64,15 @@ a:link{
 .type{
     padding: 5px;
 }
+
 @font-face {
     font-family: 'NanumBarunGothic';
     font-style: normal;
     font-weight: bold;
     src: url('//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.eot');
     src: url('//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.eot?#iefix') format('embedded-opentype'), url('//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.woff') format('woff'), url('//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.ttf') format('truetype');
-   }
+}
+
 .type .title{
     width: 180px;
     color: #303030;
@@ -115,7 +117,7 @@ a:link{
 }
 
 .group-item-list{
-    height: 240px;
+    height: 100%;
     background-color: #ffffff;
     border-radius: 7px;
     /* box-shadow: 6px 9px 12px rgba(0, 0, 0, 0.12); */
@@ -196,15 +198,6 @@ a:link{
     justify-items: space-between;
 }
 
-.banner__container hr{
-    margin: 0px;
-}
-
-.banner__container .container{
-    border: 1px solid #ebebeb;
-    margin-left: 25px;
-}
-
 @font-face {
     font-family: 'GongGothicMedium';
     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10@1.0/GongGothicMedium.woff') format('woff');
@@ -224,7 +217,7 @@ a:link{
 }
 
 .fast__sale_products hr{
-    border: 2px solid #474747;
+    border: 1px solid #474747;
     width: 100%;
     margin: 0;
 }
@@ -235,6 +228,24 @@ a:link{
     font-weight: bold;
     font-style: normal;
 }
+
+@media all and (max-width: 1185px) {
+    .group__buy{
+        display: none
+    }
+}
+
+.banner__container hr{
+    margin: 0px;
+    width: 100%;
+}
+
+.group__buy{
+    border: 1px solid #ebebeb;
+    margin-left: 25px;
+    width: 305px;
+}
+
 .group__buying__title{
     margin: 10px;
     font-size: 16px;
