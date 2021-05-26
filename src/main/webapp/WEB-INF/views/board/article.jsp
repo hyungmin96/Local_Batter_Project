@@ -5,6 +5,8 @@
     <div class="detail-wraper">
         <div class="container">
 
+            <h1>${topBoards.board}</h1>
+
             <input type="hidden" class="boardId" value="${board.id}">
                 <div class="header__line">
                     <h1>홈 > 제품</h1>

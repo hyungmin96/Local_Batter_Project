@@ -106,8 +106,7 @@ public class BoardService {
     }
     
     public Page<boardVo> getBoardList(int limit) {
-        
-        Page<boardVo> board = boardRep.findAll(PageRequest.of(1, 2));
+        Page<boardVo> board = boardRep.findAll(PageRequest.of(0, limit, Sort.Direction.DESC, "id"));
         return board;
     }
 

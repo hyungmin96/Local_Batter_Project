@@ -59,10 +59,10 @@ public class siteController {
     public String viewBoard(Model model, @PathVariable int id) throws IOException{
         boardVo board = boardService.findBoard(id);
 
-        //Page<boardVo> topBoards = boardService.getBoardList(3);
+        Page<boardVo> topBoards = boardService.getBoardList(3);
 
         model.addAttribute("board", board);
-        //model.addAttribute("topBoards", topBoards);
+        model.addAttribute("topBoards", topBoards);
         model.addAttribute("img", board.getFiles());
         return "/board/article";
     }
