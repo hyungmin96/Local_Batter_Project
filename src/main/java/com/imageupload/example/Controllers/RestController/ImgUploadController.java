@@ -3,7 +3,7 @@ package com.imageupload.example.Controllers.RestController;
 import java.io.IOException;
 import java.util.Map;
 
-import com.imageupload.example.Services.boardService;
+import com.imageupload.example.Services.BoardService;
 import com.imageupload.example.Vo.UserPrincipalVo;
 import com.imageupload.example.Vo.boardVo;
 
@@ -19,7 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class ImgUploadController {
 
     @Autowired
-    private boardService BoardService;
+    private BoardService boardService;
 
     @PostMapping("/upload")
     public String uploadFiles(@AuthenticationPrincipal UserPrincipalVo principal, boardVo board,
@@ -30,7 +30,7 @@ public class ImgUploadController {
         // String currentPrincipalName = authentication.getName();
         if (principal != null) {
             board.setWriter(principal.getUsername());
-            BoardService.boardWrite(board, uploadFiles);
+            boardService.boardWrite(board, uploadFiles);
             return "업로드 성공";
         }
 
@@ -43,7 +43,7 @@ public class ImgUploadController {
 
         if (principal != null && (param.get("writerId").equals(principal.getUserVo().getUsername()))) {
             int boardId = Integer.parseInt(param.get("boardId"));
-            BoardService.boardDelete(boardId);
+            boardService.boardDelete(boardId);
             return "삭제 성공";
         }
         return "권한이 없습니다.";
@@ -54,7 +54,7 @@ public class ImgUploadController {
             MultipartFile[] uploadFiles, @RequestParam Integer[] deleteIndex) {
                 
         if (principal != null && (vo.getWriter().equals(principal.getUserVo().getUsername()))) {
-            BoardService.boardUpdate(vo, uploadFiles, deleteIndex);
+            boardService.boardUpdate(vo, uploadFiles, deleteIndex);
             return "수정 성공";
         }
             return "권한이 없습니다.";

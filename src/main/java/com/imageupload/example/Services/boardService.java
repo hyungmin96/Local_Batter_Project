@@ -6,9 +6,9 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
-
 import com.imageupload.example.Components.boardServiceMethod.createTime;
 import com.imageupload.example.Components.boardServiceMethod.generateFile;
 import com.imageupload.example.JpaRepositories.boardRepository;
@@ -17,9 +17,12 @@ import com.imageupload.example.Vo.boardVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 @Service
-public class boardService {
+public class BoardService {
 
     @Autowired
     private boardRepository boardRep;
@@ -102,6 +105,12 @@ public class boardService {
 
     }
     
+    public Page<boardVo> getBoardList(int limit) {
+        
+        Page<boardVo> board = boardRep.findAll(PageRequest.of(1, 2));
+        return board;
+    }
+
     public boardVo findBoard(int id){
         return boardRep.findById(id).orElseThrow(()->{
             return new IllegalArgumentException("정보없음");
