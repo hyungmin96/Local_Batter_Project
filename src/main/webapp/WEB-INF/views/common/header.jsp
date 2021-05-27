@@ -29,10 +29,12 @@
                 <link rel="stylesheet" href="/css/articleDetail.css">
                 <link rel="stylesheet" href="/css/join.css">
                 <link rel="stylesheet" href="/css/header.css">
+                <link rel="stylesheet" href="/css/searchList.css">
                 <link rel="stylesheet" href="/css/articleWrite.css">
                 <link rel="stylesheet" href="/css/footer.css">
-                <script type="text/javascript" src="/js/Login.js"></script>
                 <script src="/js/boardPost.js"></script>
+                <script type="text/javascript" src="/js/Login.js"></script>
+                <script type="text/javascript" src="/js/pagination.js"></script>
                 <script src="/js/imageSlider.js"></script>
                 <script src="/js/join.js"></script>
                 <script src="/js/board.js"></script>
@@ -42,7 +44,6 @@
 
             <body>
 
-            <div class="wrap-main">
                 <div class="header">
                     <div class="user-info-box">
                         <div class="container">

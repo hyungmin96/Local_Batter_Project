@@ -182,7 +182,56 @@ li .product__info__content{
     color: #f7f7f7;
 }
 
-
 .btn__container button:focus{
     border: none;
+}
+
+.new__reg__product{
+    margin: 25px 0;
+    margin-left: 25px;
+}
+
+.new__reg__product .container{
+    width: 100%;
+}
+
+.new__product__category{
+    font-size: 24px;
+    font-family: GongGothicMedium;
+}
+
+.new__product__box{
+    display: inline-flex;
+}
+
+.new__box{
+    width: 175px;
+    height: 210px;
+    margin: 1px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.new__product__img{
+    height: 180px;
+}
+
+.new__product__img img{
+    width: 100%;
+    height: 100%;
+}
+
+.new__product__title{
+    width: 180px;
+    color: #303030;
+    font-size: 16px;
+    font-family: 'NanumBarunGothic';
+    text-align: center; 
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    display: inline-block;
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis;
+    padding: 10px;
 }

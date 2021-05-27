@@ -2,43 +2,74 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ include file="../common/header.jsp" %>
 
-<div id="item" class="container">
-    <c:choose> 
-        <c:when test="${searchBoards.size() > 0}">
-                <div class="item-list">
-                    <c:forEach var="board" items="${searchBoards}" varStatus="i">
-                    <span class="container-item">
-                        <div class="container">
+<div class="search__wrapper">
+    <div id="search__container" class="container">
 
-                            <div class="box">
-                                <div class="slide-img">
-                                    <img src="/upload/${board.files[0].tempName}" style="height: 180px">
-                                    <div class="overlay">
-                                    <a href="/board/article/${board.id}" class="buy-btn">상세보기</a>
+        <div class="search">
+            <div class="search__keyword">
+                <span class="keyword">'${keyword}'</span>
+                <span style="margin-left: 5px">검색결과</span>
+                <span class="search__keyword__count" style="margin-left: 3px; color: rgb(170, 170, 170);">${searchBoards.getTotalElements()}개</span>
+            </div>
+
+            <div class="sort__Type">
+                <span class="accuracy">정확도순</span>
+                |
+                <span class="Bestprice">가격순</span>
+                |
+                <span class="Latest">최신순</span>
+            </div>
+        </div>
+
+        <hr/>
+
+        <c:choose> 
+            <c:when test="${searchBoards.getTotalElements() > 0}">
+                <div class="container">
+                <%-- Page<T> 형식으로 List를 받아오려면 model에 키값 변수에 .content를 추가 --%>
+                    <c:forEach var="board" items="${searchBoards.content}" varStatus="i">
+                        <div class="search__item__list">
+                            <div class="search__item__box">
+                                <a href="/board/article/${board.id}">
+                                    <div class="search__box__img">
+                                        <img src="/upload/${board.files[0].tempName}" style="height: 180px">
                                     </div>
-                                </div>
 
-                                <div class="detail-box">
-                                    <div class="type">
-                                    <div class="title">${board.title}</div>
-                                        <div class=board-line>
+                                    <div class="search__detail__box">
+                                        <div class="info__box">
+                                            <div class="title" style="color: black;">${board.title}</div>
+                                                <div class="line">
+                                                <div class="price">${board.price}<span class="k-money">원</span></div>
+                                                <span class="time">${board.displayDate}</span>
+                                            </div>
                                         </div>
-                                        <div class="line">
-                                        <div class="price">${board.price}</div>
-                                        <span class="time">11시간 전</span>
                                     </div>
-                                    </div>
-                                </div>
+                                </a>
                             </div>
-
                         </div>
-                    </span>   
                     </c:forEach>
                 </div>
-        </c:when>
+            </c:when>
+        </c:choose>
+    </div>
 
-        <c:otherwise>
-        <h1 style="text-align: center;">검색결과가 존재하지 않습니다.</h1>
-        </c:otherwise>
-    </c:choose>
+    <div class="container">
+        <div class="page__container">
+            <div class="page__box">
+                <div class="previous"><img src="/images/back.png"></div>
+                    <div class="page__number__box">
+                        <c:forEach var="page" items="${totalPages}" varStatus="i">
+                            <li id="pagenum-${page}" class="page__number" onclick="product_list_paging(this)">
+                            <a href="javascript:void(0)">${page}</a></li>
+                        </c:forEach>
+                    </div>
+                <div class="next"><img src="/images/next.png"></div>
+            </div>
+        </div>
+    </div>
 </div>
+
+</div>
+
+
+<%@ include file="../common/footer.jsp" %>

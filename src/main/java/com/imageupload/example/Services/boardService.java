@@ -6,13 +6,13 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Optional;
 
 import javax.transaction.Transactional;
 import com.imageupload.example.Components.boardServiceMethod.createTime;
 import com.imageupload.example.Components.boardServiceMethod.generateFile;
-import com.imageupload.example.JpaRepositories.boardRepository;
+import com.imageupload.example.JpaRepositories.BoardRepository;
 import com.imageupload.example.JpaRepositories.fileRepository;
+import com.imageupload.example.Vo.PageableVo;
 import com.imageupload.example.Vo.boardVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,7 @@ import org.springframework.data.domain.Sort;
 public class BoardService {
 
     @Autowired
-    private boardRepository boardRep;
+    private BoardRepository boardRep;
 
     @Autowired
     private fileRepository fileRep;
@@ -72,14 +72,14 @@ public class BoardService {
         boardRep.deleteById(id);
     }
 
-    public List<boardVo> searchBoards(String search){
-        List<boardVo> items = boardRep.findByTitleContainingOrderByIdDesc(search);
+    public Page<boardVo> searchBoards(String search, PageRequest page){
+        Page<boardVo> items = boardRep.findByTitleContainingOrderByIdDesc(search, page);
         return items;
     }
 
-    public LinkedHashMap<String, List<boardVo>> getBoardList(){
+    public LinkedHashMap<String, List<boardVo>> getAllboards(){
 
-        List<boardVo> boards = boardRep.findAllByOrderByIdDesc();
+        Page<boardVo> boards = boardRep.findAll(PageRequest.of(0, 30, Sort.Direction.DESC, "id"));
 
         List<boardVo> generalBoards = new ArrayList<>();
         List<boardVo> fastBoards = new ArrayList<>();
@@ -93,7 +93,6 @@ public class BoardService {
                     generalBoards.add(action);
                 else
                     fastBoards.add(action);
-
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -101,12 +100,14 @@ public class BoardService {
 
         map.put("general", generalBoards);
         map.put("fast", fastBoards);
-        return map;
 
+        return map;
     }
     
-    public Page<boardVo> getBoardList(int limit) {
-        Page<boardVo> board = boardRep.findAll(PageRequest.of(0, limit, Sort.Direction.DESC, "id"));
+    public Page<boardVo> getBoardList(PageableVo page) {
+
+        PageRequest pageable = page.getPageRequest();
+        Page<boardVo> board = boardRep.findByTitleContaining(page.getSearch(), pageable);
         return board;
     }
 

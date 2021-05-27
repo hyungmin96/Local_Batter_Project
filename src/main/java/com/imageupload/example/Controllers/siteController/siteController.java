@@ -1,17 +1,18 @@
 package com.imageupload.example.Controllers.SiteController;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Optional;
 
+import com.imageupload.example.Components.boardServiceMethod.createTime;
 import com.imageupload.example.Services.BoardService;
+import com.imageupload.example.Vo.PageableVo;
 import com.imageupload.example.Vo.boardVo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,19 +26,41 @@ public class siteController {
     
     @GetMapping("/")
     public String home(Model model){
-
-        LinkedHashMap<String, List<boardVo>> map = boardService.getBoardList();
-
+        LinkedHashMap<String, List<boardVo>> map = boardService.getAllboards();
         model.addAttribute("general", map.get("general"));
         model.addAttribute("fast", map.get("fast"));
-
         return "/board/articleList";
     }
 
-    @GetMapping("/board/article/search={search}")
-    public String searchArticle(Model model, @PathVariable String search){
+    @GetMapping({"/board/article/search={search}", 
+    "/board/search={search}&display={display}&order={order}&page={page}"})
+    public String searchBoardsCondition(Model model, PageableVo pageVo){
 
-        List<boardVo> searchBoards = boardService.searchBoards(search);
+        Page<boardVo> searchBoards;
+
+        if(pageVo.getOrder() == null)
+            searchBoards = boardService.searchBoards(pageVo.getSearch(), PageRequest.of(0, 30));
+        else
+            searchBoards = boardService.getBoardList(pageVo);
+        // jsp에서 page형식을 못 읽는 경우가있음 jsp에서 page<t>.content로 넘겨주자
+        // List<Board> list = result.getContent();
+        // page형식의 result 객체를 list에 담을때 getContent() 메소드 활용하면 사용가능
+
+        searchBoards.forEach(action -> {
+            try {
+                action.setDisplayDate(new createTime(action.getCreateTime()).getTimeDiff());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        });
+
+        Integer[] pages = new Integer[searchBoards.getTotalPages()];
+        for(int i = 0; i < pages.length; i ++){
+            pages[i] = (i + 1);
+        }
+
+        model.addAttribute("keyword", pageVo.getSearch());
+        model.addAttribute("totalPages", pages);
         model.addAttribute("searchBoards", searchBoards);
         return "/board/searchList";
     }
@@ -57,13 +80,13 @@ public class siteController {
 
     @GetMapping("/board/article/{id}")
     public String viewBoard(Model model, @PathVariable int id) throws IOException{
-        boardVo board = boardService.findBoard(id);
+        // boardVo board = boardService.findBoard(id);
 
-        Page<boardVo> topBoards = boardService.getBoardList(3);
+        // Page<boardVo> topBoards = boardService.getBoardList(6);
 
-        model.addAttribute("board", board);
-        model.addAttribute("topBoards", topBoards);
-        model.addAttribute("img", board.getFiles());
+        // model.addAttribute("board", board);
+        // model.addAttribute("topBoards", topBoards);
+        // model.addAttribute("img", board.getFiles());
         return "/board/article";
     }
 
