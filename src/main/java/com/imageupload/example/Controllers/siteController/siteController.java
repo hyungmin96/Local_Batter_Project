@@ -13,6 +13,7 @@ import com.imageupload.example.Vo.boardVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -80,13 +81,15 @@ public class siteController {
 
     @GetMapping("/board/article/{id}")
     public String viewBoard(Model model, @PathVariable int id) throws IOException{
-        // boardVo board = boardService.findBoard(id);
+        boardVo board = boardService.findBoard(id);
 
-        // Page<boardVo> topBoards = boardService.getBoardList(6);
+        PageRequest page = PageRequest.of(0, 6, Sort.Direction.DESC, "id");
 
-        // model.addAttribute("board", board);
-        // model.addAttribute("topBoards", topBoards);
-        // model.addAttribute("img", board.getFiles());
+        Page<boardVo> topBoards = boardService.getTopBoard(page);
+
+        model.addAttribute("board", board);
+        model.addAttribute("topBoards", topBoards);
+        model.addAttribute("img", board.getFiles());
         return "/board/article";
     }
 

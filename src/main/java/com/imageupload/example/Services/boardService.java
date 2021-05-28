@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 @Service
@@ -105,7 +106,6 @@ public class BoardService {
     }
     
     public Page<boardVo> getBoardList(PageableVo page) {
-
         PageRequest pageable = page.getPageRequest();
         Page<boardVo> board = boardRep.findByTitleContaining(page.getSearch(), pageable);
         return board;
@@ -115,6 +115,10 @@ public class BoardService {
         return boardRep.findById(id).orElseThrow(()->{
             return new IllegalArgumentException("정보없음");
         });
+    }
+
+    public Page<boardVo> getTopBoard(Pageable page){
+        return boardRep.findAll(page);
     }
 
 }

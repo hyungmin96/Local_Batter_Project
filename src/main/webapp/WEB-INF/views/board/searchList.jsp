@@ -32,7 +32,7 @@
                             <div class="search__item__box">
                                 <a href="/board/article/${board.id}">
                                     <div class="search__box__img">
-                                        <img src="/upload/${board.files[0].tempName}" style="height: 180px">
+                                        <img src="/upload/${board.files[0].tempName}" style="height: 180px; display='none'">
                                     </div>
 
                                     <div class="search__detail__box">

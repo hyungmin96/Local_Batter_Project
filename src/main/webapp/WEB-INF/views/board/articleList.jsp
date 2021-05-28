@@ -32,7 +32,7 @@
                         <div class="fast-item-box">
                             <div class="fast-box">
                                 <div class="fast-slide-img">
-                                    <img src="/upload/${board.files[0].tempName}">
+                                    <img src="/upload/${board.files[0].tempName}" onerror="this.style.display='none'" />
                                     <div class="overlay">
                                         <a href="/board/article/${board.id}" class="buy-btn">상세보기</a>
                                     </div>
@@ -63,7 +63,7 @@
                 <c:forEach var="board" items="${general}" varStatus="i">
                     <div OnClick="location.href = '/board/article/${board.id}'" class="today-item-box">
                         <div class="today-box">
-                            <img src="/upload/${board.files[0].tempName}">
+                            <img src="/upload/${board.files[0].tempName}" onerror="this.style.display='none'">
                             <div class="overlay">
                                 <a href="/board/article/${board.id}" class="buy-btn">상세보기</a>
                             </div>

@@ -92,7 +92,7 @@
 }
 
 .page__number__box{
-    width: 390px;
+    max-width: 390px;
     display: inline;
     justify-content: center;
     align-items: center;
