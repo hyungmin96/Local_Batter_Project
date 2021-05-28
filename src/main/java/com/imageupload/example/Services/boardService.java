@@ -105,6 +105,12 @@ public class BoardService {
         return map;
     }
     
+    public Page<boardVo> getSearchBoards(String search) {
+        PageRequest pageable = PageRequest.of(0, 30);
+        Page<boardVo> board = boardRep.findByTitleContaining(search, pageable);
+        return board;
+    }
+
     public Page<boardVo> getBoardList(PageableVo page) {
         PageRequest pageable = page.getPageRequest();
         Page<boardVo> board = boardRep.findByTitleContaining(page.getSearch(), pageable);

@@ -38,7 +38,7 @@ public class boardVo {
     private String title;
     
     @Column(nullable = false, length = 10)
-    private String price;
+    private int price;
 
     @Column(nullable = false, length = 1000)
     private String descryption;
@@ -50,7 +50,6 @@ public class boardVo {
     private String location;
 
     @OneToMany(mappedBy = "board", fetch = FetchType.EAGER)
-    @JsonIgnore
     @Cascade(value = CascadeType.ALL)
     private List<fileVo> files;
 

@@ -33,16 +33,12 @@ public class siteController {
         return "/board/articleList";
     }
 
-    @GetMapping({"/board/article/search={search}", 
-    "/board/search={search}&display={display}&order={order}&page={page}"})
-    public String searchBoardsCondition(Model model, PageableVo pageVo){
+    @GetMapping({"/board/search/products//search={search}"})
+    public String searchBoardsCondition(Model model, @PathVariable String search){
 
         Page<boardVo> searchBoards;
 
-        if(pageVo.getOrder() == null)
-            searchBoards = boardService.searchBoards(pageVo.getSearch(), PageRequest.of(0, 30));
-        else
-            searchBoards = boardService.getBoardList(pageVo);
+        searchBoards = boardService.getSearchBoards(search);
         // jsp에서 page형식을 못 읽는 경우가있음 jsp에서 page<t>.content로 넘겨주자
         // List<Board> list = result.getContent();
         // page형식의 result 객체를 list에 담을때 getContent() 메소드 활용하면 사용가능
@@ -60,8 +56,9 @@ public class siteController {
             pages[i] = (i + 1);
         }
 
-        model.addAttribute("keyword", pageVo.getSearch());
+        model.addAttribute("keyword", search);
         model.addAttribute("totalPages", pages);
+        model.addAttribute("endPages", (int)Math.ceil((double)(pages[pages.length-1] / 10.0)));
         model.addAttribute("searchBoards", searchBoards);
         return "/board/searchList";
     }
