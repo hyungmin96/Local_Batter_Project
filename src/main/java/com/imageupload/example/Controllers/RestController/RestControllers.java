@@ -12,6 +12,8 @@ import com.imageupload.example.Vo.boardVo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,6 +29,23 @@ public class RestControllers {
 
     @Autowired
     private BoardService boardService;
+
+    @GetMapping("/boards/api/")
+    public Page<boardVo> scrollData(@RequestParam int page, @RequestParam int display){
+
+        PageRequest pageRequest = PageRequest.of(page, display, Sort.Direction.DESC, "id");
+        Page<boardVo> boards = boardService.getBoardList(pageRequest); 
+
+        boards.forEach(action ->{
+            try {
+                action.setDisplayDate(new createTime(action.getCreateTime()).getTimeDiff());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        });
+
+        return boards;
+    }
 
     @GetMapping({"/board/products/search={search}&display={display}&order={order}&page={page}"})
     public Page<boardVo> searchBoardsData(PageableVo pageVo){

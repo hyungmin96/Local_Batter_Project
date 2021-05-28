@@ -20,11 +20,11 @@ public class BoardInjectionTest{
     @Test
     void 게시글_작성_테스트(){
 
-        for(int i = 0; i < 111; i ++){
+        for(int i = 0; i < 846; i ++){
         final boardVo vo = boardVo.builder()
                             .title("Test" + i)
                             .category("일반")
-                            .price(1800 + i)
+                            .price("" + 1800 + i)
                             .descryption("설명" + i)
                             .writer("123")
                             .location("location")

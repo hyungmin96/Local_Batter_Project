@@ -38,7 +38,7 @@ public class boardVo {
     private String title;
     
     @Column(nullable = false, length = 10)
-    private int price;
+    private String price;
 
     @Column(nullable = false, length = 1000)
     private String descryption;

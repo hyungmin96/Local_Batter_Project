@@ -33,6 +33,7 @@
                 <link rel="stylesheet" href="/css/articleWrite.css">
                 <link rel="stylesheet" href="/css/footer.css">
                 <script src="/js/boardPost.js"></script>
+                <script type="text/javascript" src="/js/infiniteScroll.js"></script>
                 <script type="text/javascript" src="/js/Login.js"></script>
                 <script type="text/javascript" src="/js/pagination.js"></script>
                 <script src="/js/imageSlider.js"></script>

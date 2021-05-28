@@ -117,6 +117,11 @@ public class BoardService {
         return board;
     }
 
+    public Page<boardVo> getBoardList(PageRequest page) {
+        Page<boardVo> board = boardRep.findAll(page);
+        return board;
+    }
+
     public boardVo findBoard(int id){
         return boardRep.findById(id).orElseThrow(()->{
             return new IllegalArgumentException("정보없음");

@@ -35,18 +35,10 @@ function Latest(){
 function callBoardsDataToJson(page = 0) {
     var keyword = $('.keyword').text().replaceAll("'", '');
     var order =
-        $('.active').attr('id') == 'undefined'
-            ? 'accuracy'
-            : $('.active').attr('id');
+        $('.active').attr('id') == 'undefined' ? 'accuracy' : $('.active').attr('id');
 
     $.ajax({
-        url:
-            '/board/products/search=' +
-            keyword +
-            '&display=30&order=' +
-            order +
-            '&page=' +
-            page,
+        url: '/board/products/search=' + keyword + '&display=30&order=' + order +'&page=' +page,
         type: 'GET',
         dataType: 'json',
         success: function (data) {
@@ -54,45 +46,22 @@ function callBoardsDataToJson(page = 0) {
             search__items__container.empty();
 
             var html = '';
-            var pageHtml = '';
-            var totalPages;
-            var pageArray = [];
-            Array.from(
-                document.getElementsByClassName('page__number__box')[0]
-                    .children,
-                (item) => {
-                    pageArray.push(item.className);
-                }
-            );
 
             $.each(data.content, function (index, value) {
                 totalPages = data.totalPages;
 
-                let fileName =
-                    value.files.length > 0 ? value.files[0].tempName : '';
+                let fileName = value.files.length > 0 ? value.files[0].tempName : '';
 
-                html +=
-                    '<div id="item__' +
-                    value.id +
-                    '"class="search__item__box">';
+                html += '<div id="item__' + value.id + '"class="search__item__box">';
                 html += '<a href="/board/article/' + value.id + '">';
                 html += '<div class="search__box__img">';
-                html +=
-                    '<img src="/upload/' +
-                    fileName +
-                    '"onerror=this.src="/images/noImage.png" style="height: 180px; display=none">';
+                html +='<img src="/upload/' + fileName + '"onerror=this.src="/images/noImage.png" style="height: 180px; display=none">';
                 html += '</div>';
                 html += '<div class="search__detail__box">';
                 html += '<div class="info__box">';
-                html +=
-                    '<div class="title" style="color: black;">' +
-                    value.title +
-                    '</div>';
+                html += '<div class="title" style="color: black;">' + value.title + '</div>';
                 html += '<div class="line">';
-                html +=
-                    '<div class="price">' +
-                    value.price +
-                    '<span class="k-money">원</span></div>';
+                html += '<div class="price">' + value.price + '<span class="k-money">원</span></div>';
                 html += '<span class="time">' + value.displayDate + '</span>';
                 html += '</div>';
                 html += '</div>';

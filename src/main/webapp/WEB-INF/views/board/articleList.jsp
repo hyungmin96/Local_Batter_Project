@@ -60,26 +60,6 @@
             </div>
 
             <div class="today-item-list">
-                <c:forEach var="board" items="${general}" varStatus="i">
-                    <div OnClick="location.href = '/board/article/${board.id}'" class="today-item-box">
-                        <div class="today-box">
-                            <img src="/upload/${board.files[0].tempName}" onerror="this.style.display='none'">
-                            <div class="overlay">
-                                <a href="/board/article/${board.id}" class="buy-btn">상세보기</a>
-                            </div>
-                        </div>
-                        <div class="today-detail-box">
-                            <div class="type">
-                                <div class="title">${board.title}</div>
-                                <div class="board-line"></div>
-                                <div class="line">
-                                    <div class="price">${board.price}<span class="k-money">원</span></div>
-                                    <span class="time">${board.displayDate}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </c:forEach>
             </div>
         </div>
 

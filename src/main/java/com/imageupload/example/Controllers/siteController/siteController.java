@@ -7,7 +7,6 @@ import java.util.List;
 
 import com.imageupload.example.Components.boardServiceMethod.createTime;
 import com.imageupload.example.Services.BoardService;
-import com.imageupload.example.Vo.PageableVo;
 import com.imageupload.example.Vo.boardVo;
 
 import org.springframework.beans.factory.annotation.Autowired;

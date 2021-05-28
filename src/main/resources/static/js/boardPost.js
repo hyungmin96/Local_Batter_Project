@@ -35,7 +35,6 @@ function post() {
 
         for (var i = 0; i < infoImgs.length; i++) {
             formData.append('uploadFiles', infoImgs[i]);
-            console.log(infoImgs);
         }
 
         $.ajax({
