@@ -45,6 +45,30 @@
 
             <body>
 
+                <div class="remote__container" style="top:280px; right: 0px; position: fixed; background-color: rgb(78, 78, 78); width: 50px; height: 200px">
+                    <div class="remote__list">
+                        <li>
+                            <div style="cursor: pointer" onclick="window.location.href='/board/article/847';"><img src="/images/remote/bell.png">
+                            </div>
+                        </li>
+
+                        <li>
+                            <div style="cursor: pointer" onclick="window.location.href='/board/article/847';"><img src="/images/remote/cart.png">
+                            </div>
+                        </li>
+
+                        <li>
+                            <div style="cursor: pointer" onclick="window.location.href='/board/article/847';"><img src="/images/remote/chat.png">
+                            </div>
+                        </li>
+
+                        <li>
+                            <div style="cursor: pointer" onclick="window.scrollTo(0,0);"><img src="/images/remote/up.png">
+                            </div>
+                        </li>
+                    </div>
+                </div>
+
                 <div class="header">
                     <div class="user-info-box">
                         <div class="container">

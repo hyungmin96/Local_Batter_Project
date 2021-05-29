@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ include file="../common/header.jsp" %>
 
-<div class="login__wrapper" style="margin-top: 175px;">
+<div class="login__wrapper" style="margin-top: 175px; height: 625px;">
     <div class="container">
         <div class="panel-body">
             <div class="mb-3">
@@ -26,18 +26,19 @@
                         <button id="login-btn" class="btn btn-primary btn-lg" style="width: 100%">로그인</button>
                     <hr/>
 
-                    <div class="sign__box">
-                        <span>아직 회원이 아니신가요?</span>
-                        <a href="/user/join">회원가입</a>
-                    </div>
+                    <div class="sign__container">
+                        <div class="sign__box">
+                            <span>아직 회원이 아니신가요?</span>
+                            <a href="/user/join">회원가입</a>
+                        </div>
 
-                    <div class="sns__login_container">
-                        <a href="#"><img src="/images/login/naverlogin.png"></a>
-                        <a href="#"><img src="/images/login/kakao.png"></a>
-                        <a href="#"><img src="/images/login/google.png"></a>
-                        <a href="#"><img src="/images/login/daum.png"></a>
+                        <div class="sns__login_container">
+                            <a href="#"><img src="/images/login/naverlogin.png"></a>
+                            <a href="#"><img src="/images/login/kakao.png"></a>
+                            <a href="#"><img src="/images/login/google.png"></a>
+                            <a href="#"><img src="/images/login/daum.png"></a>
+                        </div>
                     </div>
-
         </div>
 
 <%@ include file="../common/footer.jsp" %>

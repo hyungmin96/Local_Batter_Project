@@ -42,8 +42,13 @@
 
 .login__wrapper .container{
     width: 550px;
+    height: 500px;
     box-shadow: 1px 1px 10px 3px rgba(0, 0, 0, 0.12);
     padding: 30px;
+}
+
+.sign__container{
+    padding: 35px;
 }
 
 .sign__box{
@@ -72,3 +77,4 @@
     margin: 10px 5px;
     object-fit: contain;
 }
+
