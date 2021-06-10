@@ -10,6 +10,7 @@ import lombok.Data;
 @Builder
 public class MessageVo {
     
+    private String result;
     private String sendUser;
     private String notificationType;
     private String message;

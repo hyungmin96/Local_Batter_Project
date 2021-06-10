@@ -143,4 +143,25 @@
 
     </div>
 
+<script>
+
+$('.chat__product_btn').on("click", function(){
+
+        var user = $('.user__name').text();
+        var target = $('.item__writer').text();
+
+        $.ajax({
+            url: '/api/create/room',
+            type: 'POST',
+            data: 'user=' + user + '&target=' + target ,
+            contentType: 'application/x-www-form-urlencoded',
+            success: function(response){
+                
+            }
+        })
+
+})
+
+</script>
+
 </div></div><%@ include file="../common/footer.jsp" %>

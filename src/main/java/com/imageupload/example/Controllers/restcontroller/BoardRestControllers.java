@@ -1,32 +1,29 @@
 package com.imageupload.example.controllers.restcontroller;
 
 import java.text.ParseException;
+import java.util.Map;
 
 import com.imageupload.example.components.boardServiceMethod.createTime;
 import com.imageupload.example.models.PageableVo;
-import com.imageupload.example.models.Role;
 import com.imageupload.example.models.UserVo;
 import com.imageupload.example.models.boardVo;
 import com.imageupload.example.services.BoardService;
-import com.imageupload.example.services.UserService;
-
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-public class RestControllers {
+public class BoardRestControllers {
     
-    @Autowired
-    private UserService userService;
-
     @Autowired
     private BoardService boardService;
 
@@ -65,25 +62,43 @@ public class RestControllers {
         return searchBoards;
     }
 
-    @PostMapping("/api/login")
-    public String login(@RequestBody UserVo vo){
-        UserDetails account = userService.loadUserByUsername(vo.getUsername());
-        if(account != null)
-            return "로그인 성공";
-        else
-            return "로그인 실패";
+    @PostMapping("/upload")
+    public String uploadFiles(@AuthenticationPrincipal UserVo principal, boardVo board,
+            MultipartFile[] uploadFiles) throws IOException {
+
+        // Authentication authentication =
+        // SecurityContextHolder.getContext().getAuthentication();
+        // String currentPrincipalName = authentication.getName();
+        if (principal != null) {
+            board.setWriter(principal.getUsername());
+            boardService.boardWrite(board, uploadFiles);
+            return "업로드 성공";
+        }
+
+        return "권한이 없습니다.";
     }
 
-    @PostMapping("/api/join")
-    public String join(@RequestBody UserVo vo){
-        vo.setRole(Role.ROLE_USER);
-        userService.userSave(vo);
-        return "회원가입 성공";
+    @PostMapping("/board/delete")
+    public String deletePost(@AuthenticationPrincipal UserVo principal,
+            @RequestBody Map<String, String> param) {
+
+        if (principal != null && (param.get("writerId").equals(principal.getUsername()))) {
+            int boardId = Integer.parseInt(param.get("boardId"));
+            boardService.boardDelete(boardId);
+            return "삭제 성공";
+        }
+        return "권한이 없습니다.";
     }
 
-    @PostMapping("/api/checkUserName")
-    public boolean duplicatedItemCheck(@RequestParam String username){
-        return userService.checkUserName(username);
+    @PostMapping("/update")
+    public String updatePost(@AuthenticationPrincipal UserVo principal, boardVo vo,
+            MultipartFile[] uploadFiles, @RequestParam Integer[] deleteIndex) {
+                
+        if (principal != null && (vo.getWriter().equals(principal.getUsername()))) {
+            boardService.boardUpdate(vo, uploadFiles, deleteIndex);
+            return "수정 성공";
+        }
+            return "권한이 없습니다.";
     }
 
 }

@@ -17,7 +17,9 @@ spring:
     view:
       prefix: /WEB-INF/views/
       suffix: .jsp
-  
+  output:
+    ansi:
+      enabled: always
   handlerbars:
     suffix: .jsp
 
@@ -30,6 +32,7 @@ spring:
   jpa:
     open-in-view: true
     hibernate:
+      # ddl-auto: create #프로젝트 실행마다 테이블을 생성(초기화)
       ddl-auto: update #프로젝트 실행마다 테이블을 생성(초기화)
       naming:
         #테이블을 생성시에 변수명 그대로 Column을 생성해줌

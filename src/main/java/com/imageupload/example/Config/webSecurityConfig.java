@@ -1,6 +1,5 @@
 package com.imageupload.example.config;
 
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -8,12 +7,10 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
-import lombok.AllArgsConstructor;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
-@AllArgsConstructor
 public class webSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final  String RESOURCE_ROOT = "/resources/**";
@@ -21,7 +18,8 @@ public class webSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) {
         // 이미지, 뷰, js 등 접근가능한 리소스를 설정
-        web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+        web.ignoring().antMatchers("/css/**", "/js/**", "/img/**", "/lib/**");
+        // web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
 
     @Override
@@ -39,7 +37,7 @@ public class webSecurityConfig extends WebSecurityConfigurerAdapter {
                     .defaultSuccessUrl("/")
             .and()
                 .logout()
-                    .logoutUrl("/user/logout")
+                    .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
                     .logoutSuccessUrl("/")
                     .invalidateHttpSession(true)
             .and()

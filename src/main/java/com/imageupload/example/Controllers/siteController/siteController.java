@@ -1,16 +1,11 @@
 package com.imageupload.example.controllers.sitecontroller;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.stream.IntStream;
-
-import com.imageupload.example.components.boardServiceMethod.createTime;
 import com.imageupload.example.models.boardVo;
 import com.imageupload.example.services.BoardService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,7 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
-public class siteController {
+public class SiteController {
     
     @Autowired
     private BoardService boardService;
@@ -32,6 +27,17 @@ public class siteController {
         model.addAttribute("general", map.get("general"));
         model.addAttribute("fast", map.get("fast"));
         return "/board/articleList";
+    }
+
+    @GetMapping("/{userId}/chatlist")
+    public String getChatList(){
+        return "/chat/chatRoomList";
+    }
+
+    @GetMapping("/chat/target={target}/room={roomid}")
+    public String getChatRoom(){
+        
+        return "/chat/chatroom";
     }
 
     @GetMapping({"/board/search/products//search={search}"})

@@ -14,7 +14,7 @@ function connect(){
         var socket = new SockJS('/ws');
         stompClient = Stomp.over(socket);
         stompClient.connect({}, function(){
-            stompClient.subscribe('/notification', function(message){
+            stompClient.subscribe('/notification/' + loginAccountInfo, function(message){
                 var content = JSON.stringify(message);
                 console.log(content);
             })
