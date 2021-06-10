@@ -1,4 +1,4 @@
-package com.imageupload.example.Vo;
+package com.imageupload.example.models;
 
 
 import javax.persistence.Column;

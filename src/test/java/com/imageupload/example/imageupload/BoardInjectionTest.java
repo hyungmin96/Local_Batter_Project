@@ -1,7 +1,8 @@
 package com.imageupload.example.imageupload;
 
-import com.imageupload.example.JpaRepositories.BoardRepository;
-import com.imageupload.example.Vo.boardVo;
+import com.imageupload.example.models.boardVo;
+import com.imageupload.example.repositories.BoardRepository;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +33,7 @@ public class BoardInjectionTest{
 
         boardRepository.save(vo);
         }
+
     }
+    
 }

@@ -1,4 +1,4 @@
-package com.imageupload.example.Services;
+package com.imageupload.example.services;
 
 
 import java.io.File;
@@ -8,12 +8,14 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.transaction.Transactional;
-import com.imageupload.example.Components.boardServiceMethod.createTime;
-import com.imageupload.example.Components.boardServiceMethod.generateFile;
-import com.imageupload.example.JpaRepositories.BoardRepository;
-import com.imageupload.example.JpaRepositories.fileRepository;
-import com.imageupload.example.Vo.PageableVo;
-import com.imageupload.example.Vo.boardVo;
+
+import com.imageupload.example.components.boardServiceMethod.createTime;
+import com.imageupload.example.components.boardServiceMethod.generateFile;
+import com.imageupload.example.models.PageableVo;
+import com.imageupload.example.models.boardVo;
+import com.imageupload.example.repositories.BoardRepository;
+import com.imageupload.example.repositories.fileRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -108,6 +110,15 @@ public class BoardService {
     public Page<boardVo> getSearchBoards(String search) {
         PageRequest pageable = PageRequest.of(0, 30);
         Page<boardVo> board = boardRep.findByTitleContaining(search, pageable);
+
+        board.forEach(action -> {
+            try {
+                action.setDisplayDate(new createTime(action.getCreateTime()).getTimeDiff());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        });
+
         return board;
     }
 

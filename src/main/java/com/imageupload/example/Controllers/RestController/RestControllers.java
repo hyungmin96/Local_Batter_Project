@@ -1,14 +1,14 @@
-package com.imageupload.example.Controllers.RestController;
+package com.imageupload.example.controllers.restcontroller;
 
 import java.text.ParseException;
 
-import com.imageupload.example.Components.boardServiceMethod.createTime;
-import com.imageupload.example.Services.BoardService;
-import com.imageupload.example.Services.UserService;
-import com.imageupload.example.Vo.PageableVo;
-import com.imageupload.example.Vo.Role;
-import com.imageupload.example.Vo.UserVo;
-import com.imageupload.example.Vo.boardVo;
+import com.imageupload.example.components.boardServiceMethod.createTime;
+import com.imageupload.example.models.PageableVo;
+import com.imageupload.example.models.Role;
+import com.imageupload.example.models.UserVo;
+import com.imageupload.example.models.boardVo;
+import com.imageupload.example.services.BoardService;
+import com.imageupload.example.services.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -49,11 +49,8 @@ public class RestControllers {
 
     @GetMapping({"/board/products/search={search}&display={display}&order={order}&page={page}"})
     public Page<boardVo> searchBoardsData(PageableVo pageVo){
-
         Page<boardVo> searchBoards;
-
         searchBoards = boardService.getBoardList(pageVo);
-
         searchBoards.forEach(action -> {
             try {
                 action.setDisplayDate(new createTime(action.getCreateTime()).getTimeDiff());
@@ -61,14 +58,11 @@ public class RestControllers {
                 e.printStackTrace();
             }
         });
-
         Integer[] pages = new Integer[searchBoards.getTotalPages()];
         for(int i = 0; i < pages.length; i ++){
             pages[i] = (i + 1);
         }
-
         return searchBoards;
-        
     }
 
     @PostMapping("/api/login")

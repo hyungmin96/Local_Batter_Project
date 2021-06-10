@@ -1,11 +1,11 @@
-package com.imageupload.example.Controllers.RestController;
+package com.imageupload.example.controllers.restcontroller;
 
 import java.io.IOException;
 import java.util.Map;
 
-import com.imageupload.example.Services.BoardService;
-import com.imageupload.example.Vo.UserPrincipalVo;
-import com.imageupload.example.Vo.boardVo;
+import com.imageupload.example.models.UserPrincipalVo;
+import com.imageupload.example.models.boardVo;
+import com.imageupload.example.services.BoardService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-public class ImgUploadController {
+public class BoardContoller {
 
     @Autowired
     private BoardService boardService;

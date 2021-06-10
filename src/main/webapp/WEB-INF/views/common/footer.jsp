@@ -21,5 +21,15 @@
         </div>
     </div>
     </body>
-
+        <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+        <script src="/js/boardPost.js"></script>
+        <script type="text/javascript" src="/js/infiniteScroll.js"></script>
+        <script type="text/javascript" src="/js/Login.js"></script>
+        <script type="text/javascript" src="/js/pagination.js"></script>
+        <script type="text/javascript" src="/js/notificationStomp.js"></script>
+        <script src="/js/imageSlider.js"></script>
+        <script src="/js/join.js"></script>
+        <script src="/js/board.js"></script>
+        <script src="/js/search.js"></script>
+        <script type="text/javascript" src="/js/slider.js"></script>
 </html>

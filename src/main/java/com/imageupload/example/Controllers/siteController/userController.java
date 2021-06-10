@@ -1,4 +1,4 @@
-package com.imageupload.example.Controllers.SiteController;
+package com.imageupload.example.controllers.sitecontroller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

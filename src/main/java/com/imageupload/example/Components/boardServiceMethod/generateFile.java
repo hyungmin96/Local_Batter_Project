@@ -1,4 +1,4 @@
-package com.imageupload.example.Components.boardServiceMethod;
+package com.imageupload.example.components.boardServiceMethod;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import com.imageupload.example.Vo.boardVo;
-import com.imageupload.example.Vo.fileVo;
+import com.imageupload.example.models.boardVo;
+import com.imageupload.example.models.fileVo;
 
 import org.springframework.web.multipart.MultipartFile;
 

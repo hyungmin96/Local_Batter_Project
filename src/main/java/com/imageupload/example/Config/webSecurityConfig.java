@@ -1,4 +1,4 @@
-package com.imageupload.example.Config;
+package com.imageupload.example.config;
 
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -14,7 +14,7 @@ import lombok.AllArgsConstructor;
 @Configuration
 @EnableWebSecurity
 @AllArgsConstructor
-public class webSecirityConfig extends WebSecurityConfigurerAdapter {
+public class webSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final  String RESOURCE_ROOT = "/resources/**";
 

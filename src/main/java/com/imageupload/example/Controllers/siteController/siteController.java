@@ -1,13 +1,15 @@
-package com.imageupload.example.Controllers.SiteController;
+package com.imageupload.example.controllers.sitecontroller;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.stream.IntStream;
 
-import com.imageupload.example.Components.boardServiceMethod.createTime;
-import com.imageupload.example.Services.BoardService;
-import com.imageupload.example.Vo.boardVo;
+import com.imageupload.example.components.boardServiceMethod.createTime;
+import com.imageupload.example.models.boardVo;
+import com.imageupload.example.services.BoardService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -35,29 +37,19 @@ public class siteController {
     @GetMapping({"/board/search/products//search={search}"})
     public String searchBoardsCondition(Model model, @PathVariable String search){
 
-        Page<boardVo> searchBoards;
-
-        searchBoards = boardService.getSearchBoards(search);
+        Page<boardVo> searchBoards = boardService.getSearchBoards(search);
         // jsp에서 page형식을 못 읽는 경우가있음 jsp에서 page<t>.content로 넘겨주자
         // List<Board> list = result.getContent();
         // page형식의 result 객체를 list에 담을때 getContent() 메소드 활용하면 사용가능
 
-        searchBoards.forEach(action -> {
-            try {
-                action.setDisplayDate(new createTime(action.getCreateTime()).getTimeDiff());
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+        int[] pages = new int[searchBoards.getTotalPages()];
+        IntStream.range(0, pages.length).forEach(index ->{
+            pages[index] = index + 1;
         });
-
-        Integer[] pages = new Integer[searchBoards.getTotalPages()];
-        for(int i = 0; i < pages.length; i ++){
-            pages[i] = (i + 1);
-        }
 
         model.addAttribute("keyword", search);
         model.addAttribute("totalPages", pages);
-        model.addAttribute("endPages", (int)Math.ceil((double)(pages[pages.length-1] / 10.0)));
+        model.addAttribute("endPages", (int)Math.ceil((double)(searchBoards.getTotalPages() / 10.0)));
         model.addAttribute("searchBoards", searchBoards);
         return "/board/searchList";
     }

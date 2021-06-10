@@ -1,8 +1,9 @@
-package com.imageupload.example.Services;
+package com.imageupload.example.services;
 
-import com.imageupload.example.JpaRepositories.UserRepository;
-import com.imageupload.example.Vo.UserVo;
-import com.imageupload.example.Vo.UserPrincipalVo;
+import com.imageupload.example.models.UserPrincipalVo;
+import com.imageupload.example.models.UserVo;
+import com.imageupload.example.repositories.UserRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

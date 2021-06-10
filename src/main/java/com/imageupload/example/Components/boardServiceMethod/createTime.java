@@ -1,4 +1,4 @@
-package com.imageupload.example.Components.boardServiceMethod;
+package com.imageupload.example.components.boardServiceMethod;
 
 import java.sql.Timestamp;
 import java.text.ParseException;

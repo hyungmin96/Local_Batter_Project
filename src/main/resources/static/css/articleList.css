@@ -193,11 +193,6 @@ a:link {
     height: 100%;
 }
 
-.banner__container {
-    display: flex;
-    justify-items: space-between;
-}
-
 @font-face {
     font-family: 'GongGothicMedium';
     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10@1.0/GongGothicMedium.woff') format('woff');
@@ -235,15 +230,23 @@ a:link {
     }
 }
 
+.banner__container{
+    display: inline-flex;
+    flex-direction: row;
+}
+
 .banner__container hr {
     margin: 0;
     width: 100%;
 }
 
-.group__buy {
-    border: 1px solid #ebebeb;
-    margin-left: 25px;
-    width: 305px;
+.sub__banner{
+    margin: 0px 5px;
+}
+
+.sub__banner img{
+    width: 320px;
+    height: 238px;
 }
 
 .group__buying__title {

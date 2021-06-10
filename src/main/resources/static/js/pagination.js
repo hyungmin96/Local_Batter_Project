@@ -30,7 +30,6 @@ function nextBtn(){
     curPage.dataset.value = (curPage.dataset.value * 1) + 1;
     document.getElementsByClassName('previous')[0].style.display = '';
 
-    console.log(curPage.dataset.value);
     if(curPage.dataset.value >= lastPage.dataset.value){
         document.getElementsByClassName('next')[0].style.display = 'none';
     }else

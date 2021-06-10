@@ -1,6 +1,6 @@
-package com.imageupload.example.JpaRepositories;
+package com.imageupload.example.repositories;
 
-import com.imageupload.example.Vo.boardVo;
+import com.imageupload.example.models.boardVo;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
