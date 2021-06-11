@@ -1,0 +1,18 @@
+.room__box{
+    box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.12);
+    padding: 10px;
+    cursor: pointer;
+    margin: 15px ;
+}
+
+.room__title{
+    font-family: Noto Sans KR;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.room_chatting{
+    font-family: Noto Sans KR;
+    font-size: 13px;
+    color: rgb(187, 187, 187);
+}

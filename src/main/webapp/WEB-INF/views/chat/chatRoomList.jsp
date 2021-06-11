@@ -18,12 +18,12 @@
             
         </div>
 
-    <input type="text" class="form-control" id="target__id">
-    <button class="createBtn" style="margin: auto 0px;">개설하기</button>
-
 </div>
 
-<script src="/js/notification.js"></script>
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="/webjars/sockjs-client/sockjs.min.js"></script>
+<script src="/webjars/stomp-websocket/stomp.min.js"></script>
+<script src="/js/notificationStomp.js"></script>
 <script>
 
     // 채팅방 목록
@@ -38,19 +38,21 @@
                 
                 $.each(response, function(key, value){
 
-                var currentChatMessage = value.chatRoomJoin.chatRoomVo.chats;
+
+                    console.log(value)
+                var currentChatMessage = value.roomEntity.chats;
                 var content;
 
                 if(currentChatMessage.length > 0)
-                    content = currentChatMessage[currentChatMessage.length-1].content;
+                    content = currentChatMessage[currentChatMessage.length-1].message;
                 else
                     content = '채팅방이 개설되었습니다.'
 
                     $('.roomsContainer').append(
                         "<div class='room__box'" + 
-                        "onclick='popupWindow(" + value.target + "," + value.roomId + ")'>" +
+                        "onclick='popupWindow(" + value.target.username + "," + value.roomEntity.id + ")'>" +
                         "<div class='room__title'>" + 
-                        value.target + "님과의 채팅" + 
+                        value.target.username + "님과의 채팅" + 
                         "</div>" +
                         "<hr style='margin: 10px;'/>" + 
                         "<div class='room_chatting'>" + 
@@ -94,3 +96,4 @@
     }
 
 </script>
+<link rel="stylesheet" href="/css/chatCreateList.css">

@@ -1,5 +1,6 @@
 package com.imageupload.example.controllers.restcontroller;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -37,6 +38,21 @@ public class ChatRestController {
 
     @Autowired
     private RoomRepository roomRepository;
+
+    
+    @GetMapping("/chat/rooms")
+    public List<UserJoinRoomEntity> getChats(Principal principal){
+
+        List<UserJoinRoomEntity> chatList = chatService.getChatRoomList(principal);
+        
+        chatList.forEach(action -> {
+            if(action.getTarget().getUsername().equals(principal.getName())){
+                action.getTarget().setUsername(action.getUserVo().getUsername());
+            }
+        });
+
+        return chatList;
+    }
 
     @GetMapping("/chat/chats/")
     public Page<ChatEntity> getChats(@RequestParam long roomId,

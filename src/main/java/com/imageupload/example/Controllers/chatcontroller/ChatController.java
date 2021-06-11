@@ -1,6 +1,9 @@
 package com.imageupload.example.controllers.chatcontroller;
 
 import java.security.Principal;
+import java.util.List;
+
+import com.imageupload.example.entity.UserJoinRoomEntity;
 import com.imageupload.example.services.ChatService;
 import com.imageupload.example.vo.MessageVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +19,7 @@ public class ChatController {
     @Autowired
     private ChatService chatService;
 
-    @GetMapping("/{userId}/chatlist")
+    @GetMapping("/{username}/chatlist")
     public String getChatList(){
         return "/chat/chatRoomList";
     }

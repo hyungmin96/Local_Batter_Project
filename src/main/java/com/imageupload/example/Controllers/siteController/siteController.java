@@ -33,9 +33,6 @@ public class SiteController {
     public String searchBoardsCondition(Model model, @PathVariable String search){
 
         Page<boardVo> searchBoards = boardService.getSearchBoards(search);
-        // jsp에서 page형식을 못 읽는 경우가있음 jsp에서 page<t>.content로 넘겨주자
-        // List<Board> list = result.getContent();
-        // page형식의 result 객체를 list에 담을때 getContent() 메소드 활용하면 사용가능
 
         int[] pages = new int[searchBoards.getTotalPages()];
         IntStream.range(0, pages.length).forEach(index ->{

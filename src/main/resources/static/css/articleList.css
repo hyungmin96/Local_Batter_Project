@@ -13,6 +13,11 @@ a:link {
     text-decoration: none;
 }
 
+#products{
+    width: 1200px;
+    margin: auto auto;
+}
+
 #slider-div {
     margin: 15px 10px;
     width: 100%;
@@ -245,7 +250,7 @@ a:link {
 }
 
 .sub__banner img{
-    width: 320px;
+    width: 390px;
     height: 238px;
 }
 

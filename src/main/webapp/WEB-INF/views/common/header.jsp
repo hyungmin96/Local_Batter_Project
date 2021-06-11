@@ -87,9 +87,9 @@
                     </div>
 
                     <div class="container">
-                        <div class="header_box">
+                        <div class="header_box" style="margin: auto auto;">
                             <a class="site_icon" href="/">
-                            <img src="/images/header/icon.png"><span class="logo__text">로컬바터</span></a>
+                            <img src="/images/header/icon.png" style="margin-left: 50px;"><span class="logo__text">로컬바터</span></a>
 
                                 <div class="wrapper">
                                     <div class="search-input">
