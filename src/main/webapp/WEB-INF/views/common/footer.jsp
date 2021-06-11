@@ -23,7 +23,6 @@
     </body>
         <script src="/webjars/sockjs-client/sockjs.min.js"></script>
         <script src="/webjars/stomp-websocket/stomp.min.js"></script>
-        <script type="text/javascript" src="/js/infiniteScroll.js"></script>
         <script type="text/javascript" src="/js/Login.js"></script>
         <script type="text/javascript" src="/js/pagination.js"></script>
         <script type="text/javascript" src="/js/notificationStomp.js"></script>

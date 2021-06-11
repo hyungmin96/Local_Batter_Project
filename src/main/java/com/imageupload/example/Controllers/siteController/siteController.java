@@ -29,17 +29,6 @@ public class SiteController {
         return "/board/articleList";
     }
 
-    @GetMapping("/{userId}/chatlist")
-    public String getChatList(){
-        return "/chat/chatRoomList";
-    }
-
-    @GetMapping("/chat/target={target}/room={roomid}")
-    public String getChatRoom(){
-        
-        return "/chat/chatroom";
-    }
-
     @GetMapping({"/board/search/products//search={search}"})
     public String searchBoardsCondition(Model model, @PathVariable String search){
 

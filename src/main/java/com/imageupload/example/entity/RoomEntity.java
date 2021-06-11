@@ -1,8 +1,7 @@
-package com.imageupload.example.dto;
+package com.imageupload.example.entity;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,13 +11,12 @@ import lombok.Data;
 
 @Entity
 @Data
-public class RoomDTO {
+public class RoomEntity {
     
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue
     private Long id;
 
-    @OneToMany(mappedBy = "roomDTO", cascade = CascadeType.ALL)
-    private List<ChatDTO> chats = new ArrayList<>();
+    @OneToMany(mappedBy = "roomEntity", cascade = CascadeType.ALL)
+    private List<ChatEntity> chats = new ArrayList<>();
 
 }

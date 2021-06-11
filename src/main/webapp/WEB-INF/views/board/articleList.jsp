@@ -66,6 +66,8 @@
             <div class="today-item-list">
             </div>
         </div>
+        
+        <script type="text/javascript" src="/js/infiniteScroll.js"></script>
 
 <%@ include file="../common/footer.jsp" %>
 

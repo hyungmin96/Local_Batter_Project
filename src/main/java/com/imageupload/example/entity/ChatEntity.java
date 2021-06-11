@@ -1,4 +1,4 @@
-package com.imageupload.example.dto;
+package com.imageupload.example.entity;
 
 import java.sql.Timestamp;
 import javax.persistence.Entity;
@@ -7,17 +7,23 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.imageupload.example.models.UserVo;
-
 import org.hibernate.annotations.CreationTimestamp;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-public class ChatDTO {
-    @Id
-    @GeneratedValue
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class ChatEntity {
+
+    @Id @GeneratedValue
     private Long id;
 
     private String message;
@@ -26,11 +32,12 @@ public class ChatDTO {
     private Timestamp createTime;
 
     @ManyToOne
-    @JoinColumn(name = "Id")
+    @JoinColumn(name = "sendId")
     private UserVo userVo;
 
     @ManyToOne
     @JoinColumn(name = "roomId")
-    private RoomDTO roomDTO;
+    @JsonIgnore
+    private RoomEntity roomEntity;
 
 }

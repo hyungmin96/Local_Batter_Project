@@ -12,9 +12,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 
-import com.imageupload.example.dto.ChatDTO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -41,6 +40,7 @@ public class UserVo implements UserDetails{
     private String username;
 
     @Column
+    @JsonIgnore
     private String password;
 
     @Column

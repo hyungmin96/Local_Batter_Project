@@ -156,11 +156,20 @@ $('.chat__product_btn').on("click", function(){
             data: 'user=' + user + '&target=' + target ,
             contentType: 'application/x-www-form-urlencoded',
             success: function(response){
-                
+                console.log(response);
+                if(response.result.includes('exist') || response.result.includes('success')){
+                    popupWindow(target, response.roomId);
+                }
             }
         })
 
 })
+
+    function popupWindow(target, roomId, w = 360, h = 700) {
+        var y = (screen.width - w) - 2500;
+        var x = (screen.height - h) / 2; 
+        var targetWin = window.open('/api/chat/target=' + target +'/room=' + roomId, '문의하기', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=' + w + ', height=' + h + ', top=' + x + ', left=' + y);
+    }
 
 </script>
 

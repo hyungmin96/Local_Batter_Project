@@ -11,11 +11,6 @@
     text-align: left;
 }
 
-body{
-    background-color: #ffffff;
-    height: 100%;
-}
-
 .none-login{
     display: flex;
     align-items: flex-end;

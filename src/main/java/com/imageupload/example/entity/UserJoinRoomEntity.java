@@ -1,15 +1,11 @@
-package com.imageupload.example.dto;
+package com.imageupload.example.entity;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-
 import com.imageupload.example.models.UserVo;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,10 +14,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserJoinRoomDTO {
+public class UserJoinRoomEntity{
     
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue
     private Long id;
 
     @ManyToOne
@@ -33,7 +28,15 @@ public class UserJoinRoomDTO {
     private UserVo userVo;
 
     @ManyToOne
-    @JoinColumn(name = "roomId")
-    private RoomDTO roomDTO;
+    @JoinColumn(name = "createRoomId")
+    private RoomEntity roomEntity;
+
+
+    public String toString(){
+        return this.id + " | " + 
+                this.roomEntity.getId() + " | " + 
+                this.target.getId() + " | " + 
+                this.userVo.getId() + " | ";
+    }
 
 }
