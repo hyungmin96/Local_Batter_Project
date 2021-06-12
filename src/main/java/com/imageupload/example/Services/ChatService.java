@@ -7,7 +7,7 @@ import java.util.Optional;
 import com.imageupload.example.entity.ChatEntity;
 import com.imageupload.example.entity.RoomEntity;
 import com.imageupload.example.entity.UserJoinRoomEntity;
-import com.imageupload.example.models.UserVo;
+import com.imageupload.example.entity.UserEntity;
 import com.imageupload.example.repositories.ChatRepository;
 import com.imageupload.example.repositories.ChatRoomRepository;
 import com.imageupload.example.repositories.RoomRepository;
@@ -45,7 +45,7 @@ public class ChatService {
 
     public List<UserJoinRoomEntity> getChatRoomList(Principal userVo){
 
-        UserVo user = userRepository.findByUsername(userVo.getName()).get();
+        UserEntity user = userRepository.findByUsername(userVo.getName()).get();
 
         List<UserJoinRoomEntity> roomList = chatRoomRepository.findAllByuserVoOrTarget(user, user);
         return roomList;
@@ -54,7 +54,7 @@ public class ChatService {
 
     public void sendMessage(Principal principal, MessageVo message){
 
-        Optional<UserVo> user = userRepository.findByUsername(principal.getName());
+        Optional<UserEntity> user = userRepository.findByUsername(principal.getName());
 
         ChatEntity chatEntity = ChatEntity.builder()
         .message(message.getMessage())

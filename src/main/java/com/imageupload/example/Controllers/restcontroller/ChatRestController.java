@@ -8,7 +8,7 @@ import java.util.Optional;
 import com.imageupload.example.entity.ChatEntity;
 import com.imageupload.example.entity.RoomEntity;
 import com.imageupload.example.entity.UserJoinRoomEntity;
-import com.imageupload.example.models.UserVo;
+import com.imageupload.example.entity.UserEntity;
 import com.imageupload.example.repositories.ChatRoomRepository;
 import com.imageupload.example.repositories.RoomRepository;
 import com.imageupload.example.repositories.UserRepository;
@@ -63,14 +63,14 @@ public class ChatRestController {
     }
 
     @PostMapping("/create/room")
-    public NotificationVo createRoom(@AuthenticationPrincipal UserVo principal, 
+    public NotificationVo createRoom(@AuthenticationPrincipal UserEntity principal, 
         @RequestParam("target") String targetString, 
         @RequestParam("user") String user)
     {
 
         UserJoinRoomEntity room = null;
 
-        Optional<UserVo> target = userRepository.findByUsername(targetString);
+        Optional<UserEntity> target = userRepository.findByUsername(targetString);
 
         List<UserJoinRoomEntity> list = chatRoomRepository.findAllByuserVoOrTarget(principal, target.get());
 

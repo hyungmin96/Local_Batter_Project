@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.imageupload.example.entity.UserJoinRoomEntity;
-import com.imageupload.example.models.UserVo;
+import com.imageupload.example.entity.UserEntity;
 import com.imageupload.example.repositories.ChatRoomRepository;
 import com.imageupload.example.repositories.UserRepository;
 
@@ -32,8 +32,8 @@ public class ServiceTestClass {
 
         UserJoinRoomEntity room = null;
 
-        Optional<UserVo> user = userRepository.findById(3L);
-        Optional<UserVo> target = userRepository.findById(2L);
+        Optional<UserEntity> user = userRepository.findById(3L);
+        Optional<UserEntity> target = userRepository.findById(2L);
 
         List<UserJoinRoomEntity> list = chatRoomRepository.findAllByuserVoOrTarget(user.get(), user.get());
 

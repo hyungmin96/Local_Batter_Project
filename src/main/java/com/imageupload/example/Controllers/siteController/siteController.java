@@ -1,10 +1,11 @@
 package com.imageupload.example.controllers.sitecontroller;
 
 import java.io.IOException;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.text.ParseException;
 import java.util.stream.IntStream;
-import com.imageupload.example.models.boardVo;
+
+import com.imageupload.example.components.boardServiceMethod.createTime;
+import com.imageupload.example.entity.boardEntity;
 import com.imageupload.example.services.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,16 +24,15 @@ public class SiteController {
     
     @GetMapping("/")
     public String home(Model model){
-        LinkedHashMap<String, List<boardVo>> map = boardService.getAllboards();
-        model.addAttribute("general", map.get("general"));
-        model.addAttribute("fast", map.get("fast"));
+        Page<boardEntity> boardList = boardService.getFastItems();
+        model.addAttribute("fast", boardList.getContent());
         return "/board/articleList";
     }
 
     @GetMapping({"/board/search/products//search={search}"})
     public String searchBoardsCondition(Model model, @PathVariable String search){
 
-        Page<boardVo> searchBoards = boardService.getSearchBoards(search);
+        Page<boardEntity> searchBoards = boardService.getSearchBoards(search);
 
         int[] pages = new int[searchBoards.getTotalPages()];
         IntStream.range(0, pages.length).forEach(index ->{
@@ -53,21 +53,23 @@ public class SiteController {
 
     @GetMapping("/board/article/update/{id}")
     public String articleUpdate(Model model, @PathVariable int id){
-        boardVo vo = boardService.findBoard(id);
+        boardEntity vo = boardService.findBoard(id);
         model.addAttribute("updateData", vo);
         model.addAttribute("boardId", id);
         return "/board/articleUpdate";
     }
 
     @GetMapping("/board/article/{id}")
-    public String viewBoard(Model model, @PathVariable int id) throws IOException{
-        boardVo board = boardService.findBoard(id);
+    public String viewBoard(Model model, @PathVariable int id) throws IOException, ParseException{
+        boardEntity board = boardService.findBoard(id);
+
+        String displayTime = new createTime(board.getCreateTime()).getTimeDiff();
 
         PageRequest page = PageRequest.of(0, 6, Sort.Direction.DESC, "id");
-
-        Page<boardVo> topBoards = boardService.getTopBoard(page);
+        Page<boardEntity> topBoards = boardService.getTopBoard(page);
 
         model.addAttribute("board", board);
+        model.addAttribute("createTime", displayTime);
         model.addAttribute("topBoards", topBoards);
         model.addAttribute("img", board.getFiles());
         return "/board/article";

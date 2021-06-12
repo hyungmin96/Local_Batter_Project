@@ -106,7 +106,7 @@
                         </span>
                         <span class="view__time">
                             <img src="/images/boardDetail/time.png">
-                            <div class="count__number">11시간 전</div>
+                            <div class="count__number">${createTime}</div>
                         </span>
                     </div>
 

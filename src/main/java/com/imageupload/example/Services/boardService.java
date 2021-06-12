@@ -11,8 +11,8 @@ import javax.transaction.Transactional;
 
 import com.imageupload.example.components.boardServiceMethod.createTime;
 import com.imageupload.example.components.boardServiceMethod.generateFile;
+import com.imageupload.example.entity.boardEntity;
 import com.imageupload.example.models.PageableVo;
-import com.imageupload.example.models.boardVo;
 import com.imageupload.example.repositories.BoardRepository;
 import com.imageupload.example.repositories.fileRepository;
 
@@ -33,7 +33,7 @@ public class BoardService {
     @Autowired
     private fileRepository fileRep;
 
-    public void boardWrite(boardVo vo, MultipartFile[] uploadFiles) {
+    public void boardWrite(boardEntity vo, MultipartFile[] uploadFiles) {
         boardRep.save(vo);
         if (uploadFiles != null && uploadFiles.length > 0) {
             generateFile gen = new generateFile(vo, uploadFiles);
@@ -42,9 +42,9 @@ public class BoardService {
     }
 
     @Transactional
-    public void boardUpdate(boardVo vo, MultipartFile[] uploadFiles, Integer[] deleteArr) {
+    public void boardUpdate(boardEntity vo, MultipartFile[] uploadFiles, Integer[] deleteArr) {
         
-        boardVo inputVo = boardRep.findById(vo.getId()).orElse(null);
+        boardEntity inputVo = boardRep.findById(vo.getId()).orElse(null);
 
         if (deleteArr != null) {
             for (Integer index : deleteArr) {
@@ -68,48 +68,29 @@ public class BoardService {
     }
 
     public void boardDelete(int id) {
-        boardVo vo = boardRep.findById(id).orElse(null);
+        boardEntity vo = boardRep.findById(id).orElse(null);
         if (vo != null)
             vo.getFiles().forEach(element -> new File(element.getFilePath()).delete());
 
         boardRep.deleteById(id);
     }
 
-    public Page<boardVo> searchBoards(String search, PageRequest page){
-        Page<boardVo> items = boardRep.findByTitleContainingOrderByIdDesc(search, page);
+    public Page<boardEntity> searchBoards(String search, PageRequest page){
+        Page<boardEntity> items = boardRep.findByTitleContainingOrderByIdDesc(search, page);
         return items;
     }
 
-    public LinkedHashMap<String, List<boardVo>> getAllboards(){
+    public Page<boardEntity> getFastItems(){
 
-        Page<boardVo> boards = boardRep.findAll(PageRequest.of(0, 30, Sort.Direction.DESC, "id"));
+        Page<boardEntity> boards = boardRep.findAllBycategory("긴급" ,PageRequest.of(0, 30, Sort.Direction.DESC, "id"));
 
-        List<boardVo> generalBoards = new ArrayList<>();
-        List<boardVo> fastBoards = new ArrayList<>();
-
-        LinkedHashMap<String, List<boardVo>> map = new LinkedHashMap<>();
-
-        boards.forEach(action -> {
-            try {
-                action.setDisplayDate(new createTime(action.getCreateTime()).getTimeDiff());
-                if(action.getCategory().equals("일반"))
-                    generalBoards.add(action);
-                else
-                    fastBoards.add(action);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        });
-
-        map.put("general", generalBoards);
-        map.put("fast", fastBoards);
-
-        return map;
+        //new createTime(action.getCreateTime()).getTimeDiff()
+        return boards;
     }
     
-    public Page<boardVo> getSearchBoards(String search) {
+    public Page<boardEntity> getSearchBoards(String search) {
         PageRequest pageable = PageRequest.of(0, 30);
-        Page<boardVo> board = boardRep.findByTitleContaining(search, pageable);
+        Page<boardEntity> board = boardRep.findByTitleContaining(search, pageable);
 
         board.forEach(action -> {
             try {
@@ -122,24 +103,33 @@ public class BoardService {
         return board;
     }
 
-    public Page<boardVo> getBoardList(PageableVo page) {
+    public Page<boardEntity> getBoardList(PageableVo page) {
         PageRequest pageable = page.getPageRequest();
-        Page<boardVo> board = boardRep.findByTitleContaining(page.getSearch(), pageable);
+        Page<boardEntity> board = boardRep.findByTitleContaining(page.getSearch(), pageable);
+        
+        board.forEach(action -> {
+            try {
+                action.setDisplayDate(new createTime(action.getCreateTime()).getTimeDiff());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        });
+
         return board;
     }
 
-    public Page<boardVo> getBoardList(PageRequest page) {
-        Page<boardVo> board = boardRep.findAll(page);
+    public Page<boardEntity> getAJaxBoardList(PageRequest page) {
+        Page<boardEntity> board = boardRep.findAllBycategory("일반", page);
         return board;
     }
 
-    public boardVo findBoard(int id){
+    public boardEntity findBoard(int id){
         return boardRep.findById(id).orElseThrow(()->{
             return new IllegalArgumentException("정보없음");
         });
     }
 
-    public Page<boardVo> getTopBoard(Pageable page){
+    public Page<boardEntity> getTopBoard(Pageable page){
         return boardRep.findAll(page);
     }
 

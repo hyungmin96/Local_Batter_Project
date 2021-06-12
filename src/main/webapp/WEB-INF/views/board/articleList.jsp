@@ -63,12 +63,13 @@
                 <hr />
             </div>
 
-            <div class="today-item-list">
+            <div class="today-item-list" style="margin-left: 35px;">
             </div>
-        </div>
+            </div>
+            </div>
         
-        <script type="text/javascript" src="/js/infiniteScroll.js"></script>
 
+<script type="text/javascript" src="/js/infiniteScroll.js"></script>
 <%@ include file="../common/footer.jsp" %>
 
 

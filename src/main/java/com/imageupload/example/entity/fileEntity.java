@@ -1,4 +1,4 @@
-package com.imageupload.example.models;
+package com.imageupload.example.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Entity
-public class fileVo {
+public class fileEntity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,6 +42,6 @@ public class fileVo {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "board_id")
     @JsonIgnore
-    private boardVo board;
+    private boardEntity board;
     
 }

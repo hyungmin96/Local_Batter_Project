@@ -168,9 +168,9 @@ li .product__info__content{
 
 .btn__container button{
     border: none;
-    width: 170px;
+    width: 200px;
     height: 55px;
-    margin: 5px;
+    margin: 10px;
     border-radius: 3px;
     font-size: 15px;
     font-family: NanumBarunGothic;

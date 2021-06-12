@@ -1,8 +1,8 @@
 package com.imageupload.example.controllers.restcontroller;
 
 import com.imageupload.example.services.UserService;
+import com.imageupload.example.entity.UserEntity;
 import com.imageupload.example.models.Role;
-import com.imageupload.example.models.UserVo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,7 +17,7 @@ public class UserRestController {
     private UserService userService;
 
     @PostMapping("/api/login")
-    public String login(@RequestBody UserVo vo){
+    public String login(@RequestBody UserEntity vo){
         UserDetails account = userService.loadUserByUsername(vo.getUsername());
         if(account != null)
             return "로그인 성공";
@@ -26,7 +26,7 @@ public class UserRestController {
     }
 
     @PostMapping("/api/join")
-    public String join(@RequestBody UserVo vo){
+    public String join(@RequestBody UserEntity vo){
         vo.setRole(Role.ROLE_USER);
         userService.userSave(vo);
         return "회원가입 성공";

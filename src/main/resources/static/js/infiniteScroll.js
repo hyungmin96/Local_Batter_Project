@@ -5,13 +5,10 @@ var page = 0;
 
 $(window).scroll(function(){
     if($(window).scrollTop() + 150 >= $(document).height() - $(window).height()){
-        // 스크롤이 맨 밑에 왔을때
         if(!flag){
             flag = true;
             loadData();
         }
-    }else{
-        // 아닐때
     }
 });
 

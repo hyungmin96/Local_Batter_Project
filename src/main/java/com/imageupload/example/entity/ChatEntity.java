@@ -8,7 +8,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.imageupload.example.models.UserVo;
+
 import org.hibernate.annotations.CreationTimestamp;
 
 import lombok.AllArgsConstructor;
@@ -33,7 +33,7 @@ public class ChatEntity {
 
     @ManyToOne
     @JoinColumn(name = "sendId")
-    private UserVo userVo;
+    private UserEntity userVo;
 
     @ManyToOne
     @JoinColumn(name = "roomId")

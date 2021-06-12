@@ -38,9 +38,8 @@ function callBoardsDataToJson(page = 0) {
         $('.active').attr('id') == 'undefined' ? 'accuracy' : $('.active').attr('id');
 
     $.ajax({
-        url: '/board/products/search=' + keyword + '&display=30&order=' + order +'&page=' +page,
         type: 'GET',
-        dataType: 'json',
+        url: '/board/products/search=' + keyword + '&display=30&order=' + order +'&page=' +page,
         success: function (data) {
             var search__items__container = $('.search__item__list');
             search__items__container.empty();

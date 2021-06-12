@@ -5,7 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import com.imageupload.example.models.UserVo;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,11 +21,11 @@ public class UserJoinRoomEntity{
 
     @ManyToOne
     @JoinColumn(name = "targetId")
-    private UserVo target;
+    private UserEntity target;
 
     @ManyToOne
     @JoinColumn(name = "userId")
-    private UserVo userVo;
+    private UserEntity userVo;
 
     @ManyToOne
     @JoinColumn(name = "createRoomId")

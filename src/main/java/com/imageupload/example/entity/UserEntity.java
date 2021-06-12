@@ -1,4 +1,4 @@
-package com.imageupload.example.models;
+package com.imageupload.example.entity;
 
 
 import java.util.ArrayList;
@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.imageupload.example.models.Role;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -25,10 +26,10 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class UserVo implements UserDetails{
+public class UserEntity implements UserDetails{
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,6 +59,8 @@ public class UserVo implements UserDetails{
 
     @Column
     private int mileage;
+
+    private String profileImg;
 
 	@Override
 	public boolean isAccountNonExpired() {

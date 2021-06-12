@@ -1,6 +1,6 @@
 package com.imageupload.example.services;
 
-import com.imageupload.example.models.UserVo;
+import com.imageupload.example.entity.UserEntity;
 import com.imageupload.example.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,7 +15,7 @@ public class UserService implements UserDetailsService{
     @Autowired
     private UserRepository userRepository;
 
-    public String userSave(UserVo vo){
+    public String userSave(UserEntity vo){
         vo.setPassword(new BCryptPasswordEncoder().encode(vo.getPassword()));
         userRepository.save(vo);
         return "회원가입 성공";
@@ -28,7 +28,7 @@ public class UserService implements UserDetailsService{
     }
 
     public boolean checkUserName(String Email){
-        UserVo userVo = userRepository.findByUsername(Email).orElse(null);
+        UserEntity userVo = userRepository.findByUsername(Email).orElse(null);
         if(userVo == null)
             return true;
         else

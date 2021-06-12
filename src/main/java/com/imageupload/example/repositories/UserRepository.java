@@ -5,8 +5,8 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
-import com.imageupload.example.models.UserVo;
+import com.imageupload.example.entity.UserEntity;
 
-public interface UserRepository extends JpaRepository<UserVo, Long>{
-    Optional<UserVo> findByUsername(@Param("username") String username);
+public interface UserRepository extends JpaRepository<UserEntity, Long>{
+    Optional<UserEntity> findByUsername(@Param("username") String username);
 }

@@ -7,29 +7,29 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import com.imageupload.example.models.boardVo;
-import com.imageupload.example.models.fileVo;
+import com.imageupload.example.entity.boardEntity;
+import com.imageupload.example.entity.fileEntity;
 
 import org.springframework.web.multipart.MultipartFile;
 
 public class generateFile {
 
     private MultipartFile[] files;
-    private boardVo vo;
+    private boardEntity vo;
 
     private FileOutputStream fos;
     private final String root = "D:\\ImageUpload example\\src\\main\\downloads\\";
     private String tempName = "";
     private String extention;
 
-    public generateFile(boardVo vo, MultipartFile[] files) {
+    public generateFile(boardEntity vo, MultipartFile[] files) {
         this.vo = vo;
         this.files = files;
     }
 
-    public List<fileVo> generateFileVoList() {
+    public List<fileEntity> generateFileVoList() {
 
-        List<fileVo> fileInfos = new ArrayList<>();
+        List<fileEntity> fileInfos = new ArrayList<>();
 
         for (MultipartFile file : files) {
 
@@ -51,7 +51,7 @@ public class generateFile {
                 e.printStackTrace();
             }
 
-            fileVo filevo = fileVo.builder()
+            fileEntity filevo = fileEntity.builder()
                             .tempName(tempName + extention)
                             .filePath(root + tempName + extention)
                             .originName(file.getOriginalFilename())

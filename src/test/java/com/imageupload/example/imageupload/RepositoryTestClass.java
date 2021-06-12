@@ -7,9 +7,9 @@ import java.util.Optional;
 import com.imageupload.example.entity.ChatEntity;
 import com.imageupload.example.entity.RoomEntity;
 import com.imageupload.example.entity.UserJoinRoomEntity;
+import com.imageupload.example.entity.UserEntity;
+import com.imageupload.example.entity.boardEntity;
 import com.imageupload.example.models.Role;
-import com.imageupload.example.models.UserVo;
-import com.imageupload.example.models.boardVo;
 import com.imageupload.example.repositories.BoardRepository;
 import com.imageupload.example.repositories.ChatRepository;
 import com.imageupload.example.repositories.ChatRoomRepository;
@@ -46,8 +46,8 @@ public class RepositoryTestClass{
     @Test
     public void 채팅방_개설_테스트(){
 
-        Optional<UserVo> user = userRepository.findById(2L);
-        Optional<UserVo> target = userRepository.findById(1L);
+        Optional<UserEntity> user = userRepository.findById(2L);
+        Optional<UserEntity> target = userRepository.findById(1L);
 
         RoomEntity room = new RoomEntity();
         roomRepository.save(room);
@@ -63,7 +63,7 @@ public class RepositoryTestClass{
     @Test
     public void 채팅내용_저장_테스트(){
 
-        Optional<UserVo> user = userRepository.findById(1L);
+        Optional<UserEntity> user = userRepository.findById(1L);
 
         Optional<RoomEntity> room = roomRepository.findById(3L);
 
@@ -83,7 +83,7 @@ public class RepositoryTestClass{
 
         for(int i = 1; i < 10; i ++){
             
-            UserVo user = UserVo.builder()
+            UserEntity user = UserEntity.builder()
             .username(i + "")
             .password(new BCryptPasswordEncoder().encode(String.valueOf(i)))
             .Role(Role.ROLE_USER)
@@ -99,10 +99,10 @@ public class RepositoryTestClass{
     void 게시글_작성_테스트(){
 
         for(int i = 0; i < 846; i ++){
-        final boardVo vo = boardVo.builder()
+            boardEntity vo = boardEntity.builder()
                             .title("Test" + i)
                             .category("일반")
-                            .price("" + 1800 + i)
+                            .price("" + (1800 + i))
                             .descryption("설명" + i)
                             .writer("123")
                             .location("location")
