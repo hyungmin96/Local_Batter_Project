@@ -40,7 +40,10 @@ public class CoupangServiceTest {
     @Test
     void 쿠팡_게시글_가져오기_테스트() throws IOException {
 
-        for (int i = 1; i < 10; i++) {
+        int page = 1;
+        int boardNums = 30;
+
+        for (int i = 1; i <= page; i++) {
 
             String url = "https://www.coupang.com/np/categories/178255?page=" + i;
 
@@ -56,7 +59,7 @@ public class CoupangServiceTest {
                     String price = item.split("-value\">")[1].split("<")[0];
                     String src = "https://thumbnai" + item.split("src=\"//thumbnai")[1].split("\"")[0];
 
-                    BoardEntity vo = BoardEntity.builder().category("일반").descryption(title).location("대전").price(price)
+                    BoardEntity vo = BoardEntity.builder().category("긴급").descryption(title).location("대전").price(price)
                             .title(title).writer("rnsdva").build();
 
                     boardRep.save(vo);
@@ -64,6 +67,12 @@ public class CoupangServiceTest {
                     urlImageDownload(vo, src);
 
                     log.info(title + " / " + price);
+
+                    if(boardNums <= i){
+                        return;
+                    }else{
+                        boardNums ++;
+                    }
                 }
             }
 

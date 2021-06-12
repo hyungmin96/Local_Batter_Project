@@ -29,6 +29,12 @@ spring:
     username: root
     password: 110731
     
+  session:
+    store-type: REDIS
+  redis:
+    host: localhost:3306
+    port: 6379
+
   jpa:
     open-in-view: true
     hibernate:

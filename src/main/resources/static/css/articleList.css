@@ -18,6 +18,12 @@ a:link {
     margin: auto auto;
 }
 
+.sub__category{
+    color: rgb(128, 128, 128);
+    font-size: 15px;
+    font-weight: bold;
+}
+
 #slider-div {
     margin: 15px 10px;
     width: 100%;

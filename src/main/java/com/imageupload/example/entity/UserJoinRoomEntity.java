@@ -1,5 +1,6 @@
 package com.imageupload.example.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -27,7 +28,7 @@ public class UserJoinRoomEntity{
     @JoinColumn(name = "userId")
     private UserEntity userVo;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "createRoomId")
     private RoomEntity roomEntity;
 
