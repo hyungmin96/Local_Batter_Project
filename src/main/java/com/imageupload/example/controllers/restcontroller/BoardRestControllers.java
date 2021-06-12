@@ -3,6 +3,8 @@ package com.imageupload.example.controllers.restcontroller;
 import java.text.ParseException;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import com.imageupload.example.components.boardServiceMethod.createTime;
 import com.imageupload.example.entity.UserEntity;
 import com.imageupload.example.entity.BoardEntity;
@@ -94,6 +96,11 @@ public class BoardRestControllers {
             return "수정 성공";
         }
             return "권한이 없습니다.";
+    }
+
+    @GetMapping("/getSessionId")
+    public String getSessionId(HttpSession session){
+        return session.getId();
     }
 
 }
