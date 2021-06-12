@@ -8,7 +8,7 @@ import com.imageupload.example.entity.ChatEntity;
 import com.imageupload.example.entity.RoomEntity;
 import com.imageupload.example.entity.UserJoinRoomEntity;
 import com.imageupload.example.entity.UserEntity;
-import com.imageupload.example.entity.boardEntity;
+import com.imageupload.example.entity.BoardEntity;
 import com.imageupload.example.models.Role;
 import com.imageupload.example.repositories.BoardRepository;
 import com.imageupload.example.repositories.ChatRepository;
@@ -99,7 +99,7 @@ public class RepositoryTestClass{
     void 게시글_작성_테스트(){
 
         for(int i = 0; i < 846; i ++){
-            boardEntity vo = boardEntity.builder()
+            BoardEntity vo = BoardEntity.builder()
                             .title("Test" + i)
                             .category("일반")
                             .price("" + (1800 + i))

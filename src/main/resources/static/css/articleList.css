@@ -175,6 +175,7 @@ a:link {
     flex-direction: row;
     flex-wrap: wrap;
     margin-bottom: 40px;
+    margin-left: 15px;
 }
 
 .today-item-box {
@@ -190,7 +191,7 @@ a:link {
 
 .today-box {
     height: 210px;
-    width: 205px;
+    width: 215px;
 }
 
 .today-box img {

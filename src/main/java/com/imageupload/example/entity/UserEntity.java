@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.imageupload.example.models.Role;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -41,7 +42,7 @@ public class UserEntity implements UserDetails{
     private String username;
 
     @Column
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @Column

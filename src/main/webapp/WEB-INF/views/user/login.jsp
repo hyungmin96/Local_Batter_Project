@@ -59,11 +59,8 @@ $(document).ready(function(){
             contentType: 'application/x-www-form-urlencoded',
             data: data,
             success: function(result){
-                alert(result);
                 location.href = '/';
             }
-        }).done(function(resp){
-            console.log(JSON.stringify(resp));
         }).fail(function(error){
             alert('로그인 실패 확인 후 다시 시도해주세요.');
         });

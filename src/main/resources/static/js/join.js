@@ -16,6 +16,7 @@ function join() {
         phoneNum: $('#phone').val(),
         mannerScore: 0,
         mileage: 0,
+        profileImg: ''
     };
     if (!checkUsernameResult) {
         alert('아이디 중복확인 후 다시 시도해주세요.');

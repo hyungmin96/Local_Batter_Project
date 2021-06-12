@@ -63,7 +63,7 @@
                 <hr />
             </div>
 
-            <div class="today-item-list" style="margin-left: 35px;">
+            <div class="today-item-list">
             </div>
             </div>
             </div>
