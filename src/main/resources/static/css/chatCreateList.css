@@ -1,7 +1,15 @@
+
+.roomsContainer{
+    width: 570px;
+    height: 670px;
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+}
+
 .room__box{
     box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.12);
     padding: 10px;
-    /* cursor: pointer; */
+    cursor: pointer;
     margin: 15px ;
 }
 

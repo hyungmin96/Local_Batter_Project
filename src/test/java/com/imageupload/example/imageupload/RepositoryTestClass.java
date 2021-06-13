@@ -41,29 +41,36 @@ public class RepositoryTestClass{
     @Test
     public void 채팅방_개설_테스트(){
 
-        chatRoomRepository.deleteAll();
+        for(int i = 21; i < 59; i ++){
 
-        Optional<UserEntity> user = userRepository.findById(2L);
-        Optional<UserEntity> target = userRepository.findById(1L);
+            Optional<UserEntity> user = userRepository.findById(21L);
+            Optional<UserEntity> target = userRepository.findById(Long.parseLong(String.valueOf(i)) + 1);
 
-        RoomEntity room = new RoomEntity();
-        roomRepository.save(room);
+            if(target != null){
 
-        UserJoinRoomEntity userJoinRoomEntity = new UserJoinRoomEntity();
-        userJoinRoomEntity.setTarget(user.get());
-        userJoinRoomEntity.setUserVo(target.get());
-        userJoinRoomEntity.setRoomEntity(room);
+                RoomEntity room = new RoomEntity();
+                roomRepository.save(room);
 
-        chatRoomRepository.save(userJoinRoomEntity);
+                UserJoinRoomEntity userJoinRoomEntity = new UserJoinRoomEntity();
+                userJoinRoomEntity.setTarget(user.get());
+                userJoinRoomEntity.setUserVo(target.get());
+                userJoinRoomEntity.setRoomEntity(room);
+
+                chatRoomRepository.save(userJoinRoomEntity);
+
+            }
+
+        }
+
     }
 
     @Test
     public void 채팅내용_저장_테스트(){
 
-        for(int i = 0; i < 100; i ++){
-        Optional<UserEntity> user = userRepository.findById(21L);
+        for(int i = 23; i < 60; i ++){
+        Optional<UserEntity> user = userRepository.findById(Long.parseLong(String.valueOf(i)));
 
-        Optional<RoomEntity> room = roomRepository.findById(22L);
+        Optional<RoomEntity> room = roomRepository.findById(Long.parseLong(String.valueOf(i)) + 1);
 
         ChatEntity chat = new ChatEntity();
         chat.setMessage("message");
@@ -80,7 +87,7 @@ public class RepositoryTestClass{
 
         // userRepository.deleteAll();
 
-        for(int i = 1; i < 10; i ++){
+        for(int i = 10; i < 40; i ++){
             
             UserEntity user = UserEntity.builder()
             .username(i + "")

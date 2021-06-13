@@ -32,7 +32,7 @@ public class UserJoinRoomEntity{
     @JoinColumn(name = "userId")
     private UserEntity userVo;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "createRoomId")
     private RoomEntity roomEntity;
 

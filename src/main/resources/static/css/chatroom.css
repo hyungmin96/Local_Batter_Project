@@ -32,8 +32,8 @@ body{
 }
 
 ::-webkit-scrollbar{
-    width: 5px;
-    background-color: #ececec;
+    width: 3px;
+    background-color: #ffffff;
 }
 
 ::-webkit-scrollbar-thumb{

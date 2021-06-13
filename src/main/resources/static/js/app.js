@@ -1,9 +1,114 @@
 var stompClient = null;
-var roomId;
+var roomId = null;
+var flag = false;
+var page = 0;
+var previousDate = null;
+var displayDateTrigger = false;
+var lastPage = false;
+var itemDate
+
+// 새로운 채팅방이 클릭될 경우만 실행되는 메소드
+function loadChatList(e){
+    if(globalThis.roomId == null || globalThis.roomId != e.id){
+        $(".chat__list").empty();
+        globalThis.roomId = e.id;
+        globalThis.page = 0;
+        globalThis.flag = true;
+        connect(globalThis.roomId);
+        loadChatData(globalThis.roomId);
+        $('.room__targetId')[0].innerHTML = e.outerText.split('\n')[0];
+    }
+}
 
 window.onbeforeunload = function () {
     stompClient.disconnect();
 };
+
+$('.chat__log').scroll(function(){
+    if($('.chat__log').scrollTop() < 1){
+        if(!globalThis.flag){
+            console.log('scroll')
+            loadChatData();
+        }
+    }
+});
+
+function loadChatData(){
+    
+    var display = 30;
+
+    $.ajax({
+        url: '/api/chat/chats/',
+        type: 'GET',
+        data: {roomId: globalThis.roomId, display: display, page: globalThis.page},
+        dataType: 'json',
+        success: function(response){
+            let currentScrollTop = $('.chat__log')[0].scrollHeight;
+
+            $.each(response.content, function(key, value){
+                
+                if(response.last == true){
+                    lastPage = true;
+                    displayDateTrigger = true;
+                }
+
+                itemDate = new Date(value.createTime).toLocaleDateString();
+                var messageTime = new Date(value.createTime).toLocaleTimeString([], {'hour': '2-digit', 'minute' : '2-digit'})
+
+                if(previousDate == null)
+                    previousDate = itemDate
+
+                if(previousDate != itemDate){
+                    displayDateTrigger = true;
+                    displayDate(previousDate);
+                    previousDate = itemDate
+                }
+
+                if($('.user__name').text() == value.userVo.username)
+                // 로그인한 사용자가 보낸 채팅
+                    $(".chat__list").prepend(
+                        "<div class='user__send'>" + 
+                        "<span class='chat__message'>" + value.message + "</span>" + 
+                        "<span class='chat__time'>" + messageTime + "</span>" +
+                        "</div>"
+                    );
+                else
+                // 상대 사용자가 보낸 채팅
+                    $(".chat__list").prepend(
+                        "<div class='target__send'>" + 
+                            "<span class='nickname'>" + value.userVo.username + "</span>" +
+                            "<span class='chat__message'>" + value.message + "</span>" +
+                            "<span class='chat__time'>" + messageTime + "</span>" +
+                        "</div>"
+                );      
+
+            })
+
+            if(lastPage)
+                displayDate(itemDate);
+
+            let atferScrollTop = $('.chat__log')[0].scrollHeight;
+
+            $('.chat__log')[0].scrollTop = atferScrollTop - currentScrollTop;
+
+            globalThis.page++;
+            globalThis.flag = false;
+        }
+    })
+    
+}
+
+function displayDate(time){
+    if(displayDateTrigger){
+        $(".chat__list").prepend(
+            "<span class='date__box'>" +
+            (new Date(time).getMonth() + 1) + '월 ' +
+            new Date(time).getDate() + '일' +
+            "</span>"
+        )
+        displayDateTrigger = false;
+    }
+}
 
 $(function () {
     $('.chat__content__send').keyup(function(event) {
@@ -12,9 +117,21 @@ $(function () {
     $( "#notification" ).click(function() { sendNotification(); });
 });
 
+function connect() {
+    var socket = new SockJS('/ws');
+    stompClient = Stomp.over(socket);
+    stompClient.debug = null;
+    stompClient.connect({}, function (){
+        stompClient.subscribe('/chat/' + globalThis.roomId, function (message) {
+            var value = JSON.parse(message.body);
+            showMessage(value);
+        });
+    });
+}
+
 function showMessage(message) {
 
-    if($('.room__targetId').text() != message.user)
+    if($('.user__name').text() == message.sender)
         // 로그인한 사용자가 보낸 채팅
         $(".chat__list").append(
             "<div class='user__send'>" + 
@@ -26,7 +143,7 @@ function showMessage(message) {
         // 상대 사용자가 보낸 채팅
         $(".chat__list").append(
             "<div class='target__send'>" + 
-                "<span class='nickname'>" + message.user + "</span>" +
+                "<span class='nickname'>" + message.sender + "</span>" +
                 "<span class='chat__message'>" + message.message + "</span>" +
                 "<span class='chat__time'>" + message.date + "</span>" +
             "</div>"
@@ -36,28 +153,12 @@ function showMessage(message) {
 
 }
 
-function connect(roomId) {
-
-    globalThis.roomId = roomId
-
-    var socket = new SockJS('/ws');
-    stompClient = Stomp.over(socket);
-    stompClient.debug = null;
-    stompClient.connect({}, function (){
-        stompClient.subscribe('/chat/' + roomId, function (message) {
-            var value = JSON.parse(message.body);
-            showMessage(value);
-        });
-    });
-}
-
 function sendMessage() {
-
     data = {
-            'roomId' : roomId, 
-            'sender' : '', 
+            'roomId' : globalThis.roomId, 
+            'sender' : $('.user__name').text(), 
             'target' : '', 
-            'message' : $("#message").val(),
+            'message' : $('#message').val(),
             'date' : new Date().toLocaleString([], {'hour': '2-digit', 'minute': '2-digit'}) 
             };
 
@@ -66,3 +167,53 @@ function sendMessage() {
     document.getElementById('message').value = '';
     $('.chat__log')[0].scrollTop = $('.chat__log')[0].scrollHeight;
 }
+
+    // 채팅방 목록
+    $(document).ready(function(){
+
+        $.ajax({
+
+            url: '/api/chat/rooms',
+            type: 'GET',
+            dataType: 'json',
+            success: function(response){
+                
+                $.each(response, function(key, value){
+                    
+                    var currentChatMessage = value.roomEntity.chats;
+                    var content;
+                    var currentChatMessageTime = new Date().toLocaleTimeString();
+
+                    if(currentChatMessage.length > 0){
+                        content = currentChatMessage[currentChatMessage.length-1].message;
+                        currentChatMessageTime = new Date(currentChatMessage[currentChatMessage.length - 1].createTime).toLocaleTimeString([], {'hour': '2-digit', 'minute' : '2-digit'});
+                    }
+                    else
+                        content = '채팅방이 개설되었습니다.'
+
+                        $('.roomsContainer').append(
+                            "<div class='room__box' style='width: 350px;'>" + 
+                            "<div id='" + value.roomEntity.id + "'onclick='javascript:loadChatList(this);' style='width: 100%;'>" + 
+                            "<div style='display: flex; flex-direction: row;'>" +
+                            "<div><img src='/images/default_profile_img.png' style='width: 60px; height: 60px;'></div>" + 
+                            "<div style='margin-left: 10px; width: 100%; margin-top: 5px;'>" + 
+                            "<div class='room__title'>" + 
+                            "<a href='#'>" + value.target.username + "</a>" + 
+                            "<span class='chat__time__text'>" + currentChatMessageTime + "</span>" + 
+                            "</div>" +
+                            "<div class='room_chatting'>" + 
+                            content + 
+                            "</div>" + 
+                            "</div>" + 
+                            "</div>" + 
+                            "</div>" + 
+                            "</div>"
+                        );
+
+                })
+
+            }
+
+        })
+
+    })
