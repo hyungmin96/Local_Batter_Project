@@ -5,8 +5,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
-import com.imageupload.example.components.boardServiceMethod.createTime;
 import com.imageupload.example.entity.UserEntity;
+import com.imageupload.example.components.createTime;
 import com.imageupload.example.entity.BoardEntity;
 import com.imageupload.example.models.PageableVo;
 import com.imageupload.example.services.BoardService;

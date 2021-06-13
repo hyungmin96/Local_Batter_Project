@@ -15,6 +15,10 @@ public class UserService implements UserDetailsService{
     @Autowired
     private UserRepository userRepository;
 
+    public UserEntity findUserOne(String username){
+        return userRepository.findByUsername(username).get();
+    }
+
     public String userSave(UserEntity vo){
         vo.setPassword(new BCryptPasswordEncoder().encode(vo.getPassword()));
         userRepository.save(vo);

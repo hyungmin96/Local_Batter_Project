@@ -43,7 +43,6 @@
 }
 
 .user_name_info{
-    color: rgb(17, 17, 17);
     margin: 7px 5px;
     font-size: 12px;
     font-family: NanumBarunGothic;
@@ -188,7 +187,7 @@
     margin: 0px 5px;
 }
 
-@media all and (max-width: 1185px) {
+@media all and (max-width: 1390px) {
     .btn-header-btns .btn__text{
         display: none;
     }

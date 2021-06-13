@@ -184,9 +184,13 @@ a:link {
     margin-left: 15px;
 }
 
+.today-item-box:hover{
+    box-shadow: 3px 3px 10px 3px rgba(0, 0, 0, 0.12);
+}
+
 .today-item-box {
     margin: 10px 7px;
-    border: 1px solid #e2e2e2;
+    /* border: 1px solid #e2e2e2; */
     cursor: pointer;
 }
 
@@ -224,7 +228,7 @@ a:link {
 }
 
 .fast__sale_products hr {
-    border: 1px solid #474747;
+    border: 1px solid #000000;
     width: 100%;
     margin: 0;
 }

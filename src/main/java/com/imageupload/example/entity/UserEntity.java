@@ -12,8 +12,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.imageupload.example.models.Role;
 
@@ -62,6 +60,13 @@ public class UserEntity implements UserDetails{
     private int mileage;
 
     private String profileImg;
+
+    private String introduce;
+
+    private String location;
+
+    @Column()
+    private String preferTime = "상관없음";
 
 	@Override
 	public boolean isAccountNonExpired() {

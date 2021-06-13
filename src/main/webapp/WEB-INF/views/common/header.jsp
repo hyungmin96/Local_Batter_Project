@@ -71,7 +71,7 @@
                     </c:when>
                     <c:otherwise>
                         <div class="on-login">
-                            <div class="user_name_info" style="color: rgb(255, 255, 255);">
+                            <div class="user_name_info" style="color: rgb(133, 191, 238);">
                                 [<span class="user__name">${principal.username}</span>]님
                             </div>
                             <a href="/user/logout" style="color: rgb(255, 255, 255);">로그아웃</a>

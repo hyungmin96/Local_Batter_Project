@@ -4,8 +4,9 @@ package com.imageupload.example.services;
 import java.io.File;
 import java.text.ParseException;
 import javax.transaction.Transactional;
-import com.imageupload.example.components.boardServiceMethod.createTime;
-import com.imageupload.example.components.boardServiceMethod.generateFile;
+
+import com.imageupload.example.components.createTime;
+import com.imageupload.example.components.generateFile;
 import com.imageupload.example.entity.BoardEntity;
 import com.imageupload.example.models.PageableVo;
 import com.imageupload.example.repositories.BoardRepository;
