@@ -1,6 +1,6 @@
 @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
-.notosanskr * { 
- font-family: 'Noto Sans KR', sans-serif;
+    .notosanskr * { 
+    font-family: 'Noto Sans KR', sans-serif;
 }
 
 @font-face {
@@ -14,3 +14,4 @@
     font-family: ChosunBg;
     font-weight: 100;
 }
+

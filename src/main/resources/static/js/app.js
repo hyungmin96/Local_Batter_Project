@@ -1,15 +1,12 @@
 var stompClient = null;
-
-$(document).ready(function(){
-    connect();
-})
+var roomId;
 
 window.onbeforeunload = function () {
     stompClient.disconnect();
 };
 
 $(function () {
-    $( ".chat__content__send" ).keyup(function(event) {
+    $('.chat__content__send').keyup(function(event) {
             if (event.keyCode === 13) sendMessage();
         });
     $( "#notification" ).click(function() { sendNotification(); });
@@ -39,12 +36,15 @@ function showMessage(message) {
 
 }
 
-function connect() {
+function connect(roomId) {
+
+    globalThis.roomId = roomId
+
     var socket = new SockJS('/ws');
     stompClient = Stomp.over(socket);
     stompClient.debug = null;
     stompClient.connect({}, function (){
-        stompClient.subscribe('/chat/' + document.getElementsByClassName('data__roomId')[0].dataset.chatroom, function (message) {
+        stompClient.subscribe('/chat/' + roomId, function (message) {
             var value = JSON.parse(message.body);
             showMessage(value);
         });
@@ -52,8 +52,9 @@ function connect() {
 }
 
 function sendMessage() {
+
     data = {
-            'roomId' : document.getElementsByClassName('data__roomId')[0].dataset.chatroom, 
+            'roomId' : roomId, 
             'sender' : '', 
             'target' : '', 
             'message' : $("#message").val(),

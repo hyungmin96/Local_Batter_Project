@@ -13,7 +13,6 @@ import com.imageupload.example.repositories.BoardRepository;
 import com.imageupload.example.repositories.ChatRepository;
 import com.imageupload.example.repositories.ChatRoomRepository;
 import com.imageupload.example.repositories.RoomRepository;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +26,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @TestPropertySource("classpath:application.yml")
 public class RepositoryTestClass{
     
-    @Autowired
-    private BoardRepository boardRepository;
-
     @Autowired
     private UserRepository userRepository;
 
@@ -64,16 +60,18 @@ public class RepositoryTestClass{
     @Test
     public void 채팅내용_저장_테스트(){
 
-        Optional<UserEntity> user = userRepository.findById(1L);
+        for(int i = 0; i < 100; i ++){
+        Optional<UserEntity> user = userRepository.findById(21L);
 
-        Optional<RoomEntity> room = roomRepository.findById(3L);
+        Optional<RoomEntity> room = roomRepository.findById(22L);
 
         ChatEntity chat = new ChatEntity();
         chat.setMessage("message");
         chat.setUserVo(user.get());
         chat.setRoomEntity(room.get());
 
-        chatRepository.save(chat);
+            chatRepository.save(chat);
+        }
 
     }
 

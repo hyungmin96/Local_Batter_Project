@@ -76,7 +76,7 @@
                                 [<span class="user__name">${principal.username}</span>]님
                             </div>
                             <a href="/user/logout" style="color: rgb(255, 255, 255);">로그아웃</a>
-                            <a href="/user/mypage" style="color: rgb(255, 255, 255);">마이페이지</a>
+                            <a href="/profile/user=${principal.username}" style="color: rgb(255, 255, 255);">마이페이지</a>
                         </div>
                     </c:otherwise>
                 </c:choose>

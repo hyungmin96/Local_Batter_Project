@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class UserSiteController {
@@ -16,20 +17,14 @@ public class UserSiteController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/user/mypage")
-    public String getProfile(Model model, Principal user){
-
-        UserEntity userEntity = userService.findUserOne(user.getName());
-
+    @GetMapping("/profile/user={nickname}")
+    public String getProfile(Model model, @PathVariable String nickname){
+        UserEntity userEntity = userService.findUserOne(nickname);
         if(userEntity != null){
-
             model.addAttribute("profile", userEntity);
-
             return "/user/profile";
         }
-
         return "/error/errorpage";
-
     }
 
     @GetMapping("/user/login")

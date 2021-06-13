@@ -49,6 +49,25 @@ public class ChatService {
         UserEntity user = userRepository.findByUsername(userVo.getName()).get();
 
         List<UserJoinRoomEntity> roomList = chatRoomRepository.findAllByuserVoOrTarget(user, user);
+
+        roomList.forEach(action -> {
+            if(action.getTarget().getUsername().equals(userVo.getName())){
+                action.setTarget(action.getUserVo());
+            }
+        });
+
+        roomList.sort((o1, o2) -> {
+            int chatSizeofO1 = o1.getRoomEntity().getChats().size() -1;
+            int chatSizeofO2 = o2.getRoomEntity().getChats().size() -1;
+            if(chatSizeofO1 > -1 && chatSizeofO2 > -1){
+                ChatEntity chatEntityofO1 = o1.getRoomEntity().getChats().get(chatSizeofO1);
+                ChatEntity chatEntityofO2 = o2.getRoomEntity().getChats().get(chatSizeofO2);
+
+                return chatEntityofO2.getCreateTime().compareTo(chatEntityofO1.getCreateTime());
+
+            }else return 0;
+        });
+
         return roomList;
             
     }

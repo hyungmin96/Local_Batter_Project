@@ -1,7 +1,7 @@
 .room__box{
     box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.12);
     padding: 10px;
-    cursor: pointer;
+    /* cursor: pointer; */
     margin: 15px ;
 }
 
@@ -13,7 +13,20 @@
 
 .room_chatting{
     font-family: Noto Sans KR;
-    font-size: 13px;
-    color: rgb(187, 187, 187);
+    font-size: 14px;
+    margin-top: 5px;
+    color: rgb(114, 114, 114);
     
+}
+
+.chat__time__text{
+    color: #ccc;
+    font-size: 10px;
+    float: right;
+}
+
+.chatting__box{
+    margin-left: 10px;;
+    padding: 15px;
+    background-color: rgb(245, 245, 245);
 }
