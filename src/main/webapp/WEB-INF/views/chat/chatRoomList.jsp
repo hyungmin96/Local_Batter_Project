@@ -38,28 +38,28 @@
                 
                 $.each(response, function(key, value){
 
+                    var currentChatMessage = value.roomEntity.chats;
+                    var content;
 
-                    console.log(value)
-                var currentChatMessage = value.roomEntity.chats;
-                var content;
+                    if(currentChatMessage.length > 0)
+                        content = currentChatMessage[currentChatMessage.length-1].message;
+                    else
+                        content = '채팅방이 개설되었습니다.'
 
-                if(currentChatMessage.length > 0)
-                    content = currentChatMessage[currentChatMessage.length-1].message;
-                else
-                    content = '채팅방이 개설되었습니다.'
+                    var currentChatMessageTime = new Date(currentChatMessage[currentChatMessage.length - 1].createTime).toLocaleTimeString([], {'month': '2-digit', 'day': '2-digit', 'hour': '2-digit', 'minute' : '2-digit'});
 
-                    $('.roomsContainer').append(
-                        "<div class='room__box'" + 
-                        "onclick='popupWindow(" + value.target.username + "," + value.roomEntity.id + ")'>" +
-                        "<div class='room__title'>" + 
-                        value.target.username + "님과의 채팅" + 
-                        "</div>" +
-                        "<hr style='margin: 10px;'/>" + 
-                        "<div class='room_chatting'>" + 
-                        content + 
-                        "</div>" + 
-                        "</div>"
-                    );
+                        $('.roomsContainer').append(
+                            "<div class='room__box'" + 
+                            "onclick='popupWindow(" + value.target.username + "," + value.roomEntity.id + ")'>" +
+                            "<div class='room__title'>" + 
+                            value.target.username + "님과의 채팅" + 
+                            "</div>" +
+                            "<hr style='margin: 10px;'/>" + 
+                            "<div class='room_chatting'>" + 
+                            currentChatMessageTime + ' : ' + content + 
+                            "</div>" + 
+                            "</div>"
+                        );
 
                 })
 
@@ -69,9 +69,6 @@
 
     })
 
-    function addUsers(p1, p2){
-        alert(p1, p2);
-    }
 
     // 채팅방 개설
     $('.createBtn').on("click", function(){

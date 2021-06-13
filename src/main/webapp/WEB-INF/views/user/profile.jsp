@@ -195,7 +195,11 @@
 
             contentType: 'application/x-www-form-urlencoded',
             success: function(response){
-                alert(response);
+                if(response != null){
+                    alert('성공적으로 수정하였습니다.');
+                }else{
+                    alert('비밀번호가 잘못되었습니다.');
+                }
             }
 
         })

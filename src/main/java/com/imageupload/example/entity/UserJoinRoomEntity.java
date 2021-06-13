@@ -1,12 +1,16 @@
 package com.imageupload.example.entity;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-
+import org.springframework.data.annotation.LastModifiedDate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,16 +32,11 @@ public class UserJoinRoomEntity{
     @JoinColumn(name = "userId")
     private UserEntity userVo;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "createRoomId")
     private RoomEntity roomEntity;
 
-
-    public String toString(){
-        return this.id + " | " + 
-                this.roomEntity.getId() + " | " + 
-                this.target.getId() + " | " + 
-                this.userVo.getId() + " | ";
-    }
+    @LastModifiedDate
+    private LocalDateTime newMessageTime;
 
 }

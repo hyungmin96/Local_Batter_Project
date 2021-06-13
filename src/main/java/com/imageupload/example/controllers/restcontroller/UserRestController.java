@@ -1,16 +1,14 @@
 package com.imageupload.example.controllers.restcontroller;
 
 import com.imageupload.example.services.UserService;
-
 import java.security.Principal;
-
 import com.imageupload.example.entity.UserEntity;
 import com.imageupload.example.models.Role;
 import com.imageupload.example.models.UserProfileInfo;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,7 +22,7 @@ public class UserRestController {
     private UserService userService;
 
     @PostMapping("/api/profile/save")
-    public UserEntity saveProfile(Principal user, UserProfileInfo profile){
+    public ResponseEntity<String> saveProfile(Principal user, UserProfileInfo profile){
         
         UserEntity userEntity = userService.findUserOne(user.getName());
 
@@ -36,11 +34,11 @@ public class UserRestController {
             userEntity.setPreferTime(profile.getPreferTime());
             userEntity.setProfileImg(profile.getProfileImg());
             
-            userService.userSave(userEntity);
+            userService.userUpdate(userEntity);
             
         }
 
-        return userEntity;
+        return new ResponseEntity<String>(userEntity.getNickname(), HttpStatus.OK);
     }
 
     @PostMapping("/api/login")

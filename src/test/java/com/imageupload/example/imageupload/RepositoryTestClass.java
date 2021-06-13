@@ -8,7 +8,6 @@ import com.imageupload.example.entity.ChatEntity;
 import com.imageupload.example.entity.RoomEntity;
 import com.imageupload.example.entity.UserJoinRoomEntity;
 import com.imageupload.example.entity.UserEntity;
-import com.imageupload.example.entity.BoardEntity;
 import com.imageupload.example.models.Role;
 import com.imageupload.example.repositories.BoardRepository;
 import com.imageupload.example.repositories.ChatRepository;
@@ -46,6 +45,8 @@ public class RepositoryTestClass{
     @Test
     public void 채팅방_개설_테스트(){
 
+        chatRoomRepository.deleteAll();
+
         Optional<UserEntity> user = userRepository.findById(2L);
         Optional<UserEntity> target = userRepository.findById(1L);
 
@@ -79,7 +80,7 @@ public class RepositoryTestClass{
     @Test
     public void 회원가입_테스트(){
 
-        userRepository.deleteAll();
+        // userRepository.deleteAll();
 
         for(int i = 1; i < 10; i ++){
             

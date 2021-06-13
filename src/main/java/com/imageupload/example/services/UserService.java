@@ -3,11 +3,13 @@ package com.imageupload.example.services;
 import com.imageupload.example.entity.UserEntity;
 import com.imageupload.example.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserService implements UserDetailsService{
@@ -15,8 +17,14 @@ public class UserService implements UserDetailsService{
     @Autowired
     private UserRepository userRepository;
 
+    @Transactional(readOnly = true)
+    @Cacheable(key = "#findOneUser", value="userfindone")
     public UserEntity findUserOne(String username){
         return userRepository.findByUsername(username).get();
+    }
+
+    public void userUpdate(UserEntity vo){
+        userRepository.save(vo);
     }
 
     public String userSave(UserEntity vo){
@@ -35,6 +43,7 @@ public class UserService implements UserDetailsService{
         return userVo;
     }
 
+    @Cacheable(key = "#checkusername", value="checkuser")
     public boolean checkUserName(String Email){
         UserEntity userVo = userRepository.findByUsername(Email).orElse(null);
         if(userVo == null)

@@ -31,8 +31,6 @@ public class ChatController {
         return "/chat/chatroom";
     }
 
-
-    
     @MessageMapping("/send/chat")    
     public void sendMessage(Principal principal, MessageDTO message){
         chatService.sendMessage(principal, message);

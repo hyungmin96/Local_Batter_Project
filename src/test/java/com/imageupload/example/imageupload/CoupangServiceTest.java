@@ -12,6 +12,8 @@ import com.imageupload.example.entity.FileEntity;
 import com.imageupload.example.entity.BoardEntity;
 import com.imageupload.example.repositories.BoardRepository;
 import com.imageupload.example.repositories.FileRepository;
+import com.imageupload.example.services.BoardService;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
@@ -42,6 +44,7 @@ public class CoupangServiceTest {
 
         int page = 1;
         int boardNums = 30;
+        String category = "긴급";
 
         for (int i = 1; i <= page; i++) {
 
@@ -59,8 +62,8 @@ public class CoupangServiceTest {
                     String price = item.split("-value\">")[1].split("<")[0];
                     String src = "https://thumbnai" + item.split("src=\"//thumbnai")[1].split("\"")[0];
 
-                    BoardEntity vo = BoardEntity.builder().category("긴급").descryption(title).location("대전").price(price)
-                            .title(title).writer("rnsdva").build();
+                    BoardEntity vo = BoardEntity.builder().category(category).descryption(title).location("대전").price(price)
+                            .title(title).writer("2").build();
 
                     boardRep.save(vo);
 
