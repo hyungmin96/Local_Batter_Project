@@ -173,4 +173,5 @@ $('.chat__product_btn').on("click", function(){
 
 </script>
 
-</div></div><%@ include file="../common/footer.jsp" %>
+</div></div>
+<%@ include file="../common/footer.jsp" %>

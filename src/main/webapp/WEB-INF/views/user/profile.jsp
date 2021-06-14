@@ -2,7 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ include file="../common/header.jsp" %>
 
-
 <div class="profile__container" style="margin-top: 115px;">
 
     <div class="container">
@@ -12,9 +11,10 @@
             <div class="profile__box" style="width: 340px; height: 100%">
 
                 <div class="setting__profile__btn"><img src="/images/settings_20px.png" style="cursor: pointer; float: right;"></div>
-
+                
+                                
                 <div style="width: 300px; height: 150px; display: flex;">
-                    <img src="/images/default_profile_img.png" style="margin: auto auto;">
+                    <img src="/upload/${profile.profileImg}" onerror="this.src='/images/default_profile_img.png'" style="margin: auto auto; width: 100px; height: 100px;">
                 </div>
                 
                 <div style="display: flex; height: 40px;">
@@ -65,37 +65,39 @@
     <!-- The Modal -->
         <div id="myModal" class="modal">
     
-            <div class="modal-content" style="width: 500px; height: 600px; margin: 200px 770px; padding: 15px; border: none; box-shadow: 1px 1px 10px 0px rgba(0, 0, 0, 0.12)">
+            <div class="modal-content" style="width: 500px; height: 600px; margin: 150px 820px; padding: 15px; border: none; box-shadow: 1px 1px 10px 0px rgba(0, 0, 0, 0.12)">
                 <div><img src="/images/delete_35px.png" onClick="close_pop();" style="float: right; cursor: pointer;"></div>
 
                 <div style="margin-bottom: 5px;">
-                    현재 비밀번호
+                    프로필 설정
                 </div>
-                <input type="password" class="form-control" id="password" value=""
-                        onkeyup="convertM(this);" placeholder="비밀번호를 입력해주세요." required style="margin-bottom: 15px;">
+
+                <div id="img__upload__btn">
+                    <img id="profile__img" src="/upload/${profile.profileImg}" onerror="this.src='/images/default_profile_img.png'" style="cursor: pointer; width: 100px; height: 100px;">
+                </div>
+                
+                <input id="profile__img__upload" type="file" accept="image/jpg, image/jpeg, image/png"
+                class="custom__profile__upload" name="upload_file" style="display: none;">
 
                 <div style="margin-bottom: 5px;">
                     닉네임
                 </div>
-                <input type="text" class="form-control" id="username" value=""
-                        onkeyup="convertM(this);"  style="margin-bottom: 15px;">
+                <input type="text" class="form-control" id="username" value="${profile.username}" style="margin-bottom: 15px;">
 
                 <div style="margin-bottom: 5px; ">
                     자기소개
                 </div>
-                <textarea id="introduce" class="form-control" style="margin-bottom: 15px;"></textarea>
+                <textarea id="introduce" class="form-control" style="margin-bottom: 15px;">${profile.introduce}</textarea>
 
                 <div style="margin-bottom: 5px;">
                     거래 선호지역
                 </div>
-                <input type="text" class="form-control" id="location" value=""
-                        onkeyup="convertM(this);"  style="margin-bottom: 15px;">
+                <input type="text" class="form-control" id="location" value="${profile.location}" style="margin-bottom: 15px;">
 
                 <div style="margin-bottom: 5px;">
                     거래 시간
                 </div>
-                <input type="text" class="form-control" id="prefertime" value=""
-                        onkeyup="convertM(this);"  style="margin-bottom: 15px;">
+                <input type="text" class="form-control" id="prefertime" value="${profile.preferTime}" style="margin-bottom: 15px;">
 
                 <div class="form-group row float-right" style="position:absolute; right:30px; bottom:0px;">
                     <button type="button" id="profile__save__btn" class="btn btn-secondary">저장</button>
@@ -105,6 +107,74 @@
         </div>
     <!--End Modal-->
 
+<script>
+
+    var profileFile;
+
+    $(function(){
+        $('#profile__img__upload').on("change", function(e){
+            // 프로필 사진 미리보기
+            var reader = new FileReader();
+            reader.onload = function(f){
+                profile__img.src = f.target.result;
+                profileFile = e.target.files[0];
+            }
+            reader.readAsDataURL(e.target.files[0]);
+        })
+    })
+
+    $('#img__upload__btn').on("click", function() {
+        $('#profile__img__upload').click();
+    });
+
+    $('.setting__profile__btn').on("click", function() {
+        $('#myModal').show();
+    });
+
+    $('#profile__save__btn').on("click", function(){
+        profileSave();
+    })
+
+    function close_pop(flag) {
+        $('#myModal').hide();
+    };
+
+    function profileSave(){
+        
+        const profileData = new FormData();
+
+        profileData.append('nickname', $('#username').val());
+        profileData.append('introduce', $('#introduce').val());
+        profileData.append('profileImg', profileFile);
+        profileData.append('location', $('#location').val());
+        profileData.append('preferTime', $('#prefertime').val());
+
+        for (var key of profileData.entries()) {
+            console.log(key[0] + ', ' + key[1]);
+        }
+
+        $.ajax({
+
+            url: '/api/profile/save',
+            type: 'POST',
+            data: profileData,
+            dataType: 'text',
+            contentType: false,
+            processData: false,
+            success: function(response){
+                if(response != null){
+                    alert('성공적으로 수정하였습니다.');
+                    location.reload();
+                }else{
+                    alert('비밀번호가 잘못되었습니다.');
+                }
+            }
+
+        })
+
+    }
+
+</script>
 
 <style>
 @font-face {
@@ -161,49 +231,3 @@
 
 </style>
 
-<script>
-
-    $('.setting__profile__btn').on("click", function() {
-            $('#myModal').show();
-    });
-
-    $('#profile__save__btn').on("click", function(){
-        profileSave();
-    })
-
-    function close_pop(flag) {
-            $('#myModal').hide();
-    };
-
-    function profileSave(){
-
-        let passwordValue = $('#password').val();
-        let nicknameValue = $('#username').val();
-        let introduceValue = $('#introduce').val();
-        let locationValue = $('#location').val();
-        let prefertimeValue = $('#prefertime').val();
-
-        $.ajax({
-
-            url: '/api/profile/save',
-            type: 'POST',
-            data: 'password=' + passwordValue + 
-                    '&nickname=' + nicknameValue + 
-                    '&introduce=' + introduceValue + 
-                    '&location=' + locationValue +
-                    '&prefertime=' + prefertimeValue,
-
-            contentType: 'application/x-www-form-urlencoded',
-            success: function(response){
-                if(response != null){
-                    alert('성공적으로 수정하였습니다.');
-                }else{
-                    alert('비밀번호가 잘못되었습니다.');
-                }
-            }
-
-        })
-
-    }
-
-</script>

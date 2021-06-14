@@ -1,6 +1,10 @@
 package com.imageupload.example.services;
 
+import java.io.IOException;
+import java.security.Principal;
+import com.imageupload.example.components.GeneratePorifleImage;
 import com.imageupload.example.entity.UserEntity;
+import com.imageupload.example.models.UserProfileInfo;
 import com.imageupload.example.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,7 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class UserService implements UserDetailsService{
@@ -16,13 +20,25 @@ public class UserService implements UserDetailsService{
     @Autowired
     private UserRepository userRepository;
 
-    @Transactional(readOnly = true)
-    public UserEntity findUserOne(String username){
-        return userRepository.findByUsername(username).get();
-    }
+    public UserEntity userUpdate(Principal user, MultipartFile file, UserProfileInfo profile) throws IOException{
 
-    public void userUpdate(UserEntity vo){
-        userRepository.save(vo);
+        UserEntity userEntity = userRepository.findByUsername(user.getName()).get();
+
+        String saveFilePath = new GeneratePorifleImage(file).generateFile();
+
+        if(userEntity != null){
+
+            userEntity.setNickname(profile.getNickname());
+            userEntity.setIntroduce(profile.getIntroduce());
+            userEntity.setLocation(profile.getLocation());
+            userEntity.setPreferTime(profile.getPreferTime());
+            userEntity.setProfileImg(saveFilePath);
+            
+            userRepository.save(userEntity);
+            
+        }
+
+        return userEntity;
     }
 
     public String userSave(UserEntity vo){
@@ -34,10 +50,8 @@ public class UserService implements UserDetailsService{
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
         UserDetails userVo = userRepository.findByUsername(username).orElse(null);
-
         if(userVo == null)
             userVo = new UserEntity();
-
         return userVo;
     }
 
@@ -47,6 +61,10 @@ public class UserService implements UserDetailsService{
             return true;
         else
             return false;
+    }
+
+    public UserEntity findUserOne(String nickname){
+        return userRepository.findByUsername(nickname).get();
     }
 
 }

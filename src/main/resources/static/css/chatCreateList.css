@@ -1,16 +1,164 @@
+@font-face {
+    font-family: 'ChosunBg';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@1.0/ChosunBg.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SEBANG_Gothic_Regular';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2104@1.0/SEBANG_Gothic_Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body{
+    margin: 0;
+}
+
+.target__text{
+    margin: 15px auto;
+}
+
+.data__tatgetId{
+    font-family: Noto Sans KR;
+    font-size: 18px;
+    font-weight: bold;
+    height: 100%;
+}
+.chat_wrapper{
+    display: flex; 
+    flex-direction: column;
+}
+
+::-webkit-scrollbar{
+    width: 3px;
+    background-color: #ffffff;
+}
+
+::-webkit-scrollbar-thumb{
+    border-radius: 3px;
+    background-color: rgb(124, 124, 124);
+}
+
+.chat__log{
+    background-color: rgb(244, 244, 250);
+    width: 100%;
+    height: 590px;
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+}
+
+ul{
+    list-style: none;
+    padding: 10px;
+}
+
+.nickname{
+    font-family: ChosunBg;
+    font-size: 15px;
+    margin-top: 5px;
+}
+
+.chat__message{
+    font-family: SEBANG_Gothic_Regular;
+    font-size: 13px;
+    letter-spacing: 1px;
+    margin: 5px;
+}
+
+.user__send{
+    display: flex;
+    flex-direction: column;
+}
+
+.user__send .chat__message{
+    padding: 7px;
+    background-color: rgb(148, 194, 235);
+    display: flex;
+    flex-direction: column;
+    max-width: 320px;
+    word-break: break-all;
+    border-radius: 5px;
+    margin-left: auto;
+}
+
+.target__send{
+    display: flex;
+    flex-direction: column;
+
+}
+
+.target__send .chat__message{
+    padding: 7px;
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    flex-direction: column;
+    max-width: 320px;
+    margin-right: auto;
+    word-break: break-all;
+    border-radius: 5px;
+}
+
+.message__container{
+    margin: 10px 5px;
+    width: 100%;
+}
+
+.chat__list{
+    display: flex;
+    flex-direction: column;
+}
+
+.chat__content__send{
+    border: 1px solid rgb(245, 245, 245);
+    background-color: rgb(244, 244, 250);
+    border-radius: 3px;
+    padding: 10px;
+    width: 100%;
+    height: 30px;
+}
+
+.chat__time{
+    font-size: 12px;
+    color: #8a8a8a;
+    position: relative;
+}
+
+.user__send .chat__time{
+    position: relative;
+    margin-left: auto;
+}
+
+.target__send .chat__time{
+    margin-left: 10px;
+    font-family: Noto Sans KR;
+}
+
+.date__box{
+    margin: auto auto;
+    color: rgb(189, 189, 189);
+    font-size: 15px;
+    padding: 3px;
+    width: 170px;
+    text-align: center;
+    border-radius: 5px;
+    font-family: Noto Sans KR;
+}
 
 .roomsContainer{
-    width: 570px;
+    width: 540px;
     height: 670px;
     overflow-y: scroll;
     -ms-overflow-style: none;
 }
 
 .room__box{
-    box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.12);
-    padding: 10px;
     cursor: pointer;
-    margin: 15px ;
+}
+
+.room__box :hover{
+    background-color: rgb(245, 245, 245);
 }
 
 .room__title{
@@ -24,13 +172,20 @@
     font-size: 14px;
     margin-top: 5px;
     color: rgb(114, 114, 114);
-    
+}
+
+.chatroom__list{
+    font-family: ChosunBg;
+    font-size: 16px;
+    margin-top: 5px;
+    color: rgb(10, 10, 10);
 }
 
 .chat__time__text{
     color: #ccc;
     font-size: 10px;
     float: right;
+    margin-right: 10px;;
 }
 
 .chatting__box{

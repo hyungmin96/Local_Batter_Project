@@ -11,13 +11,19 @@ var itemDate
 function loadChatList(e){
     if(globalThis.roomId == null || globalThis.roomId != e.id){
         $(".chat__list").empty();
+        clearBackColor();
         globalThis.roomId = e.id;
         globalThis.page = 0;
         globalThis.flag = true;
         connect(globalThis.roomId);
         loadChatData(globalThis.roomId);
-        $('.room__targetId')[0].innerHTML = e.outerText.split('\n')[0];
+        document.getElementById(globalThis.roomId).style.backgroundColor  = 'rgb(245, 245, 245)';
     }
+}
+
+function clearBackColor(){
+    if(globalThis.roomId != null)
+        document.getElementById(globalThis.roomId).style.backgroundColor  = 'white';
 }
 
 window.onbeforeunload = function () {
@@ -114,6 +120,11 @@ $(function () {
     $('.chat__content__send').keyup(function(event) {
             if (event.keyCode === 13) sendMessage();
         });
+
+    $('.sendMessage').click(function(event) {
+        sendMessage();
+    });
+
     $( "#notification" ).click(function() { sendNotification(); });
 });
 
@@ -154,18 +165,23 @@ function showMessage(message) {
 }
 
 function sendMessage() {
-    data = {
-            'roomId' : globalThis.roomId, 
-            'sender' : $('.user__name').text(), 
-            'target' : '', 
-            'message' : $('#message').val(),
-            'date' : new Date().toLocaleString([], {'hour': '2-digit', 'minute': '2-digit'}) 
-            };
+    if(globalThis.roomId != null){
 
-    stompClient.send('/app/send/chat', {}, JSON.stringify(data));
-    $("#message").empty();
-    document.getElementById('message').value = '';
-    $('.chat__log')[0].scrollTop = $('.chat__log')[0].scrollHeight;
+        data = {
+                'roomId' : globalThis.roomId, 
+                'sender' : $('.user__name').text(), 
+                'target' : '', 
+                'message' : $('#message').val(),
+                'date' : new Date().toLocaleString([], {'hour': '2-digit', 'minute': '2-digit'}) 
+                };
+
+        stompClient.send('/app/send/chat', {}, JSON.stringify(data));
+        $("#message").empty();
+        document.getElementById('message').value = '';
+        $('.chat__log')[0].scrollTop = $('.chat__log')[0].scrollHeight;
+    }else{
+        alert('대화할 사용자를 선택 후 다시 시도해주세요.');
+    }
 }
 
     // 채팅방 목록
@@ -192,13 +208,13 @@ function sendMessage() {
                         content = '채팅방이 개설되었습니다.'
 
                         $('.roomsContainer').append(
-                            "<div class='room__box' style='width: 350px;'>" + 
+                            "<div class='room__box' style='width: 100%;'>" + 
                             "<div id='" + value.roomEntity.id + "'onclick='javascript:loadChatList(this);' style='width: 100%;'>" + 
-                            "<div style='display: flex; flex-direction: row;'>" +
-                            "<div><img src='/images/default_profile_img.png' style='width: 60px; height: 60px;'></div>" + 
-                            "<div style='margin-left: 10px; width: 100%; margin-top: 5px;'>" + 
+                            "<div style='padding: 5px; display: flex; flex-direction: row;'>" +
+                            "<div style='margin:10px 10px;'><img src='/upload/" + value.target.profileImg +"' onerror=this.src='/images/default_profile_img.png' style='width: 50px; height: 50px;'></div>" + 
+                            "<div style='margin-left: 10px; width: 100%; margin-top: 10px;'>" + 
                             "<div class='room__title'>" + 
-                            "<a href='#'>" + value.target.username + "</a>" + 
+                            "<div style='color: blue;' onclick='NewTab(" + value.target.username + ");'>" + value.target.username + "</div>" + 
                             "<span class='chat__time__text'>" + currentChatMessageTime + "</span>" + 
                             "</div>" +
                             "<div class='room_chatting'>" + 
@@ -207,6 +223,7 @@ function sendMessage() {
                             "</div>" + 
                             "</div>" + 
                             "</div>" + 
+                            "<hr style='margin: 0; border: none; height: 1px; background-color: rgb(185, 185, 185);'/>" +
                             "</div>"
                         );
 
@@ -217,3 +234,7 @@ function sendMessage() {
         })
 
     })
+
+    function NewTab(target){
+        window.open('http://localhost:8000/profile/user=' + target, '_blank');
+    }

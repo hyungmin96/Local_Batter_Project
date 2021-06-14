@@ -1,7 +1,11 @@
 package com.imageupload.example.controllers.restcontroller;
 
 import com.imageupload.example.services.UserService;
+
+import java.io.IOException;
 import java.security.Principal;
+
+import com.imageupload.example.components.GeneratePorifleImage;
 import com.imageupload.example.entity.UserEntity;
 import com.imageupload.example.models.Role;
 import com.imageupload.example.models.UserProfileInfo;
@@ -14,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 public class UserRestController {
@@ -22,22 +27,8 @@ public class UserRestController {
     private UserService userService;
 
     @PostMapping("/api/profile/save")
-    public ResponseEntity<String> saveProfile(Principal user, UserProfileInfo profile){
-        
-        UserEntity userEntity = userService.findUserOne(user.getName());
-
-        if(userEntity != null){
-
-            userEntity.setNickname(profile.getNickname());
-            userEntity.setIntroduce(profile.getIntroduce());
-            userEntity.setLocation(profile.getLocation());
-            userEntity.setPreferTime(profile.getPreferTime());
-            userEntity.setProfileImg(profile.getProfileImg());
-            
-            userService.userUpdate(userEntity);
-            
-        }
-
+    public ResponseEntity<String> saveProfile(Principal user, @RequestParam("profileImg") MultipartFile file, UserProfileInfo profile) throws IOException{
+        UserEntity userEntity = userService.userUpdate(user, file, profile);
         return new ResponseEntity<String>(userEntity.getNickname(), HttpStatus.OK);
     }
 

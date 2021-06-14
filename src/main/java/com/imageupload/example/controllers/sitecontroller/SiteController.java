@@ -7,7 +7,6 @@ import java.util.stream.IntStream;
 import com.imageupload.example.components.createTime;
 import com.imageupload.example.entity.BoardEntity;
 import com.imageupload.example.services.BoardService;
-import com.imageupload.example.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

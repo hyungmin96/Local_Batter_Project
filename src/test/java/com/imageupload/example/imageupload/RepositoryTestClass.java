@@ -4,6 +4,8 @@ import com.imageupload.example.repositories.UserRepository;
 
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import com.imageupload.example.entity.ChatEntity;
 import com.imageupload.example.entity.RoomEntity;
 import com.imageupload.example.entity.UserJoinRoomEntity;
@@ -83,11 +85,10 @@ public class RepositoryTestClass{
     }
 
     @Test
+    @Transactional
     public void 회원가입_테스트(){
 
-        // userRepository.deleteAll();
-
-        for(int i = 10; i < 40; i ++){
+        for(int i = 0; i < 40; i ++){
             
             UserEntity user = UserEntity.builder()
             .username(i + "")
