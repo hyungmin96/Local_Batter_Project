@@ -63,6 +63,8 @@ public class UserEntity implements UserDetails{
 
     private String location;
 
+    private String accountNumber;
+
     @Column()
     private String preferTime = "상관없음";
 

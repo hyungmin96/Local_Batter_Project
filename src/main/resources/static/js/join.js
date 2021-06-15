@@ -14,6 +14,7 @@ function join() {
         password: $('#password-chk').val(),
         nickname: $('#nickname').val(),
         phoneNum: $('#phone').val(),
+        accountNumber: '미설정',
         mannerScore: 0,
         profileImg: '/images/default_profile_img.png',
         mileage: 0,

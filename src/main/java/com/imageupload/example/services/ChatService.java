@@ -14,7 +14,6 @@ import com.imageupload.example.repositories.ChatRepository;
 import com.imageupload.example.repositories.ChatRoomRepository;
 import com.imageupload.example.repositories.RoomRepository;
 import com.imageupload.example.repositories.UserRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -70,6 +69,27 @@ public class ChatService {
 
         return roomList;
             
+    }
+
+    // 프로필 전송
+    public void sendProfile(Principal user, MessageDTO message){
+
+        UserEntity userEntity = userRepository.findByUsername(user.getName()).get();
+
+        message.setMessage("거래 선호시간 : " + userEntity.getPreferTime() +
+                        "<br> 핸드폰 번호 : " + userEntity.getPhoneNum() +
+                        "<br> 거래 선호지역 : " + userEntity.getLocation());
+
+        simpMessageTemplate.convertAndSend("/chat/" + message.getRoomId(), message);
+    }
+
+    // 계좌번호 전송
+    public void sendNumber(Principal user, MessageDTO message){
+        UserEntity userEntity = userRepository.findByUsername(user.getName()).get();
+
+        message.setMessage("국민은행 : " + userEntity.getAccountNumber());
+
+        simpMessageTemplate.convertAndSend("/chat/" + message.getRoomId(), message);
     }
 
     public void sendMessage(Principal principal, MessageDTO message){

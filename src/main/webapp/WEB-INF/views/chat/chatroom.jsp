@@ -20,6 +20,7 @@
             </ul>
         </div>
 
+
     <div class="chat__send">
         <input type="text" id="message" placeholder="내용을 입력해주세요" class="chat__content__send" value="">
     </div>

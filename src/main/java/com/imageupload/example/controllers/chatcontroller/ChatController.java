@@ -36,4 +36,14 @@ public class ChatController {
         chatService.sendMessage(principal, message);
     }
 
+    @MessageMapping("/send/chat/profile")
+    public void sendProfile(Principal principal, MessageDTO message){
+        chatService.sendProfile(principal, message);
+    }
+
+    @MessageMapping("/send/chat/number")
+    public void sendNumber(Principal principal, MessageDTO message){
+        chatService.sendNumber(principal, message);
+    }
+
 }

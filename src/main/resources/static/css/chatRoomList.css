@@ -15,3 +15,14 @@
     font-weight: 100;
 }
 
+.send__info__message{
+    font-family: Noto Sans KR;
+    font-size: 12px;
+    margin-top: 5px;
+    color: rgb(114, 114, 114);
+    margin-bottom: 5px;
+}
+
+.send__info__message span{
+    cursor: pointer;
+}

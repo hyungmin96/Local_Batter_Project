@@ -117,12 +117,21 @@ function displayDate(time){
 }
 
 $(function () {
-    $('.chat__content__send').keyup(function(event) {
-            if (event.keyCode === 13) sendMessage();
-        });
 
-    $('.sendMessage').click(function(event) {
-        sendMessage();
+    $('.profile__send').click(function(){
+        sendMessage('profile');
+    })
+
+    $('.chat__content__send').keyup(function(event) {
+        if (event.keyCode === 13) sendMessage('message');
+    });
+
+    $('.sendMessage').click(function() {
+        sendMessage('message');
+    });
+
+    $('.number__send').click(function() {
+        sendMessage('account');
     });
 
     $( "#notification" ).click(function() { sendNotification(); });
@@ -141,7 +150,7 @@ function connect() {
 }
 
 function showMessage(message) {
-
+    console.log(message);
     if($('.user__name').text() == message.sender)
         // 로그인한 사용자가 보낸 채팅
         $(".chat__list").append(
@@ -159,23 +168,33 @@ function showMessage(message) {
                 "<span class='chat__time'>" + message.date + "</span>" +
             "</div>"
         );
-
         $('.chat__log')[0].scrollTop = $('.chat__log')[0].scrollHeight;
-
 }
 
-function sendMessage() {
+function sendMessage(type) {
     if(globalThis.roomId != null){
+        
+        var message;
+        var pubUrl;
+
+        if(type == 'message'){
+            message = $('#message').val()
+            pubUrl = '/app/send/chat';
+        }else if(type == 'profile'){
+            pubUrl = '/app/send/chat/profile';
+        }else if(type == 'account'){
+            pubUrl = '/app/send/chat/number';
+        }
 
         data = {
                 'roomId' : globalThis.roomId, 
                 'sender' : $('.user__name').text(), 
                 'target' : '', 
-                'message' : $('#message').val(),
+                'message' : message,
                 'date' : new Date().toLocaleString([], {'hour': '2-digit', 'minute': '2-digit'}) 
                 };
 
-        stompClient.send('/app/send/chat', {}, JSON.stringify(data));
+        stompClient.send(pubUrl, {}, JSON.stringify(data));
         $("#message").empty();
         document.getElementById('message').value = '';
         $('.chat__log')[0].scrollTop = $('.chat__log')[0].scrollHeight;
@@ -214,7 +233,7 @@ function sendMessage() {
                             "<div style='margin:10px 10px;'><img src='/upload/" + value.target.profileImg +"' onerror=this.src='/images/default_profile_img.png' style='width: 50px; height: 50px;'></div>" + 
                             "<div style='margin-left: 10px; width: 100%; margin-top: 10px;'>" + 
                             "<div class='room__title'>" + 
-                            "<div style='color: blue;' onclick='NewTab(" + value.target.username + ");'>" + value.target.username + "</div>" + 
+                            "<span style='color: blue;' onclick='NewTab(" + value.target.username + ");'>" + value.target.username + "</span>" + 
                             "<span class='chat__time__text'>" + currentChatMessageTime + "</span>" + 
                             "</div>" +
                             "<div class='room_chatting'>" + 

@@ -28,14 +28,19 @@
                 </ul>
             </div>
 
-            <hr style="background-color: rgb(155, 155, 155); border:none; height:1px; margin 3px 3px;"/>
+            <hr style="background-color: rgb(155, 155, 155); border:none; height:1px; margin: 5px;"/>
+            
+            <div class="send__info__message">
+                <span class="profile__send">프로필 전송</span> | <span class="number__send">계좌번호 전송</span>
+            </div>
+            
             <div class="chat__send" style="display: flex; flex-direction: row;">
                 <input type="text" id="message" placeholder="내용을 입력해주세요" class="chat__content__send" value="">
                 <button class="sendMessage" style="margin-left: 5px; background-color: white; border: none"><img src="/images/paper_plane_21px.png"></button>
             </div>
         </div>
-
     </div>
+
 </div>
 
 <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
@@ -43,4 +48,3 @@
 <script src="/webjars/stomp-websocket/stomp.min.js"></script>
 <script src="/js/app.js"></script>
 <link rel="stylesheet" href="/css/chatCreateList.css">
-<link rel="stylesheet" type="text/css" href="/css/chatroom.css">

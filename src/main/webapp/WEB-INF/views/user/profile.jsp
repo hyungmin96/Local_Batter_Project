@@ -65,7 +65,7 @@
     <!-- The Modal -->
         <div id="myModal" class="modal">
     
-            <div class="modal-content" style="width: 500px; height: 600px; margin: 150px 820px; padding: 15px; border: none; box-shadow: 1px 1px 10px 0px rgba(0, 0, 0, 0.12)">
+            <div class="modal-content" style="width: 500px; height: 720px; margin: 200px 780px; padding: 15px; border: none; box-shadow: 1px 1px 10px 0px rgba(0, 0, 0, 0.12)">
                 <div><img src="/images/delete_35px.png" onClick="close_pop();" style="float: right; cursor: pointer;"></div>
 
                 <div style="margin-bottom: 5px;">
@@ -88,6 +88,11 @@
                     자기소개
                 </div>
                 <textarea id="introduce" class="form-control" style="margin-bottom: 15px;">${profile.introduce}</textarea>
+
+                <div style="margin-bottom: 5px; ">
+                    계좌번호
+                </div>
+                <input type="text" class="form-control" id="account" value="${profile.accountNumber}" style="margin-bottom: 15px;">
 
                 <div style="margin-bottom: 5px;">
                     거래 선호지역
