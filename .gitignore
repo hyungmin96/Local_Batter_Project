@@ -5,6 +5,7 @@ target/
 !**/src/test/**/target/
 downloads/
 profiles/
+src/main/downloads/**
 
 ### STS ###
 .apt_generated

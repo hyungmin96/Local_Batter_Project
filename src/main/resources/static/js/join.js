@@ -13,12 +13,8 @@ function join() {
         username: $('#username').val(),
         password: $('#password-chk').val(),
         nickname: $('#nickname').val(),
-        phoneNum: $('#phone').val(),
-        accountNumber: '미설정',
-        mannerScore: 0,
-        profileImg: '/images/default_profile_img.png',
-        mileage: 0,
     };
+    
     if (!checkUsernameResult) {
         alert('아이디 중복확인 후 다시 시도해주세요.');
     } else if (!checkUserPwd) {

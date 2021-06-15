@@ -5,10 +5,8 @@ import com.imageupload.example.services.UserService;
 import java.io.IOException;
 import java.security.Principal;
 
-import com.imageupload.example.components.GeneratePorifleImage;
+import com.imageupload.example.entity.ProfileEntity;
 import com.imageupload.example.entity.UserEntity;
-import com.imageupload.example.models.Role;
-import com.imageupload.example.models.UserProfileInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +25,7 @@ public class UserRestController {
     private UserService userService;
 
     @PostMapping("/api/profile/save")
-    public ResponseEntity<String> saveProfile(Principal user, @RequestParam("profileImg") MultipartFile file, UserProfileInfo profile) throws IOException{
+    public ResponseEntity<String> saveProfile(Principal user, @RequestParam("profileImg") MultipartFile file, ProfileEntity profile) throws IOException{
         UserEntity userEntity = userService.userUpdate(user, file, profile);
         return new ResponseEntity<String>(userEntity.getNickname(), HttpStatus.OK);
     }
@@ -43,7 +41,6 @@ public class UserRestController {
 
     @PostMapping("/api/join")
     public String join(@RequestBody UserEntity vo){
-        vo.setRole(Role.ROLE_USER);
         userService.userSave(vo);
         return "회원가입 성공";
     }

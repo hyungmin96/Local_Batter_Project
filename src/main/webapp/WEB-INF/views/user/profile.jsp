@@ -14,11 +14,11 @@
                 
                                 
                 <div style="width: 300px; height: 150px; display: flex;">
-                    <img src="/upload/${profile.profileImg}" onerror="this.src='/images/default_profile_img.png'" style="margin: auto auto; width: 100px; height: 100px;">
+                    <img src="/upload/${profile.profilePath}" onerror="this.src='/images/default_profile_img.png'" style="margin: auto auto; width: 100px; height: 100px;">
                 </div>
                 
                 <div style="display: flex; height: 40px;">
-                    <div class="user__profile__name">${profile.username}</div>
+                    <div class="user__profile__name">${profile.nickname}</div>
                 </div>
 
                 <div style="display: flex; height: 140px; margin-bottom: 20px;">
@@ -72,9 +72,9 @@
                     프로필 설정
                 </div>
 
-                <div id="img__upload__btn">
-                    <img id="profile__img" src="/upload/${profile.profileImg}" onerror="this.src='/images/default_profile_img.png'" style="cursor: pointer; width: 100px; height: 100px;">
-                </div>
+                <span id="img__upload__btn" style="width: 1px;">
+                    <img id="profile__img" type="file" src="/upload/${profile.profilePath}" onerror="this.src='/images/default_profile_img.png'" style="cursor: pointer; width: 100px; height: 100px;">
+                </span>
                 
                 <input id="profile__img__upload" type="file" accept="image/jpg, image/jpeg, image/png"
                 class="custom__profile__upload" name="upload_file" style="display: none;">
@@ -82,7 +82,7 @@
                 <div style="margin-bottom: 5px;">
                     닉네임
                 </div>
-                <input type="text" class="form-control" id="username" value="${profile.username}" style="margin-bottom: 15px;">
+                <input type="text" class="form-control" id="username" value="${profile.nickname}" style="margin-bottom: 15px;">
 
                 <div style="margin-bottom: 5px; ">
                     자기소개
@@ -114,7 +114,7 @@
 
 <script>
 
-    var profileFile;
+    var profileFile = profile__img;
 
     $(function(){
         $('#profile__img__upload').on("change", function(e){
@@ -134,6 +134,7 @@
 
     $('.setting__profile__btn').on("click", function() {
         $('#myModal').show();
+            console.log(document.getElementById('profile__img'))
     });
 
     $('#profile__save__btn').on("click", function(){
@@ -148,15 +149,13 @@
         
         const profileData = new FormData();
 
+
         profileData.append('nickname', $('#username').val());
         profileData.append('introduce', $('#introduce').val());
         profileData.append('profileImg', profileFile);
         profileData.append('location', $('#location').val());
         profileData.append('preferTime', $('#prefertime').val());
-
-        for (var key of profileData.entries()) {
-            console.log(key[0] + ', ' + key[1]);
-        }
+        profileData.append('accountNumber', $('#account').val());
 
         $.ajax({
 

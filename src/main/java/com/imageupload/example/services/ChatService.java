@@ -76,9 +76,9 @@ public class ChatService {
 
         UserEntity userEntity = userRepository.findByUsername(user.getName()).get();
 
-        message.setMessage("거래 선호시간 : " + userEntity.getPreferTime() +
-                        "<br> 핸드폰 번호 : " + userEntity.getPhoneNum() +
-                        "<br> 거래 선호지역 : " + userEntity.getLocation());
+        message.setMessage("거래 선호시간 : " + userEntity.getProfile().getPreferTime() +
+                        "<br> 핸드폰 번호 : " + userEntity.getProfile().getPhoneNum() +
+                        "<br> 거래 선호지역 : " + userEntity.getProfile().getLocation());
 
         simpMessageTemplate.convertAndSend("/chat/" + message.getRoomId(), message);
     }
@@ -87,7 +87,7 @@ public class ChatService {
     public void sendNumber(Principal user, MessageDTO message){
         UserEntity userEntity = userRepository.findByUsername(user.getName()).get();
 
-        message.setMessage("국민은행 : " + userEntity.getAccountNumber());
+        message.setMessage("국민은행 : " + userEntity.getProfile().getAccountNumber());
 
         simpMessageTemplate.convertAndSend("/chat/" + message.getRoomId(), message);
     }

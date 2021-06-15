@@ -8,5 +8,5 @@ import java.util.Optional;
 import com.imageupload.example.entity.UserEntity;
 
 public interface UserRepository extends JpaRepository<UserEntity, Long>{
-    Optional<UserEntity> findByUsername(@Param("username") String username);
+    Optional<UserEntity> findByUsername(String username);
 }

@@ -3,8 +3,10 @@ package com.imageupload.example.services;
 import java.io.IOException;
 import java.security.Principal;
 import com.imageupload.example.components.GeneratePorifleImage;
+import com.imageupload.example.entity.ProfileEntity;
 import com.imageupload.example.entity.UserEntity;
-import com.imageupload.example.models.UserProfileInfo;
+import com.imageupload.example.models.Role;
+import com.imageupload.example.repositories.ProfileRepository;
 import com.imageupload.example.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
@@ -20,7 +23,10 @@ public class UserService implements UserDetailsService{
     @Autowired
     private UserRepository userRepository;
 
-    public UserEntity userUpdate(Principal user, MultipartFile file, UserProfileInfo profile) throws IOException{
+    @Autowired
+    private ProfileRepository profileRepository;
+
+    public UserEntity userUpdate(Principal user, MultipartFile file, ProfileEntity profile) throws IOException{
 
         UserEntity userEntity = userRepository.findByUsername(user.getName()).get();
 
@@ -28,13 +34,9 @@ public class UserService implements UserDetailsService{
 
         if(userEntity != null){
 
-            userEntity.setNickname(profile.getNickname());
-            userEntity.setIntroduce(profile.getIntroduce());
-            userEntity.setLocation(profile.getLocation());
-            userEntity.setPreferTime(profile.getPreferTime());
-            userEntity.setProfileImg(saveFilePath);
-            
-            userRepository.save(userEntity);
+            profile.setId(userEntity.getProfile().getId());
+            profile.setProfilePath(saveFilePath);
+            profileRepository.save(profile);
             
         }
 
@@ -42,6 +44,23 @@ public class UserService implements UserDetailsService{
     }
 
     public String userSave(UserEntity vo){
+
+        ProfileEntity profile = ProfileEntity.builder()
+        .preferTime("상관없음")
+        .accountNumber("미설정")
+        .location("미설정")
+        .introduce("자기소개")
+        .nickname(vo.getNickname())
+        .phoneNum("미설정")
+        .mannerScore(0)
+        .mileage(0)
+        .profilePath("/images/default_profile_img.png")
+        .build();
+
+        profileRepository.save(profile);
+        
+        vo.setRole(Role.ROLE_USER);
+        vo.setProfile(profile);
         vo.setPassword(new BCryptPasswordEncoder().encode(vo.getPassword()));
         userRepository.save(vo);
         return "회원가입 성공";

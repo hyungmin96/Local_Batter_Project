@@ -27,7 +27,7 @@
         <div class="fast__sale_products">
             <span class="fast__category">완전 급해요</span>
             <span class="sub__category">| 빠른 교환을 원하는 물품들이에요</span>
-            <hr />
+            <hr style="border: none; height: 2px; background-color: #ccc;" />
         </div>
 
         <div class="item-list">
@@ -62,7 +62,8 @@
             <div class="fast__sale_products">
                 <span class="fast__category">바꾸고 싶어요</span>
                 <span class="sub__category">| 마음에 드는 물품과 교환 해보세요</span>
-                <hr />
+                <hr style="border: none; height: 2px; background-color: #ccc;" />
+
             </div>
 
             <div class="today-item-list">

@@ -103,15 +103,15 @@
             <div class="btn-header-btns">
                 <div class="btn-board-reg">
                     <button class="header-product-reg" onclick="location.href='/write'">
-                        <img src="/images/header/money.png"/>
+                        <img src="/images/header/paper_money_28px.png"/>
                         <span class="btn__text">판매하기</span>
                     </button>
                 </div>
 
                 <div class="btn-profile">
-                    <button class="header-product-reg">
-                        <img src="/images/header/shopping.png"/>
-                        <span class="btn__text">장바구니</span>
+                    <button class="header-product-reg" onclick="location.href='/transaction/itemList'">
+                        <img src="/images/header/packaging_28px.png"/>
+                        <span class="btn__text">상품관리</span>
                         <!-- <a href="/board/article/write"></a> -->
                     </button>
                 </div>

@@ -6,6 +6,8 @@ import java.util.Collection;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
@@ -40,9 +42,10 @@ public class UserEntity implements UserDetails{
     @Column
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
-
-    @Column
-    private String phoneNum;
+    
+    @OneToOne
+    @JoinColumn(name = "profileId")
+    private ProfileEntity profile;
 
     @Column
     private String nickname;
@@ -50,23 +53,6 @@ public class UserEntity implements UserDetails{
     @Column
     @Enumerated(EnumType.STRING)
     private Role Role;
-
-    @Column
-    private int mannerScore;
-
-    @Column
-    private int mileage;
-
-    private String profileImg;
-
-    private String introduce;
-
-    private String location;
-
-    private String accountNumber;
-
-    @Column()
-    private String preferTime = "상관없음";
 
 	@Override
 	public boolean isAccountNonExpired() {

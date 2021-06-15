@@ -1,38 +1,36 @@
 package com.imageupload.example.entity;
 
-import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import org.springframework.data.annotation.LastModifiedDate;
+import javax.persistence.OneToOne;
+
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-@Entity
 @Data
+@Builder
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserJoinRoomEntity{
+@ToString
+public class DealEntity {
     
     @Id @GeneratedValue
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "targetId")
-    private UserEntity target;
+    @OneToOne
+    @JoinColumn(name = "boardId")
+    private BoardEntity board;
 
     @ManyToOne
     @JoinColumn(name = "userId")
-    private UserEntity userVo;
-
-    @ManyToOne
-    @JoinColumn(name = "createRoomId")
-    private RoomEntity roomEntity;
-
-    @LastModifiedDate
-    private LocalDateTime newMessageTime;
+    private UserEntity user;
+    
 
 }

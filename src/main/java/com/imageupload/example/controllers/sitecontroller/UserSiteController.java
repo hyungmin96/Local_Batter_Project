@@ -21,7 +21,7 @@ public class UserSiteController {
     public String getProfile(Model model, @PathVariable String nickname){
         UserEntity userEntity = userService.findUserOne(nickname);
         if(userEntity != null){
-            model.addAttribute("profile", userEntity);
+            model.addAttribute("profile", userEntity.getProfile());
             return "/user/profile";
         }
         return "/error/errorpage";
