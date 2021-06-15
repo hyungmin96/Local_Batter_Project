@@ -6,6 +6,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -31,6 +34,7 @@ public class ProfileEntity implements Serializable {
     private String preferTime = "상관없음";
     
     @OneToOne(mappedBy = "profile")
+    @JsonIgnore
     private UserEntity user;
 
 }

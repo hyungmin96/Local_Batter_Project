@@ -26,9 +26,9 @@ function clearBackColor(){
         document.getElementById(globalThis.roomId).style.backgroundColor  = 'white';
 }
 
-window.onbeforeunload = function () {
-    stompClient.disconnect();
-};
+// window.onbeforeunload = function () {
+//     stompClient.disconnect();
+// };
 
 $('.chat__log').scroll(function(){
     if($('.chat__log').scrollTop() < 1){
@@ -226,11 +226,12 @@ function sendMessage(type) {
                     else
                         content = '채팅방이 개설되었습니다.'
 
+                        console.log(value);
                         $('.roomsContainer').append(
                             "<div class='room__box' style='width: 100%;'>" + 
                             "<div id='" + value.roomEntity.id + "'onclick='javascript:loadChatList(this);' style='width: 100%;'>" + 
                             "<div style='padding: 5px; display: flex; flex-direction: row;'>" +
-                            "<div style='margin:10px 10px;'><img src='/upload/" + value.target.profileImg +"' onerror=this.src='/images/default_profile_img.png' style='width: 50px; height: 50px;'></div>" + 
+                            "<div style='margin:10px 10px;'><img src='/upload/" + value.target.profile.profilePath +"' onerror=this.src='/images/default_profile_img.png' style='width: 50px; height: 50px;'></div>" + 
                             "<div style='margin-left: 10px; width: 100%; margin-top: 10px;'>" + 
                             "<div class='room__title'>" + 
                             "<span style='color: blue;' onclick='NewTab(" + value.target.username + ");'>" + value.target.username + "</span>" + 
