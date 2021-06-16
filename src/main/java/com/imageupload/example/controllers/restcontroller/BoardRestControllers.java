@@ -7,8 +7,8 @@ import javax.servlet.http.HttpSession;
 
 import com.imageupload.example.entity.UserEntity;
 import com.imageupload.example.components.createTime;
+import com.imageupload.example.dto.PageableVo;
 import com.imageupload.example.entity.BoardEntity;
-import com.imageupload.example.models.PageableVo;
 import com.imageupload.example.services.BoardService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import java.io.IOException;
@@ -80,7 +80,7 @@ public class BoardRestControllers {
             @RequestBody Map<String, String> param) {
 
         if (principal != null && (param.get("writerId").equals(principal.getUsername()))) {
-            int boardId = Integer.parseInt(param.get("boardId"));
+            Long boardId = Long.parseLong(param.get("boardId"));
             boardService.boardDelete(boardId);
             return "삭제 성공";
         }

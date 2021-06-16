@@ -5,7 +5,7 @@ import java.security.Principal;
 import com.imageupload.example.components.GeneratePorifleImage;
 import com.imageupload.example.entity.ProfileEntity;
 import com.imageupload.example.entity.UserEntity;
-import com.imageupload.example.models.Role;
+import com.imageupload.example.vo.Role;
 import com.imageupload.example.repositories.ProfileRepository;
 import com.imageupload.example.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
@@ -26,6 +25,17 @@ public class UserService implements UserDetailsService{
     @Autowired
     private ProfileRepository profileRepository;
 
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
+        
+        UserDetails userVo = userRepository.findByUsername(username).orElse(null);
+        
+        if(userVo == null)
+            userVo = new UserEntity();
+
+        return userVo;
+    }
+
     public UserEntity userUpdate(Principal user, MultipartFile file, ProfileEntity profile) throws IOException{
 
         UserEntity userEntity = userRepository.findByUsername(user.getName()).get();
@@ -33,11 +43,9 @@ public class UserService implements UserDetailsService{
         String saveFilePath = new GeneratePorifleImage(file).generateFile();
 
         if(userEntity != null){
-
             profile.setId(userEntity.getProfile().getId());
             profile.setProfilePath(saveFilePath);
             profileRepository.save(profile);
-            
         }
 
         return userEntity;
@@ -64,14 +72,6 @@ public class UserService implements UserDetailsService{
         vo.setPassword(new BCryptPasswordEncoder().encode(vo.getPassword()));
         userRepository.save(vo);
         return "회원가입 성공";
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
-        UserDetails userVo = userRepository.findByUsername(username).orElse(null);
-        if(userVo == null)
-            userVo = new UserEntity();
-        return userVo;
     }
 
     public boolean checkUserName(String Email){

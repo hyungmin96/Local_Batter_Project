@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -29,7 +30,7 @@ public class BoardEntity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(nullable = false)
     private String category;
@@ -48,7 +49,7 @@ public class BoardEntity {
 
     @Column
     private String location;
-
+    
     @OneToMany(mappedBy = "board", fetch = FetchType.EAGER)
     @Cascade(value = CascadeType.ALL)
     private List<FileEntity> files;

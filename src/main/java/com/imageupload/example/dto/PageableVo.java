@@ -1,4 +1,4 @@
-package com.imageupload.example.models;
+package com.imageupload.example.dto;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;

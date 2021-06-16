@@ -52,7 +52,7 @@ public class BoardController {
     }
 
     @GetMapping("/board/article/update/{id}")
-    public String articleUpdate(Model model, @PathVariable int id){
+    public String articleUpdate(Model model, @PathVariable Long id){
         BoardEntity vo = boardService.findBoard(id);
         model.addAttribute("updateData", vo);
         model.addAttribute("boardId", id);
@@ -60,7 +60,7 @@ public class BoardController {
     }
 
     @GetMapping("/board/article/{id}")
-    public String viewBoard(Model model, @PathVariable int id) throws IOException, ParseException{
+    public String viewBoard(Model model, @PathVariable Long id) throws IOException, ParseException{
         BoardEntity board = boardService.findBoard(id);
 
         String displayTime = new createTime(board.getCreateTime()).getTimeDiff();

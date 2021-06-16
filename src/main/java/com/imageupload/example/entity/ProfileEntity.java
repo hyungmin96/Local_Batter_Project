@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -31,7 +32,7 @@ public class ProfileEntity implements Serializable {
     private String phoneNum;
     private String location;
     private String accountNumber;
-    private String preferTime = "상관없음";
+    private String preferTime;
     
     @OneToOne(mappedBy = "profile")
     @JsonIgnore

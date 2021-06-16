@@ -14,7 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.imageupload.example.models.Role;
+import com.imageupload.example.vo.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,7 +28,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserEntity implements UserDetails{
+public class UserEntity implements UserDetails {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

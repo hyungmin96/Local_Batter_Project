@@ -1,4 +1,4 @@
-package com.imageupload.example.models;
+package com.imageupload.example.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

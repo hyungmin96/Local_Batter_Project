@@ -7,8 +7,8 @@ import javax.transaction.Transactional;
 
 import com.imageupload.example.components.createTime;
 import com.imageupload.example.components.generateFile;
+import com.imageupload.example.dto.PageableVo;
 import com.imageupload.example.entity.BoardEntity;
-import com.imageupload.example.models.PageableVo;
 import com.imageupload.example.repositories.BoardRepository;
 import com.imageupload.example.repositories.FileRepository;
 
@@ -63,7 +63,7 @@ public class BoardService {
         }
     }
 
-    public void boardDelete(int id) {
+    public void boardDelete(Long id) {
         BoardEntity vo = boardRep.findById(id).orElse(null);
         if (vo != null)
             vo.getFiles().forEach(element -> new File(element.getFilePath()).delete());
@@ -116,7 +116,7 @@ public class BoardService {
         return board;
     }
 
-    public BoardEntity findBoard(int id){
+    public BoardEntity findBoard(Long id){
         return boardRep.findById(id).orElseThrow(()->{
             return new IllegalArgumentException("정보없음");
         });

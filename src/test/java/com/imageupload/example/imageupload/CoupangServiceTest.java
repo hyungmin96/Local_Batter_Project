@@ -12,7 +12,6 @@ import com.imageupload.example.entity.FileEntity;
 import com.imageupload.example.entity.BoardEntity;
 import com.imageupload.example.repositories.BoardRepository;
 import com.imageupload.example.repositories.FileRepository;
-import com.imageupload.example.services.BoardService;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -43,8 +42,8 @@ public class CoupangServiceTest {
     void 쿠팡_게시글_가져오기_테스트() throws IOException {
 
         int page = 1;
-        int boardNums = 30;
-        String category = "긴급";
+        int boardNums = 1;
+        String category = "일반";
 
         for (int i = 1; i <= page; i++) {
 

@@ -26,14 +26,13 @@ function clearBackColor(){
         document.getElementById(globalThis.roomId).style.backgroundColor  = 'white';
 }
 
-// window.onbeforeunload = function () {
-//     stompClient.disconnect();
-// };
+window.onbeforeunload = function () {
+    stompClient.disconnect();
+};
 
 $('.chat__log').scroll(function(){
     if($('.chat__log').scrollTop() < 1){
         if(!globalThis.flag){
-            console.log('scroll')
             loadChatData();
         }
     }
@@ -149,28 +148,6 @@ function connect() {
     });
 }
 
-function showMessage(message) {
-    console.log(message);
-    if($('.user__name').text() == message.sender)
-        // 로그인한 사용자가 보낸 채팅
-        $(".chat__list").append(
-            "<div class='user__send'>" + 
-            "<span class='chat__message'>" + message.message + "</span>" + 
-            "<span class='chat__time'>" + message.date + "</span>" +
-            "</div>"
-        );
-    else
-        // 상대 사용자가 보낸 채팅
-        $(".chat__list").append(
-            "<div class='target__send'>" + 
-                "<span class='nickname'>" + message.sender + "</span>" +
-                "<span class='chat__message'>" + message.message + "</span>" +
-                "<span class='chat__time'>" + message.date + "</span>" +
-            "</div>"
-        );
-        $('.chat__log')[0].scrollTop = $('.chat__log')[0].scrollHeight;
-}
-
 function sendMessage(type) {
     if(globalThis.roomId != null){
         
@@ -203,6 +180,27 @@ function sendMessage(type) {
     }
 }
 
+function showMessage(message) {
+    if($('.user__name').text() == message.sender)
+        // 로그인한 사용자가 보낸 채팅
+        $(".chat__list").append(
+            "<div class='user__send'>" + 
+            "<span class='chat__message'>" + message.message + "</span>" + 
+            "<span class='chat__time'>" + message.date + "</span>" +
+            "</div>"
+        );
+    else
+        // 상대 사용자가 보낸 채팅
+        $(".chat__list").append(
+            "<div class='target__send'>" + 
+                "<span class='nickname'>" + message.sender + "</span>" +
+                "<span class='chat__message'>" + message.message + "</span>" +
+                "<span class='chat__time'>" + message.date + "</span>" +
+            "</div>"
+        );
+        $('.chat__log')[0].scrollTop = $('.chat__log')[0].scrollHeight;
+}
+
     // 채팅방 목록
     $(document).ready(function(){
 
@@ -226,7 +224,7 @@ function sendMessage(type) {
                     else
                         content = '채팅방이 개설되었습니다.'
 
-                        console.log(value);
+                        
                         $('.roomsContainer').append(
                             "<div class='room__box' style='width: 100%;'>" + 
                             "<div id='" + value.roomEntity.id + "'onclick='javascript:loadChatList(this);' style='width: 100%;'>" + 

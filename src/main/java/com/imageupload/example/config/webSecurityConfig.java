@@ -26,7 +26,6 @@ public class webSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) {
         // 이미지, 뷰, js 등 접근가능한 리소스를 설정
         web.ignoring().antMatchers("/css/**", "/js/**", "/img/**", "/lib/**");
-        // web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
 
     @Override

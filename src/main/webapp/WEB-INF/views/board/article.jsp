@@ -31,7 +31,7 @@
 
                 <div class="product-small-img">
                     <c:forEach var="files" items="${board.files}">
-                        <img class="grid-box" id="img-${files.fileid}" src="/upload/${files.tempName}">
+                        <img onclick="imgView(this);" class="grid-box" id="img-${files.fileid}" src="/upload/${files.tempName}">
                     </c:forEach>
                 </div>
             </div>
@@ -115,7 +115,7 @@
                             <button class="btn btn-secondary"><img src="/images/boardDetail/exchanges.png">장바구니 담기</button>
                         </div>
                         <div class="exchange__product_btn">
-                            <button class="btn btn-danger"><img src="/images/boardDetail/exchange.png">교환하기</button>
+                            <button id="exchange__btn" class="btn btn-danger"><img src="/images/boardDetail/exchange.png">교환하기</button>
                         </div>
                         <div class="chat__product_btn">
                             <button class="btn btn-primary"><img src="/images/boardDetail/chat.png">문의하기</button>
@@ -145,6 +145,30 @@
 
 <script>
 
+function imgView(e){
+    console.log(e);
+    document.getElementById('imgBox').src = e.src;
+}
+
+$('#exchange__btn').on("click", function(){
+
+        var seller = $('.item__writer').text();
+        var boardId = $('.boardId').val();
+
+        $.ajax({
+            url: '/api/transaction/deal',
+            type: 'POST',
+            data: 'boardId=' + boardId + '&seller=' + seller ,
+            contentType: 'application/x-www-form-urlencoded',
+            success: function(response){
+                if(response.result.includes('exist') || response.result.includes('success')){
+                    location.href='http://localhost:8000/' + user + '/chatlist';
+                }
+            }
+        })
+
+})
+
 $('.chat__product_btn').on("click", function(){
 
         var user = $('.user__name').text();
@@ -156,9 +180,8 @@ $('.chat__product_btn').on("click", function(){
             data: 'user=' + user + '&target=' + target ,
             contentType: 'application/x-www-form-urlencoded',
             success: function(response){
-                console.log(response);
                 if(response.result.includes('exist') || response.result.includes('success')){
-                    popupWindow(target, response.roomId);
+                    location.href='http://localhost:8000/' + user + '/chatlist';
                 }
             }
         })
