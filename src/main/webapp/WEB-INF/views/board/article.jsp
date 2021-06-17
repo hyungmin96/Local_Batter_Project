@@ -146,7 +146,6 @@
 <script>
 
 function imgView(e){
-    console.log(e);
     document.getElementById('imgBox').src = e.src;
 }
 
@@ -161,9 +160,10 @@ $('#exchange__btn').on("click", function(){
             data: 'boardId=' + boardId + '&seller=' + seller ,
             contentType: 'application/x-www-form-urlencoded',
             success: function(response){
-                if(response.result.includes('exist') || response.result.includes('success')){
-                    location.href='http://localhost:8000/' + user + '/chatlist';
-                }
+                if(response.includes('success'))
+                    alert('교환요청이 완료되었습니다.');
+                else
+                    alert('이미 요청하였거나 거래가 완료되었습니다.');
             }
         })
 

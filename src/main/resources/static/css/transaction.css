@@ -10,8 +10,31 @@
     font-style: normal;
 }
 
-.product__category__container{
+.container__product__box{
+    display: flex;
+    flex-direction: row;
+    background-color: white;
+    margin: 5px 0px;
+}
+
+.container__product__box div{
+    font-size: 14px;
     font-family: Noto Sans KR;
-    font-size: 18px;
-    color: rgb(0, 0, 0);
+    margin: auto auto;
+    justify-content: center;
+    align-content: center;
+}
+
+.thumbnail__img{
+    width: 100px;
+    height: 100px;
+}
+
+.transaction__button{
+    text-align: right;
+}
+
+#transaction__btn{
+    font-size: 14px;
+    font-family: Noto Sans KR;
 }

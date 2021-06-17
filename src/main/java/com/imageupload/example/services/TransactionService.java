@@ -1,8 +1,6 @@
 package com.imageupload.example.services;
 
 import java.security.Principal;
-
-import com.imageupload.example.dto.TransactionDTO;
 import com.imageupload.example.entity.BoardEntity;
 import com.imageupload.example.entity.TransactionEntity;
 import com.imageupload.example.entity.UserEntity;
@@ -12,8 +10,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Service
 public class TransactionService {
@@ -27,31 +23,30 @@ public class TransactionService {
     @Autowired
     private BoardService boardService;
 
-    public void saveTransaction(Principal user, Long boardId, String seller){
-
-        BoardEntity board = boardService.findBoard(boardId);
-
-        UserEntity selletEntity = userService.findUserOne(seller);
+    public boolean saveTransaction(Principal user, Long boardId, String seller){
+        
+        UserEntity sellerEntity = userService.findUserOne(seller);
         UserEntity buyerEntity = userService.findUserOne(user.getName());
+        BoardEntity board = boardService.findBoard(boardId);
+        TransactionEntity transactionEntity = transactionRepository.findByBuyerAndSellerAndBoardId(buyerEntity, sellerEntity, board);
+        if(transactionEntity == null){
+            transactionEntity = new TransactionEntity();
+            transactionEntity.setBoardId(board);
+            transactionEntity.setSeller(sellerEntity);
+            transactionEntity.setBuyer(buyerEntity);
+            transactionRepository.save(transactionEntity);
 
-        TransactionEntity transactionEntity = new TransactionEntity();
-        // transactionEntity.setBoardId(board);
-        transactionEntity.setSeller(selletEntity);
-        transactionEntity.setBuyer(buyerEntity);
+            return true;
+        }
 
-        transactionRepository.save(transactionEntity);
+        return false;
     }
 
-    @Transactional
     public Page<TransactionEntity> getTransactionEntities(Principal user, int page, int display){
-
         UserEntity userEntity = userService.findUserOne(user.getName());
-
         PageRequest request = PageRequest.of(page, display, Sort.Direction.DESC, "id");
-        Page<TransactionEntity> List = transactionRepository.findAllBySellerOrBuyer(userEntity, userEntity, request);
-
+        Page<TransactionEntity> List = transactionRepository.findAllByBuyerOrSeller(userEntity, userEntity, request);
         return List;
-
     }
 
 }
