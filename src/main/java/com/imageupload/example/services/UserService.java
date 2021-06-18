@@ -86,4 +86,8 @@ public class UserService implements UserDetailsService{
         return userRepository.findByUsername(nickname).get();
     }
 
+    public UserEntity findById(Long id){
+        return userRepository.findById(id).get();
+    }
+
 }

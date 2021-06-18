@@ -1,10 +1,13 @@
 package com.imageupload.example.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+
+import com.imageupload.example.entitylistener.TransactionListener;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,6 +21,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@EntityListeners(TransactionListener.class)
 public class TransactionEntity {
     
     @Id @GeneratedValue
@@ -34,5 +38,11 @@ public class TransactionEntity {
     @OneToOne
     @JoinColumn(name="seller")
     private UserEntity seller;
+
+    private String sellerComplete;
+
+    private String buyerComplete;
+
+    private String transactionResult;
 
 }

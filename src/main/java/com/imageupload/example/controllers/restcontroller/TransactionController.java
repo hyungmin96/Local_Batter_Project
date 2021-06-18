@@ -2,6 +2,7 @@ package com.imageupload.example.controllers.restcontroller;
 
 import java.security.Principal;
 
+import com.imageupload.example.dto.SubmitTransactionDTO;
 import com.imageupload.example.entity.TransactionEntity;
 import com.imageupload.example.services.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,25 @@ public class TransactionController {
     public Page<TransactionEntity> getTransactionList(Principal user,
     @RequestParam int page, @RequestParam int display){
         return transactionService.getTransactionEntities(user, page, display);
+    }
+
+    @PostMapping("/submit")
+    public ResponseEntity<String> submitTransaction(SubmitTransactionDTO submitTransaction){
+
+        boolean result = transactionService.updateTransactionStatus(submitTransaction);  
+
+        if(result)
+            return new ResponseEntity<String>("success", HttpStatus.OK);
+        else
+            return new ResponseEntity<String>("falied", HttpStatus.OK);
+    }
+
+    @PostMapping("/delete")
+    public ResponseEntity<String> deleteTransaction(SubmitTransactionDTO submitTransaction){
+
+        transactionService.deleteTransaction(submitTransaction);
+
+        return new ResponseEntity<String>("sdgdsg", HttpStatus.OK);
     }
 
 }

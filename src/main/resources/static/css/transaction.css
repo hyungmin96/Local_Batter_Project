@@ -38,3 +38,16 @@
     font-size: 14px;
     font-family: Noto Sans KR;
 }
+
+.transaction__button button{
+    font-size: 14px;
+}
+
+.product__items__container a{
+    text-decoration: none;
+    color: black;
+}
+
+.transaction__status__container div{
+    font-size: 12px;
+}

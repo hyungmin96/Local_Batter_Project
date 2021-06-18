@@ -21,6 +21,18 @@
 	<dependencies>
 
 		<!-- 추가 라이브러리 시작-->
+<!-- https://mvnrepository.com/artifact/com.querydsl/querydsl-jpa -->
+		<dependency>
+			<groupId>com.querydsl</groupId>
+			<artifactId>querydsl-jpa</artifactId>
+			<version>5.0.0.M1</version>
+		</dependency>
+
+		<dependency> 
+			<groupId>com.querydsl</groupId> 
+			<artifactId>querydsl-apt</artifactId> 
+			<version>4.2.2</version>
+		</dependency>
 
 		<!-- 시큐리티 태그 라이브러리 -->
 		<dependency>

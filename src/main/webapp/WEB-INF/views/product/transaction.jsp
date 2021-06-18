@@ -41,8 +41,13 @@ $(document).ready(function(){
 
 function loadTransactionData(){
 
-    var blueBtn = "<button style='margin: 3px;' type='button' id='transaction__btn' class='btn btn-primary'>교환확정</button>";
-    var redBtn = "<button style='margin: 3px;' type='button' id='transaction__btn' class='btn btn-danger'>교환취소</button>";
+    var submit = function(bordId, sellerId, buyerId){
+        return "<button onclick='javascript:submitTransaction(" + bordId + ", " + sellerId + ", " + buyerId + ");' style='margin: 3px;' type='button' id='submit__btn__" + bordId + "' class='btn btn-primary'>교환확정</button>";
+    }
+
+    var cancel = function(bordId, sellerId, buyerId){
+        return "<button onclick='javascript:deleteTransaction(" + bordId + ", " + sellerId + ", " + buyerId + ");' style='margin: 3px;' type='button' id='submit__btn__" + bordId + "' class='btn btn-danger'>교환취소</button>";
+    }
 
     $.ajax({
 
@@ -52,27 +57,46 @@ function loadTransactionData(){
         success: function(response){
 
             $.each(response.content, function(key, value){
+                
+                console.log(value)
 
                 var status = '';
+                var buyerStatus = '대기중', sellerStatus = '대기중';
+                var file;
+
+                if(value.buyerComplete == 'true')
+                    buyerStatus = '교환확정';
+
+                if(value.sellerComplete == 'true')
+                    sellerStatus = '교환확정';
+
+                if(value.boardId.files.length > 0 )
+                    file = 'upload/' + value.boardId.files[0].tempName;
+                else
+                    file = 'images/noimage.png';
 
                 if (value.buyer.username == $('.user__name').text()){
-                    status = '구매중';
+                    status = "<div style='width: 40px; color: red'>구매중</div>";
                 }else{
-                    status = '판매중';
+                    status = "<div style='width: 40px; color: blue'>판매중</div>";
                 }
 
                 $('.product__items__container').append(
                     "<div class='container__product__box'>" + 
-                    "<div style='width: 40px;'>" + status + "</div>" + 
-                    "<img class='thumbnail__img' src=/upload/" + value.boardId.files[0].tempName + ">" + 
-                    "<div style='width: 300px;'>" + value.boardId.title + "</div>" + 
+                    status + 
+                    "<a href='http://localhost:8000/" + file + "'><img class='thumbnail__img' src=/" + file + ">" + 
+                    "<div style='width: 300px;'><a href='http://localhost:8000/board/article/" + value.boardId.id + "' target='_blank'>" +  value.boardId.title + "</a></div>" + 
                     "<div style='width: 100px;'>" + value.boardId.price + "원</div>" + 
-                    "<div style='width: 100px;'>" + value.boardId.writer + "</div>" + 
-                    "<div style='width: 100px;'>" + new Date(value.boardId.createTime).toLocaleDateString() + "</div>" + 
-                    "</div>" + 
+                    "<div style='width: 100px;'><a href='http://localhost:8000/profile/user=" + value.boardId.writer + "' target='_blank'>" + value.boardId.writer + "</a></div>" + 
+                    "<div style='color: rgb(185, 185, 185); width: 100px;'>" + new Date(value.boardId.createTime).toLocaleDateString() + "</div>" + 
                     "<div class='transaction__button'>" +
-                    blueBtn + 
-                    redBtn + 
+                    submit(value.boardId.id, value.seller.id, value.buyer.id) + 
+                    cancel(value.boardId.id, value.seller.id, value.buyer.id) + 
+                    "<div class='transaction__status__container'>" +
+                    "<div>판매자 상태 : " + sellerStatus + "</div>" +
+                    "<div>구매자 상태 : " + buyerStatus + "</div>" +
+                    "</div>" + 
+                    "</div>" + 
                     "</div>" + 
                     "<hr style='border: none; height: 1px; background-color: rgb(185, 185, 185);'/>"
                 );
@@ -81,6 +105,38 @@ function loadTransactionData(){
 
         }
 
+    })
+
+}
+
+function submitTransaction(boardId, sellerId, buyerId){
+    
+    var data = 'type=submit&boardId=' + boardId + '&sellerId=' + sellerId + '&buyerId=' + buyerId;
+
+    $.ajax({
+        url: '/api/transaction/submit',
+        type: 'POST',
+        data: data,
+        contentType: 'application/x-www-form-urlencoded',
+        success: function(response){
+
+        }
+    })
+
+}
+
+function deleteTransaction(boardId, sellerId, buyerId){
+    
+    var data = 'type=delete&boardId=' + boardId + '&sellerId=' + sellerId + '&buyerId=' + buyerId;
+
+    $.ajax({
+        url: '/api/transaction/delete',
+        type: 'POST',
+        data: data,
+        contentType: 'application/x-www-form-urlencoded',
+        success: function(response){
+
+        }
     })
 
 }
