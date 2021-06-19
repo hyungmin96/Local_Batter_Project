@@ -35,15 +35,19 @@ public class TransactionController {
 
     @GetMapping("/dealList")
     public Page<TransactionEntity> getTransactionList(Principal user,
-    @RequestParam int page, @RequestParam int display){
-        return transactionService.getTransactionEntities(user, page, display);
+    @RequestParam String type, @RequestParam int page, @RequestParam int display){
+        if(type.equals("transaction"))
+            return transactionService.getTransactionEntities(user, page, display);
+        else if(type.equals("complete")){
+            return transactionService.getCompleteEntities(user, page, display);
+        }else{
+            return transactionService.getCompleteEntities(user, page, display);
+        }
     }
 
     @PostMapping("/submit")
     public ResponseEntity<String> submitTransaction(SubmitTransactionDTO submitTransaction){
-
         boolean result = transactionService.updateTransactionStatus(submitTransaction);  
-
         if(result)
             return new ResponseEntity<String>("success", HttpStatus.OK);
         else
@@ -52,9 +56,7 @@ public class TransactionController {
 
     @PostMapping("/delete")
     public ResponseEntity<String> deleteTransaction(SubmitTransactionDTO submitTransaction){
-
         transactionService.deleteTransaction(submitTransaction);
-
         return new ResponseEntity<String>("sdgdsg", HttpStatus.OK);
     }
 

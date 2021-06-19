@@ -18,10 +18,22 @@
     </div>
     <hr style="border: none; height: 1px; background-color: rgb(185, 185, 185);"/>
 
-    <div class="product__items__container" style="height: 800px;">
+    <div class="product__items__container" style="Max-height: 1320px;">
 
 
     </div>
+
+        <div class="page__container">
+            <div class="page__box">
+                <div class="previous"><img src="/images/back.png"></div>
+                    <input type="hidden" class="curpage" data-value="1">
+                    <input type="hidden" class="lastpage" data-value="${endPages}">
+                    <div class="page__number__box" style="max-width: 355px;">
+
+                    </div>
+                <div class="next"><img src="/images/next.png"></div>
+            </div>
+        </div>
 
 </div>
 <%@ include file="../common/footer.jsp" %>
@@ -30,16 +42,26 @@
 
 var page = 0;
 var display = 10;
+var pagination = false;
 
 function dropBtnSelect(e){
     document.getElementById('dropdownMenuButton').innerHTML = e.text;
+    if(e.text == '현재 거래중인 상품목록'){
+        page = 0
+        pagination = false;
+        loadTransactionData();
+    }else if(e.text == '거래 완료된 상품목록'){
+        page = 0
+        pagination = false;
+        loadTransactionData(null, 'complete');
+    }
 }
 
 $(document).ready(function(){
     loadTransactionData();
 })
 
-function loadTransactionData(){
+function loadTransactionData(e = null, type = 'transaction', page = 0){
 
     var submit = function(bordId, sellerId, buyerId){
         return "<button onclick='javascript:submitTransaction(" + bordId + ", " + sellerId + ", " + buyerId + ");' style='margin: 3px;' type='button' id='submit__btn__" + bordId + "' class='btn btn-primary'>교환확정</button>";
@@ -53,13 +75,21 @@ function loadTransactionData(){
 
         url: '/api/transaction/dealList',
         type: 'GET',
-        data: {page: page, display: display},
+        data: {type: type, page: page, display: display},
         success: function(response){
 
-            $.each(response.content, function(key, value){
-                
-                console.log(value)
+            loadPagination(type, response.totalPages);
 
+            Array.from(document.getElementsByClassName('page__number__box')[0].children, item=>{
+                item.style.backgroundColor = 'white';
+            });
+
+            if(e != null)
+                e.style.backgroundColor = 'rgb(236, 236, 236)';
+
+            $('.product__items__container').empty();
+
+            $.each(response.content, function(key, value){
                 var status = '';
                 var buyerStatus = '대기중', sellerStatus = '대기중';
                 var file;
@@ -101,12 +131,25 @@ function loadTransactionData(){
                     "<hr style='border: none; height: 1px; background-color: rgb(185, 185, 185);'/>"
                 );
 
+            window.scrollTo(0,0);
+
             })
-
         }
-
     })
+}
 
+function loadPagination(type, pages){
+    if(!pagination){
+        pagination = true;
+        if(pages < 1) pages = 1;
+        $('.page__number__box').empty();
+        for(var i = 1; i <= pages; i++){
+            $('.page__number__box').append(
+                "<li id='pagenum-" + i + "' class='page__number' onclick='loadTransactionData(this, \"" + type + "\", " + (i - 1) + ");'>" + 
+                "<a href='javascript:void(0)'>" + i + "</a></li>"
+            );
+        }
+    }
 }
 
 function submitTransaction(boardId, sellerId, buyerId){
@@ -135,7 +178,7 @@ function deleteTransaction(boardId, sellerId, buyerId){
         data: data,
         contentType: 'application/x-www-form-urlencoded',
         success: function(response){
-
+            alert('선택하신 물품교환이 취소되었습니다.');
         }
     })
 

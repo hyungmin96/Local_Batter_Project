@@ -7,8 +7,6 @@ import com.imageupload.example.entity.BoardEntity;
 import com.imageupload.example.entity.TransactionEntity;
 import com.imageupload.example.entity.UserEntity;
 import com.imageupload.example.repositories.TransactionRepository;
-
-import org.apache.catalina.authenticator.SpnegoAuthenticator.AuthenticateAction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -85,10 +83,17 @@ public class TransactionService {
         return false;
     }
 
-    public Page<TransactionEntity> getTransactionEntities(Principal user, int page, int display){
+    public Page<TransactionEntity> getCompleteEntities(Principal user, int page, int display){
         UserEntity userEntity = userService.findUserOne(user.getName());
         PageRequest request = PageRequest.of(page, display, Sort.Direction.DESC, "id");
         Page<TransactionEntity> List = transactionRepository.findAllTransaction("complete", userEntity.getId(), request);
+        return List;
+    }
+
+    public Page<TransactionEntity> getTransactionEntities(Principal user, int page, int display){
+        UserEntity userEntity = userService.findUserOne(user.getName());
+        PageRequest request = PageRequest.of(page, display, Sort.Direction.DESC, "id");
+        Page<TransactionEntity> List = transactionRepository.findAllTransaction(userEntity.getId(), request);
         return List;
     }
 

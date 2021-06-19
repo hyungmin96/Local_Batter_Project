@@ -5,17 +5,20 @@ import com.imageupload.example.vo.Role;
 
 import java.util.Optional;
 
-import javax.transaction.Transactional;
-
+import com.imageupload.example.entity.BoardEntity;
 import com.imageupload.example.entity.ChatEntity;
 import com.imageupload.example.entity.ProfileEntity;
 import com.imageupload.example.entity.RoomEntity;
+import com.imageupload.example.entity.TransactionEntity;
 import com.imageupload.example.entity.UserJoinRoomEntity;
 import com.imageupload.example.entity.UserEntity;
+import com.imageupload.example.repositories.BoardRepository;
 import com.imageupload.example.repositories.ChatRepository;
 import com.imageupload.example.repositories.ChatRoomRepository;
 import com.imageupload.example.repositories.ProfileRepository;
 import com.imageupload.example.repositories.RoomRepository;
+import com.imageupload.example.repositories.TransactionRepository;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +46,31 @@ public class RepositoryTestClass{
 
     @Autowired
     private ProfileRepository profileRepository;
+
+    @Autowired
+    private TransactionRepository transactionRepository;
+
+    @Autowired
+    private BoardRepository boardRepository;
+
+    @Test
+    void 거래리스트_저장_테스트(){
+
+        UserEntity sellerEntity = userRepository.findById(1L).get();
+        UserEntity buyerEntity = userRepository.findById(2L).get();
+        
+        for(int i = 3; i < 104; i ++){
+            BoardEntity board = boardRepository.findById(Long.parseLong(String.valueOf(i))).get();;
+            
+            TransactionEntity transactionEntity = new TransactionEntity();
+            transactionEntity.setBoardId(board);
+            transactionEntity.setSeller(sellerEntity);
+            transactionEntity.setBuyer(buyerEntity);
+            transactionRepository.save(transactionEntity);
+
+        }
+
+    }
 
     @Test
     public void 채팅방_개설_테스트(){
@@ -87,7 +115,7 @@ public class RepositoryTestClass{
     @Test
     public void 회원가입_테스트(){
 
-        for(int i = 1; i < 3; i ++){
+        for(int i = 3; i < 60; i ++){
 
             ProfileEntity profile = ProfileEntity.builder()
             .location("location")

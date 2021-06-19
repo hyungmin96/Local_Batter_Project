@@ -41,8 +41,8 @@ public class CoupangServiceTest {
     @Test
     void 쿠팡_게시글_가져오기_테스트() throws IOException {
 
-        int page = 1;
-        int boardNums = 1;
+        int page = 10;
+        int boardNums = 100;
         String category = "일반";
 
         for (int i = 1; i <= page; i++) {
