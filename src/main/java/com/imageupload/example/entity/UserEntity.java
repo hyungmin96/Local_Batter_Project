@@ -22,6 +22,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import javax.persistence.OneToMany;
 
 @Data
 @Entity
@@ -53,6 +54,9 @@ public class UserEntity implements UserDetails {
     @Column
     @Enumerated(EnumType.STRING)
     private Role Role;
+
+    @OneToMany(mappedBy = "commentUser")
+    private List<CommentEntity> comments = new ArrayList<>();
 
 	@Override
 	public boolean isAccountNonExpired() {

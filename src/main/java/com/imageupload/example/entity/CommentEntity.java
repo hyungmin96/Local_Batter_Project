@@ -1,36 +1,37 @@
 package com.imageupload.example.entity;
 
+import java.sql.Timestamp;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
 
-@Data
-@Builder
 @Entity
-@NoArgsConstructor
+@Data
 @AllArgsConstructor
-@ToString
-public class DealEntity {
+@Builder
+public class CommentEntity {
     
     @Id @GeneratedValue
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "boardId")
-    private BoardEntity board;
+    private String writer;
 
     @ManyToOne
     @JoinColumn(name = "userId")
-    private UserEntity user;
-    
+    private UserEntity commentUser;
+
+    private String comment;
+
+    @CreationTimestamp
+    private Timestamp regDate;
 
 }

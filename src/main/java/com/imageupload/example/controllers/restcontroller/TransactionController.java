@@ -24,10 +24,28 @@ public class TransactionController {
     @Autowired
     private TransactionService transactionService;
 
-    @PostMapping("/deal")
+    @PostMapping("/cart/move")
+    public ResponseEntity<String> cartToTransaction(SubmitTransactionDTO submitTransaction){
+
+        if (transactionService.cartToTransaction(submitTransaction))
+            return new ResponseEntity<String>("success", HttpStatus.OK);
+        else
+            return new ResponseEntity<String>("failed", HttpStatus.OK);
+    }
+
+    @PostMapping("/cart/delete")
+    public ResponseEntity<String> deleteCartBoard(SubmitTransactionDTO submitTransaction){
+
+        if (transactionService.deleteTransaction(submitTransaction))
+            return new ResponseEntity<String>("success", HttpStatus.OK);
+        else
+            return new ResponseEntity<String>("failed", HttpStatus.OK);
+    }
+
+    @PostMapping("/product")
     @Transactional
-    public ResponseEntity<String> dealWithSeller(@RequestParam TransactionEnumType type, Principal user, @RequestParam long boardId, @RequestParam String seller){
-        if (transactionService.saveTransaction(type, user, boardId, seller)){
+    public ResponseEntity<String> dealWithSeller(SubmitTransactionDTO transactionDTO){
+        if (transactionService.saveTransaction(transactionDTO)){
             return new ResponseEntity<String>("success", HttpStatus.OK);
         }else{
             return new ResponseEntity<String>("failed", HttpStatus.OK);

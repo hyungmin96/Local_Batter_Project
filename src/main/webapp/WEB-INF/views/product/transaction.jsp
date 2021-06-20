@@ -4,6 +4,16 @@
 
 <div class="container" style="margin-top: 155px;">
 
+    <div id="my_modal">
+        <div class = "modal_close_btn"><img src="/images/delete_35px.png" style="float: right; cursor: pointer;"></div>
+
+        <div class="comment">
+            리뷰작성
+            <textarea id="comment_box" class="form-control" style="margin-bottom: 15px;"></textarea>
+        </div>
+
+    </div>
+
     <div>
         <span class="dropdown">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -17,27 +27,32 @@
         </span>        
     </div>
     <hr style="border: none; height: 1px; background-color: rgb(185, 185, 185);"/>
+    
+        <div style="height: 1380px;">
 
-    <div class="product__items__container" style="Max-height: 1320px;">
+            <div class="product__items__container" style="max-height: 1400px;">
 
-
-    </div>
-
-        <div class="page__container">
-            <div class="page__box">
-                <div class="previous"><img src="/images/back.png"></div>
-                    <input type="hidden" class="curpage" data-value="1">
-                    <input type="hidden" class="lastpage" data-value="${endPages}">
-                    <div class="page__number__box" style="max-width: 355px;">
-
-                    </div>
-                <div class="next"><img src="/images/next.png"></div>
             </div>
+
+            <div class="page__container">
+                <div class="page__box">
+                    <div class="previous"><img src="/images/back.png"></div>
+                        <input type="hidden" class="curpage" data-value="1">
+                        <input type="hidden" class="lastpage" data-value="${endPages}">
+                        <div class="page__number__box" style="max-width: 355px;">
+
+                        </div>
+                    <div class="next"><img src="/images/next.png"></div>
+                </div>
+            </div>
+
         </div>
+
 
 </div>
 <%@ include file="../common/footer.jsp" %>
 
+<script src="/js/modal.js"></script>
 <script>
 
 var page = 0;
@@ -54,6 +69,10 @@ function dropBtnSelect(e){
         page = 0
         pagination = false;
         loadTransactionData(null, 'complete');
+    }else{
+        page = 0
+        pagination = false;
+        loadTransactionData(null, 'cart');
     }
 }
 
@@ -83,9 +102,10 @@ function loadTransactionData(e = null, type = 'transaction', page = 0){
 
             $.each(response.content, function(key, value){
 
-                var data = dataQuarterProcess(type, value);
+                var data = dataQuarterProcess(type, key, value);
 
                 $('.product__items__container').append(
+                    "<div>" + 
                     "<div class='container__product__box'>" + 
                     data.status + 
                     "<a href='http://localhost:8000/" + data.files + "'><img class='thumbnail__img' src=/" + data.files + ">" + 
@@ -95,8 +115,10 @@ function loadTransactionData(e = null, type = 'transaction', page = 0){
                     "<div style='color: rgb(185, 185, 185); width: 100px;'>" + new Date(value.boardId.createTime).toLocaleDateString() + "</div>" + 
                     data.action +
                     "</div>" + 
+                    "<hr style='border: none; height: 1px; background-color: rgb(185, 185, 185);'/>" +
                     "</div>" + 
-                    "<hr style='border: none; height: 1px; background-color: rgb(185, 185, 185);'/>"
+                    "</div>" +
+                    "</div>"
                 );
 
                 window.scrollTo(0,0);
@@ -106,7 +128,9 @@ function loadTransactionData(e = null, type = 'transaction', page = 0){
     })
 }
 
-function dataQuarterProcess(type, value, pageRequired = true, page = 0){
+function dataQuarterProcess(type, key, value, pageRequired = true, page = 0){
+
+console.log(value)
 
     var data = {'status' : '', 'files' : '', 'action' : ''};
     
@@ -115,15 +139,22 @@ function dataQuarterProcess(type, value, pageRequired = true, page = 0){
     else
         data['files'] ='images/noimage.png';
 
+    // 거래 완료
     if(type == 'complete'){
         data['status'] = "<div style='width: 55px; color: #ccc'>거래완료</div>";
-        data['action'] = "<button onclick=';' style='margin: auto auto; height: 40px;' type='button' id='submit__btn__" + value.boardId.id + "' class='btn btn-primary'>리뷰작성</button>";
+        data['action'] = "<button onclick='showModal();' style='margin: auto auto; height: 40px;' type='button' id='submit__btn__" + value.boardId.id + "' class='btn btn-primary'>리뷰작성</button>";
 
+    // 관심물품
     }else if(type == 'cart'){
+        
+        data['status'] = "<div style='width: 55px; color: #ccc'>" + (key + 1) + "</div>";
+        data['action'] = 
+        "<div style='margin: auto auto'>" + 
+        "<button onclick='javascript:cartToTransaction(" + value.boardId.id + ", " + value.seller.id + ", " + value.buyer.id + ");' style='margin-right: 10px; height: 40px;' type='button' id='transaction__btn__" + value.boardId.id + "' class='btn btn-primary'>교환</button>" + 
+        "<button onclick='javascript:cartDelete(this, " + value.boardId.id + ", " + value.seller.id + ", " + value.buyer.id + ");' style='height: 40px;' type='button' id='delete__btn__" + value.boardId.id + "' class='btn btn-danger'>삭제</button>" +
+        "</div>"
 
-        data['status'] = "<div style='width: 55px; color: #ccc'>거래완료</div>";
-        data['action'] = "<button onclick=';' style='margin: auto auto; height: 40px;' type='button' id='submit__btn__" + value.boardId.id + "' class='btn btn-danger'>삭제</button>";
-
+    // 거래 진행중
     }else{
         data['status'] = (function() {
             if (value.buyer.username == $('.user__name').text()){
@@ -149,6 +180,7 @@ function dataQuarterProcess(type, value, pageRequired = true, page = 0){
                     "<div class='transaction__status__container'>" +
                     "<div>판매자 상태 : " + sellerStatus + "</div>" +
                     "<div>구매자 상태 : " + buyerStatus + "</div>" +
+                    "</div>" +
                     "</div>"
         })();
         
@@ -172,9 +204,40 @@ function loadPagination(type, pages){
     }
 }
 
+function cartToTransaction(boardId, seller, buyer){
+
+    $.ajax({
+        url: '/api/transaction/cart/move',
+        type: 'POST',
+        contentType: 'application/x-www-form-urlencoded',
+        data : 'boardId=' + boardId + '&sellerId=' + seller + '&buyerId=' + buyer,
+        success: function(response){
+
+        }
+    })
+
+}
+
+function cartDelete(e, boardId, seller, buyer){
+    console.log(e.parentNode.parentNode.parentNode)
+    e.parentNode.parentNode.parentNode.remove();
+    $.ajax({
+        url: '/api/transaction/cart/delete',
+        type: 'POST',
+        contentType: 'application/x-www-form-urlencoded',
+        data : 'boardId=' + boardId + '&sellerId=' + seller + '&buyerId=' + buyer,
+        success: function(response){
+            if(response == 'success'){
+                alert('해당 물품을 삭제하였습니다.');
+            }
+        }
+    })
+
+}
+
 function submitTransaction(boardId, sellerId, buyerId){
     
-    var data = 'type=submit&boardId=' + boardId + '&sellerId=' + sellerId + '&buyerId=' + buyerId;
+    var data = 'type=transaction&boardId=' + boardId + '&sellerId=' + sellerId + '&buyerId=' + buyerId;
 
     $.ajax({
         url: '/api/transaction/submit',

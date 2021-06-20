@@ -27,6 +27,7 @@
                 <link rel="stylesheet" href="/css/searchList.css">
                 <link rel="stylesheet" href="/css/articleWrite.css">
                 <link rel="stylesheet" href="/css/footer.css">
+                <link rel="stylesheet" href="/css/modal.css">
                 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
                 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -89,7 +90,7 @@
     <div class="container">
         <div class="header_box" style="margin: auto auto;">
             <a class="site_icon" href="/">
-            <img src="/images/header/icon.png" style="margin-left: 50px;"><span class="logo__text">로컬바터</span></a>
+            <img src="/images/header/icon.png" style="width: 40px; height: 40px; margin-left: 50px;"><span class="logo__text">로컬바터</span></a>
 
                 <div class="wrapper">
                     <div class="search-input">

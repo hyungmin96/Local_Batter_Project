@@ -28,13 +28,31 @@ public class TransactionService {
     @Autowired
     private BoardService boardService;
 
+    public Boolean cartToTransaction(SubmitTransactionDTO submitTransaction){
+
+        UserEntity sellerEntity = userService.findById(Long.parseLong(submitTransaction.getSellerId()));
+        UserEntity buyerEntity = userService.findById(Long.parseLong(submitTransaction.getBuyerId()));
+        BoardEntity board = boardService.findBoard(submitTransaction.getBoardId());
+
+        TransactionEntity transactionEntity = transactionRepository.findByBuyerAndSellerAndBoardId(buyerEntity, sellerEntity, board);
+        
+        if(transactionEntity != null){
+            transactionEntity.setType(TransactionEnumType.transaction);
+                
+            transactionRepository.save(transactionEntity);  
+
+            return true;
+        }
+        return false;
+    }
+
     public Boolean updateTransactionStatus(SubmitTransactionDTO submitTransaction){
 
         Object user = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         UserEntity sellerEntity = userService.findById(Long.parseLong(submitTransaction.getSellerId()));
         UserEntity buyerEntity = userService.findById(Long.parseLong(submitTransaction.getBuyerId()));
-        BoardEntity board = boardService.findBoard(Long.parseLong(submitTransaction.getBoardId()));
+        BoardEntity board = boardService.findBoard(submitTransaction.getBoardId());
 
         TransactionEntity transactionEntity = transactionRepository.findByBuyerAndSellerAndBoardId(buyerEntity, sellerEntity, board);
         
@@ -52,28 +70,32 @@ public class TransactionService {
     }
 
     
-    public void deleteTransaction(SubmitTransactionDTO submitTransaction){
+    public boolean deleteTransaction(SubmitTransactionDTO submitTransaction){
 
         UserEntity sellerEntity = userService.findById(Long.parseLong(submitTransaction.getSellerId()));
         UserEntity buyerEntity = userService.findById(Long.parseLong(submitTransaction.getBuyerId()));
-        BoardEntity board = boardService.findBoard(Long.parseLong(submitTransaction.getBoardId()));
+        BoardEntity board = boardService.findBoard(submitTransaction.getBoardId());
 
         TransactionEntity transactionEntity = transactionRepository.findByBuyerAndSellerAndBoardId(buyerEntity, sellerEntity, board);
         
-        if(transactionEntity != null)
+        if(transactionEntity != null){
             transactionRepository.deleteById(transactionEntity.getId());
-
+            return true;
+        }
+        return false;
     }
 
-    public boolean saveTransaction(TransactionEnumType type, Principal user, Long boardId, String seller){
+
+    public boolean saveTransaction(SubmitTransactionDTO transactionDTO){
         
-        UserEntity sellerEntity = userService.findUserOne(seller);
-        UserEntity buyerEntity = userService.findUserOne(user.getName());
-        BoardEntity board = boardService.findBoard(boardId);
+        UserEntity sellerEntity = userService.findUserOne(transactionDTO.getSellerId());
+        UserEntity buyerEntity = userService.findUserOne(transactionDTO.getBuyerId());
+        BoardEntity board = boardService.findBoard(transactionDTO.getBoardId());
+
         TransactionEntity transactionEntity = transactionRepository.findByBuyerAndSellerAndBoardId(buyerEntity, sellerEntity, board);
         if(transactionEntity == null){
             transactionEntity = new TransactionEntity();
-            transactionEntity.setType(type);
+            transactionEntity.setType(transactionDTO.getType());
             transactionEntity.setBoardId(board);
             transactionEntity.setSeller(sellerEntity);
             transactionEntity.setBuyer(buyerEntity);

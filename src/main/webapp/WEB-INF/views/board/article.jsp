@@ -145,47 +145,50 @@
 
 <script>
 
-    var seller = $('.item__writer').text();
-    var user = $('.user__name').text();
-    var boardId = $('.boardId').val();
-
-$('.like__product_btn').click(function(){
-
-    $.ajax({
-
-        url: '/boards/cart',
-        type: 'POST',
-        data: 'userId=' + user + '&boardId=' + boardId,
-        contentType: 'application/x-www-form-urlencoded',
-        success: function(){
-            alert('해당 상품을 찜하였습니다.');
-        }
-
-    })
-
-})
+var seller = $('.item__writer').text();
+var user = $('.user__name').text();
+var boardId = $('.boardId').val();
 
 function imgView(e){
     document.getElementById('imgBox').src = e.src;
 }
 
-$('#exchange__btn').on("click", function(){
-
-
-        $.ajax({
-            url: '/api/transaction/deal',
-            type: 'POST',
-            data: 'type=transaction&boardId=' + boardId + '&seller=' + seller ,
-            contentType: 'application/x-www-form-urlencoded',
-            success: function(response){
-                if(response.includes('success'))
-                    alert('교환요청이 완료되었습니다.');
-                else
-                    alert('이미 요청하였거나 거래가 완료되었습니다.');
-            }
-        })
-
+$('.like__product_btn').click(function(){
+    if(sendTransaction('cart'))
+        alert('해당 물품을 찜하였습니다.');
+    else
+        alert('이미 요청하였거나 거래가 완료되었습니다.');
 })
+
+$('#exchange__btn').on("click", function(){
+    if(sendTransaction())
+        alert('물품교환을 요청하였습니다.');
+    else
+        alert('이미 요청하였거나 거래가 완료되었습니다.');
+})
+
+
+function sendTransaction(type = 'transaction'){
+    
+    var result = null;
+
+    $.ajax({
+        'async': false,
+        url: '/api/transaction/product',
+        type: 'POST',
+        data: 'type=' + type + '&buyerId=' + user + '&boardId=' + boardId + '&sellerId=' + seller ,
+        contentType: 'application/x-www-form-urlencoded',
+        success: function(response){
+            if(response == 'success')
+                result = true;
+            else
+                result = false;
+        }
+    });
+
+    console.log(result)
+    return result;
+}
 
 $('.chat__product_btn').on("click", function(){
 
