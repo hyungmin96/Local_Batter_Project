@@ -63,14 +63,6 @@ $(document).ready(function(){
 
 function loadTransactionData(e = null, type = 'transaction', page = 0){
 
-    var submit = function(bordId, sellerId, buyerId){
-        return "<button onclick='javascript:submitTransaction(" + bordId + ", " + sellerId + ", " + buyerId + ");' style='margin: 3px;' type='button' id='submit__btn__" + bordId + "' class='btn btn-primary'>교환확정</button>";
-    }
-
-    var cancel = function(bordId, sellerId, buyerId){
-        return "<button onclick='javascript:deleteTransaction(" + bordId + ", " + sellerId + ", " + buyerId + ");' style='margin: 3px;' type='button' id='submit__btn__" + bordId + "' class='btn btn-danger'>교환취소</button>";
-    }
-
     $.ajax({
 
         url: '/api/transaction/dealList',
@@ -90,52 +82,80 @@ function loadTransactionData(e = null, type = 'transaction', page = 0){
             $('.product__items__container').empty();
 
             $.each(response.content, function(key, value){
-                var status = '';
-                var buyerStatus = '대기중', sellerStatus = '대기중';
-                var file;
 
-                if(value.buyerComplete == 'true')
-                    buyerStatus = '교환확정';
-
-                if(value.sellerComplete == 'true')
-                    sellerStatus = '교환확정';
-
-                if(value.boardId.files.length > 0 )
-                    file = 'upload/' + value.boardId.files[0].tempName;
-                else
-                    file = 'images/noimage.png';
-
-                if (value.buyer.username == $('.user__name').text()){
-                    status = "<div style='width: 40px; color: red'>구매중</div>";
-                }else{
-                    status = "<div style='width: 40px; color: blue'>판매중</div>";
-                }
+                var data = dataQuarterProcess(type, value);
 
                 $('.product__items__container').append(
                     "<div class='container__product__box'>" + 
-                    status + 
-                    "<a href='http://localhost:8000/" + file + "'><img class='thumbnail__img' src=/" + file + ">" + 
+                    data.status + 
+                    "<a href='http://localhost:8000/" + data.files + "'><img class='thumbnail__img' src=/" + data.files + ">" + 
                     "<div style='width: 300px;'><a href='http://localhost:8000/board/article/" + value.boardId.id + "' target='_blank'>" +  value.boardId.title + "</a></div>" + 
                     "<div style='width: 100px;'>" + value.boardId.price + "원</div>" + 
                     "<div style='width: 100px;'><a href='http://localhost:8000/profile/user=" + value.boardId.writer + "' target='_blank'>" + value.boardId.writer + "</a></div>" + 
                     "<div style='color: rgb(185, 185, 185); width: 100px;'>" + new Date(value.boardId.createTime).toLocaleDateString() + "</div>" + 
-                    "<div class='transaction__button'>" +
-                    submit(value.boardId.id, value.seller.id, value.buyer.id) + 
-                    cancel(value.boardId.id, value.seller.id, value.buyer.id) + 
-                    "<div class='transaction__status__container'>" +
-                    "<div>판매자 상태 : " + sellerStatus + "</div>" +
-                    "<div>구매자 상태 : " + buyerStatus + "</div>" +
-                    "</div>" + 
+                    data.action +
                     "</div>" + 
                     "</div>" + 
                     "<hr style='border: none; height: 1px; background-color: rgb(185, 185, 185);'/>"
                 );
 
-            window.scrollTo(0,0);
+                window.scrollTo(0,0);
 
             })
         }
     })
+}
+
+function dataQuarterProcess(type, value, pageRequired = true, page = 0){
+
+    var data = {'status' : '', 'files' : '', 'action' : ''};
+    
+    if(value.boardId.files.length > 0 )
+        data['files'] = 'upload/' + value.boardId.files[0].tempName;
+    else
+        data['files'] ='images/noimage.png';
+
+    if(type == 'complete'){
+        data['status'] = "<div style='width: 55px; color: #ccc'>거래완료</div>";
+        data['action'] = "<button onclick=';' style='margin: auto auto; height: 40px;' type='button' id='submit__btn__" + value.boardId.id + "' class='btn btn-primary'>리뷰작성</button>";
+
+    }else if(type == 'cart'){
+
+        data['status'] = "<div style='width: 55px; color: #ccc'>거래완료</div>";
+        data['action'] = "<button onclick=';' style='margin: auto auto; height: 40px;' type='button' id='submit__btn__" + value.boardId.id + "' class='btn btn-danger'>삭제</button>";
+
+    }else{
+        data['status'] = (function() {
+            if (value.buyer.username == $('.user__name').text()){
+                return "<div style='width: 40px; color: red'>구매중</div>";
+            }else{
+                return "<div style='width: 40px; color: blue'>판매중</div>";
+            }
+        })(); 
+
+        data['action'] = (function(){
+
+            var buyerStatus = '대기중', sellerStatus = '대기중';
+
+            if(value.buyerComplete == 'true')
+                buyerStatus = '교환확정';
+
+            if(value.sellerComplete == 'true')
+                sellerStatus = '교환확정';
+
+            return "<div class='transaction__button'>" +
+                    "<button onclick='javascript:submitTransaction(" + value.boardId.id + ", " + value.seller.id + ", " + value.buyer.id + ");' style='margin: 3px;' type='button' id='submit__btn__" + value.boardId.id + "' class='btn btn-primary'>교환확정</button>" +
+                    "<button onclick='javascript:deleteTransaction(" + value.boardId.id + ", " + value.seller.id + ", " + value.buyer.id + ");' style='margin: 3px;' type='button' id='submit__btn__" + value.boardId.id + "' class='btn btn-danger'>교환취소</button>" + 
+                    "<div class='transaction__status__container'>" +
+                    "<div>판매자 상태 : " + sellerStatus + "</div>" +
+                    "<div>구매자 상태 : " + buyerStatus + "</div>" +
+                    "</div>"
+        })();
+        
+    }
+
+    return data;
+
 }
 
 function loadPagination(type, pages){
@@ -162,7 +182,7 @@ function submitTransaction(boardId, sellerId, buyerId){
         data: data,
         contentType: 'application/x-www-form-urlencoded',
         success: function(response){
-
+            alert('해당 물품의 교환을 확정하였습니다.');
         }
     })
 

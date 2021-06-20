@@ -63,9 +63,6 @@ public class BoardRestControllers {
     public String uploadFiles(@AuthenticationPrincipal UserEntity principal, 
             BoardEntity board, MultipartFile[] uploadFiles) throws IOException {
 
-        // Authentication authentication =
-        // SecurityContextHolder.getContext().getAuthentication();
-        // String currentPrincipalName = authentication.getName();
         if (principal != null) {
             board.setWriter(principal.getUsername());
             boardService.boardWrite(board, uploadFiles);

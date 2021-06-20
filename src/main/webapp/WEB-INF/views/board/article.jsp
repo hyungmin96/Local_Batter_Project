@@ -145,19 +145,37 @@
 
 <script>
 
+    var seller = $('.item__writer').text();
+    var user = $('.user__name').text();
+    var boardId = $('.boardId').val();
+
+$('.like__product_btn').click(function(){
+
+    $.ajax({
+
+        url: '/boards/cart',
+        type: 'POST',
+        data: 'userId=' + user + '&boardId=' + boardId,
+        contentType: 'application/x-www-form-urlencoded',
+        success: function(){
+            alert('해당 상품을 찜하였습니다.');
+        }
+
+    })
+
+})
+
 function imgView(e){
     document.getElementById('imgBox').src = e.src;
 }
 
 $('#exchange__btn').on("click", function(){
 
-        var seller = $('.item__writer').text();
-        var boardId = $('.boardId').val();
 
         $.ajax({
             url: '/api/transaction/deal',
             type: 'POST',
-            data: 'boardId=' + boardId + '&seller=' + seller ,
+            data: 'type=transaction&boardId=' + boardId + '&seller=' + seller ,
             contentType: 'application/x-www-form-urlencoded',
             success: function(response){
                 if(response.includes('success'))

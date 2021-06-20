@@ -3,11 +3,11 @@ $(document).ready(function(){
         keyword = document.getElementById("search-value").value;
         location.href = '/board/search/products/search=' + keyword;
     });
-
-    $(document).ready(function(){
-        
-        callBoardsDataToJson();
     
+    
+    $(function(){
+        if(location.href.includes('board/search/products'))
+            callBoardsDataToJson();
         $('.accuracy').on("click", accuracy);
         $('.Bestprice').on("click", Bestprice);
         $('.Latest').on("click", Latest);
@@ -68,8 +68,6 @@ function callBoardsDataToJson(page = 0) {
                 html += '</a>';
                 html += '</div>';
                 html += '</div>';
-
-                //data.totalPages
             });
 
             search__items__container.html(html);

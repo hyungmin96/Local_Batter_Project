@@ -33,6 +33,7 @@
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
                 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
                 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+                <script src="/js/search.js"></script>
             </head>
 
 <body>
@@ -113,7 +114,6 @@
                     <button class="header-product-reg" onclick="location.href='/transaction/itemList'">
                         <img src="/images/header/packaging_28px.png"/>
                         <span class="btn__text">상품관리</span>
-                        <!-- <a href="/board/article/write"></a> -->
                     </button>
                 </div>
 
@@ -121,7 +121,6 @@
                     <button onclick="location.href='/${principal.username}/chatlist'" class="header-product-reg">
                         <img src="/images/header/message.png"/>
                         <span class="btn__text">채팅하기</span>
-                        <!-- <a href="/board/article/write"></a> -->
                     </button>
                 </div>
             </div>

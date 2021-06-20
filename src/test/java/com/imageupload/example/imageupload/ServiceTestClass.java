@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 import com.imageupload.example.entity.UserJoinRoomEntity;
 import com.imageupload.example.entity.BoardEntity;
 import com.imageupload.example.entity.TransactionEntity;
+import com.imageupload.example.entity.TransactionEnumType;
 import com.imageupload.example.entity.UserEntity;
 import com.imageupload.example.repositories.ChatRoomRepository;
 import com.imageupload.example.repositories.TransactionRepository;

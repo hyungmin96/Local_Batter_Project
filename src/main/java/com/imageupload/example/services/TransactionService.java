@@ -5,6 +5,7 @@ import java.security.Principal;
 import com.imageupload.example.dto.SubmitTransactionDTO;
 import com.imageupload.example.entity.BoardEntity;
 import com.imageupload.example.entity.TransactionEntity;
+import com.imageupload.example.entity.TransactionEnumType;
 import com.imageupload.example.entity.UserEntity;
 import com.imageupload.example.repositories.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +65,7 @@ public class TransactionService {
 
     }
 
-    public boolean saveTransaction(Principal user, Long boardId, String seller){
+    public boolean saveTransaction(TransactionEnumType type, Principal user, Long boardId, String seller){
         
         UserEntity sellerEntity = userService.findUserOne(seller);
         UserEntity buyerEntity = userService.findUserOne(user.getName());
@@ -72,6 +73,7 @@ public class TransactionService {
         TransactionEntity transactionEntity = transactionRepository.findByBuyerAndSellerAndBoardId(buyerEntity, sellerEntity, board);
         if(transactionEntity == null){
             transactionEntity = new TransactionEntity();
+            transactionEntity.setType(type);
             transactionEntity.setBoardId(board);
             transactionEntity.setSeller(sellerEntity);
             transactionEntity.setBuyer(buyerEntity);
@@ -83,17 +85,10 @@ public class TransactionService {
         return false;
     }
 
-    public Page<TransactionEntity> getCompleteEntities(Principal user, int page, int display){
+    public Page<TransactionEntity> getTransactionEntities(Principal user, TransactionEnumType type, int page, int display){
         UserEntity userEntity = userService.findUserOne(user.getName());
         PageRequest request = PageRequest.of(page, display, Sort.Direction.DESC, "id");
-        Page<TransactionEntity> List = transactionRepository.findAllTransaction("complete", userEntity.getId(), request);
-        return List;
-    }
-
-    public Page<TransactionEntity> getTransactionEntities(Principal user, int page, int display){
-        UserEntity userEntity = userService.findUserOne(user.getName());
-        PageRequest request = PageRequest.of(page, display, Sort.Direction.DESC, "id");
-        Page<TransactionEntity> List = transactionRepository.findAllTransaction(userEntity.getId(), request);
+        Page<TransactionEntity> List = transactionRepository.findAllTransaction(type.getValue(), userEntity.getId(), request);
         return List;
     }
 

@@ -13,9 +13,7 @@ import io.lettuce.core.dynamic.annotation.Param;
 public interface TransactionRepository extends JpaRepository<TransactionEntity, Long> {
     public Page<TransactionEntity> findAllByBuyerOrSeller(UserEntity user1, UserEntity user2, Pageable request);
     public TransactionEntity findByBuyerAndSellerAndBoardId(UserEntity buyer, UserEntity seller, BoardEntity Board);
-    @Query(value="select * from transactionentity where transactionResult =:search and buyer =:user or transactionResult =:search and seller =:user", nativeQuery = true)
-    public Page<TransactionEntity> findAllTransaction(@Param("search") String search, @Param("user") Long user, Pageable request);
-    @Query(value="select * from transactionentity where transactionResult is null and buyer =:user or transactionResult is null and seller =:user", nativeQuery = true)
-    public Page<TransactionEntity> findAllTransaction(@Param("user") Long user, Pageable request);
+    @Query(value="select * from transactionentity where type =:type and buyer =:user or type =:type and seller =:user", nativeQuery = true)
+    public Page<TransactionEntity> findAllTransaction(@Param("type") String type, @Param("user") Long user, Pageable request);
 
 }

@@ -53,5 +53,4 @@
 
 </div>
 
-<script src="/js/search.js"></script>
 <%@ include file="../common/footer.jsp" %>

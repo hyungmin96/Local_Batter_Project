@@ -4,6 +4,7 @@ import java.security.Principal;
 
 import com.imageupload.example.dto.SubmitTransactionDTO;
 import com.imageupload.example.entity.TransactionEntity;
+import com.imageupload.example.entity.TransactionEnumType;
 import com.imageupload.example.services.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,8 +26,8 @@ public class TransactionController {
 
     @PostMapping("/deal")
     @Transactional
-    public ResponseEntity<String> dealWithSeller(Principal user, @RequestParam long boardId, @RequestParam String seller){
-        if (transactionService.saveTransaction(user, boardId, seller)){
+    public ResponseEntity<String> dealWithSeller(@RequestParam TransactionEnumType type, Principal user, @RequestParam long boardId, @RequestParam String seller){
+        if (transactionService.saveTransaction(type, user, boardId, seller)){
             return new ResponseEntity<String>("success", HttpStatus.OK);
         }else{
             return new ResponseEntity<String>("failed", HttpStatus.OK);
@@ -35,14 +36,8 @@ public class TransactionController {
 
     @GetMapping("/dealList")
     public Page<TransactionEntity> getTransactionList(Principal user,
-    @RequestParam String type, @RequestParam int page, @RequestParam int display){
-        if(type.equals("transaction"))
-            return transactionService.getTransactionEntities(user, page, display);
-        else if(type.equals("complete")){
-            return transactionService.getCompleteEntities(user, page, display);
-        }else{
-            return transactionService.getCompleteEntities(user, page, display);
-        }
+    @RequestParam TransactionEnumType type, @RequestParam int page, @RequestParam int display){
+        return transactionService.getTransactionEntities(user, type, page, display);
     }
 
     @PostMapping("/submit")
