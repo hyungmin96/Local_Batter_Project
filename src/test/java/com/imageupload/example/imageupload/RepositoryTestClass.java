@@ -18,17 +18,12 @@ import com.imageupload.example.repositories.ChatRoomRepository;
 import com.imageupload.example.repositories.ProfileRepository;
 import com.imageupload.example.repositories.RoomRepository;
 import com.imageupload.example.repositories.TransactionRepository;
-
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-
 @SpringBootTest
-@ExtendWith(SpringExtension.class)
 @TestPropertySource("classpath:application.yml")
 public class RepositoryTestClass{
     
@@ -115,7 +110,7 @@ public class RepositoryTestClass{
     @Test
     public void 회원가입_테스트(){
 
-        for(int i = 3; i < 60; i ++){
+        for(int i = 1; i < 61; i ++){
 
             ProfileEntity profile = ProfileEntity.builder()
             .location("location")

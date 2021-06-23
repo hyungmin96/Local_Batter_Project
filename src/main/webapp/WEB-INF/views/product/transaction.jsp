@@ -4,15 +4,18 @@
 
 <div class="container" style="margin-top: 155px;">
 
-    <div id="my_modal">
-        <div class = "modal_close_btn"><img src="/images/delete_35px.png" style="float: right; cursor: pointer;"></div>
+    <!-- modal -->
+        <div id="my_modal">
+            <div class = "modal_close_btn"><img src="/images/delete_35px.png" style="width: 20px; height: 20px;float: right; cursor: pointer;"></div>
 
-        <div class="comment">
-            리뷰작성
-            <textarea id="comment_box" class="form-control" style="margin-bottom: 15px;"></textarea>
+            <div class="comment">
+                리뷰작성
+                <hr style="border: none; height: 1px; background-color: rgb(185, 185, 185);"/>
+                <textarea id="comment_box" class="form-control" style="height: 150px;"></textarea>
+                <div class="text__container"></div>
+            </div>
         </div>
-
-    </div>
+    <!-- modal -->
 
     <div>
         <span class="dropdown">
@@ -130,7 +133,10 @@ function loadTransactionData(e = null, type = 'transaction', page = 0){
 
 function dataQuarterProcess(type, key, value, pageRequired = true, page = 0){
 
-console.log(value)
+    var userId = value.buyer.id;
+    var sellerId = value.seller.id;
+    var boardId = value.boardId.id;
+    var writer = value.buyer.username;
 
     var data = {'status' : '', 'files' : '', 'action' : ''};
     
@@ -142,7 +148,7 @@ console.log(value)
     // 거래 완료
     if(type == 'complete'){
         data['status'] = "<div style='width: 55px; color: #ccc'>거래완료</div>";
-        data['action'] = "<button onclick='showModal();' style='margin: auto auto; height: 40px;' type='button' id='submit__btn__" + value.boardId.id + "' class='btn btn-primary'>리뷰작성</button>";
+        data['action'] = "<button onclick='showModal(" + userId + ", " + sellerId + ", " + boardId + ", " + writer + ");' style='margin: auto auto; height: 40px;' type='button' id='submit__btn__" + value.boardId.id + "' class='btn btn-primary'>리뷰작성</button>";
 
     // 관심물품
     }else if(type == 'cart'){
@@ -252,9 +258,7 @@ function submitTransaction(boardId, sellerId, buyerId){
 }
 
 function deleteTransaction(boardId, sellerId, buyerId){
-    
     var data = 'type=delete&boardId=' + boardId + '&sellerId=' + sellerId + '&buyerId=' + buyerId;
-
     $.ajax({
         url: '/api/transaction/delete',
         type: 'POST',
@@ -264,6 +268,28 @@ function deleteTransaction(boardId, sellerId, buyerId){
             alert('선택하신 물품교환이 취소되었습니다.');
         }
     })
+}
+
+function commentWrite(userId, seller, boardId, writer){
+
+    var comment = $('#comment_box').val();
+
+    if(comment.length > 0){
+
+        $.ajax({
+
+            url: '/api/comment/write',
+            type: 'POST',
+            contentType: 'application/x-www-form-urlencoded',
+            data : 'type=comment&userId=' + userId + '&seller=' + seller + '&boardId=' + boardId + '&comment=' + comment + '&writer=' + writer,
+            success: function(response){
+                if(response == 'success'){
+                    alert('리뷰를 작성하였습니다.');
+                }
+            }
+
+        })
+    }else alert('리뷰내용을 입력해주세요.');
 
 }
 

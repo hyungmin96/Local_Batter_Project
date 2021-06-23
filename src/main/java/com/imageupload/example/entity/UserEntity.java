@@ -1,6 +1,6 @@
 package com.imageupload.example.entity;
 
-
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -22,7 +22,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import javax.persistence.OneToMany;
+import org.hibernate.annotations.CreationTimestamp;
 
 @Data
 @Entity
@@ -48,15 +48,15 @@ public class UserEntity implements UserDetails {
     @JoinColumn(name = "profileId")
     private ProfileEntity profile;
 
+    @CreationTimestamp
+    private Timestamp createTime;
+
     @Column
     private String nickname;
 
     @Column
     @Enumerated(EnumType.STRING)
     private Role Role;
-
-    @OneToMany(mappedBy = "commentUser")
-    private List<CommentEntity> comments = new ArrayList<>();
 
 	@Override
 	public boolean isAccountNonExpired() {

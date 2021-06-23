@@ -1,8 +1,10 @@
-function modal(id) {
+
+function modal(id, userId, sellerId, boardId, writer) {
     var zIndex = 9999;
     var modal = document.getElementById(id);
 
     var bg = document.createElement('div');
+    bg.id = 'modal__layer';
     bg.setStyle({
         position: 'fixed',
         zIndex: zIndex,
@@ -33,6 +35,12 @@ function modal(id) {
         msTransform: 'translate(-50%, -50%)',
         webkitTransform: 'translate(-50%, -50%)'
     });
+
+    $('.text__container').empty();
+    $('.text__container').append(
+        "<button onclick='commentWrite(" + userId + ", " + sellerId + ", " + boardId + ", " + writer + ");' style='margin-top: 10px; float: right;' id='comment_btn' class='btn btn-primary'>작성</button>"
+    );
+
 }
 
 // Element 에 style 한번에 오브젝트로 설정하는 함수 추가
@@ -41,6 +49,6 @@ Element.prototype.setStyle = function(styles) {
     return this;
 };
 
-function showModal(){
-    modal('my_modal');
+function showModal(userId, sellerId, boardId, writer){
+    modal('my_modal', userId, sellerId, boardId, writer);
 }

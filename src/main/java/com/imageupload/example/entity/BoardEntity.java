@@ -9,6 +9,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.CreationTimestamp;
@@ -46,6 +50,10 @@ public class BoardEntity {
     @Column
     private String location;
     
+    @OneToOne(mappedBy = "boardId")
+    @JsonIgnore
+    private CommentEntity comment;
+
     @OneToMany(mappedBy = "board", fetch = FetchType.EAGER)
     @Cascade(value = CascadeType.ALL)
     private List<FileEntity> files;

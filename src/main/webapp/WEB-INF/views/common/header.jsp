@@ -84,7 +84,6 @@
                     </c:otherwise>
                 </c:choose>
         </div>
-        <hr />
     </div>
 
     <div class="container">
