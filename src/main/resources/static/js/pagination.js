@@ -30,11 +30,6 @@ function nextBtn(){
     curPage.dataset.value = (curPage.dataset.value * 1) + 1;
     document.getElementsByClassName('previous')[0].style.display = '';
 
-    if(curPage.dataset.value >= lastPage.dataset.value){
-        document.getElementsByClassName('next')[0].style.display = 'none';
-    }else
-        document.getElementsByClassName('next')[0].style.display = '';
-
     Array.from(document.getElementsByClassName('page__number__box')[0].children, item => {
         if(item.style.display != 'none' && index < 10){
             item.style.display = 'none';
@@ -53,9 +48,7 @@ function previousBtn(){
     var curPageNum = document.getElementsByClassName('curpage')[0];
     var totalPageArray = getPages();
 
-    curPageNum.dataset.value = (curPageNum.dataset.value * 1) - 1;
-    if(curPageNum.dataset.value <= 1)
-        document.getElementsByClassName('previous')[0].style.display = 'none';
+    curPageNum.dataset.value = ((curPageNum.dataset.value * 1) - 1) <= 0 ? 1 : ((curPageNum.dataset.value * 1) - 1);
 
     Array.from(totalPageArray[curPageNum.dataset.value - 1], item =>{
         document.getElementById(item.id).style.display = '';

@@ -42,17 +42,53 @@
 
             <div>
                 <div class="profile__box" style="width: 950px; height: 400px">
-                    <div class="category__list">거래내역</div>
-                    <hr />
-                    <div class="profile__exchange__list">
+                    <div style="display:inline-flex;">
+                        <div class="category__list">거래내역</div>
+                        <div class="transaction__count">0개</div>
                     </div>
+                    <hr style="margin: 5px 3px; border:none; height: 1px; background-Color: #ccc;"/>
+                    
+                    <div class="profile__exchange__list">
+
+                    </div>
+
+                    <div class="page__container">
+                        <div class="page__box" style="display: inline-flex; max-width: 400px;">
+                            <div class="previous"><img src="/images/back.png"></div>
+                                <input type="hidden" class="curpage" data-value="1">
+                                <input type="hidden" class="lastpage" data-value="${endPages}">
+                                <div class="board__number__box">
+
+                                </div>
+                            <div class="next"><img src="/images/next.png"></div>
+                        </div>
+                    </div>
+
                 </div>
 
-                <div class="profile__box" style="width: 950px; height: 400px">
-                    <div class="category__list">거래후기 목록</div>
-                    <hr />
-                    <div class="profile__exchange__list">
+                <div class="profile__box" style="width: 950px; height: 400px;">
+                    <div style="display:inline-flex;">
+                        <div class="category__list">거래리뷰 목록</div>
+                        <div class="review__count">0개</div>
                     </div>
+                    
+                    <hr style="margin: 5px 3px; border:none; height: 1px; background-Color: #ccc;"/>
+                    <div class="comment__list">
+
+                    </div>
+
+                    <div class="page__container">
+                        <div class="page__box" style="display: inline-flex; max-width: 400px;">
+                            <div class="previous"><img src="/images/back.png"></div>
+                                <input type="hidden" class="curpage" data-value="1">
+                                <input type="hidden" class="lastpage" data-value="${endPages}">
+                                <div class="page__number__box">
+
+                                </div>
+                            <div class="next"><img src="/images/next.png"></div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
@@ -112,126 +148,8 @@
         </div>
     <!--End Modal-->
 
-<script>
+<script src="/js/pagination.js"></script>
+<script src="/js/profile.js"></script>
+<link rel="stylesheet" href="/css/profile.css">
 
-    var profileFile = profile__img;
-
-    $(function(){
-        $('#profile__img__upload').on("change", function(e){
-            // 프로필 사진 미리보기
-            var reader = new FileReader();
-            reader.onload = function(f){
-                profile__img.src = f.target.result;
-                profileFile = e.target.files[0];
-            }
-            reader.readAsDataURL(e.target.files[0]);
-        })
-    })
-
-    $('#img__upload__btn').on("click", function() {
-        $('#profile__img__upload').click();
-    });
-
-    $('.setting__profile__btn').on("click", function() {
-        $('#myModal').show();
-            console.log(document.getElementById('profile__img'))
-    });
-
-    $('#profile__save__btn').on("click", function(){
-        profileSave();
-    })
-
-    function close_pop(flag) {
-        $('#myModal').hide();
-    };
-
-    function profileSave(){
-        
-        const profileData = new FormData();
-
-
-        profileData.append('nickname', $('#username').val());
-        profileData.append('introduce', $('#introduce').val());
-        profileData.append('profileImg', profileFile);
-        profileData.append('location', $('#location').val());
-        profileData.append('preferTime', $('#prefertime').val());
-        profileData.append('accountNumber', $('#account').val());
-
-        $.ajax({
-
-            url: '/api/profile/save',
-            type: 'POST',
-            data: profileData,
-            dataType: 'text',
-            contentType: false,
-            processData: false,
-            success: function(response){
-                if(response != null){
-                    alert('성공적으로 수정하였습니다.');
-                    location.reload();
-                }else{
-                    alert('비밀번호가 잘못되었습니다.');
-                }
-            }
-
-        })
-
-    }
-
-</script>
-
-<style>
-@font-face {
-    font-family: 'ChosunBg';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@1.0/ChosunBg.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-}
-
-.profile__box{
-    box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.12);
-    border-radius: 5px;
-    padding: 20px;
-    margin: 30px 20px;
-}
-
-.profile__item{
-    font-size: 13px;
-    color: rgb(165, 165, 165);
-    margin: 5px 5px;
-}
-
-.profile__box .category__list{
-    font-family: ChosunBg;
-    font-size: 16px;
-}
-
-.user__pr{
-    max-width: 200px; 
-    height: :30px;
-    font-family: Noto Sans KR;
-    font-size: 14px;
-    color: rgb(187, 187, 187);
-    margin: auto auto;
-    text-align: center;
-    word-break: break-all;
-    word-wrap: break-word;
-    overflow: hidden;
-}
-
-.user__profile__name{
-    font-family: ChosunBg;
-    font-size: 22px;
-    color: black;
-    margin: auto auto;
-}
-
-.user__info span{
-    font-family: ChosunBg;
-    font-size: 14px;
-    color: black;
-    margin: 15px;
-}
-
-</style>
 

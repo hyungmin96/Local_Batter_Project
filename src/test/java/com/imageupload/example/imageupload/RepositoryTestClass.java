@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import com.imageupload.example.entity.BoardEntity;
 import com.imageupload.example.entity.ChatEntity;
+import com.imageupload.example.entity.CommentEntity;
 import com.imageupload.example.entity.ProfileEntity;
 import com.imageupload.example.entity.RoomEntity;
 import com.imageupload.example.entity.TransactionEntity;
@@ -15,6 +16,7 @@ import com.imageupload.example.entity.UserEntity;
 import com.imageupload.example.repositories.BoardRepository;
 import com.imageupload.example.repositories.ChatRepository;
 import com.imageupload.example.repositories.ChatRoomRepository;
+import com.imageupload.example.repositories.CommentRepository;
 import com.imageupload.example.repositories.ProfileRepository;
 import com.imageupload.example.repositories.RoomRepository;
 import com.imageupload.example.repositories.TransactionRepository;
@@ -47,6 +49,29 @@ public class RepositoryTestClass{
 
     @Autowired
     private BoardRepository boardRepository;
+
+    @Autowired
+    private CommentRepository commentRepository;
+
+    @Test
+    void 거래리뷰_저장_테스트(){
+
+        BoardEntity boardEntity = boardRepository.findById(604L).get();
+
+        for(int i = 31; i < 60; i++){
+
+            CommentEntity commentEntity = CommentEntity.builder()
+            .boardId(boardEntity)
+            .writer(boardEntity.getWriter())
+            .commentValue("commentValue")
+            .target("1")
+            .build();
+            
+            commentRepository.save(commentEntity);
+
+        }
+            
+    }
 
     @Test
     void 거래리스트_저장_테스트(){

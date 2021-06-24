@@ -70,7 +70,7 @@ public class TransactionController {
     @PostMapping("/delete")
     public ResponseEntity<String> deleteTransaction(SubmitTransactionDTO submitTransaction){
         transactionService.deleteTransaction(submitTransaction);
-        return new ResponseEntity<String>("sdgdsg", HttpStatus.OK);
+        return new ResponseEntity<String>("success", HttpStatus.OK);
     }
 
 }

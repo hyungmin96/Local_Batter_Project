@@ -1,0 +1,112 @@
+@font-face {
+    font-family: 'ChosunBg';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@1.0/ChosunBg.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.page__container{
+    text-align: center;
+}
+
+.transaction__count{
+    font-family: ChosunBg;
+    font-size: 13px;
+    margin: auto auto;
+    margin-left: 5px;
+    color: rgb(184, 184, 184);
+}
+
+.review__count{
+    font-family: ChosunBg;
+    font-size: 13px;
+    margin: auto auto;
+    margin-left: 5px;
+    color: rgb(184, 184, 184);
+}
+
+.profile__exchange__list{
+    height: 285px;
+}
+
+.comment__list{
+    height: 285px;
+}
+
+.comment__box{
+    font-family: 'ChosunBg';
+    display: inline-flex;
+    margin: 5px 5px;
+}
+
+.score{
+    width: 300px;
+    margin: auto;
+    
+}
+
+.comment{
+    font-size: 15px;
+    width: 100%;
+    margin: auto auto;
+}
+
+.writer{
+    font-size: 13px;
+    width: 200px;
+    margin: auto auto;
+    color: rgb(112, 112, 112);
+}
+
+.date{
+    font-size: 13px;
+    width: 300px;
+    margin: auto auto;
+    color: rgb(112, 112, 112);
+}
+
+
+.profile__box{
+    box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.12);
+    border-radius: 5px;
+    padding: 15px;
+    margin: 30px 20px;
+}
+
+.profile__item{
+    font-size: 13px;
+    color: rgb(165, 165, 165);
+    margin: 5px 5px;
+}
+
+.profile__box .category__list{
+    font-family: ChosunBg;
+    font-size: 16px;
+}
+
+.user__pr{
+    max-width: 200px; 
+    height: 30px;
+    font-family: Noto Sans KR;
+    font-size: 14px;
+    color: rgb(187, 187, 187);
+    margin: auto auto;
+    text-align: center;
+    word-break: break-all;
+    word-wrap: break-word;
+    overflow: hidden;
+}
+
+.user__profile__name{
+    font-family: ChosunBg;
+    font-size: 22px;
+    color: black;
+    margin: auto auto;
+}
+
+.user__info span{
+    font-family: ChosunBg;
+    font-size: 14px;
+    color: black;
+    margin: 15px;
+}
