@@ -29,7 +29,7 @@
 
                 <div class="user__info">
                     <div class="profile__item">매너점수</div>
-                    <span>4.5</span>
+                    <span>${profile.mannerScore}</span>
                     <div class="profile__item">최근 거래횟수</div>
                     <span>10회</span>
                     <div class="profile__item">거래 선호지역</div>

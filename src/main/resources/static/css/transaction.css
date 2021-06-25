@@ -10,6 +10,17 @@
     font-style: normal;
 }
 
+#manner__box{
+    margin-left: 10px;
+    height: 30px;
+    background-color: rgb(231, 231, 231);
+    border: 1px solid rgb(230, 230, 230);
+    border-radius: 3px;
+    font-family: ChosunBg;
+    font-size: 13px;
+    color: rgb(109, 109, 109);
+}
+
 .container__product__box{
     display: flex;
     flex-direction: row;

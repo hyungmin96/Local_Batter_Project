@@ -16,4 +16,8 @@ public class CommentService {
         commentRepository.save(commentEntity);
     }
 
+    public float getMannerScore(String target){
+        return commentRepository.findAllBymannerScore(target);
+    }
+
 }

@@ -55,6 +55,16 @@ public class RepositoryTestClass{
     private CommentRepository commentRepository;
 
     @Test
+    void 매너점수_구하기_테스트(){
+
+        String username = "1";
+
+        float test = commentRepository.findAllBymannerScore(username);
+
+        System.out.println("");
+    }
+
+    @Test
     void 거래리뷰_저장_테스트(){
 
         BoardEntity boardEntity = boardRepository.findById(604L).get();

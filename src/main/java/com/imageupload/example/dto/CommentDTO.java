@@ -9,6 +9,7 @@ public class CommentDTO {
     private Long boardId;
     private Long seller;
     private String comment;
+    private float mannerScore;
     private String writer;
     
 }

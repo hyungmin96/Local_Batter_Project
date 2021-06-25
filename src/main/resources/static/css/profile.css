@@ -36,14 +36,12 @@
 .comment__box{
     font-family: 'ChosunBg';
     display: inline-flex;
-    margin: 5px 5px;
+    margin: 7px 5px;
 }
 
 .score{
-    text-align: center;
     width: 150px;
     margin: auto;
-    
 }
 
 .board__number__box{

@@ -8,6 +8,28 @@
         <div id="my_modal">
             <div class = "modal_close_btn"><img src="/images/delete_35px.png" style="width: 20px; height: 20px;float: right; cursor: pointer;"></div>
 
+            <div style="display: inline-flex">
+                <div class="manner__score" style="margin: auto auto;">
+                    매너점수
+                </div>
+
+                <div class="btn-group">
+                    <button id="manner__box" type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        선택
+                    </button>
+                        <ul class="dropdown-menu">
+                            <a onclick="dropBtnSelect(this);" class="dropdown-item" href="#">0.0</a>
+                            <a onclick="dropBtnSelect(this);" class="dropdown-item" href="#">1.0</a>
+                            <a onclick="dropBtnSelect(this);" class="dropdown-item" href="#">2.0</a>
+                            <a onclick="dropBtnSelect(this);" class="dropdown-item" href="#">3.0</a>
+                            <a onclick="dropBtnSelect(this);" class="dropdown-item" href="#">4.0</a>
+                            <a onclick="dropBtnSelect(this);" class="dropdown-item" href="#">5.0</a>
+                        </ul>
+                </div>
+            </div>
+
+            <hr style="border: none; height: 1px; background-color: rgb(185, 185, 185);"/>
+
             <div class="comment">
                 리뷰작성
                 <hr style="border: none; height: 1px; background-color: rgb(185, 185, 185);"/>
@@ -63,7 +85,10 @@ var display = 10;
 var pagination = false;
 
 function dropBtnSelect(e){
-    document.getElementById('dropdownMenuButton').innerHTML = e.text;
+    var dropBox = e.parentNode.parentNode.children[0].id;
+    document.getElementById(dropBox).innerHTML = e.text;
+
+    if(dropBox != 'manner__box')
     if(e.text == '현재 거래중인 상품목록'){
         page = 0
         pagination = false;
@@ -105,7 +130,13 @@ function loadTransactionData(e = null, type = 'transaction', page = 0){
 
             $.each(response.content, function(key, value){
 
+                var writer;
                 var data = dataQuarterProcess(type, key, value);
+
+                if($('.user__name').text() != value.buyer.username)
+                    writer = value.buyer.username;
+                else
+                    writer = value.seller.username;
 
                 $('.product__items__container').append(
                     "<div>" + 
@@ -114,7 +145,7 @@ function loadTransactionData(e = null, type = 'transaction', page = 0){
                     "<a href='http://localhost:8000/" + data.files + "'><img class='thumbnail__img' src=/" + data.files + ">" + 
                     "<div style='width: 300px;'><a href='http://localhost:8000/board/article/" + value.boardId.id + "' target='_blank'>" +  value.boardId.title + "</a></div>" + 
                     "<div style='width: 100px;'>" + value.boardId.price + "원</div>" + 
-                    "<div style='width: 100px;'><a href='http://localhost:8000/profile/user=" + value.boardId.writer + "' target='_blank'>" + value.boardId.writer + "</a></div>" + 
+                    "<div style='width: 100px;'><a href='http://localhost:8000/profile/user=" + writer + "' target='_blank'>" + writer + "</a></div>" + 
                     "<div style='color: rgb(185, 185, 185); width: 100px;'>" + new Date(value.boardId.createTime).toLocaleDateString() + "</div>" + 
                     data.action +
                     "</div>" + 
@@ -273,6 +304,7 @@ function deleteTransaction(boardId, sellerId, buyerId){
 function commentWrite(userId, seller, boardId, writer){
 
     var comment = $('#comment_box').val();
+    var mannerScore = $('#manner__box').text();
 
     if(comment.length > 0){
 
@@ -281,10 +313,12 @@ function commentWrite(userId, seller, boardId, writer){
             url: '/api/comment/write',
             type: 'POST',
             contentType: 'application/x-www-form-urlencoded',
-            data : 'type=comment&userId=' + userId + '&seller=' + seller + '&boardId=' + boardId + '&comment=' + comment + '&writer=' + writer,
+            data : 'type=comment&userId=' + userId + '&seller=' + seller + '&boardId=' + boardId + '&comment=' + comment + '&mannerScore=' + mannerScore + '&writer=' + writer,
             success: function(response){
                 if(response == 'success'){
                     alert('리뷰를 작성하였습니다.');
+                    document.getElementById('my_modal').style.display = 'none';
+                    document.getElementById('modal__layer').style.display = 'none';
                 }
             }
 

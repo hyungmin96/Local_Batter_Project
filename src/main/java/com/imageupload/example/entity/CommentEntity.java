@@ -32,6 +32,8 @@ public class CommentEntity {
 
     private String target;
 
+    private float mannerScore;
+
     @OneToOne
     @JoinColumn(name = "boardId")
     @JsonIgnoreProperties(value = "files")

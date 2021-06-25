@@ -49,6 +49,7 @@ function loadBoardData(e = null, page = 0, display = 8){
 
 function loadCommentData(e, pages = 0){
 
+
     $.ajax({
 
         url: '/api/profile/comments',
@@ -61,14 +62,20 @@ function loadCommentData(e, pages = 0){
             document.getElementsByClassName('review__count')[0].innerHTML = response.totalElements + '개';
 
             $.each(response.content, function(key, value){
+
+                var mannerScore = [];
+                for(var star = 0; star < 5; star++){
+                    mannerScore.push("<img src='/images/nonestar.png'>");
+                }
+
+                for(var i = 0; i < value.mannerScore; i++){
+                    mannerScore[i] = "<img src='/images/star.png'>";
+                }
+            
                 $('.comment__list').append(
                     "<div class='comment__box'>" +
                     "<div class='score'>" +
-                    "<img src='/images/star.png'>" +
-                    "<img src='/images/star.png'>" +
-                    "<img src='/images/star.png'>" +
-                    "<img src='/images/star.png'>" +
-                    "<img src='/images/star.png'>" +
+                    mannerScore.join('') +
                     "</div>" +
                     "<div class='comment'>" +
                         value.commentValue +

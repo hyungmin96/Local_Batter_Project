@@ -21,7 +21,7 @@ public class ProfileEntity implements Serializable {
 
     @Id @GeneratedValue
     private Long id;
-    private int mannerScore;
+    private float mannerScore;
     private int mileage;
     private String nickname;
     private String profilePath;
