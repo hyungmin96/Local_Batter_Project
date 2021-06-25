@@ -1,3 +1,5 @@
+var pageName = '';
+
 function product_list_paging(e){
 
     let url = window.location.href;
@@ -10,7 +12,7 @@ function product_list_paging(e){
     let test = document.getElementById(e.id).innerText;
 
     callBoardsDataToJson(page = (test - 1));
-    
+    console.log(e.className)
     Array.from(document.getElementsByClassName('page__number__box')[0].children, item=>{
         item.style.backgroundColor = 'white';
     });
@@ -20,7 +22,7 @@ function product_list_paging(e){
     window.scrollTo(0,0);
 }
 
-function nextBtn(){
+function nextBtn(pageContainerName){
     
     var index = 0;
 
@@ -30,23 +32,20 @@ function nextBtn(){
     curPage.dataset.value = (curPage.dataset.value * 1) + 1;
     document.getElementsByClassName('previous')[0].style.display = '';
 
-    Array.from(document.getElementsByClassName('page__number__box')[0].children, item => {
+    Array.from(document.getElementsByClassName(pageContainerName)[0].children, item => {
         if(item.style.display != 'none' && index < 10){
             item.style.display = 'none';
             index++;
         }
     });
-
-    console.log(document.getElementsByClassName('page__number__box')[0]);
-
 }
 
-function previousBtn(){
+function previousBtn(pageContainerName){
     
     document.getElementsByClassName('next')[0].style.display = '';
     
     var curPageNum = document.getElementsByClassName('curpage')[0];
-    var totalPageArray = getPages();
+    var totalPageArray = getPages(pageContainerName);
 
     curPageNum.dataset.value = ((curPageNum.dataset.value * 1) - 1) <= 0 ? 1 : ((curPageNum.dataset.value * 1) - 1);
 
@@ -56,9 +55,9 @@ function previousBtn(){
 
 }
 
-function getPages(){
+function getPages(pageContainerName){
 
-    var pageClasses = document.getElementsByClassName('page__number__box')[0];
+    var pageClasses = document.getElementsByClassName(pageContainerName)[0];
 
     var totalPageArray = [];
     var pageArray = [];

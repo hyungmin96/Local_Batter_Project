@@ -11,6 +11,7 @@ import com.imageupload.example.entity.CommentEntity;
 import com.imageupload.example.entity.ProfileEntity;
 import com.imageupload.example.entity.RoomEntity;
 import com.imageupload.example.entity.TransactionEntity;
+import com.imageupload.example.entity.TransactionEnumType;
 import com.imageupload.example.entity.UserJoinRoomEntity;
 import com.imageupload.example.entity.UserEntity;
 import com.imageupload.example.repositories.BoardRepository;
@@ -58,7 +59,7 @@ public class RepositoryTestClass{
 
         BoardEntity boardEntity = boardRepository.findById(604L).get();
 
-        for(int i = 31; i < 60; i++){
+        for(int i = 60; i < 100; i++){
 
             CommentEntity commentEntity = CommentEntity.builder()
             .boardId(boardEntity)
@@ -76,14 +77,15 @@ public class RepositoryTestClass{
     @Test
     void 거래리스트_저장_테스트(){
 
-        UserEntity sellerEntity = userRepository.findById(1L).get();
-        UserEntity buyerEntity = userRepository.findById(2L).get();
+        UserEntity sellerEntity = userRepository.findById(122L).get();
+        UserEntity buyerEntity = userRepository.findById(123L).get();
         
-        for(int i = 3; i < 104; i ++){
+        for(int i = 1; i < 104; i ++){
             BoardEntity board = boardRepository.findById(Long.parseLong(String.valueOf(i))).get();;
             
             TransactionEntity transactionEntity = new TransactionEntity();
             transactionEntity.setBoardId(board);
+            transactionEntity.setType(TransactionEnumType.complete);
             transactionEntity.setSeller(sellerEntity);
             transactionEntity.setBuyer(buyerEntity);
             transactionRepository.save(transactionEntity);

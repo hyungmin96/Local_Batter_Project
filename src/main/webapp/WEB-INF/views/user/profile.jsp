@@ -53,7 +53,7 @@
                     </div>
 
                     <div class="page__container">
-                        <div class="page__box" style="display: inline-flex; max-width: 400px;">
+                        <div class="page__box" style="display: inline-flex; max-width: 395px;">
                             <div class="previous"><img src="/images/back.png"></div>
                                 <input type="hidden" class="curpage" data-value="1">
                                 <input type="hidden" class="lastpage" data-value="${endPages}">
@@ -78,7 +78,7 @@
                     </div>
 
                     <div class="page__container">
-                        <div class="page__box" style="display: inline-flex; max-width: 400px;">
+                        <div class="page__box" style="display: inline-flex; max-width: 395px;">
                             <div class="previous"><img src="/images/back.png"></div>
                                 <input type="hidden" class="curpage" data-value="1">
                                 <input type="hidden" class="lastpage" data-value="${endPages}">

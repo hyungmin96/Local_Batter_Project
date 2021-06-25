@@ -40,27 +40,51 @@
 }
 
 .score{
-    width: 300px;
+    text-align: center;
+    width: 150px;
     margin: auto;
     
 }
 
+.board__number__box{
+    max-width: 380px;
+    display: inline;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+    overflow: hidden;
+}
+
 .comment{
     font-size: 15px;
-    width: 100%;
+    width: 470px;
+    white-space: nowrap;
+    overflow:hidden;
+    text-overflow: ellipsis;
+    margin: auto auto;
+}
+
+.board__title{
+    font-size: 15px;
+    width: 620px;
+    white-space: nowrap;
+    overflow:hidden;
+    text-overflow: ellipsis;
     margin: auto auto;
 }
 
 .writer{
+    text-align: center;
     font-size: 13px;
-    width: 200px;
+    width: 100px;
     margin: auto auto;
     color: rgb(112, 112, 112);
 }
 
 .date{
+    text-align: center;
     font-size: 13px;
-    width: 300px;
+    width: 200px;
     margin: auto auto;
     color: rgb(112, 112, 112);
 }

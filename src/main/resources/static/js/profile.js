@@ -1,13 +1,14 @@
 var display = 8;
 var profileFile = profile__img;
 var pagination = false;
+var boardPagination = false;
 
 $(document).ready(function(){
     loadBoardData();
     loadCommentData();
 })
 
-function loadBoardData(e, page = 0, display = 8){
+function loadBoardData(e = null, page = 0, display = 8){
 
     $.ajax({
 
@@ -16,24 +17,21 @@ function loadBoardData(e, page = 0, display = 8){
         data: 'type=complete&page=' + page + '&display=' + display,
         success: function(response){
 
-            loadPagination(e, 'board__number__box', response.totalPages + 1);
+            document.getElementsByClassName('transaction__count')[0].innerHTML = response.totalElements + '개';
+
+            loadBoardPagination(e, response.totalPages);
 
             $.each(response.content, function(key, value){
 
                 $('.profile__exchange__list').append(
                     "<div class='comment__box'>" +
-                    "<div class='score'>" +
-                    "<img src='/images/star.png'>" +
-                    "<img src='/images/star.png'>" +
-                    "<img src='/images/star.png'>" +
-                    "<img src='/images/star.png'>" +
-                    "<img src='/images/star.png'>" +
-                    "</div>" +
-                    "<div class='comment'>" +
+                    "<div class='board__title'>" +
                         value.boardId.title +
                     "</div>" +
                     "<div class='writer'>" +
+                    "<div>" +
                     value.boardId.writer +
+                    "</div>" +
                     "</div>" +
                     "<div class='date'>" +
                     new Date(value.boardId.createTime).toLocaleDateString([], {'hour': '2-digit', 'minute' : '2-digit'}) + 
@@ -58,7 +56,7 @@ function loadCommentData(e, pages = 0){
         data: {page: pages, display: display},
         success: function(response){
 
-            loadPagination(e, 'page__number__box', response.totalPages);
+            loadCommentPagination(e, response.totalPages);
 
             document.getElementsByClassName('review__count')[0].innerHTML = response.totalElements + '개';
 
@@ -92,30 +90,46 @@ function loadCommentData(e, pages = 0){
 
 }
 
-function loadPagination(e, containerName, pages){
+function loadBoardPagination(e, pages){
 
-    Array.from(document.getElementsByClassName(containerName)[0].children, item=>{
+    Array.from(document.getElementsByClassName('board__number__box')[0].children, item=>{
         item.style.backgroundColor = 'white';
     });
 
     if(e != null)
         e.style.backgroundColor = 'rgb(236, 236, 236)';
 
-    var dataType = null;
-    if(containerName.includes('page')){
-        $('.comment__list').empty();
+    $('.profile__exchange__list').empty();
+
+    if(!boardPagination){
+        boardPagination = true;
+        if(pages < 1) pages = 1;
+        for(var i = 1; i <= pages; i++){
+            $('.board__number__box').append(
+                "<li id='boardnum-" + i + "' class='page__number' onclick='loadBoardData(this, " + (i - 1) + ");'>" + 
+                "<a href='javascript:void(0)'>" + i + "</a></li>"
+            );
+        }
     }
-    else{
-        $('.profile__exchange__list').empty();
-    }
+}
+
+function loadCommentPagination(e, pages){
+
+    Array.from(document.getElementsByClassName('page__number__box')[0].children, item=>{
+        item.style.backgroundColor = 'white';
+    });
+
+    if(e != null)
+        e.style.backgroundColor = 'rgb(236, 236, 236)';
+
+    $('.comment__list').empty();
 
     if(!pagination){
         pagination = true;
         if(pages < 1) pages = 1;
-        $('.' + containerName).empty();
         for(var i = 1; i <= pages; i++){
-            $('.' + containerName).append(
-                "<li id='pagenum-" + i + "' class='page__number' onclick='loadBoardData(this, " + (i - 1) + ");'>" + 
+            $('.page__number__box').append(
+                "<li id='commentnum-" + i + "' class='page__number' onclick='loadCommentData(this, " + (i - 1) + ");'>" + 
                 "<a href='javascript:void(0)'>" + i + "</a></li>"
             );
         }

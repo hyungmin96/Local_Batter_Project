@@ -11,8 +11,12 @@ $(document).ready(function(){
         $('.accuracy').on("click", accuracy);
         $('.Bestprice').on("click", Bestprice);
         $('.Latest').on("click", Latest);
-        $('.next').on("click", nextBtn);
-        $('.previous').on("click", previousBtn);
+        $('.next').click(function(e){
+            nextBtn(e.currentTarget.parentElement.children[3].className);
+        });
+        $('.previous').click(function(e){
+            previousBtn(e.currentTarget.parentElement.children[3].className);
+        });
     });
 
 });
