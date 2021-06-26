@@ -59,7 +59,7 @@
                 <span class="profile__send">프로필 전송</span> | <span class="number__send">계좌번호 전송</span>
             </div>
             
-            <div class="chat__send" style="display: flex; flex-direction: row;">
+            <div class="chat__send" style="display: flex; flex-direction: row; margin-bottom: 25px;">
                 <input type="text" id="message" placeholder="내용을 입력해주세요" class="chat__content__send" value="">
                 <button class="sendMessage" style="margin-left: 5px; background-color: white; border: none"><img src="/images/paper_plane_21px.png"></button>
             </div>
@@ -73,3 +73,5 @@
 <script src="/webjars/stomp-websocket/stomp.min.js"></script>
 <script src="/js/app.js"></script>
 <link rel="stylesheet" href="/css/chatCreateList.css">
+
+<%@ include file="../common/footer.jsp"%>

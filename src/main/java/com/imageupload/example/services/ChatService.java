@@ -41,7 +41,10 @@ public class ChatService {
         else
             userJoinRoomEntity.setTargetConnectionType(UserJoinRommEnumType.disconnected);
 
-        chatRoomRepository.save(userJoinRoomEntity);
+        if(userJoinRoomEntity.getTargetConnectionType() == UserJoinRommEnumType.disconnected && userJoinRoomEntity.getUserConnectionType() == UserJoinRommEnumType.disconnected)
+            chatRoomRepository.delete(userJoinRoomEntity);            
+        else
+            chatRoomRepository.save(userJoinRoomEntity);
 
     }
 

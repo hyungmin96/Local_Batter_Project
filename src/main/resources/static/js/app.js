@@ -245,9 +245,14 @@ function showMessage(message) {
                     else
                         content = '채팅방이 개설되었습니다.'
 
-                        // if($('.user__name').text() == value.target.username && value.targetConnectionType == 'connected'){
-                        // }
-                    console.log($('.user__name').text(), value.target.username, value.targetConnectionType)
+                        var connectionPerform = 'disconnected';
+                        if(value.userVo.username != $('.user__name').text()){
+                            connectionPerform = value.userConnectionType;
+                        }else{
+                            connectionPerform = value.targetConnectionType;
+                        }
+
+                        if(connectionPerform == 'connected'){
 
                             $('.roomsContainer').append(
                                 "<div class='room__box' style='width: 100%;'>" + 
@@ -268,6 +273,8 @@ function showMessage(message) {
                                 "<hr style='margin: 0; border: none; height: 1px; background-color: rgb(185, 185, 185);'/>" +
                                 "</div>"
                                 );
+
+                        }
 
                 })
 
