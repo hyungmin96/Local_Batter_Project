@@ -11,34 +11,34 @@ import com.imageupload.example.entity.UserJoinRoomEntity;
 import com.imageupload.example.entity.UserEntity;
 import com.imageupload.example.repositories.ChatRoomRepository;
 import com.imageupload.example.repositories.RoomRepository;
+import com.imageupload.example.repositories.UserJoinRommEnumType;
 import com.imageupload.example.repositories.UserRepository;
 import com.imageupload.example.services.ChatService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class ChatRestController {
     
-    @Autowired
-    private ChatService chatService;
+    final private ChatService chatService;
+    final private UserRepository userRepository;
+    final private ChatRoomRepository chatRoomRepository;
+    final private RoomRepository roomRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    @PostMapping("/chat/delete/room")
+    public void deleteRoom(@RequestParam String roomId, @RequestParam String userId, @RequestParam String targetUsername){
+        chatService.deleteChatRoom(roomId, userId, targetUsername);
+    }
 
-    @Autowired
-    private ChatRoomRepository chatRoomRepository;
-
-    @Autowired
-    private RoomRepository roomRepository;
-
-    
     @GetMapping("/chat/rooms")
     public List<UserJoinRoomEntity> getChatRooms(Principal principal){
         return chatService.getChatRoomList(principal);
@@ -86,6 +86,8 @@ public class ChatRestController {
             UserJoinRoomEntity userJoinRoomEntity = new UserJoinRoomEntity();
             userJoinRoomEntity.setTarget(target.get());
             userJoinRoomEntity.setUserVo(principal);
+            userJoinRoomEntity.setTargetConnectionType(UserJoinRommEnumType.connected);
+            userJoinRoomEntity.setUserConnectionType(UserJoinRommEnumType.connected);
             userJoinRoomEntity.setRoomEntity(roomEntity);
     
             chatRoomRepository.save(userJoinRoomEntity);

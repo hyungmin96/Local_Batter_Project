@@ -13,31 +13,37 @@ import com.imageupload.example.entity.UserEntity;
 import com.imageupload.example.repositories.ChatRepository;
 import com.imageupload.example.repositories.ChatRoomRepository;
 import com.imageupload.example.repositories.RoomRepository;
+import com.imageupload.example.repositories.UserJoinRommEnumType;
 import com.imageupload.example.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class ChatService {
     
-    @Autowired
-    private SimpMessagingTemplate simpMessageTemplate;
+    final private SimpMessagingTemplate simpMessageTemplate;
+    final private ChatRepository chatRepository;
+    final private RoomRepository roomRepository;
+    final private ChatRoomRepository chatRoomRepository;
+    final private UserRepository userRepository;
 
-    @Autowired
-    private ChatRepository chatRepository;
+    public void deleteChatRoom(String roomId, String userId, String targetUsername){
 
-    @Autowired
-    private RoomRepository roomRepository;
+        UserJoinRoomEntity userJoinRoomEntity = chatRoomRepository.findById(Long.parseLong(roomId)).get();
+        if(targetUsername.equals(userJoinRoomEntity.getUserVo().getUsername()))
+            userJoinRoomEntity.setUserConnectionType(UserJoinRommEnumType.disconnected);
+        else
+            userJoinRoomEntity.setTargetConnectionType(UserJoinRommEnumType.disconnected);
 
-    @Autowired
-    private ChatRoomRepository chatRoomRepository;
+        chatRoomRepository.save(userJoinRoomEntity);
 
-    @Autowired
-    private UserRepository userRepository;
+    }
 
     public void sendNotification(NotificationDTO message){
         simpMessageTemplate.convertAndSend("/notification/" + message.getTargetUser(), message);

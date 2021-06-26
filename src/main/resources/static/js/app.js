@@ -6,10 +6,12 @@ var previousDate = null;
 var displayDateTrigger = false;
 var lastPage = false;
 var itemDate
+var targetUsername;
 
 // 새로운 채팅방이 클릭될 경우만 실행되는 메소드
 function loadChatList(e){
     if(globalThis.roomId == null || globalThis.roomId != e.id){
+        targetUsername = $('#targetId')[0].innerHTML;
         $(".chat__list").empty();
         clearBackColor();
         globalThis.roomId = e.id;
@@ -19,6 +21,46 @@ function loadChatList(e){
         loadChatData(globalThis.roomId);
         document.getElementById(globalThis.roomId).style.backgroundColor  = 'rgb(245, 245, 245)';
     }
+}
+
+// 클릭 이벤트
+$(function () {
+
+    $('#exit__btn__perform').click(function(){
+        exitChatRoom();
+    })
+
+    $('.profile__send').click(function(){
+        sendMessage('profile');
+    })
+
+    $('.chat__content__send').keyup(function(event) {
+        if (event.keyCode === 13) sendMessage('message');
+    });
+
+    $('.sendMessage').click(function() {
+        sendMessage('message');
+    });
+
+    $('.number__send').click(function() {
+        sendMessage('account');
+    });
+
+    $( "#notification" ).click(function() { sendNotification(); });
+});
+
+function exitChatRoom(){
+
+    $.ajax({
+        url: '/api/chat/delete/room',
+        type: 'POST',
+        contentType: 'application/x-www-form-urlencoded',
+        data: 'roomId=' + globalThis.roomId + '&userId=' + $('.user__name').text() + '&targetUsername=' + globalThis.targetUsername,
+        success: function(response){
+            console.log(response);
+        }
+    })
+
 }
 
 function clearBackColor(){
@@ -115,27 +157,6 @@ function displayDate(time){
     }
 }
 
-$(function () {
-
-    $('.profile__send').click(function(){
-        sendMessage('profile');
-    })
-
-    $('.chat__content__send').keyup(function(event) {
-        if (event.keyCode === 13) sendMessage('message');
-    });
-
-    $('.sendMessage').click(function() {
-        sendMessage('message');
-    });
-
-    $('.number__send').click(function() {
-        sendMessage('account');
-    });
-
-    $( "#notification" ).click(function() { sendNotification(); });
-});
-
 function connect() {
     var socket = new SockJS('/ws');
     stompClient = Stomp.over(socket);
@@ -224,26 +245,29 @@ function showMessage(message) {
                     else
                         content = '채팅방이 개설되었습니다.'
 
-                        
-                        $('.roomsContainer').append(
-                            "<div class='room__box' style='width: 100%;'>" + 
-                            "<div id='" + value.roomEntity.id + "'onclick='javascript:loadChatList(this);' style='width: 100%;'>" + 
-                            "<div style='padding: 5px; display: flex; flex-direction: row;'>" +
-                            "<div style='margin:10px 10px;'><img src='/upload/" + value.target.profile.profilePath +"' onerror=this.src='/images/default_profile_img.png' style='width: 50px; height: 50px;'></div>" + 
-                            "<div style='margin-left: 10px; width: 100%; margin-top: 10px;'>" + 
-                            "<div class='room__title'>" + 
-                            "<span style='color: blue;' onclick='NewTab(" + value.target.username + ");'>" + value.target.username + "</span>" + 
-                            "<span class='chat__time__text'>" + currentChatMessageTime + "</span>" + 
-                            "</div>" +
-                            "<div class='room_chatting'>" + 
-                            content + 
-                            "</div>" + 
-                            "</div>" + 
-                            "</div>" + 
-                            "</div>" + 
-                            "<hr style='margin: 0; border: none; height: 1px; background-color: rgb(185, 185, 185);'/>" +
-                            "</div>"
-                        );
+                        // if($('.user__name').text() == value.target.username && value.targetConnectionType == 'connected'){
+                        // }
+                    console.log($('.user__name').text(), value.target.username, value.targetConnectionType)
+
+                            $('.roomsContainer').append(
+                                "<div class='room__box' style='width: 100%;'>" + 
+                                "<div id='" + value.roomEntity.id + "'onclick='javascript:loadChatList(this);' style='width: 100%;'>" + 
+                                "<div style='padding: 5px; display: flex; flex-direction: row;'>" +
+                                "<div style='margin:10px 10px;'><img src='/upload/" + value.target.profile.profilePath +"' onerror=this.src='/images/default_profile_img.png' style='width: 50px; height: 50px;'></div>" + 
+                                "<div style='margin-left: 10px; width: 100%; margin-top: 10px;'>" + 
+                                "<div class='room__title'>" + 
+                                "<span id='targetId' style='color: blue;' onclick='NewTab(" + value.target.username + ");'>" + value.target.username + "</span>" + 
+                                "<span class='chat__time__text'>" + currentChatMessageTime + "</span>" + 
+                                "</div>" +
+                                "<div class='room_chatting'>" + 
+                                content + 
+                                "</div>" + 
+                                "</div>" + 
+                                "</div>" + 
+                                "</div>" + 
+                                "<hr style='margin: 0; border: none; height: 1px; background-color: rgb(185, 185, 185);'/>" +
+                                "</div>"
+                                );
 
                 })
 

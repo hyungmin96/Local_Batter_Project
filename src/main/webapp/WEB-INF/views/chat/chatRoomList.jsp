@@ -4,11 +4,36 @@
 
 <link rel="stylesheet" type="text/css" href="/css/chatRoomList.css">
 
+<!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="margin-top: 150px;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">채팅방 나가기</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div>방을 나가면 모든 채팅내역이 삭제됩니다.</div>
+                <div>현재 채팅방을 나가시겠습니까?</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                <button type="button" id="exit__btn__perform" data-bs-dismiss="modal" class="btn btn-primary">나가기</button>
+            </div>
+            </div>
+        </div>
+        </div>
+<!-- Modal -->
+
 <div class="container" style="margin-top: 125px;">
     
         <div style="width: 100%;">
             <div>
                     <span class="chatroom__list">채팅방 목록</span>
+
+                    <div class="form-group row float-right" style="margin-right: 5px;">
+                        <button type="button" id="exit__btn" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">나가기</button>
+                    </div>
             </div>
             <hr style='width: 100%; border: none; height: 1px; background-color: rgb(185, 185, 185);'/>
         </div>

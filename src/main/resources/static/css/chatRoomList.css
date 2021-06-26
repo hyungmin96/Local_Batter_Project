@@ -10,6 +10,14 @@
     font-style: normal;
 }
 
+#exit__btn{
+    font-family: Noto Sans KR;
+    font-size: 13px;
+    height: 30px;
+    border: none;
+    border-radius: 0px;
+}
+
 .user__name__info{
     font-family: ChosunBg;
     font-weight: 100;
