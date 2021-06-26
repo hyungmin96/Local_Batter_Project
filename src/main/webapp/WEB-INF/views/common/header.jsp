@@ -47,12 +47,12 @@
         </li>
 
         <li>
-            <div style="cursor: pointer" onclick="window.location.href='/board/article/847';"><img src="/images/remote/cart.png">
+            <div style="cursor: pointer" onclick="window.location.href='/transaction/itemList';"><img src="/images/remote/cart.png">
             </div>
         </li>
 
         <li>
-            <div style="cursor: pointer" onclick="window.location.href='/board/article/847';"><img src="/images/remote/chat.png">
+            <div style="cursor: pointer" onclick="window.location.href='/${principal.username}/chatlist';"><img src="/images/remote/chat.png">
             </div>
         </li>
 

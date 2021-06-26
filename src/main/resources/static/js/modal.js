@@ -49,6 +49,6 @@ Element.prototype.setStyle = function(styles) {
     return this;
 };
 
-function showModal(userId, sellerId, boardId, writer){
+function showModal(userId = null, sellerId = null, boardId = null, writer = null){
     modal('my_modal', userId, sellerId, boardId, writer);
 }

@@ -40,8 +40,8 @@ public class UserService implements UserDetailsService{
 
         UserEntity userEntity = userRepository.findByUsername(user.getName()).get();
 
-        String saveFilePath = new GeneratePorifleImage(file).generateFile();
-
+        String saveFilePath = (file != null) ? new GeneratePorifleImage(file).generateFile() : userEntity.getProfile().getProfilePath();
+        
         if(userEntity != null){
             profile.setId(userEntity.getProfile().getId());
             profile.setProfilePath(saveFilePath);

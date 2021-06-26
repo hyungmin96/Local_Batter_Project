@@ -1,5 +1,5 @@
 var display = 8;
-var profileFile = profile__img;
+var profileFile;
 var pagination = false;
 var boardPagination = false;
 
@@ -174,7 +174,6 @@ function close_pop(flag) {
 function profileSave(){
     
     const profileData = new FormData();
-
 
     profileData.append('nickname', $('#username').val());
     profileData.append('introduce', $('#introduce').val());

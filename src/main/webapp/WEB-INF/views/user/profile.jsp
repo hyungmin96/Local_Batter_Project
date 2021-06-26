@@ -10,7 +10,7 @@
 
             <div class="profile__box" style="width: 340px; height: 100%">
 
-                <div class="setting__profile__btn"><img src="/images/settings_20px.png" style="cursor: pointer; float: right;"></div>
+                <div onclick="showModal();" class="setting__profile__btn"><img src="/images/settings_20px.png" style="cursor: pointer; float: right;"></div>
                 
                                 
                 <div style="width: 300px; height: 150px; display: flex;">
@@ -97,14 +97,11 @@
     </div>
 
 </div>
+    <!-- modal -->
+        <div id="my_modal" style="height: 650px;">
+            <div class = "modal_close_btn"><img src="/images/delete_35px.png" style="width: 20px; height: 20px;float: right; cursor: pointer;"></div>
 
-    <!-- The Modal -->
-        <div id="myModal" class="modal">
-    
-            <div class="modal-content" style="width: 500px; height: 720px; margin: 200px 780px; padding: 15px; border: none; box-shadow: 1px 1px 10px 0px rgba(0, 0, 0, 0.12)">
-                <div><img src="/images/delete_35px.png" onClick="close_pop();" style="float: right; cursor: pointer;"></div>
-
-                <div style="margin-bottom: 5px;">
+        <div style="margin-bottom: 5px;">
                     프로필 설정
                 </div>
 
@@ -144,12 +141,12 @@
                     <button type="button" id="profile__save__btn" class="btn btn-secondary">저장</button>
                 </div>
 
-            </div>
         </div>
-    <!--End Modal-->
+    <!-- modal -->
 
 <script src="/js/pagination.js"></script>
 <script src="/js/profile.js"></script>
+<script src="/js/modal.js"></script>
 <link rel="stylesheet" href="/css/profile.css">
 
 
