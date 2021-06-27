@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import com.imageupload.example.dto.NotificationDTO;
+import com.imageupload.example.dto.NotificationEnumType;
 import com.imageupload.example.entity.ChatEntity;
 import com.imageupload.example.entity.RoomEntity;
 import com.imageupload.example.entity.UserJoinRoomEntity;
@@ -71,7 +72,7 @@ public class ChatRestController {
     }
 
         NotificationDTO notification = NotificationDTO.builder()
-        .notificationType("create")
+        .notificationType(NotificationEnumType.chat)
         .sendUser(principal.getUsername())
         .targetUser(targetString)
         .date(LocalDateTime.now())

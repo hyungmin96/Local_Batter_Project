@@ -2,12 +2,11 @@ package com.imageupload.example.imageupload;
 
 import com.imageupload.example.repositories.UserRepository;
 import com.imageupload.example.vo.Role;
-
 import java.util.Optional;
-
 import com.imageupload.example.entity.BoardEntity;
 import com.imageupload.example.entity.ChatEntity;
 import com.imageupload.example.entity.CommentEntity;
+import com.imageupload.example.entity.NotificationEntity;
 import com.imageupload.example.entity.ProfileEntity;
 import com.imageupload.example.entity.RoomEntity;
 import com.imageupload.example.entity.TransactionEntity;
@@ -18,6 +17,7 @@ import com.imageupload.example.repositories.BoardRepository;
 import com.imageupload.example.repositories.ChatRepository;
 import com.imageupload.example.repositories.ChatRoomRepository;
 import com.imageupload.example.repositories.CommentRepository;
+import com.imageupload.example.repositories.NotificationRepository;
 import com.imageupload.example.repositories.ProfileRepository;
 import com.imageupload.example.repositories.RoomRepository;
 import com.imageupload.example.repositories.TransactionRepository;
@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.TestPropertySource;
+
 @SpringBootTest
 @TestPropertySource("classpath:application.yml")
 public class RepositoryTestClass{
@@ -54,14 +55,32 @@ public class RepositoryTestClass{
     @Autowired
     private CommentRepository commentRepository;
 
+    @Autowired
+    private NotificationRepository notificationRepository;
+
+    @Test
+    void 알림_저장_테스트(){
+
+        UserEntity userEntity = userRepository.findById(123L).get();
+
+        NotificationEntity notificationEntity = new NotificationEntity();
+        notificationEntity.setUserId(userEntity);
+        notificationEntity.setChat(0);
+
+        notificationRepository.save(notificationEntity);
+        // notificationRepository.findBychat();
+
+    }
+    
     @Test
     void 매너점수_구하기_테스트(){
 
-        String username = "1";
+        String username = "2";
 
         float test = commentRepository.findAllBymannerScore(username);
 
         System.out.println("");
+
     }
 
     @Test

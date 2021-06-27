@@ -12,7 +12,7 @@ public class NotificationDTO {
     
     private String result;
     private String sendUser;
-    private String notificationType;
+    private NotificationEnumType notificationType;
     private String message;
     private Long roomId;
     private LocalDateTime date;

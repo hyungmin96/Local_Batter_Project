@@ -202,7 +202,7 @@ $('.chat__product_btn').on("click", function(){
             contentType: 'application/x-www-form-urlencoded',
             success: function(response){
                 if(response.result.includes('exist') || response.result.includes('success')){
-                    location.href='http://localhost:8000/' + user + '/chatlist';
+                    location.href='http://localhost:8000/chatlist/' + user;
                 }
             }
         })

@@ -41,6 +41,8 @@ public class webSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", RESOURCE_ROOT).permitAll()
                 .antMatchers("/write").authenticated()
                 .antMatchers("/board/article/update/**").authenticated()
+                .antMatchers("/transaction/itemList").authenticated()
+                .antMatchers("/chatlist/**").authenticated()
             .and()
                 .formLogin()
                     .loginPage("/user/login")

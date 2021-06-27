@@ -52,7 +52,7 @@
         </li>
 
         <li>
-            <div style="cursor: pointer" onclick="window.location.href='/${principal.username}/chatlist';"><img src="/images/remote/chat.png">
+            <div style="cursor: pointer" onclick="window.location.href='/chatlist/${principal.username}';"><img src="/images/remote/chat.png">
             </div>
         </li>
 
@@ -118,7 +118,7 @@
                 </div>
 
                 <div class="btn-chat">
-                    <button onclick="location.href='/${principal.username}/chatlist'" class="header-product-reg">
+                    <button onclick="location.href='/chatlist/${principal.username}'" class="header-product-reg">
                         <img src="/images/header/message.png"/>
                         <span class="btn__text">채팅하기</span>
                     </button>

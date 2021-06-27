@@ -16,7 +16,7 @@ public class ChatController {
     @Autowired
     private ChatService chatService;
 
-    @GetMapping("/{username}/chatlist")
+    @GetMapping("/chatlist/{username}")
     public String getChatList(){
         return "/chat/chatRoomList";
     }

@@ -44,6 +44,9 @@ public class UserEntity implements UserDetails {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     
+    @OneToOne(mappedBy = "userId")
+    private NotificationEntity notification;
+
     @OneToOne
     @JoinColumn(name = "profileId")
     private ProfileEntity profile;
