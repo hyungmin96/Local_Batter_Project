@@ -13,14 +13,15 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import lombok.RequiredArgsConstructor;
+
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class webSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final  String RESOURCE_ROOT = "/resources/**";
-
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     @Override
     public void configure(WebSecurity web) {
@@ -38,7 +39,7 @@ public class webSecurityConfig extends WebSecurityConfigurerAdapter {
         // URL, Login, Session 등 http 접근 보안관련 설정
         http.csrf().disable()
             .authorizeRequests()
-                .antMatchers("/", RESOURCE_ROOT).permitAll()
+                .antMatchers("/").permitAll()
                 .antMatchers("/write").authenticated()
                 .antMatchers("/board/article/update/**").authenticated()
                 .antMatchers("/transaction/itemList").authenticated()
@@ -47,6 +48,7 @@ public class webSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                     .loginPage("/user/login")
                     .loginProcessingUrl("/api/login")
+                    .defaultSuccessUrl("/")
                     .failureForwardUrl("/login/error")
             .and()
                 .logout()

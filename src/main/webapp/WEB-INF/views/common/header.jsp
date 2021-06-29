@@ -123,6 +123,13 @@
                         <span class="btn__text">채팅하기</span>
                     </button>
                 </div>
+
+                <div>
+                    <div class="noti">0</div>
+                    <div class="chat">0</div>
+                    <div class="trans">0</div>
+                </div>
+
             </div>
         </div>
     </div>

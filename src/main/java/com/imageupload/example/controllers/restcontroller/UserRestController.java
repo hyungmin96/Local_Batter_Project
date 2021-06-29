@@ -2,7 +2,6 @@ package com.imageupload.example.controllers.restcontroller;
 
 import com.imageupload.example.services.UserService;
 import com.imageupload.example.entity.UserEntity;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,11 +9,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.RequiredArgsConstructor;
+
 @RestController
+@RequiredArgsConstructor
 public class UserRestController {
     
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     @PostMapping("/api/login")
     public String login(@RequestBody UserEntity vo){

@@ -1,21 +1,25 @@
 package com.imageupload.example.controllers.sitecontroller;
 
-import java.security.Principal;
 
 import com.imageupload.example.entity.UserEntity;
 import com.imageupload.example.services.UserService;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import lombok.RequiredArgsConstructor;
+
 @Controller
+@RequiredArgsConstructor
 public class UserSiteController {
 
-    @Autowired
-    private UserService userService;
+    final private UserService userService;
+    final private SimpMessagingTemplate simpMessagingTemplate;
 
     @GetMapping("/profile/user={nickname}")
     public String getProfile(Model model, @PathVariable String nickname){
@@ -35,6 +39,12 @@ public class UserSiteController {
     @GetMapping("/user/join")
     public String join(){
         return "/user/join";
+    }
+
+    @MessageMapping("/send/connection/{id}")
+    public void getConnectionMessage(@DestinationVariable String id, @Payload String message){
+        
+        simpMessagingTemplate.convertAndSend("/notification/" + id, message);
     }
     
 }

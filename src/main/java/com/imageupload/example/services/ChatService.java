@@ -3,7 +3,6 @@ package com.imageupload.example.services;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
-
 import com.imageupload.example.dto.MessageDTO;
 import com.imageupload.example.dto.NotificationDTO;
 import com.imageupload.example.entity.ChatEntity;
@@ -18,6 +17,7 @@ import com.imageupload.example.repositories.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 

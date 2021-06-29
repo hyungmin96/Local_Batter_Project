@@ -1,5 +1,7 @@
 package com.imageupload.example.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,7 +19,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class NotificationEntity {
+public class NotificationEntity implements Serializable {
     
     @Id @GeneratedValue
     private Long id;

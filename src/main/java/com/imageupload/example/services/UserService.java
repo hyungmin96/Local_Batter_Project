@@ -9,6 +9,7 @@ import com.imageupload.example.vo.Role;
 import com.imageupload.example.repositories.ProfileRepository;
 import com.imageupload.example.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,14 +17,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class UserService implements UserDetailsService{
     
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private ProfileRepository profileRepository;
+    final private UserRepository userRepository;
+    final private ProfileRepository profileRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
@@ -31,7 +32,7 @@ public class UserService implements UserDetailsService{
         UserDetails userVo = userRepository.findByUsername(username).orElse(null);
         
         if(userVo == null)
-            userVo = new UserEntity();
+            return new UserEntity();
 
         return userVo;
     }

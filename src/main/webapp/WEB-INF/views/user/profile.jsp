@@ -143,10 +143,13 @@
 
         </div>
     <!-- modal -->
+</div>
 
 <script src="/js/pagination.js"></script>
 <script src="/js/profile.js"></script>
 <script src="/js/modal.js"></script>
 <link rel="stylesheet" href="/css/profile.css">
+
+<%@ include file="../common/footer.jsp" %>
 
 
