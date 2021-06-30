@@ -42,17 +42,20 @@
 <div class="remote__container" style="top:280px; right: 0px; position: fixed; background-color: rgb(78, 78, 78); width: 40px; height: 180px">
     <div class="remote__list">
         <li>
-            <div style="cursor: pointer;" onclick="window.location.href='/board/article/847';"><img src="/images/remote/bell.png">
+            <div style="position: relative; cursor: pointer;" onclick="window.location.href='#';"><img src="/images/remote/bell.png">
+            <div style="position: absolute; top: -10px; right: -5px;" class="noti">${notification.notification}</div>
             </div>
         </li>
 
         <li>
-            <div style="cursor: pointer" onclick="window.location.href='/transaction/itemList';"><img src="/images/remote/cart.png">
+            <div style="position: relative; cursor: pointer" onclick="window.location.href='/transaction/itemList';"><img src="/images/remote/cart.png">
+            <div style="position: absolute; top: -10px; right: -5px;" class="trans">${notification.transaction}</div>
             </div>
         </li>
 
         <li>
-            <div style="cursor: pointer" onclick="window.location.href='/chatlist/${principal.username}';"><img src="/images/remote/chat.png">
+            <div style="position: relative; cursor: pointer" onclick="window.location.href='/chatlist/${principal.username}';"><img src="/images/remote/chat.png">
+            <div style="position: absolute; top: -10px; right: -5px;" class="chat">${notification.chat}</div>
             </div>
         </li>
 
@@ -123,13 +126,6 @@
                         <span class="btn__text">채팅하기</span>
                     </button>
                 </div>
-
-                <div>
-                    <div class="noti">${notification.notification}</div>
-                    <div class="chat">${notification.chat}</div>
-                    <div class="trans">${notification.transaction}</div>
-                </div>
-
             </div>
         </div>
     </div>

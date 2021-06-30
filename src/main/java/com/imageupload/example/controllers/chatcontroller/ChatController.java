@@ -33,12 +33,7 @@ public class ChatController {
     @GetMapping("/chatlist/{username}")
     public String getChatList(Model model, HttpServletRequest request){
         
-        NotificationEntity notificationEntity = chatService.clearNotification("chat");
-
-        HttpSession session = request.getSession();
-        session.setAttribute("notification", notificationEntity);
-        
-        model.addAttribute("notification", notificationEntity);
+        chatService.clearNotification("chat");
 
         return "/chat/chatRoomList";
     }

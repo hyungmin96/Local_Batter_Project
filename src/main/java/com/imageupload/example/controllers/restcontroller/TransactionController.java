@@ -43,7 +43,6 @@ public class TransactionController {
     }
 
     @PostMapping("/product")
-    @Transactional
     public ResponseEntity<String> dealWithSeller(SubmitTransactionDTO transactionDTO){
         if (transactionService.saveTransaction(transactionDTO)){
             return new ResponseEntity<String>("success", HttpStatus.OK);

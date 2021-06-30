@@ -50,7 +50,7 @@ public class CommentRestController {
                                                     .writer(user.getUsername())    
                                                     .target(writer.getUsername())
                                                     .mannerScore(commentDTO.getMannerScore())
-                                                    .commentValue("comment")
+                                                    .commentValue(commentDTO.getComment())
                                                     .build();
 
         commentService.saveEntity(commentEntity);

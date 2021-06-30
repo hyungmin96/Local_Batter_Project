@@ -212,6 +212,19 @@
     margin: 25px 5px;
 }
 
+.remote__list li div div{
+    margin: auto auto;
+    text-align: center;
+    width: 22px;
+    height: 22px;
+    background-color: red;
+    border-radius: 25px;
+    font-size: 13px;
+    color: white;
+    margin-bottom: 2px;
+}
+
+
 .remote__list img{
     width: 27px;
     height: 27px;

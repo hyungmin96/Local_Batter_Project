@@ -1,32 +1,35 @@
 package com.imageupload.example.services;
 
 import java.security.Principal;
+import java.time.LocalDate;
 
+import com.imageupload.example.dto.NotificationDTO;
+import com.imageupload.example.dto.NotificationEnumType;
 import com.imageupload.example.dto.SubmitTransactionDTO;
 import com.imageupload.example.entity.BoardEntity;
 import com.imageupload.example.entity.TransactionEntity;
 import com.imageupload.example.entity.TransactionEnumType;
 import com.imageupload.example.entity.UserEntity;
 import com.imageupload.example.repositories.TransactionRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class TransactionService {
     
-    @Autowired
-    private TransactionRepository transactionRepository;
-    
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private BoardService boardService;
+    private final TransactionRepository transactionRepository;
+    private final UserService userService;
+    private final BoardService boardService;
+    private final SimpMessagingTemplate simpMessagingTemplate;
+    private final ChatService chatService;
 
     public Boolean cartToTransaction(SubmitTransactionDTO submitTransaction){
 
@@ -100,6 +103,17 @@ public class TransactionService {
             transactionEntity.setSeller(sellerEntity);
             transactionEntity.setBuyer(buyerEntity);
             transactionRepository.save(transactionEntity);
+
+            NotificationDTO notificationDTO = NotificationDTO.builder()
+            .result("success")
+            .notificationType(NotificationEnumType.transaction)
+            .message("transaction")
+            .sender(buyerEntity.getUsername())
+            .target(sellerEntity.getUsername())
+            .date(LocalDate.now().toString())
+            .build();
+
+            chatService.sendNotification(notificationDTO);
 
             return true;
         }

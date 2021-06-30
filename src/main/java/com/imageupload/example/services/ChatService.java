@@ -6,7 +6,6 @@ import java.util.Optional;
 import com.imageupload.example.dto.MessageDTO;
 import com.imageupload.example.dto.NotificationDTO;
 import com.imageupload.example.entity.ChatEntity;
-import com.imageupload.example.entity.NotificationEntity;
 import com.imageupload.example.entity.RoomEntity;
 import com.imageupload.example.entity.UserJoinRoomEntity;
 import com.imageupload.example.entity.UserEntity;
@@ -23,9 +22,6 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import aj.org.objectweb.asm.Type;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -39,8 +35,7 @@ public class ChatService {
     private final UserRepository userRepository;
     private final NotificationRepository notificationRepository;
 
-    @Transactional
-    public NotificationEntity clearNotification(String Type){
+    public void clearNotification(String Type){
 
         UserDetails user = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         UserEntity userEntity = userRepository.findByUsername(user.getUsername()).get();
@@ -58,8 +53,6 @@ public class ChatService {
                 notificationRepository.clearNotification(id);
                 break;
         }
-
-        return notificationRepository.findById(id).get();
 
     }
 
