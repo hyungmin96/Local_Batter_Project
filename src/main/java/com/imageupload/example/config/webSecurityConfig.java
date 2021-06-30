@@ -1,11 +1,7 @@
 package com.imageupload.example.config;
 
-import com.imageupload.example.services.UserService;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -20,18 +16,15 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class webSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final  String RESOURCE_ROOT = "/resources/**";
-    private final UserService userService;
+    @Bean
+    public LoginSuccessHandler LoginSuccessHandler() {
+        return new LoginSuccessHandler();
+    }
 
     @Override
     public void configure(WebSecurity web) {
         // 이미지, 뷰, js 등 접근가능한 리소스를 설정
         web.ignoring().antMatchers("/css/**", "/js/**", "/img/**", "/lib/**");
-    }
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService).passwordEncoder(bCryptPasswordEncoder());
     }
     
     @Override
@@ -48,8 +41,9 @@ public class webSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                     .loginPage("/user/login")
                     .loginProcessingUrl("/api/login")
-                    .defaultSuccessUrl("/")
                     .failureForwardUrl("/login/error")
+                    .successHandler(LoginSuccessHandler())
+                    .permitAll()
             .and()
                 .logout()
                     .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
@@ -65,3 +59,4 @@ public class webSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 }
+

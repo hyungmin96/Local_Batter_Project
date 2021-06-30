@@ -1,11 +1,19 @@
 package com.imageupload.example.controllers.sitecontroller;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.text.ParseException;
 import java.util.stream.IntStream;
 
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import com.imageupload.example.components.createTime;
 import com.imageupload.example.entity.BoardEntity;
+import com.imageupload.example.entity.NotificationEntity;
+import com.imageupload.example.entity.UserEntity;
+import com.imageupload.example.repositories.UserRepository;
 import com.imageupload.example.services.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,8 +30,21 @@ public class BoardController {
     @Autowired
     private BoardService boardService;
     
+    @Autowired
+    private UserRepository userRepository;
+
     @GetMapping("/")
-    public String home(Model model){
+    public String home(Principal user, Model model, HttpServletRequest request){
+
+        if(user != null){
+            UserEntity userEntity = userRepository.findByUsername(user.getName()).get();
+            
+            NotificationEntity notificationEntity = userEntity.getNotification();
+            
+            HttpSession session = request.getSession();
+            session.setAttribute("notification", notificationEntity);
+        }
+
         Page<BoardEntity> boardList = boardService.getFastItems();
         model.addAttribute("fast", boardList.getContent());
         return "/board/articleList";

@@ -1,33 +1,28 @@
-var stompClient = null;
+var notificationStomp = null;
 
 $(document).ready(function(){
-    connect();
+    notificationConnect();
 })
     
 window.closonbeforeunload = function(){
-    stompClient.disconnect();
+    notificationStomp.disconnect();
 }
 
-function connect(){
+function notificationConnect(){
     loginAccountInfo = $('.user__name')[0];
     if(document.getElementsByClassName('user__name').length != 0 && loginAccountInfo.innerHTML != null && loginAccountInfo.innerHTML != ''){
         var socket = new SockJS('/ws');
-        stompClient = Stomp.over(socket);
-        // stompClient.debug = null;
-        stompClient.connect({}, function(){
-            stompClient.subscribe('/notification/' + loginAccountInfo.innerHTML, function(message){
-                var content = JSON.stringify(message);
-                showNotification(content);
+        notificationStomp = Stomp.over(socket);
+        notificationStomp.debug = null;
+        notificationStomp.connect({}, function(){
+            notificationStomp.subscribe('/notification/' + loginAccountInfo.innerHTML, function(message){
+                showNotification(message.body);
             })
         })
     }
 }
 
-// 최초 연결수립시 db에 알림정보를 가져옴
-function connectionMessage(user, message){
-    stompClient.send('/app/send/connection/' + user, {}, message);
-}
-
 function showNotification(message){
-    $('.remote__container').append(message);
+    if(message.includes('notificationType":"chat'))
+        $('.chat')[0].innerHTML = parseInt(parseInt($('.chat')[0].innerHTML) + 1);
 }

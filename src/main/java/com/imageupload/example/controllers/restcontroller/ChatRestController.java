@@ -73,9 +73,9 @@ public class ChatRestController {
 
         NotificationDTO notification = NotificationDTO.builder()
         .notificationType(NotificationEnumType.chat)
-        .sendUser(principal.getUsername())
-        .targetUser(targetString)
-        .date(LocalDateTime.now())
+        .sender(principal.getUsername())
+        .target(targetString)
+        .date(LocalDateTime.now().toString())
         .build();
 
         if(room == null){

@@ -12,7 +12,7 @@ $(document).ready(function(){
             type: 'POST',
             contentType: 'application/x-www-form-urlencoded',
             data: data,
-            success: function(){
+            success: function(response){
                 location.href = '/';
             }
         }).fail(function(error){

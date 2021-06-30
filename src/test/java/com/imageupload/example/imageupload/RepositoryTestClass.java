@@ -59,6 +59,15 @@ public class RepositoryTestClass{
     private NotificationRepository notificationRepository;
 
     @Test
+    void 채팅알림_카운트_증가_테스트(){
+
+        UserEntity userEntity = userRepository.findById(4L).get();
+
+        notificationRepository.clearChat(userEntity.getNotification().getId());
+
+    }
+
+    @Test
     void 알림_저장_테스트(){
 
         UserEntity userEntity = userRepository.findById(123L).get();
@@ -168,6 +177,12 @@ public class RepositoryTestClass{
 
         for(int i = 1; i < 61; i ++){
 
+            NotificationEntity notificationEntity = NotificationEntity.builder()
+            .chat(0)
+            .notification(0)
+            .transaction(0)
+            .build();
+
             ProfileEntity profile = ProfileEntity.builder()
             .location("location")
             .introduce("introduce")
@@ -179,12 +194,11 @@ public class RepositoryTestClass{
             .profilePath("default_profile_img.png")
             .build();
 
-            profileRepository.save(profile);
-
             UserEntity user = UserEntity.builder()
             .username(i + "")
             .password(new BCryptPasswordEncoder().encode(String.valueOf(i)))
             .profile(profile)
+            .notification(notificationEntity)
             .Role(Role.ROLE_USER)
             .build();
             

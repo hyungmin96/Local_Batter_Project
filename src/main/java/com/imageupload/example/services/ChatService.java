@@ -6,32 +6,62 @@ import java.util.Optional;
 import com.imageupload.example.dto.MessageDTO;
 import com.imageupload.example.dto.NotificationDTO;
 import com.imageupload.example.entity.ChatEntity;
+import com.imageupload.example.entity.NotificationEntity;
 import com.imageupload.example.entity.RoomEntity;
 import com.imageupload.example.entity.UserJoinRoomEntity;
 import com.imageupload.example.entity.UserEntity;
 import com.imageupload.example.repositories.ChatRepository;
 import com.imageupload.example.repositories.ChatRoomRepository;
+import com.imageupload.example.repositories.NotificationRepository;
 import com.imageupload.example.repositories.RoomRepository;
 import com.imageupload.example.repositories.UserJoinRommEnumType;
 import com.imageupload.example.repositories.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import aj.org.objectweb.asm.Type;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class ChatService {
     
-    final private SimpMessagingTemplate simpMessageTemplate;
-    final private ChatRepository chatRepository;
-    final private RoomRepository roomRepository;
-    final private ChatRoomRepository chatRoomRepository;
-    final private UserRepository userRepository;
+    private final SimpMessagingTemplate simpMessageTemplate;
+    private final ChatRepository chatRepository;
+    private final RoomRepository roomRepository;
+    private final ChatRoomRepository chatRoomRepository;
+    private final UserRepository userRepository;
+    private final NotificationRepository notificationRepository;
+
+    @Transactional
+    public NotificationEntity clearNotification(String Type){
+
+        UserDetails user = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserEntity userEntity = userRepository.findByUsername(user.getUsername()).get();
+
+        Long id = userEntity.getNotification().getId();
+        
+        switch(Type){
+            case "chat":
+                notificationRepository.clearChat(id);
+                break;
+            case "notification":
+                notificationRepository.clearNotification(id);
+                break;
+            case "transaction":
+                notificationRepository.clearNotification(id);
+                break;
+        }
+
+        return notificationRepository.findById(id).get();
+
+    }
 
     public void deleteChatRoom(String roomId, String userId, String targetUsername){
 
@@ -49,7 +79,24 @@ public class ChatService {
     }
 
     public void sendNotification(NotificationDTO message){
-        simpMessageTemplate.convertAndSend("/notification/" + message.getTargetUser(), message);
+
+        UserEntity userEntity = userRepository.findByUsername(message.getTarget()).get();
+
+        Long id = userEntity.getNotification().getId();
+
+        switch (message.getNotificationType()){
+            case chat:
+                notificationRepository.updateChat(id);
+                break;
+            case transaction:
+                notificationRepository.updateTransaction(id);
+                break;
+            case notification:
+                notificationRepository.updateNotification(id);
+                break;
+        }
+            
+        simpMessageTemplate.convertAndSend("/notification/" + message.getTarget(), message);
     }
 
     public List<UserJoinRoomEntity> getChatRoomList(Principal userVo){
@@ -95,24 +142,19 @@ public class ChatService {
     // 계좌번호 전송
     public void sendNumber(Principal user, MessageDTO message){
         UserEntity userEntity = userRepository.findByUsername(user.getName()).get();
-
         message.setMessage("국민은행 : " + userEntity.getProfile().getAccountNumber());
-
         simpMessageTemplate.convertAndSend("/chat/" + message.getRoomId(), message);
     }
 
     public void sendMessage(Principal principal, MessageDTO message){
 
         Optional<UserEntity> user = userRepository.findByUsername(principal.getName());
-
         ChatEntity chatEntity = ChatEntity.builder()
         .message(message.getMessage())
         .userVo(user.get())
         .roomEntity(roomRepository.findById(message.getRoomId()).get())
         .build();
-
         chatRepository.save(chatEntity);
-
         simpMessageTemplate.convertAndSend("/chat/" + message.getRoomId(), message);
 
     }

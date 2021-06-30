@@ -1,5 +1,6 @@
 package com.imageupload.example.entity;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -20,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserJoinRoomEntity{
+public class UserJoinRoomEntity implements Serializable{
     
     @Id @GeneratedValue
     private Long id;

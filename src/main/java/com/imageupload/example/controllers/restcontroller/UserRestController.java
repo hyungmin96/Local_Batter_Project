@@ -18,12 +18,7 @@ public class UserRestController {
     private final UserService userService;
 
     @PostMapping("/api/login")
-    public String login(@RequestBody UserEntity vo){
-        UserDetails account = userService.loadUserByUsername(vo.getUsername());
-        if(account != null)
-            return "로그인 성공";
-        else
-            return "로그인 실패";
+    public void login(){
     }
 
     @PostMapping("/api/join")

@@ -46,7 +46,6 @@ $(function () {
         sendMessage('account');
     });
 
-    $( "#notification" ).click(function() { sendNotification(); });
 });
 
 function exitChatRoom(){
@@ -57,7 +56,7 @@ function exitChatRoom(){
         contentType: 'application/x-www-form-urlencoded',
         data: 'roomId=' + globalThis.roomId + '&userId=' + $('.user__name').text() + '&targetUsername=' + globalThis.targetUsername,
         success: function(response){
-            console.log(response);
+            location.reload();
         }
     })
 
@@ -187,15 +186,19 @@ function sendMessage(type) {
         data = {
                 'roomId' : globalThis.roomId, 
                 'sender' : $('.user__name').text(), 
-                'target' : '', 
+                'target' : globalThis.targetUsername, 
+                'notificationType' : 'chat',
                 'message' : message,
-                'date' : new Date().toLocaleString([], {'hour': '2-digit', 'minute': '2-digit'}) 
-                };
+                'date' : new Date().toLocaleString([], {'hour': '2-digit', 'minute': '2-digit'}), 
+                'result' : 'success'
+        };
 
         stompClient.send(pubUrl, {}, JSON.stringify(data));
+        notificationStomp.send('/app/send/notification/' + data.target, {}, JSON.stringify(data));
         $("#message").empty();
         document.getElementById('message').value = '';
         $('.chat__log')[0].scrollTop = $('.chat__log')[0].scrollHeight;
+
     }else{
         alert('대화할 사용자를 선택 후 다시 시도해주세요.');
     }

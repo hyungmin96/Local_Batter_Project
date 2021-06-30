@@ -125,9 +125,9 @@
                 </div>
 
                 <div>
-                    <div class="noti">0</div>
-                    <div class="chat">0</div>
-                    <div class="trans">0</div>
+                    <div class="noti">${notification.notification}</div>
+                    <div class="chat">${notification.chat}</div>
+                    <div class="trans">${notification.transaction}</div>
                 </div>
 
             </div>

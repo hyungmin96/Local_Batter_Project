@@ -11,11 +11,11 @@ import lombok.Data;
 public class NotificationDTO {
     
     private String result;
-    private String sendUser;
+    private String sender;
     private NotificationEnumType notificationType;
     private String message;
     private Long roomId;
-    private LocalDateTime date;
-    private String targetUser;
+    private String date;
+    private String target;
 
 }

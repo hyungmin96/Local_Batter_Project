@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.CascadeType;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
@@ -44,10 +45,12 @@ public class UserEntity implements UserDetails {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     
-    @OneToOne(mappedBy = "userId")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "notificationId")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private NotificationEntity notification;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "profileId")
     private ProfileEntity profile;
 
