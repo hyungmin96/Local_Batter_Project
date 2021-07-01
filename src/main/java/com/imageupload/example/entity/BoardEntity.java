@@ -49,10 +49,6 @@ public class BoardEntity {
 
     @Column
     private String location;
-    
-    @OneToOne(mappedBy = "boardId")
-    @JsonIgnore
-    private CommentEntity comment;
 
     @OneToMany(mappedBy = "board", fetch = FetchType.EAGER)
     @Cascade(value = CascadeType.ALL)

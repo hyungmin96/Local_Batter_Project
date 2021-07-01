@@ -43,19 +43,19 @@
     <div class="remote__list">
         <li>
             <div style="position: relative; cursor: pointer;" onclick="window.location.href='#';"><img src="/images/remote/bell.png">
-            <div style="position: absolute; top: -10px; right: -5px;" class="noti">${notification.notification}</div>
+            <div style="position: absolute; top: -10px; right: -5px; display: none;" class="noti">${notification.notification}</div>
             </div>
         </li>
 
         <li>
             <div style="position: relative; cursor: pointer" onclick="window.location.href='/transaction/itemList';"><img src="/images/remote/cart.png">
-            <div style="position: absolute; top: -10px; right: -5px;" class="trans">${notification.transaction}</div>
+            <div style="position: absolute; top: -10px; right: -5px; display: none;" class="trans">${notification.transaction}</div>
             </div>
         </li>
 
         <li>
             <div style="position: relative; cursor: pointer" onclick="window.location.href='/chatlist/${principal.username}';"><img src="/images/remote/chat.png">
-            <div style="position: absolute; top: -10px; right: -5px;" class="chat">${notification.chat}</div>
+            <div style="position: absolute; top: -10px; right: -5px; display: none;" class="chat">${notification.chat}</div>
             </div>
         </li>
 
@@ -130,3 +130,40 @@
         </div>
     </div>
 </div>
+
+<script>
+
+var notiElement = document.getElementsByClassName('noti')[0];
+var transElement = document.getElementsByClassName('trans')[0];
+var chatElement = document.getElementsByClassName('chat')[0];
+
+$(document).ready(function(){
+    if(parseInt(notiElement.innerHTML) > 0)
+        notiElement.style.display = 'block';
+    if(parseInt(transElement.innerHTML) > 0)
+        transElement.style.display = 'block';
+    if(parseInt(chatElement.innerHTML) > 0)
+        chatElement.style.display = 'block';
+})
+
+notiElement.addEventListener("DOMSubtreeModified", function(){
+    if(parseInt(notiElement.innerHTML) < 1)
+        notiElement.style.display = 'none';
+    else
+        notiElement.style.display = 'block';
+})
+
+transElement.addEventListener("DOMSubtreeModified", function(){
+    if(parseInt(transElement.innerHTML) < 1)
+        transElement.style.display = 'none';
+    else
+        transElement.style.display = 'block';
+})
+
+chatElement.addEventListener("DOMSubtreeModified", function(){
+    if(parseInt(chatElement.innerHTML) < 1)
+        chatElement.style.display = 'none';
+    else
+        chatElement.style.display = 'block';
+})
+</script>

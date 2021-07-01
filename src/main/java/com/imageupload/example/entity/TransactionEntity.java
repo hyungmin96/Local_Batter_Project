@@ -1,5 +1,7 @@
 package com.imageupload.example.entity;
 
+import java.sql.Timestamp;
+
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
@@ -10,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 import com.imageupload.example.entitylistener.TransactionListener;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,6 +41,10 @@ public class TransactionEntity {
     @JoinColumn(name="buyer")
     private UserEntity buyer;
 
+    private String sellerCommentId;
+
+    private String buyerCommentId;
+
     @OneToOne
     @JoinColumn(name="seller")
     private UserEntity seller;
@@ -49,5 +57,8 @@ public class TransactionEntity {
     private String buyerComplete;
 
     private String transactionResult;
+
+    @CreationTimestamp
+    private Timestamp createTime;
 
 }

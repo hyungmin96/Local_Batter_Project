@@ -100,7 +100,6 @@ public class RepositoryTestClass{
         for(int i = 60; i < 100; i++){
 
             CommentEntity commentEntity = CommentEntity.builder()
-            .boardId(boardEntity)
             .writer(boardEntity.getWriter())
             .commentValue("commentValue")
             .target("1")
