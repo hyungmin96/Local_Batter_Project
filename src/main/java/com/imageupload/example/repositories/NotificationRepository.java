@@ -17,8 +17,12 @@ public interface NotificationRepository extends JpaRepository<NotificationEntity
     public void updateNotification(Long id);
 
     @Modifying
-    @Query(value = "update notificationentity set transaction = transaction + 1 where id = :id", nativeQuery = true)
-    public void updateTransaction(Long id);
+    @Query(value = "update notificationentity set transaction = transaction - 1 where id in(:sellerId, :buyerId)", nativeQuery = true)
+    public void completeTransaction(Long sellerId, Long buyerId);
+
+    @Modifying
+    @Query(value = "update notificationentity set transaction = transaction + 1 where id  in(:sellerId, :buyerId)", nativeQuery = true)
+    public void updateTransaction(Long sellerId, Long buyerId);
 
     @Modifying
     @Query(value = "update notificationentity set chat = 0 where id = :id", nativeQuery = true)

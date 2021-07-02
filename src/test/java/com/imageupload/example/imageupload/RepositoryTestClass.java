@@ -3,6 +3,9 @@ package com.imageupload.example.imageupload;
 import com.imageupload.example.repositories.UserRepository;
 import com.imageupload.example.vo.Role;
 import java.util.Optional;
+
+import javax.management.Notification;
+
 import com.imageupload.example.entity.BoardEntity;
 import com.imageupload.example.entity.ChatEntity;
 import com.imageupload.example.entity.CommentEntity;
@@ -57,6 +60,17 @@ public class RepositoryTestClass{
 
     @Autowired
     private NotificationRepository notificationRepository;
+
+    @Test
+    void 알림_테이블_생성(){
+
+        for(int i = 1; i < 61; i ++){
+
+            NotificationEntity notificationEntity = NotificationEntity.builder().chat(0).notification(0).transaction(0).build();
+            notificationRepository.save(notificationEntity);
+            
+        }
+    }
 
     @Test
     void 채팅알림_카운트_증가_테스트(){

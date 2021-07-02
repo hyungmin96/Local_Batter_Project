@@ -3,6 +3,7 @@ package com.imageupload.example.entity;
 public enum TransactionEnumType {
     
     cart("cart"),
+    delete("delete"),
     transaction("transaction"), 
     complete("complete");
 

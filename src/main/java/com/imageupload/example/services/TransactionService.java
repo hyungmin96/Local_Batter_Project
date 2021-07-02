@@ -10,6 +10,7 @@ import com.imageupload.example.entity.BoardEntity;
 import com.imageupload.example.entity.TransactionEntity;
 import com.imageupload.example.entity.TransactionEnumType;
 import com.imageupload.example.entity.UserEntity;
+import com.imageupload.example.repositories.NotificationRepository;
 import com.imageupload.example.repositories.TransactionRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,6 +29,7 @@ public class TransactionService {
     private final TransactionRepository transactionRepository;
     private final UserService userService;
     private final BoardService boardService;
+    private final NotificationRepository notificationRepository;
     private final SimpMessagingTemplate simpMessagingTemplate;
     private final ChatService chatService;
 
@@ -65,6 +67,13 @@ public class TransactionService {
             else
                 transactionEntity.setBuyerComplete("true");
                 
+            try{
+                if(transactionEntity.getSellerComplete().equals("true") && 
+                    transactionEntity.getBuyerComplete().equals("true")){
+                        notificationRepository.completeTransaction(sellerEntity.getNotification().getId(), buyerEntity.getNotification().getId());
+                }
+            }catch(Exception ex){}
+
             transactionRepository.save(transactionEntity);
 
             return true;
@@ -83,6 +92,9 @@ public class TransactionService {
         
         if(transactionEntity != null){
             transactionRepository.deleteById(transactionEntity.getId());
+            
+            notificationRepository.completeTransaction(sellerEntity.getNotification().getId(), buyerEntity.getNotification().getId());
+
             return true;
         }
         return false;

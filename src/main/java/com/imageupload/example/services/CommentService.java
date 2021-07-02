@@ -6,7 +6,6 @@ import com.imageupload.example.entity.TransactionEntity;
 import com.imageupload.example.repositories.BoardRepository;
 import com.imageupload.example.repositories.CommentRepository;
 import com.imageupload.example.repositories.TransactionRepository;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;

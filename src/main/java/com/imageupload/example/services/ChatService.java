@@ -73,7 +73,8 @@ public class ChatService {
 
     public void sendNotification(NotificationDTO message){
 
-        UserEntity userEntity = userRepository.findByUsername(message.getTarget()).get();
+        UserEntity userEntity = userRepository.findByUsername(message.getSender()).get();
+        UserEntity targetEntity = userRepository.findByUsername(message.getTarget()).get();
 
         Long id = userEntity.getNotification().getId();
 
@@ -82,13 +83,14 @@ public class ChatService {
                 notificationRepository.updateChat(id);
                 break;
             case transaction:
-                notificationRepository.updateTransaction(id);
+                notificationRepository.updateTransaction(id, targetEntity.getNotification().getId());
                 break;
             case notification:
                 notificationRepository.updateNotification(id);
                 break;
         }
             
+        simpMessageTemplate.convertAndSend("/notification/" + message.getSender(), message);
         simpMessageTemplate.convertAndSend("/notification/" + message.getTarget(), message);
     }
 
