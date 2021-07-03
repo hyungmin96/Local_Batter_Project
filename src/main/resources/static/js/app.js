@@ -7,10 +7,12 @@ var displayDateTrigger = false;
 var lastPage = false;
 var itemDate
 var targetUsername;
+var profileimg;
 
 // 새로운 채팅방이 클릭될 경우만 실행되는 메소드
 function loadChatList(e){
     if(globalThis.roomId == null || globalThis.roomId != e.id){
+        profileimg = e.children[0].childNodes[0].firstChild.src;
         targetUsername = $('#targetId')[0].innerHTML;
         $(".chat__list").empty();
         clearBackColor();
@@ -35,7 +37,11 @@ $(function () {
     })
 
     $('.chat__content__send').keyup(function(event) {
-        if (event.keyCode === 13) sendMessage('message');
+        if (event.keyCode === 13) 
+            if($('#message').val().length > 0)
+                sendMessage('message');  
+            else
+                alert('전송할 메세지 내용을 입력해주세요')
     });
 
     $('.sendMessage').click(function() {
@@ -90,7 +96,7 @@ function loadChatData(){
         dataType: 'json',
         success: function(response){
             let currentScrollTop = $('.chat__log')[0].scrollHeight;
-
+            
             $.each(response.content, function(key, value){
                 
                 if(response.last == true){
@@ -114,7 +120,7 @@ function loadChatData(){
                 // 로그인한 사용자가 보낸 채팅
                     $(".chat__list").prepend(
                         "<div class='user__send'>" + 
-                        "<span class='chat__message'>" + value.message + "</span>" + 
+                        "<span class='chat__message'>" + value.message + "</span>" +
                         "<span class='chat__time'>" + messageTime + "</span>" +
                         "</div>"
                     );
@@ -122,13 +128,22 @@ function loadChatData(){
                 // 상대 사용자가 보낸 채팅
                     $(".chat__list").prepend(
                         "<div class='target__send'>" + 
-                            "<span class='nickname'>" + value.userVo.username + "</span>" +
-                            "<span class='chat__message'>" + value.message + "</span>" +
-                            "<span class='chat__time'>" + messageTime + "</span>" +
+                        "<div style = 'display: flex; flex-direction: row;'>" +
+                        "<img src=" + profileimg + ">" +
+                        "<div>" +
+                        "<div class='nickname'>" + value.userVo.username + "</div>" +
+                        "<span>" +
+                        "<span class='chat__message'>" + value.message + "</span>" +
+                        "<span class='chat__time'>" + messageTime + "</span>" +
+                        "</span>" +
+                        "</div>" +
+                        "</div>" +
                         "</div>"
                 );      
 
             })
+
+            $('.profile__img').src = '';
 
             if(lastPage)
                 displayDate(itemDate);
@@ -217,9 +232,16 @@ function showMessage(message) {
         // 상대 사용자가 보낸 채팅
         $(".chat__list").append(
             "<div class='target__send'>" + 
-                "<span class='nickname'>" + message.sender + "</span>" +
-                "<span class='chat__message'>" + message.message + "</span>" +
-                "<span class='chat__time'>" + message.date + "</span>" +
+            "<div style = 'display: flex; flex-direction: row;'>" +
+            "<img src=" + profileimg + ">" +
+            "<div>" +
+            "<div class='nickname'>" + message.sender + "</div>" +
+            "<span>" +
+            "<span class='chat__message'>" + message.message + "</span>" +
+            "<span class='chat__time'>" + message.date + "</span>" +
+            "</span>" +
+            "</div>" +
+            "</div>" +
             "</div>"
         );
         $('.chat__log')[0].scrollTop = $('.chat__log')[0].scrollHeight;
@@ -261,7 +283,7 @@ function showMessage(message) {
                                 "<div class='room__box' style='width: 100%;'>" + 
                                 "<div id='" + value.roomEntity.id + "'onclick='javascript:loadChatList(this);' style='width: 100%;'>" + 
                                 "<div style='padding: 5px; display: flex; flex-direction: row;'>" +
-                                "<div style='margin:10px 10px;'><img src='/upload/" + value.target.profile.profilePath +"' onerror=this.src='/images/default_profile_img.png' style='width: 50px; height: 50px;'></div>" + 
+                                "<div style='margin:10px 10px;'><img class='profile__img' src='/upload/" + value.target.profile.profilePath +"' onerror=this.src='/images/default_profile_img.png' style='width: 50px; height: 50px;'></div>" + 
                                 "<div style='margin-left: 10px; width: 100%; margin-top: 10px;'>" + 
                                 "<div class='room__title'>" + 
                                 "<span id='targetId' style='color: blue;' onclick='NewTab(" + value.target.username + ");'>" + value.target.username + "</span>" + 

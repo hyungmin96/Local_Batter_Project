@@ -76,21 +76,21 @@ public class ChatService {
         UserEntity userEntity = userRepository.findByUsername(message.getSender()).get();
         UserEntity targetEntity = userRepository.findByUsername(message.getTarget()).get();
 
-        Long id = userEntity.getNotification().getId();
+        Long id = targetEntity.getNotification().getId();
 
         switch (message.getNotificationType()){
             case chat:
                 notificationRepository.updateChat(id);
                 break;
             case transaction:
-                notificationRepository.updateTransaction(id, targetEntity.getNotification().getId());
+                notificationRepository.updateTransaction(id, userEntity.getNotification().getId());
+                simpMessageTemplate.convertAndSend("/notification/" + message.getSender(), message);
                 break;
             case notification:
                 notificationRepository.updateNotification(id);
                 break;
         }
             
-        simpMessageTemplate.convertAndSend("/notification/" + message.getSender(), message);
         simpMessageTemplate.convertAndSend("/notification/" + message.getTarget(), message);
     }
 

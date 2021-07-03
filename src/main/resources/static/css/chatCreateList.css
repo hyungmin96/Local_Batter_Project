@@ -55,9 +55,11 @@ ul{
 }
 
 .nickname{
+    width: 50px;
     font-family: ChosunBg;
     font-size: 15px;
     margin-top: 5px;
+    margin: 5px;
 }
 
 .chat__message{
@@ -70,13 +72,12 @@ ul{
 .user__send{
     display: flex;
     flex-direction: column;
+    margin: 5px;
 }
 
 .user__send .chat__message{
-    padding: 7px;
+    padding: 8px;
     background-color: rgb(148, 194, 235);
-    display: flex;
-    flex-direction: column;
     max-width: 320px;
     word-break: break-all;
     border-radius: 5px;
@@ -86,14 +87,19 @@ ul{
 .target__send{
     display: flex;
     flex-direction: column;
+    margin: 5px;
+}
 
+.chat__list img{
+    height: 40px;
+    width: 40px;
+    border-radius: 50px;
+    margin-top: 7px;
 }
 
 .target__send .chat__message{
-    padding: 7px;
+    padding: 8px;
     background-color: rgb(255, 255, 255);
-    display: flex;
-    flex-direction: column;
     max-width: 320px;
     margin-right: auto;
     word-break: break-all;
@@ -116,13 +122,13 @@ ul{
     border-radius: 3px;
     padding: 10px;
     width: 100%;
-    height: 30px;
+    height: 35px;
 }
 
 .chat__time{
-    font-size: 12px;
+    font-size: 11px;
     color: #8a8a8a;
-    position: relative;
+    margin-bottom: 0;
 }
 
 .user__send .chat__time{
@@ -131,8 +137,7 @@ ul{
 }
 
 .target__send .chat__time{
-    margin-left: 10px;
-    font-family: Noto Sans KR;
+    margin-left: 5px;
 }
 
 .date__box{
@@ -183,7 +188,7 @@ ul{
 
 .chat__time__text{
     color: #ccc;
-    font-size: 10px;
+    font-size: 9px;
     float: right;
     margin-right: 10px;;
 }
