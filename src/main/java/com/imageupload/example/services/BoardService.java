@@ -15,19 +15,30 @@ import com.imageupload.example.repositories.FileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 @Service
+@RequiredArgsConstructor
 public class BoardService {
 
-    @Autowired
-    private BoardRepository boardRep;
+    private final BoardRepository boardRep;
+    private final FileRepository fileRep;
 
-    @Autowired
-    private FileRepository fileRep;
+    @org.springframework.transaction.annotation.Transactional
+    public void updateViewCount(Long id){
+        boardRep.updateView(id);
+    }
+
+    @org.springframework.transaction.annotation.Transactional
+    public void updateCartCount(Long id){
+        boardRep.updateCart(id);
+    }
 
     public void boardWrite(BoardEntity vo, MultipartFile[] uploadFiles) {
         boardRep.save(vo);

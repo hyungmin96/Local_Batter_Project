@@ -4,11 +4,8 @@ import java.io.IOException;
 import java.security.Principal;
 import java.text.ParseException;
 import java.util.stream.IntStream;
-
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
 import com.imageupload.example.components.createTime;
 import com.imageupload.example.entity.BoardEntity;
 import com.imageupload.example.entity.NotificationEntity;
@@ -82,13 +79,15 @@ public class BoardController {
 
     @GetMapping("/board/article/{id}")
     public String viewBoard(Model model, @PathVariable Long id) throws IOException, ParseException{
-        BoardEntity board = boardService.findBoard(id);
-
-        String displayTime = new createTime(board.getCreateTime()).getTimeDiff();
-
+        
         PageRequest page = PageRequest.of(0, 6, Sort.Direction.DESC, "id");
         Page<BoardEntity> topBoards = boardService.getTopBoard(page);
-
+        
+        boardService.updateViewCount(id);
+        
+        BoardEntity board = boardService.findBoard(id);
+        String displayTime = new createTime(board.getCreateTime()).getTimeDiff();
+        
         model.addAttribute("board", board);
         model.addAttribute("createTime", displayTime);
         model.addAttribute("topBoards", topBoards);

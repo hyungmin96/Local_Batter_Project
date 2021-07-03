@@ -1,12 +1,10 @@
 package com.imageupload.example.controllers.restcontroller;
-
 import java.security.Principal;
-
 import com.imageupload.example.dto.SubmitTransactionDTO;
 import com.imageupload.example.entity.TransactionEntity;
 import com.imageupload.example.entity.TransactionEnumType;
+import com.imageupload.example.services.BoardService;
 import com.imageupload.example.services.TransactionService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,12 +14,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.RequiredArgsConstructor;
+
 @RestController
 @RequestMapping("/api/transaction")
+@RequiredArgsConstructor
 public class TransactionController {
     
-    @Autowired
-    private TransactionService transactionService;
+    private final TransactionService transactionService;
+    private final BoardService boardService;
 
     @PostMapping("/cart/move")
     public ResponseEntity<String> cartToTransaction(SubmitTransactionDTO submitTransaction){
@@ -43,6 +44,10 @@ public class TransactionController {
 
     @PostMapping("/product")
     public ResponseEntity<String> dealWithSeller(SubmitTransactionDTO transactionDTO){
+
+        if(transactionDTO.getType().equals(TransactionEnumType.cart))
+            boardService.updateCartCount(transactionDTO.getBoardId());
+
         if (transactionService.saveTransaction(transactionDTO)){
             return new ResponseEntity<String>("success", HttpStatus.OK);
         }else{

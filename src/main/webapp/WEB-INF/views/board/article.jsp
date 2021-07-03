@@ -98,11 +98,11 @@
                     <div class="product__info__count">
                         <span class="view__count">
                             <img src="/images/boardDetail/view.png">
-                            <div class="count__number">32</div>
+                            <div class="count__number">${board.view}</div>
                         </span>
                         <span class="view__like">
                             <img src="/images/boardDetail/like.png">
-                            <div class="count__number">3</div>
+                            <div class="count__number">${board.cart}</div>
                         </span>
                         <span class="view__time">
                             <img src="/images/boardDetail/time.png">
@@ -186,7 +186,6 @@ function sendTransaction(type = 'transaction'){
         }
     });
 
-    console.log(result)
     return result;
 }
 

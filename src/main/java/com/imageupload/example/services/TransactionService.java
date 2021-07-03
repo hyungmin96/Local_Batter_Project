@@ -136,7 +136,12 @@ public class TransactionService {
     public Page<TransactionEntity> getTransactionEntities(Principal user, TransactionEnumType type, int page, int display){
         UserEntity userEntity = userService.findUserOne(user.getName());
         PageRequest request = PageRequest.of(page, display, Sort.Direction.DESC, "id");
-        Page<TransactionEntity> List = transactionRepository.findAllTransaction(type.getValue(), userEntity.getId(), request);
+        Page<TransactionEntity> List;
+        if(type.equals(TransactionEnumType.cart))
+            List = transactionRepository.findAllByBuyer(userEntity, request);
+        else
+            List = transactionRepository.findAllTransaction(type.getValue(), userEntity.getId(), request);
+
         return List;
     }
 

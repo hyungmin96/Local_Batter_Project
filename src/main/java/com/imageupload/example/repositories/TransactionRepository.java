@@ -15,5 +15,5 @@ public interface TransactionRepository extends JpaRepository<TransactionEntity, 
     public TransactionEntity findByBuyerAndSellerAndBoardId(UserEntity buyer, UserEntity seller, BoardEntity Board);
     @Query(value="select * from transactionentity where type =:type and buyer =:user or type =:type and seller =:user", nativeQuery = true)
     public Page<TransactionEntity> findAllTransaction(@Param("type") String type, @Param("user") Long user, Pageable request);
-
+    public Page<TransactionEntity> findAllByBuyer(UserEntity buyer, Pageable request);
 }
