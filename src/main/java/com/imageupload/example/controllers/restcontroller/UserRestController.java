@@ -1,6 +1,7 @@
 package com.imageupload.example.controllers.restcontroller;
 
 import com.imageupload.example.services.UserService;
+import com.imageupload.example.dto.UserDTO;
 import com.imageupload.example.entity.UserEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +23,7 @@ public class UserRestController {
     }
 
     @PostMapping("/api/join")
-    public String join(@RequestBody UserEntity vo){
+    public String join(@RequestBody UserDTO vo){
         userService.userSave(vo);
         return "회원가입 성공";
     }

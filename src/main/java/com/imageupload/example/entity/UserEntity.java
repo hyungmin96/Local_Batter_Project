@@ -58,9 +58,6 @@ public class UserEntity implements UserDetails {
     private Timestamp createTime;
 
     @Column
-    private String nickname;
-
-    @Column
     @Enumerated(EnumType.STRING)
     private Role Role;
 

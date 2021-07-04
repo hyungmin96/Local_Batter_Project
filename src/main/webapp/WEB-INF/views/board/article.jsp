@@ -126,8 +126,8 @@
         </div>
 
         <div class="new__reg__product">
-            <div class="new__product__category">최근 등록물품</div>
-                <c:forEach var="new_board" items="${topBoards.content}" varStatus="i">
+            <div class="new__product__category">등록된 다른 물품</div>
+                <c:forEach var="new_board" items="${topBoards}" varStatus="i">
                     <div class="new__product__box">
                         <a href="/board/article/${new_board.id}">
                         <div class="new__box">

@@ -93,7 +93,8 @@ public class TransactionService {
         if(transactionEntity != null){
             transactionRepository.deleteById(transactionEntity.getId());
             
-            notificationRepository.completeTransaction(sellerEntity.getNotification().getId(), buyerEntity.getNotification().getId());
+            if(!transactionEntity.getType().equals(TransactionEnumType.cart))
+                notificationRepository.completeTransaction(sellerEntity.getNotification().getId(), buyerEntity.getNotification().getId());
 
             return true;
         }
@@ -125,7 +126,8 @@ public class TransactionService {
             .date(LocalDate.now().toString())
             .build();
 
-            chatService.sendNotification(notificationDTO);
+            if(!transactionDTO.getType().equals(TransactionEnumType.cart))
+                chatService.sendNotification(notificationDTO);
 
             return true;
         }
@@ -137,8 +139,9 @@ public class TransactionService {
         UserEntity userEntity = userService.findUserOne(user.getName());
         PageRequest request = PageRequest.of(page, display, Sort.Direction.DESC, "id");
         Page<TransactionEntity> List;
+
         if(type.equals(TransactionEnumType.cart))
-            List = transactionRepository.findAllByBuyer(userEntity, request);
+            List = transactionRepository.findAllByBuyerAndType(userEntity, TransactionEnumType.cart, request);
         else
             List = transactionRepository.findAllTransaction(type.getValue(), userEntity.getId(), request);
 

@@ -3,6 +3,7 @@ package com.imageupload.example.controllers.sitecontroller;
 import java.io.IOException;
 import java.security.Principal;
 import java.text.ParseException;
+import java.util.List;
 import java.util.stream.IntStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -80,8 +81,7 @@ public class BoardController {
     @GetMapping("/board/article/{id}")
     public String viewBoard(Model model, @PathVariable Long id) throws IOException, ParseException{
         
-        PageRequest page = PageRequest.of(0, 6, Sort.Direction.DESC, "id");
-        Page<BoardEntity> topBoards = boardService.getTopBoard(page);
+        List<BoardEntity> topBoards = boardService.viewBoardRandomList();
         
         boardService.updateViewCount(id);
         

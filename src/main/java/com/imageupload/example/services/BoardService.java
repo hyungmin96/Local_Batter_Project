@@ -3,21 +3,18 @@ package com.imageupload.example.services;
 
 import java.io.File;
 import java.text.ParseException;
-import javax.transaction.Transactional;
+import java.util.List;
 
+import javax.transaction.Transactional;
 import com.imageupload.example.components.createTime;
 import com.imageupload.example.components.generateFile;
 import com.imageupload.example.dto.PageableVo;
 import com.imageupload.example.entity.BoardEntity;
 import com.imageupload.example.repositories.BoardRepository;
 import com.imageupload.example.repositories.FileRepository;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -29,6 +26,10 @@ public class BoardService {
 
     private final BoardRepository boardRep;
     private final FileRepository fileRep;
+
+    public List<BoardEntity> viewBoardRandomList(){
+        return boardRep.viewRandomBoardList();
+    }
 
     @org.springframework.transaction.annotation.Transactional
     public void updateViewCount(Long id){

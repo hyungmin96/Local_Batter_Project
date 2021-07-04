@@ -191,12 +191,13 @@ li .product__info__content{
 }
 
 .new__product__category{
-    font-size: 24px;
+    font-size: 18px;
     font-family: GongGothicMedium;
 }
 
 .new__product__box{
     display: inline-flex;
+    margin: 10px;
 }
 
 .new__box{
@@ -208,7 +209,7 @@ li .product__info__content{
 }
 
 .new__product__img{
-    height: 180px;
+    height: 160px;
 }
 
 .new__product__img img{

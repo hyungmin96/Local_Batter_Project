@@ -41,6 +41,11 @@
                     <input type="text" class="form-control" id="phone" placeholder="" value="" required name="user-real-name">
                 </div>
 
+                <div class="mb-3">
+                    <label for="firstName">거주지역</label> 
+                    <input type="text" class="form-control" id="location" placeholder="" value="" required name="user-real-name">
+                </div>
+
                 <button id="join-btn" class="btn btn-primary btn-lg btn-block">회원가입</button>
 
         </div>

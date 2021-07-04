@@ -13,6 +13,8 @@ function join() {
         username: $('#username').val(),
         password: $('#password-chk').val(),
         nickname: $('#nickname').val(),
+        phone: $('#phone').val(),
+        location: $('#location').val(),
     };
     
     if (!checkUsernameResult) {
