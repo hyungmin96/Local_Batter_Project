@@ -30,7 +30,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 public class CoupangServiceTest {
 
     private static Logger log = LogManager.getLogger();
-    final String root = "D:\\Spring projects\\ImageUpload example\\src\\main\\downloads\\";
+    final String root = "D:\\Spring projects\\SpringBoot LocalBatter\\src\\main\\downloads\\";
 
     @Autowired
     private BoardRepository boardRep;
@@ -41,9 +41,9 @@ public class CoupangServiceTest {
     @Test
     void 쿠팡_게시글_가져오기_테스트() throws IOException {
 
-        int page = 10;
-        int boardNums = 100;
-        String category = "일반";
+        int page = 1;
+        int boardNums = 10;
+        String category = "긴급";
 
         for (int i = 1; i <= page; i++) {
 

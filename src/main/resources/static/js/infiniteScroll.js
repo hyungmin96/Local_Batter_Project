@@ -28,21 +28,13 @@ function loadData(){
 
             var todayItemBox = $('.today-item-list');
 
-            var title;
-            var price;
-            var displayDate;
-            // var descryption;
-            // var location;
-            // var wrtier;
-
             $.each(data.content, function(key, value){
 
-                boardId = value.id;
-                title = value.title;
-                price = value.price;
-                descryption = value.descryption;
-                displayDate = value.displayDate;
-                // location = value.location;
+                var boardId = value.id;
+                var title = value.title;
+                var price = value.price;
+                var displayDate = value.displayDate;
+                var location = value.location;
                 // wrtier = value.wrtier;
 
                 let fileName = value.files.length > 0 ? value.files[0].tempName : '';
@@ -60,6 +52,7 @@ function loadData(){
                 html += '<div class="price">' + price + '<span class="k-money">원</span></div>';
                 html += '<span class="time">' + displayDate + '</span>';
                 html += '</div>';
+                html += '<span class="badge bg-secondary">' + location + '</span>';
                 html += '</div>';
                 html += '</div>';
                 html += '</div>';

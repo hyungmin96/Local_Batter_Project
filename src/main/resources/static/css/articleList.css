@@ -246,23 +246,9 @@ a:link {
     }
 }
 
-.banner__container{
-    display: inline-flex;
-    flex-direction: row;
-}
-
-.banner__container hr {
-    margin: 0;
-    width: 100%;
-}
-
-.sub__banner{
-    margin: 0px 5px;
-}
-
-.sub__banner img{
-    width: 390px;
-    height: 238px;
+.carousel-inner img{
+    width: 1000px;
+    height: 390px;
 }
 
 .group__buying__title {

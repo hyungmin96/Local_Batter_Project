@@ -1,6 +1,6 @@
 custom:
   path:
-    resource: file:///D:/Spring projects/ImageUpload example/src/main/downloads/
+    resource: file:///D:/Spring projects/SpringBoot LocalBatter/src/main/downloads/
     upload: /upload/**
 
 

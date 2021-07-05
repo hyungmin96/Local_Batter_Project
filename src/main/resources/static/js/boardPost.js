@@ -26,7 +26,7 @@ function post() {
         formData.append('price', $('#inputPrice').val());
         formData.append('descryption', $('#inputDescript').val());
         formData.append('writer', 'hyungmin96');
-        formData.append('location', $('#inputLocation').val());
+        formData.append('location', $('#sample5_address').val());
 
         for(let i = infoImgs.length - 1; i > -1; i--){
             if(infoImgs[i] == null)
@@ -76,7 +76,7 @@ function updatePost() {
         formData.append('price', $('#inputPrice').val());
         formData.append('descryption', $('#inputDescript').val());
         formData.append('writer', $('.writer__user_name').val());
-        formData.append('location', $('#inputLocation').val());
+        formData.append('location', $('#sample5_address').val());
 
         for(let i = 0; i < imgDeleteIndex.length; i++){
             formData.append('deleteIndex', imgDeleteIndex[i]);
@@ -135,7 +135,7 @@ function preview(e){
             "onclick=\"previewDelete(" + index + ")\"" +
             "id=\"img_id_" + index + "\"><img style='display: inline-flex; padding: 10px;' src=\"" + e.target.result +
             "\"boarder='10' height='200px' width='200px' data-file='" + f.name + "'" +
-            "' class='selProductFile' title='Click to remove'></a>";
+            "' class='selProductFile' title='사진 삭제'></a>";
 
             $(".previewBoard").append(html);
             index++;

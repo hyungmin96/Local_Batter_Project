@@ -1,5 +1,9 @@
+@import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
+    .notosanskr * { 
+    font-family: 'Noto Sans KR', sans-serif;
+}
 
-.container-write{
+.container__write{
     margin-top: 175px;
 }
 
@@ -20,10 +24,50 @@
     justify-content: center;
 }
 
-.container-write .container{
+.container__write .container{
     background-color: #fff;
     border-radius: 6px;
-    box-shadow: 1px 1px 10px 3px rgba(0, 0, 0, 0.12);
     padding: 30px;
     margin-bottom: 40px;
+}
+
+.container hr{
+    border: none;
+    background-color: rgb(104, 104, 104);
+    height: 1px;
+}
+
+.article__item__box{
+    display: flex;
+    flex-direction: row;
+    margin: 35px 15px;
+}
+
+.item__value{
+    font-family: Noto Sans KR;
+    font-size: 17px;
+    margin: auto 0;
+    width: 200px;
+}
+
+.inputbox{
+    border: none;
+    border: 1px solid rgb(215, 215, 215);
+    padding: 7px;
+    font-family: Noto Sans KR;
+    width: 100%;
+}
+
+.inputbox:focus, .inputbox:focus{
+    outline: #ccc;
+    border: 1px solid rgb(215, 215, 215);
+}
+
+.addr__btn{
+    margin: 10px 0;
+    background-color: white;
+    border: 1px solid rgb(215, 215, 215);
+    padding: 15px;
+    font-family: Noto Sans KR;
+    font-size: 15px;
 }

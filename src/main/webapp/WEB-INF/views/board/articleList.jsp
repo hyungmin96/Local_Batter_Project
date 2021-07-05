@@ -6,24 +6,32 @@
 <div id="products" class="container">
     <div class="content-wrapper">
 
-        <div class="banner__container">
-            <div class="image__banner">
-                <img src="/images/main/logo.gif">
+            <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
             </div>
-
-            <div class="sub__container">
-                <div class="sub__banner">
-                    <img src="/images/main/delivery.png">
+            <div class="carousel-inner">
+                <div class="carousel-item active" data-bs-interval="4000">
+                    <img src="/images/main/logo.gif" class="d-block w-100">
                 </div>
-                
-                <div class="sub__banner" style="margin-top: 5px;">
-                    <div class="delivery__container">
-                        <img src="/images/main/buy.png">
-                    </div>
+                <div class="carousel-item" data-bs-interval="4000">
+                    <img src="/images/main/delivery.png" class="d-block w-100">
+                </div>
+                <div class="carousel-item" data-bs-interval="4000">
+                    <img src="/images/main/buy.png" class="d-block w-100">
                 </div>
             </div>
-
-        </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+            </div>
 
         <div class="fast__sale_products">
             <span class="fast__category">완전 급해요</span>

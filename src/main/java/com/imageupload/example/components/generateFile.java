@@ -18,7 +18,7 @@ public class generateFile {
     private BoardEntity vo;
 
     private FileOutputStream fos;
-    private final String root = "D:\\Spring projects\\ImageUpload example\\src\\main\\downloads\\";
+    private final String root = "D:\\Spring projects\\SpringBoot LocalBatter\\src\\main\\downloads\\";
     private String tempName = "";
     private String extention;
 

@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class GeneratePorifleImage {
     
     private MultipartFile file;
-    private final String root = "D:\\Spring projects\\ImageUpload example\\src\\main\\downloads\\";
+    private final String root = "D:\\Spring projects\\SpringBoot LocalBatter\\src\\main\\downloads\\";
 
     public GeneratePorifleImage(MultipartFile file){
         this.file = file;

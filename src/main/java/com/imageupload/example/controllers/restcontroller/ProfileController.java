@@ -2,7 +2,6 @@ package com.imageupload.example.controllers.restcontroller;
 
 import java.io.IOException;
 import java.security.Principal;
-
 import com.imageupload.example.entity.CommentEntity;
 import com.imageupload.example.entity.ProfileEntity;
 import com.imageupload.example.entity.UserEntity;
@@ -32,7 +31,7 @@ public class ProfileController {
     @PostMapping("/save")
     public ResponseEntity<String> saveProfile(Principal user, @RequestParam(required = false) MultipartFile profileImg, ProfileEntity profile) throws IOException{
         UserEntity userEntity = userService.userUpdate(user, profileImg, profile);
-        return new ResponseEntity<String>(userEntity.getNickname(), HttpStatus.OK);
+        return new ResponseEntity<String>(userEntity.getUsername(), HttpStatus.OK);
     }
 
     @GetMapping("/comments")
