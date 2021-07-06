@@ -2,8 +2,8 @@ package com.imageupload.example.repositories;
 
 import java.util.List;
 
-import com.imageupload.example.entity.UserJoinRoomEntity;
 import com.imageupload.example.entity.UserEntity;
+import com.imageupload.example.entity.UserJoinRoomEntity;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

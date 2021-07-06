@@ -1,8 +1,6 @@
 package com.imageupload.example.services;
 
-import com.imageupload.example.entity.BoardEntity;
 import com.imageupload.example.entity.CommentEntity;
-import com.imageupload.example.entity.TransactionEntity;
 import com.imageupload.example.repositories.BoardRepository;
 import com.imageupload.example.repositories.CommentRepository;
 import com.imageupload.example.repositories.TransactionRepository;
@@ -12,6 +10,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import com.imageupload.example.dto.CommentDTO;
 import com.imageupload.example.entity.UserEntity;
+import com.imageupload.example.entity.BoardEntity;
+import com.imageupload.example.entity.TransactionEntity;
+
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import com.imageupload.example.repositories.UserRepository;

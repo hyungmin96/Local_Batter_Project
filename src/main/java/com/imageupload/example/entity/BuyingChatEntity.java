@@ -1,10 +1,8 @@
 package com.imageupload.example.entity;
 
-import java.sql.Timestamp;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import org.hibernate.annotations.CreationTimestamp;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,23 +10,16 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class CommentEntity {
-    
+public class BuyingChatEntity {
+
     @Id @GeneratedValue
     private Long id;
-
-    private String writer;
-
-    private String target;
-
-    private float mannerScore;
-
-    private String commentValue;
-
-    @CreationTimestamp
-    private Timestamp regDate;
-
+    private String title;
+    private String description;
+    private int numbers;
+    private int price;
+    
 }

@@ -8,28 +8,30 @@ import java.util.stream.IntStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import com.imageupload.example.components.createTime;
-import com.imageupload.example.entity.BoardEntity;
 import com.imageupload.example.entity.NotificationEntity;
 import com.imageupload.example.entity.UserEntity;
+import com.imageupload.example.entity.BoardEntity;
 import com.imageupload.example.repositories.UserRepository;
 import com.imageupload.example.services.BoardService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import lombok.RequiredArgsConstructor;
 
 @Controller
+@RequiredArgsConstructor
 public class BoardController {
     
-    @Autowired
-    private BoardService boardService;
-    
-    @Autowired
-    private UserRepository userRepository;
+    private final BoardService boardService;
+    private final UserRepository userRepository;
+
+    @GetMapping("/product/buying")
+    public String getBuying(){
+
+        return "buying/joinbuying";
+    }
 
     @GetMapping("/")
     public String home(Principal user, Model model, HttpServletRequest request){

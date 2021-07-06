@@ -5,7 +5,6 @@
     <div class="footer__section">
         <hr />
         <div class="container">
-
             <div class="t1">
                 <h1>한밭대학교 컴퓨터공학과 캡스톤 디자인</h1>
             </div>

@@ -8,8 +8,8 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.UUID;
 
-import com.imageupload.example.entity.FileEntity;
 import com.imageupload.example.entity.BoardEntity;
+import com.imageupload.example.entity.FileEntity;
 import com.imageupload.example.repositories.BoardRepository;
 import com.imageupload.example.repositories.FileRepository;
 

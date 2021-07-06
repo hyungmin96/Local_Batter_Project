@@ -8,6 +8,8 @@
 
 .footer__section{
     margin: auto;
+    position: relative;
+    bottom: 0px;
     height: 120px;
     width: 100%;
     background-color: rgb(49, 48, 54);

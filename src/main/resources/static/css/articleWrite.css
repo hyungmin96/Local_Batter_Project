@@ -4,7 +4,7 @@
 }
 
 .container__write{
-    margin-top: 175px;
+    margin-top: 125px;
 }
 
 .upload-info{
@@ -19,8 +19,8 @@
 
 .write-info{
     margin-left: 30px;
-    font-family: paybooc-Bold;
-    letter-spacing: 1.5px;
+    font-family: Noto Sans KR;
+    letter-spacing: 0.5px;
     justify-content: center;
 }
 
@@ -67,7 +67,7 @@
     margin: 10px 0;
     background-color: white;
     border: 1px solid rgb(215, 215, 215);
-    padding: 15px;
+    padding: 10px;
     font-family: Noto Sans KR;
     font-size: 15px;
 }

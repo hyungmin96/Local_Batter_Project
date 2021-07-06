@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.imageupload.example.entity.UserEntity;
 import com.imageupload.example.repositories.UserJoinRommEnumType;
 
 import org.springframework.data.annotation.LastModifiedDate;
