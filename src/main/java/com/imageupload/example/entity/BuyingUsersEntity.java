@@ -6,19 +6,17 @@ import javax.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
-public class BuyingChatEntity {
-
+@AllArgsConstructor
+public class BuyingUsersEntity {
+    
     @Id @GeneratedValue
     private Long id;
-    private String message;
-    private String sender;
-    private Long roomId;
     
+    private String user;
+    private Long roomId;
+
 }

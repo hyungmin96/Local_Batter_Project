@@ -5,9 +5,50 @@
     font-style: normal;
 }
 
+#smartwizard hr{
+    margin: 20px 10px;
+    border: none;
+    background-color: rgb(182, 182, 182);
+    height: 1px;
+}
+
+#preview__img__container{
+    max-width: 500px;
+}
+
+#img__upload{
+    height: 198px;
+    width: 230px;
+    border: 1px solid rgb(230, 230, 230);
+}
+
 .fast__sale_products button{
     font-family: SEBANG_Gothic_Regular;
     font-size: 15px;
     margin-top: 10px;
     letter-spacing: 1px;
+}
+
+body {
+    background-color: 'white';
+}
+
+.form-control:focus {
+    color: #495057;
+    background-color: #fff;
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0rem rgba(0, 123, 255, .25)
+}
+
+.btn-secondary:focus {
+    box-shadow: 0 0 0 0rem rgba(108, 117, 125, .5)
+}
+
+.close:focus {
+    box-shadow: 0 0 0 0rem rgba(108, 117, 125, .5)
+}
+
+.mt-200 {
+    margin-top: 200px
 }

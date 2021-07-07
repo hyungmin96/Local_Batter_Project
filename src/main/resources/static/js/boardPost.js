@@ -126,9 +126,7 @@ function preview(e){
             alert("이미지파일만 업로드가 가능합니다.");
             return;
         }
-
         infoImgs.push(f);
-
         var reader = new FileReader();
         reader.onload = function(e){
             var html = "<a href=\"javascript:void(0);\"" +
@@ -140,11 +138,8 @@ function preview(e){
             $(".previewBoard").append(html);
             index++;
         }
-
         reader.readAsDataURL(f);
-
     });
-
 }
 
 function previewDelete(index){

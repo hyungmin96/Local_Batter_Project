@@ -46,7 +46,6 @@
                         <div class="category__list">거래내역</div>
                         <div class="transaction__count">0개</div>
                     </div>
-                    <hr style="margin: 5px 3px; border:none; height: 1px; background-Color: #ccc;"/>
                     
                     <div class="profile__exchange__list">
 
@@ -72,7 +71,6 @@
                         <div class="review__count">0개</div>
                     </div>
                     
-                    <hr style="margin: 5px 3px; border:none; height: 1px; background-Color: #ccc;"/>
                     <div class="comment__list">
 
                     </div>
