@@ -5,8 +5,9 @@ import java.io.File;
 import java.text.ParseException;
 import java.util.List;
 import javax.transaction.Transactional;
+
+import com.imageupload.example.components.GenerateFile;
 import com.imageupload.example.components.createTime;
-import com.imageupload.example.components.generateFile;
 import com.imageupload.example.dto.PageableVo;
 import com.imageupload.example.entity.BoardEntity;
 import com.imageupload.example.repositories.BoardRepository;
@@ -43,7 +44,7 @@ public class BoardService {
     public void boardWrite(BoardEntity vo, MultipartFile[] uploadFiles) {
         boardRep.save(vo);
         if (uploadFiles != null && uploadFiles.length > 0) {
-            generateFile gen = new generateFile(vo, uploadFiles);
+            GenerateFile gen = new GenerateFile(vo, uploadFiles);
             fileRep.saveAll(gen.generateFileVoList());
         }
     }
@@ -65,7 +66,7 @@ public class BoardService {
 
         if(inputVo != null){
             if (uploadFiles != null && uploadFiles.length > 0) {
-                generateFile gen = new generateFile(vo, uploadFiles);
+                GenerateFile gen = new GenerateFile(vo, uploadFiles);
                 fileRep.saveAll(gen.generateFileVoList());
             }
 

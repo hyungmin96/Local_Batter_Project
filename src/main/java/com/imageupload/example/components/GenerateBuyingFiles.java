@@ -6,28 +6,29 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import com.imageupload.example.entity.BoardEntity;
-import com.imageupload.example.entity.FileEntity;
+
+import com.imageupload.example.entity.BuyingChatRoomEntity;
+import com.imageupload.example.entity.BuyingFileEntity;
 import org.springframework.web.multipart.MultipartFile;
 
-public class GenerateFile {
+public class GenerateBuyingFiles {
 
     private MultipartFile[] files;
-    private BoardEntity vo;
+    private BuyingChatRoomEntity buyingChatRoomEntity;
 
     private FileOutputStream fos;
     private final String root = "D:\\Spring projects\\SpringBoot LocalBatter\\src\\main\\downloads\\";
     private String tempName = "";
     private String extention;
 
-    public GenerateFile(BoardEntity vo, MultipartFile[] files) {
-        this.vo = vo;
+    public GenerateBuyingFiles(BuyingChatRoomEntity buyingChatRoomEntity, MultipartFile[] files) {
         this.files = files;
+        this.buyingChatRoomEntity = buyingChatRoomEntity;
     }
 
-    public List<FileEntity> generateFileVoList() {
+    public List<BuyingFileEntity> generateFileVoList() {
 
-        List<FileEntity> fileInfos = new ArrayList<>();
+        List<BuyingFileEntity> fileInfos = new ArrayList<>();
 
         for (MultipartFile file : files) {
 
@@ -44,18 +45,17 @@ public class GenerateFile {
                 fos.write(bytes);
 
                 fos.close();
-                
+
+                BuyingFileEntity buyingFileEntity = BuyingFileEntity.builder()
+                .name(tempName)
+                .path(root + tempName + extention)
+                .buyingChatRoomEntity(buyingChatRoomEntity).build();
+
+                fileInfos.add(buyingFileEntity);
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-            FileEntity filevo = FileEntity.builder()
-                            .tempName(tempName + extention)
-                            .filePath(root + tempName + extention)
-                            .originName(file.getOriginalFilename())
-                            .fileSize(file.getSize()).board(vo).build();
-
-            fileInfos.add(filevo);
         }
 
         return fileInfos;

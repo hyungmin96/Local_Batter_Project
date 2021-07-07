@@ -93,10 +93,11 @@
         </div>
     </div>
 <!-- Modal -->
-
     </span>
     <hr style="border: none; height: 1px; background-color: #ccc;" />
-
+        <div class="buying__room__list">
+            asd
+        </div>
     </div>
 </div>
 

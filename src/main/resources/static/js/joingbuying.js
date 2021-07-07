@@ -9,6 +9,7 @@ $(document).ready(function(){
     transitionEffect:'fade',
     showStepURLhash: false,
     });
+    loadBuyingChatRoomList();
 });
 
 $(function(){
@@ -25,6 +26,29 @@ $(function(){
         buyingPreview(e);
     });
 })
+
+var page = 0;
+var display = 20;
+
+function loadBuyingChatRoomList(){
+
+    var data = {page: page, display: display};
+
+    $.ajax({
+
+        url: '/api/buying/getlist',
+        type: 'GET',
+        data: data,
+        success: function(response){
+            
+            $.each(response.content, function(key, value){
+                console.log(value)
+            })
+
+        }
+    })
+
+}
 
 function createBuyingRoom(){
 

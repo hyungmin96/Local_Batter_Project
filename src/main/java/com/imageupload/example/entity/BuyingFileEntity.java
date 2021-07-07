@@ -3,13 +3,18 @@ package com.imageupload.example.entity;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class BuyingFileEntity {
 
@@ -17,5 +22,10 @@ public class BuyingFileEntity {
     private Long id;
     private String path;
     private String name;
+
+    @ManyToOne
+    @JoinColumn(name = "roomId")
+    @JsonIgnore
+    private BuyingChatRoomEntity buyingChatRoomEntity;
 
 }

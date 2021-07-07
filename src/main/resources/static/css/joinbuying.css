@@ -5,6 +5,10 @@
     font-style: normal;
 }
 
+.buying__room__list{
+    min-height: 700px;
+}
+
 #smartwizard hr{
     margin: 20px 10px;
     border: none;
