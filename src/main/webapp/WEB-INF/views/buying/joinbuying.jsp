@@ -96,11 +96,48 @@
     </span>
     <hr style="border: none; height: 1px; background-color: #ccc;" />
         <div class="buying__room__list">
-            asd
+            
+        </div>
+        <div class="page__container">
+            <div class="page__box" style="display: inline-flex; max-width: 395px;">
+                <div class="previous"><img src="/images/back.png"></div>
+                    <input type="hidden" class="curpage" data-value="1">
+                    <input type="hidden" class="lastpage" data-value="${endPages}">
+                    <div class="page__number__box">
+
+                    </div>
+                <div class="next"><img src="/images/next.png"></div>
+            </div>
         </div>
     </div>
 </div>
 
+<!-- modal -->
+    <div id="my_modal" style="overflow:auto; margin-top: 25px; width: 850px;">
+        <div class="modal_close_btn"><img src="/images/delete_35px.png" style="width: 20px; height: 20px;float: right; cursor: pointer;"></div>
+
+        <div class="enter__title">채팅방 입장</div>
+        <hr />
+
+        <div class="enter__img">제품 이미지</div>
+        <div class="product__img__container" style="min-height: 170px;">
+
+        </div>
+        <hr />
+
+        <div class="enter__desc">제품 설명</div>
+        <div class="product__img__desc" style="min-height: 100px;">
+
+        </div>
+        <hr />
+
+        <button id="enter__btn" type="button" class="float-right btn btn-secondary">입장</button>
+        
+    </div>
+<!-- modal -->
+
+<script src="/js/pagination.js"></script>
+<script src="/js/modal.js"></script>
 <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" />
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script> <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
 <link href="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/smart_wizard.min.css" rel="stylesheet" type="text/css" />

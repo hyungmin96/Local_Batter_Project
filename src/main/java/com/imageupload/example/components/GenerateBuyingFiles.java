@@ -47,7 +47,7 @@ public class GenerateBuyingFiles {
                 fos.close();
 
                 BuyingFileEntity buyingFileEntity = BuyingFileEntity.builder()
-                .name(tempName)
+                .name(tempName + extention)
                 .path(root + tempName + extention)
                 .buyingChatRoomEntity(buyingChatRoomEntity).build();
 

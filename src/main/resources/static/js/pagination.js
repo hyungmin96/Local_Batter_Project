@@ -29,15 +29,20 @@ function nextBtn(pageContainerName){
     var curPage = document.getElementsByClassName('curpage')[0];
     var lastPage = document.getElementsByClassName('lastpage')[0];
 
-    curPage.dataset.value = (curPage.dataset.value * 1) + 1;
-    document.getElementsByClassName('previous')[0].style.display = '';
+    if(curPage.dataset.value < lastPage.dataset.value){
+            curPage.dataset.value = curPage.dataset.value * 1 + 1;
+            document.getElementsByClassName('previous')[0].style.display = '';
 
-    Array.from(document.getElementsByClassName(pageContainerName)[0].children, item => {
-        if(item.style.display != 'none' && index < 10){
-            item.style.display = 'none';
-            index++;
-        }
-    });
+            Array.from(
+                document.getElementsByClassName(pageContainerName)[0].children,
+                (item) => {
+                    if (item.style.display != 'none' && index < 10) {
+                        item.style.display = 'none';
+                        index++;
+                    }
+                }
+            );
+    }
 }
 
 function previousBtn(pageContainerName){

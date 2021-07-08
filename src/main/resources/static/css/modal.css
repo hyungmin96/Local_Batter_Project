@@ -1,7 +1,12 @@
+@font-face {
+    font-family: 'ON-IGothic';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_eleven@1.0/ON-IGothic.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
 #my_modal {
     display: none;
-    width: 600px;
-    height: 360px;
     padding: 20px 20px;
     background-color: #fefefe;
     border: 1px solid #888;
@@ -12,4 +17,42 @@
     position: absolute;
     top: 10px;
     right: 10px;
+}
+
+#my_modal .enter__title{
+    font-family: ON-IGothic;
+    font-size: 17px;
+}
+
+#my_modal .enter__img{
+    font-family: ON-IGothic;
+    font-size: 14px;
+}
+
+#my_modal .enter__desc{
+    font-family: ON-IGothic;
+    font-size: 14px;
+}
+
+#my_modal #enter__btn{
+    font-family: ON-IGothic;
+    font-size: 14px;
+}
+
+#my_modal .product__img__container{
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    flex-wrap: wrap;
+}
+
+.product__img__item{
+    margin: 10px 10px;
+}
+
+#my_modal .product__img__container img{
+    height: 140px;
+    width: 170px;
+    object-fit: cover;
+    border: 1px solid rgb(230, 230, 230);
 }

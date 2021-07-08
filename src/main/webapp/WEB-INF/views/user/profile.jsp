@@ -96,7 +96,7 @@
 
 </div>
     <!-- modal -->
-        <div id="my_modal" style="height: 650px;">
+        <div id="my_modal" style="width: 600px; height: 640px;">
             <div class = "modal_close_btn"><img src="/images/delete_35px.png" style="width: 20px; height: 20px;float: right; cursor: pointer;"></div>
 
         <div style="margin-bottom: 5px;">

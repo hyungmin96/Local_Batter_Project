@@ -5,7 +5,81 @@
     font-style: normal;
 }
 
+@font-face {
+    font-family: 'ONE-Mobile-Title';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/ONE-Mobile-Title.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'ON-IGothic';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_eleven@1.0/ON-IGothic.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.buying__room__content{
+    font-family: ON-IGothic;
+    font-size: 14px;
+}
+
+.buying__room__description{
+    font-family: ON-IGothic;
+    letter-spacing: 0.5px;
+    font-size: 15px;
+    margin: 5px 5px;
+    min-height: 50px;
+    min-width: 850px;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.buying__room__title{
+    font-family: ONE-Mobile-Title;
+    letter-spacing: 0.5px;
+    font-size: 17px;
+}
+
+.buying__item__box:hover{
+    background-color: rgb(245, 245, 245);
+    box-shadow: 3px 3px 10px 3px rgba(0, 0, 0, 0.12);
+}
+
+.buying__item__box{
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.buying__room__content{
+    margin: 5px 5px;
+    padding: 5px;
+}
+
+.page__container{
+    text-align: center;
+}
+
+.buying__room__list hr{
+    margin: 5px 5px;
+    border: none;
+    background-color: rgb(145, 145, 145);
+    height: 1px;
+}
+
+.buying__room__list img{
+    height: 120px;
+    width: 150px;
+    object-fit: cover;
+}
+
+
 .buying__room__list{
+    margin: 25px 25px;
     min-height: 700px;
 }
 

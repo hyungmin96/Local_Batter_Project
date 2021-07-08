@@ -27,27 +27,116 @@ $(function(){
     });
 })
 
+var buyingChatRoomArray = [];
 var page = 0;
-var display = 20;
+var display = 10;
+var pagination = false;
+var boardPagination = false;
 
-function loadBuyingChatRoomList(){
+function loadBoardPagination(e, pages){
+
+    Array.from(document.getElementsByClassName('page__number__box')[0].children, item=>{
+        item.style.backgroundColor = 'white';
+    });
+
+    if(e != null)
+        e.style.backgroundColor = 'rgb(236, 236, 236)';
+
+    if(!boardPagination){
+        boardPagination = true;
+        if(pages < 1) pages = 1;
+        for(var i = 1; i <= pages; i++){
+            $('.page__number__box').append(
+                "<li id='boardnum-" + i + "' class='page__number' onclick='loadBuyingChatRoomList(this, " + (i - 1) + ");'>" + 
+                "<a href='javascript:void(0)'>" + i + "</a></li>"
+            );
+        }
+    }
+}
+
+function loadBuyingChatRoomList(e, page = 0){
 
     var data = {page: page, display: display};
 
     $.ajax({
-
         url: '/api/buying/getlist',
         type: 'GET',
         data: data,
         success: function(response){
             
-            $.each(response.content, function(key, value){
-                console.log(value)
-            })
+            var lastPage = document.getElementsByClassName('lastpage')[0];
+            lastPage.dataset.value = response.totalPages
 
+            $('.buying__room__list').empty();
+            loadBoardPagination(e, response.totalPages);
+            buyingChatRoomArray = [];
+
+            $.each(response.content, function(key, value){
+            
+                buyingChatRoomArray.push(value);
+
+                var files = (value.files.length > 0) ? value.files : null;
+
+                $('.buying__room__list').append(
+                    "<div id='item__box__" + key + "' onclick='javascript:showModal(); showDataToModal(this);' class='buying__item__box'>" + 
+                    "<img src=/upload/" + files[0].name + ">" + 
+                        "<div class='buying__room__content'>" +
+                        "<div class = 'buying__room__title'>" + value.roomTitle + "</div>" +
+                        
+                        "<div style = 'display: flex; flex-direction: row;'>" +
+                            "<div>" +
+                                "<div class = 'buying__room__description'>" + value.description + "</div>" +
+                                "<div class = 'buying__room__price'> 필요금액 : " + convertPrice(value.price) + "원</div>" +
+                            "</div>" +
+                            "<div>" +
+                                "<div class = 'buying__date'>" +
+                                    "<span>참여인원 : </span>" +
+                                        "<span class = 'buying__room__users'>" + value.users.length + "명</span>" + ' / ' +
+                                        "<span class = 'buying__room__limit'>" + value.limitUsers + "명</span>" +
+                                    "</div>" +
+                                "<div class = 'buying__room__expiration'> 만료일자 : " + value.roomDate + "</div>" +
+                                "</div>" +
+                            "</div>" +
+                        "</div>" +
+
+                    "</div>" +
+                    "<hr />"
+                );  
+            })
         }
     })
+}
 
+function showDataToModal(e){
+    
+    var id = e.id.split('item__box__')[1]
+
+    var value = buyingChatRoomArray[id];
+
+    console.log(value)
+    $('.product__img__container').empty();
+    value.files.forEach(item => {
+        $('.product__img__container').append(
+            "<div class='product__img__item'>" +
+                "<img src='/upload/" + item.name + "'>" +
+            "</div>"
+        )
+    })
+    
+}
+
+function convertPrice(num){
+    var len, point, str;  
+    num = num + ""; 
+    point = num.length % 3 ;
+    len = num.length; 
+    str = num.substring(0, point); 
+    while (point < len) { 
+        if (str != "") str += ","; 
+        str += num.substring(point, point + 3); 
+        point += 3; 
+    } 
+    return str;
 }
 
 function createBuyingRoom(){
@@ -75,7 +164,7 @@ function createBuyingRoom(){
         contentType: false,
         processData: false,
         success: function(){
-
+            alert('채팅방을 생성하였습니다.')
         }
 
     })
@@ -83,7 +172,6 @@ function createBuyingRoom(){
 }
 
 function buyingPreview(e){
-    // $("#preview__img__container").empty();
 
     var files = e.target.files;
     var filesArr = Array.prototype.slice.call(files);
@@ -115,3 +203,4 @@ function previewDelete(index){
     $(img_id).remove();
     imgDeleteIndex.push(index);
 }
+

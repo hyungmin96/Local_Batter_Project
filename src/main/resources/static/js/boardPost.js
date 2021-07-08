@@ -150,17 +150,12 @@ function previewDelete(index){
 }
 
 function convertM(object){
-
     var len, point, str;  
-
     var num = object.value.replaceAll(',', '');
-
     num = num + ""; 
     point = num.length % 3 ;
     len = num.length; 
-   
     if(num.length < 9){
-
         str = num.substring(0, point); 
         while (point < len) { 
             if (str != "") str += ","; 
@@ -171,5 +166,4 @@ function convertM(object){
     }else{
         alert('최대 입력가능한 숫자를 초과하였습니다.');
     }
-        
 }
