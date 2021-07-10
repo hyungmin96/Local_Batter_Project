@@ -13,6 +13,9 @@ $(document).ready(function(){
 });
 
 $(function(){
+    $('#enter__btn').click(function(){
+        enterRoom();
+    })
     $('#room__create').click(function(){
         createBuyingRoom();
     })
@@ -26,6 +29,12 @@ $(function(){
         buyingPreview(e);
     });
 })
+
+
+function enterRoom(){
+    window.open("/buying/chat/roomid=" + $('.roomId')[0].value, $('.roomTitle')[0].value, "width=400, height=650");
+    $('#close__btn').click();
+}
 
 var buyingChatRoomArray = [];
 var page = 0;
@@ -110,11 +119,16 @@ function loadBuyingChatRoomList(e, page = 0){
 function showDataToModal(e){
     
     var id = e.id.split('item__box__')[1]
-
     var value = buyingChatRoomArray[id];
+    
+    $('.roomId')[0].value = value.id;
+    $('.roomTitle')[0].value = value.roomTitle;
 
     console.log(value)
+
     $('.product__img__container').empty();
+    $('.product__img__desc').empty();
+
     value.files.forEach(item => {
         $('.product__img__container').append(
             "<div class='product__img__item'>" +
@@ -122,6 +136,12 @@ function showDataToModal(e){
             "</div>"
         )
     })
+
+    $('.product__img__desc').append(
+        "<div class='product__desc__item'>" +
+            value.description + 
+        "</div>"
+    )
     
 }
 

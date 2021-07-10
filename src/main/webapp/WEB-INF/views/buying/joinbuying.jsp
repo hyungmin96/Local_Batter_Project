@@ -114,7 +114,9 @@
 
 <!-- modal -->
     <div id="my_modal" style="overflow:auto; margin-top: 25px; width: 850px;">
-        <div class="modal_close_btn"><img src="/images/delete_35px.png" style="width: 20px; height: 20px;float: right; cursor: pointer;"></div>
+
+        <input type="hidden" class="roomId" value="0"/>
+        <input type="hidden" class="roomTitle" value=""/>
 
         <div class="enter__title">채팅방 입장</div>
         <hr />
@@ -126,12 +128,13 @@
         <hr />
 
         <div class="enter__desc">제품 설명</div>
-        <div class="product__img__desc" style="min-height: 100px;">
+        <div class="product__img__desc" style="margin: 5px; 5px; min-height: 100px;">
 
         </div>
         <hr />
 
-        <button id="enter__btn" type="button" class="float-right btn btn-secondary">입장</button>
+        <div class="modal_close_btn"><button id="close__btn" type="button" class="float-right btn btn-danger">닫기</button></div>
+        <button id="enter__btn" type="button" class="float-right btn btn-primary">입장</button>
         
     </div>
 <!-- modal -->

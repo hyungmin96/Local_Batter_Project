@@ -6,13 +6,6 @@
 }
 
 @font-face {
-    font-family: 'ONE-Mobile-Title';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/ONE-Mobile-Title.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
     font-family: 'ON-IGothic';
     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_eleven@1.0/ON-IGothic.woff') format('woff');
     font-weight: normal;
@@ -38,7 +31,7 @@
 }
 
 .buying__room__title{
-    font-family: ONE-Mobile-Title;
+    font-family: ON-IGothic;
     letter-spacing: 0.5px;
     font-size: 17px;
 }

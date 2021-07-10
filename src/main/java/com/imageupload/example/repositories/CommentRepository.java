@@ -12,5 +12,5 @@ public interface CommentRepository extends JpaRepository<CommentEntity, Long> {
     Page<CommentEntity> findAllBytarget(String target, Pageable request);
 
     @Query(value = "select sum(mannerScore) / count(mannerScore) from commententity where target =:target", nativeQuery = true)
-    public float findAllBymannerScore(@Param("target") String target);
+    float findAllBymannerScore(@Param("target") String target);
 }

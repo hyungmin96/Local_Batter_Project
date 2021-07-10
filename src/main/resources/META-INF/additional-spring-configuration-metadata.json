@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "custom.path.resource",
+      "type": "java.lang.String",
+      "description": "Description for custom.path.resource."
+  }
+] }

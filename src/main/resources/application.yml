@@ -23,6 +23,9 @@ spring:
       enabled: always
   handlerbars:
     suffix: .jsp
+  devtools:
+    restart:
+      enabled: true
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver

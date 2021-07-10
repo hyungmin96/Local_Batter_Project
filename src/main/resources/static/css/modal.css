@@ -13,10 +13,10 @@
     border-radius: 3px;
 }
 
-#my_modal .modal_close_btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
+#my_modal hr{
+    border: none;
+    height: 1px;
+    background-color: rgb(145, 145, 145);
 }
 
 #my_modal .enter__title{
@@ -34,9 +34,10 @@
     font-size: 14px;
 }
 
-#my_modal #enter__btn{
+#my_modal button{
     font-family: ON-IGothic;
     font-size: 14px;
+    margin: 5px;
 }
 
 #my_modal .product__img__container{

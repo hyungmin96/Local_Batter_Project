@@ -27,12 +27,6 @@ public class BoardController {
     private final BoardService boardService;
     private final UserRepository userRepository;
 
-    @GetMapping("/product/buying")
-    public String getBuying(){
-
-        return "buying/joinbuying";
-    }
-
     @GetMapping("/")
     public String home(Principal user, Model model, HttpServletRequest request){
 

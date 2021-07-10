@@ -19,8 +19,8 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/buying")
-public class BuyingChatController {
-    
+public class BuyingChatRestController {
+
     private final BuyingService buyingService;
 
     @GetMapping("/getlist")
@@ -29,7 +29,6 @@ public class BuyingChatController {
         return buyingService.getBuyingRooms(request);
     }
     
-
     @PostMapping("/create")
     public ResponseEntity<String> createBuyingRoom(BuyingDTO buyingDTO){
         buyingService.createBuyingRoom(buyingDTO);
