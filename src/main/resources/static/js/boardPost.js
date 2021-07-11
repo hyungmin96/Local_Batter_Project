@@ -1,6 +1,6 @@
 let index = 0;
-var infoImgs = [];
-var imgDeleteIndex = [-1];
+let infoImgs = [];
+let imgDeleteIndex = [-1];
 
 $(document).ready(function () {
     $('#btn_upload').on('click', post);

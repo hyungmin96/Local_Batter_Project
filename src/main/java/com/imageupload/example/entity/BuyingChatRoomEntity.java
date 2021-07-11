@@ -1,4 +1,5 @@
 package com.imageupload.example.entity;
+import java.sql.Timestamp;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -10,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Data
@@ -29,6 +31,9 @@ public class BuyingChatRoomEntity {
     private int limitUsers;
     private int price;
     private String owner;
+
+    @CreationTimestamp
+    private Timestamp regTime;
 
     @OneToMany(mappedBy = "buyingChatRoomEntity")
     private List<BuyingFileEntity> files;

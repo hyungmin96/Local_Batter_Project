@@ -5,9 +5,11 @@ import java.security.Principal;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.imageupload.example.dto.BuyingChatMessageDTO;
 import com.imageupload.example.dto.MessageDTO;
 import com.imageupload.example.dto.NotificationDTO;
 import com.imageupload.example.entity.NotificationEntity;
+import com.imageupload.example.services.BuyingChatService;
 import com.imageupload.example.services.ChatService;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -24,6 +26,12 @@ import lombok.RequiredArgsConstructor;
 public class ChatController {
     
     private final ChatService chatService;
+    private final BuyingChatService buyingChatService;
+
+    @MessageMapping("/send/chat/buying/5")
+    public void buyingRoomChat(BuyingChatMessageDTO messageDTO){
+        buyingChatService.sendBuyingRoomToChat(messageDTO);
+    }
 
     @MessageMapping("/send/notification/{id}")
     public void getConnectionMessage(@Payload NotificationDTO message){
@@ -32,9 +40,7 @@ public class ChatController {
 
     @GetMapping("/chatlist/{username}")
     public String getChatList(Model model, HttpServletRequest request){
-        
         chatService.clearNotification("chat");
-
         return "/chat/chatRoomList";
     }
 

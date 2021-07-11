@@ -30,7 +30,6 @@ public class TransactionService {
     private final UserService userService;
     private final BoardService boardService;
     private final NotificationRepository notificationRepository;
-    private final SimpMessagingTemplate simpMessagingTemplate;
     private final ChatService chatService;
 
     public Boolean cartToTransaction(SubmitTransactionDTO submitTransaction){

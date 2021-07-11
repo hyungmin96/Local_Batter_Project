@@ -1,5 +1,6 @@
-var infoImgs = [];
-var imgDeleteIndex = [-1];
+let buyingRoomInfoImgs = [];
+let chatRoomImgDeleteIndex = [-1];
+let roomValue;
 
 $(document).ready(function(){
     $('#smartwizard').smartWizard({
@@ -28,19 +29,32 @@ $(function(){
     $("#input__buying__img").change(function(e){
         buyingPreview(e);
     });
+
 })
 
 
 function enterRoom(){
-    window.open("/buying/chat/roomid=" + $('.roomId')[0].value, $('.roomTitle')[0].value, "width=400, height=650");
-    $('#close__btn').click();
+
+    var data = { roomId: $('.roomId').val() * 1, username: $('.user__name').text()}
+    $.ajax({
+
+        url: '/api/buying/enter',
+        type: 'POST',
+        data:  data,
+        contentType: 'application/x-www-form-urlencoded',
+        success: function(){
+            window.open("/buying/chat/" + $('.roomId')[0].value, $('.roomTitle')[0].value, "width=400, height=650");
+            $('#close__btn').click();
+        }
+    })
 }
 
-var buyingChatRoomArray = [];
-var page = 0;
-var display = 10;
-var pagination = false;
-var boardPagination = false;
+let buyingChatRoomArray = [];
+
+let page = 0;
+let display = 10;
+let pagination = false;
+let boardPagination = false;
 
 function loadBoardPagination(e, pages){
 
@@ -54,7 +68,7 @@ function loadBoardPagination(e, pages){
     if(!boardPagination){
         boardPagination = true;
         if(pages < 1) pages = 1;
-        for(var i = 1; i <= pages; i++){
+        for(let i = 1; i <= pages; i++){
             $('.page__number__box').append(
                 "<li id='boardnum-" + i + "' class='page__number' onclick='loadBuyingChatRoomList(this, " + (i - 1) + ");'>" + 
                 "<a href='javascript:void(0)'>" + i + "</a></li>"
@@ -118,11 +132,13 @@ function loadBuyingChatRoomList(e, page = 0){
 
 function showDataToModal(e){
     
-    var id = e.id.split('item__box__')[1]
-    var value = buyingChatRoomArray[id];
+    let id = e.id.split('item__box__')[1]
+    let value = buyingChatRoomArray[id];
     
     $('.roomId')[0].value = value.id;
     $('.roomTitle')[0].value = value.roomTitle;
+
+    globalThis.roomValue = value;
 
     console.log(value)
 
@@ -142,7 +158,6 @@ function showDataToModal(e){
             value.description + 
         "</div>"
     )
-    
 }
 
 function convertPrice(num){
@@ -170,11 +185,11 @@ function createBuyingRoom(){
     formData.append('roomTitle', $('#buying__chat__title').val());
     formData.append('limit', $('#buying__chat__limit').val());
 
-    for(var i = infoImgs.length - 1; i > -1; i--)
-        if(infoImgs[i] == null) infoImgs.splice(i, 1);
+    for(var i = buyingRoomInfoImgs.length - 1; i > -1; i--)
+        if(buyingRoomInfoImgs[i] == null) buyingRoomInfoImgs.splice(i, 1);
 
-    for (var i = 0; i < infoImgs.length; i++) 
-        formData.append('files', infoImgs[i]);
+    for (var i = 0; i < buyingRoomInfoImgs.length; i++)
+        formData.append('files', buyingRoomInfoImgs[i]);
 
     $.ajax({
 
@@ -186,9 +201,7 @@ function createBuyingRoom(){
         success: function(){
             alert('채팅방을 생성하였습니다.')
         }
-
     })
-
 }
 
 function buyingPreview(e){
@@ -201,7 +214,7 @@ function buyingPreview(e){
             alert("이미지파일만 업로드가 가능합니다.");
             return;
         }
-        infoImgs.push(f);
+        buyingRoomInfoImgs.push(f);
         var reader = new FileReader();
         reader.onload = function(e){
             var html = "<a href=\"javascript:void(0);\"" +
@@ -218,9 +231,9 @@ function buyingPreview(e){
 }
 
 function previewDelete(index){
-    infoImgs[index] = null;
+    buyingRoomInfoImgs[index] = null;
     var img_id = "#img_id_" + index;
     $(img_id).remove();
-    imgDeleteIndex.push(index);
+    chatRoomImgDeleteIndex.push(index);
 }
 

@@ -141,6 +141,7 @@ public class ChatService {
         simpMessageTemplate.convertAndSend("/chat/" + message.getRoomId(), message);
     }
 
+    // 메세지 전송
     public void sendMessage(Principal principal, MessageDTO message){
 
         Optional<UserEntity> user = userRepository.findByUsername(principal.getName());

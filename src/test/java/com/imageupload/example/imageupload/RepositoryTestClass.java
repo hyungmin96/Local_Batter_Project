@@ -1,6 +1,6 @@
 package com.imageupload.example.imageupload;
 
-import com.imageupload.example.repositories.UserRepository;
+import com.imageupload.example.repositories.*;
 import com.imageupload.example.vo.Role;
 import java.util.Optional;
 import javax.management.Notification;
@@ -14,14 +14,6 @@ import com.imageupload.example.entity.BoardEntity;
 import com.imageupload.example.entity.ChatEntity;
 import com.imageupload.example.entity.RoomEntity;
 import com.imageupload.example.entity.UserJoinRoomEntity;
-import com.imageupload.example.repositories.BoardRepository;
-import com.imageupload.example.repositories.ChatRepository;
-import com.imageupload.example.repositories.ChatRoomRepository;
-import com.imageupload.example.repositories.CommentRepository;
-import com.imageupload.example.repositories.NotificationRepository;
-import com.imageupload.example.repositories.ProfileRepository;
-import com.imageupload.example.repositories.RoomRepository;
-import com.imageupload.example.repositories.TransactionRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -59,24 +51,21 @@ public class RepositoryTestClass{
     @Autowired
     private NotificationRepository notificationRepository;
 
+    @Autowired
+    private BuyingUsersRepository buyingUsersRepository;
+
     @Test
     void 알림_테이블_생성(){
-
         for(int i = 1; i < 61; i ++){
-
             NotificationEntity notificationEntity = NotificationEntity.builder().chat(0).notification(0).transaction(0).build();
             notificationRepository.save(notificationEntity);
-            
         }
     }
 
     @Test
     void 채팅알림_카운트_증가_테스트(){
-
         UserEntity userEntity = userRepository.findById(4L).get();
-
         notificationRepository.clearChat(userEntity.getNotification().getId());
-
     }
 
     @Test

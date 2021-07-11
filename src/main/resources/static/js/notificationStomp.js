@@ -13,7 +13,7 @@ function notificationConnect(){
     if(document.getElementsByClassName('user__name').length != 0 && loginAccountInfo.innerHTML != null && loginAccountInfo.innerHTML != ''){
         var socket = new SockJS('/ws');
         notificationStomp = Stomp.over(socket);
-        // notificationStomp.debug = null;
+        notificationStomp.debug = null;
         notificationStomp.connect({}, function(){
             notificationStomp.subscribe('/notification/' + loginAccountInfo.innerHTML, function(message){
                 showNotification(message.body);

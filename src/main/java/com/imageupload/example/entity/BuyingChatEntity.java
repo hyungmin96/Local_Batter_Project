@@ -12,6 +12,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.sql.Timestamp;
 
 @Entity
 @Data
@@ -30,5 +33,7 @@ public class BuyingChatEntity {
     @JoinColumn(name = "chatRoomId")
     @JsonIgnore
     private BuyingChatRoomEntity buyingChatRoomEntity;
-    
+
+    @CreationTimestamp
+    private Timestamp regTime;
 }
