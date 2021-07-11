@@ -10,9 +10,10 @@ import lombok.Data;
 public class BuyingChatMessageDTO {
 
     private Long roomId;
-    private String profileImg;
+    private String profilePath;
     private String sender;
     private String message;
+    private String type;
     private String localDate;
 
 }

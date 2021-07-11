@@ -28,7 +28,7 @@ public class ChatController {
     private final ChatService chatService;
     private final BuyingChatService buyingChatService;
 
-    @MessageMapping("/send/chat/buying/5")
+    @MessageMapping("/send/chat/buying/{id}")
     public void buyingRoomChat(BuyingChatMessageDTO messageDTO){
         buyingChatService.sendBuyingRoomToChat(messageDTO);
     }

@@ -1,6 +1,7 @@
 package com.imageupload.example.services;
 
 import com.imageupload.example.components.GenerateBuyingFiles;
+import com.imageupload.example.dto.BuyingChatMessageDTO;
 import com.imageupload.example.dto.BuyingDTO;
 import com.imageupload.example.entity.*;
 import com.imageupload.example.repositories.*;
@@ -29,6 +30,21 @@ public class BuyingService {
         return buyingChatRoomRepository.findById(id).get();
     }
 
+    public void saveChatEntity(BuyingChatMessageDTO messageDTO){
+
+        BuyingChatRoomEntity buyingChatRoomEntity = buyingChatRoomRepository.findById(messageDTO.getRoomId()).get();
+
+        BuyingChatEntity buyingChatEntity = BuyingChatEntity.builder()
+                .buyingChatRoomEntity(buyingChatRoomEntity)
+                .localDate(messageDTO.getLocalDate())
+                .type(messageDTO.getType())
+                .profilePath(messageDTO.getProfilePath())
+                .message(messageDTO.getMessage())
+                .sender(messageDTO.getSender()).build();
+
+        buyingChatRepository.save(buyingChatEntity);
+    }
+
     public void exitRoom(Long roomId, String username){
 
         UserEntity userEntity = userRepository.findByUsername(username).get();
@@ -39,30 +55,35 @@ public class BuyingService {
         buyingUsersRepository.delete(buyingUsersEntity);
     }
 
-    public void BuyingChatRoomEnter(Long roomId, String username){
-
-        UserEntity userEntity = userRepository.findByUsername(username).get();
+    public boolean BuyingChatRoomEnter(Long roomId, String username){
 
         BuyingChatRoomEntity buyingChatRoomEntity = buyingChatRoomRepository.findById(roomId).get();
-        BuyingUsersEntity buyingUsersEntity = buyingUsersRepository.findBybuyingChatRoomEntityAndUser(buyingChatRoomEntity, userEntity);
 
-        if(buyingUsersEntity == null){
-            BuyingUsersEnumType authorizationType;
+        if(buyingChatRoomEntity.getLimitUsers() > buyingChatRoomEntity.getCurrentUsers()){
+            UserEntity userEntity = userRepository.findByUsername(username).get();
+            BuyingUsersEntity buyingUsersEntity = buyingUsersRepository.findBybuyingChatRoomEntityAndUser(buyingChatRoomEntity, userEntity);
 
-            if(username.equals(buyingChatRoomEntity.getOwner()))
-                authorizationType = BuyingUsersEnumType.manager;
-            else
-                authorizationType = BuyingUsersEnumType.member;
+            if(buyingUsersEntity == null){
+                BuyingUsersEnumType authorizationType;
 
-             buyingUsersEntity = BuyingUsersEntity.builder()
-            .user(userEntity)
-            .buyingChatRoomEntity(buyingChatRoomEntity)
-            .authorization(authorizationType)
-            .build();
+                if(username.equals(buyingChatRoomEntity.getOwner()))
+                    authorizationType = BuyingUsersEnumType.manager;
+                else
+                    authorizationType = BuyingUsersEnumType.member;
 
-            buyingUsersRepository.save(buyingUsersEntity);
+                 buyingUsersEntity = BuyingUsersEntity.builder()
+                .user(userEntity)
+                .buyingChatRoomEntity(buyingChatRoomEntity)
+                .authorization(authorizationType)
+                .build();
 
+                buyingUsersRepository.save(buyingUsersEntity);
+                buyingChatRoomRepository.updateCurrentUsers(buyingChatRoomEntity.getId());
+
+                return true;
+            }
         }
+        return false;
     }
 
     public Page<BuyingChatRoomEntity> getBuyingRooms(PageRequest request){
@@ -83,6 +104,7 @@ public class BuyingService {
         .price(Integer.parseInt(buyingDTO.getPrice()))
         .roomDate(buyingDTO.getDate())
         .roomTitle(buyingDTO.getRoomTitle())
+        .currentUsers(1)
         .limitUsers(Integer.parseInt(buyingDTO.getLimit()))
         .build();
 

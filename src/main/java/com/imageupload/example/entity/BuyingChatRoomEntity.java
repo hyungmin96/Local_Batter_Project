@@ -28,6 +28,7 @@ public class BuyingChatRoomEntity {
     private String description;
     private String roomTitle;
     private String roomDate;
+    private int currentUsers;
     private int limitUsers;
     private int price;
     private String owner;

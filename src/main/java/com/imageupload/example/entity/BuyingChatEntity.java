@@ -27,13 +27,12 @@ public class BuyingChatEntity {
     private Long id;
     private String message;
     private String sender;
-    private Long roomId;
+    private String type;
+    private String profilePath;
+    private String localDate;
 
     @ManyToOne
     @JoinColumn(name = "chatRoomId")
     @JsonIgnore
     private BuyingChatRoomEntity buyingChatRoomEntity;
-
-    @CreationTimestamp
-    private Timestamp regTime;
 }

@@ -5,6 +5,38 @@
     font-style: normal;
 }
 
+.target_message_box{
+    display: inline-flex;
+}
+
+.target_profile_img{
+    height: 40px;
+    width: 40px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.me_message_box{
+    text-align: right;
+}
+
+.message_noti{
+    background-color: #f3f3f3;
+    text-align: center;
+    font-family: ON_IGothic;
+    font-size: 12px;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.message_box_event{
+    padding: 5px 70px 5px 59px;
+    zoom: 1;
+    position: relative;
+    display: block;
+    font-size: 13px;
+}
+
 .room_quit_btn{
     color: #797979;
     font-family: ON_IGothic;
@@ -16,15 +48,17 @@
 }
 
 .message_box{
-    padding: 5px 70px 5px 59px;
+    width: 100%;
+    padding: 5px 10px 0 10px;
     zoom: 1;
     position: relative;
     display: block;
     font-size: 13px;
+    margin-top: 10px;
 }
 
 .message_sender{
-    font-size: 13px;
+    font-size: 14px;
 }
 
 .message_date{
@@ -32,7 +66,20 @@
     color: #afafaf;
 }
 
+.me_message_content{
+    max-width: 220px;
+    display: inline-block;
+    background-color: rgb(218, 243, 231);
+    padding: 7px;
+    border-radius: 10px;
+    overflow: hidden;
+    word-wrap: break-word;
+    font-size: 14px;
+    color: #454545;
+}
+
 .message_content{
+    max-width: 220px;
     display: inline-block;
     background-color: #f8f8f8;
     padding: 7px;
@@ -54,8 +101,7 @@
     cursor: pointer;
     display: flex;
     flex-direction: row;
-    padding: 10px;
-    margin: 5px 5px;
+    padding: 5px;
 }
 
 .room_user_profile{
