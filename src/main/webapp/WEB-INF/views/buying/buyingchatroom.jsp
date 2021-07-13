@@ -3,7 +3,7 @@
 
 <input type="hidden" class="buying_roomId" value="${roomId}">
 <input type="hidden" class="buying_login_user" value="${username}">
-<input type="hidden" class="login_user_profile" value="${userProfile}">
+<input type="hidden" class="login_user_id" value="${userId}">
 
         <div class="title__container">
                 <div class="chatroom__title">ChatRoom Title</div>

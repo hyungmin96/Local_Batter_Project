@@ -29,7 +29,7 @@ public class BuyingChatController {
 
         model.addAttribute("roomId", id);
         model.addAttribute("username", user.getUsername());
-        model.addAttribute("userProfile", userEntity.getProfile().getProfilePath());
+        model.addAttribute("userId", userEntity.getId());
         return "buying/buyingchatroom";
     }
 }

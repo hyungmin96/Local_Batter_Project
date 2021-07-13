@@ -13,6 +13,7 @@ import java.util.List;
 public class BuyingChatMessageDTO {
 
     private Long roomId;
+    private Long userId;
     private String profilePath;
     private String sender;
     private String message;

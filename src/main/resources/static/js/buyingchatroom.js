@@ -5,7 +5,9 @@ var roomId;
 $(document).ready(function (){
     connect();
     loadBuyingRoomData();
-    loadBuyingRoomChatData();
+    setTimeout(function() {
+        loadBuyingRoomChatData();
+    }, 100);
 })
 
 $('#chatroom_comment_box').on('keyup', function (event){
@@ -77,17 +79,49 @@ function connect(){
 }
 
 function sendMessage(message, type = 'chat'){
+
     var data = {
+        userId: $('.login_user_id').val(),
         roomId: globalThis.roomId,
         type: type,
         sender: $('.buying_login_user').val(),
         message: message,
-        profilePath: '/upload/' + $('.login_user_profile').val(),
+        profilePath: '/upload/' + globalThis.profilePath,
         localDate: new Date().toISOString()
     }
     stompClient.send('/app/send/chat/buying/' + globalThis.roomId, {}, JSON.stringify(data));
     $('.buyingchatroom__chat__list')[0].scrollTop = $('.buyingchatroom__chat__list')[0].scrollHeight;
 }
+
+
+function loadBuyingRoomData(){
+    globalThis.roomId = $('.buying_roomId').val();
+
+    var data = {roomId: globalThis.roomId}
+    $.ajax({
+        url: '/api/buying/getRoomInfo',
+        type: 'GET',
+        data: data,
+        success: function(response){
+
+            document.getElementsByClassName('chatroom__title')[0].innerHTML = response.roomTitle + ' 채팅방';
+            document.getElementById('offcanvasRightLabel').innerHTML = '대화멤버 목록[' + response.users.length + '/' + response.limitUsers + ']';
+
+            $.each(response.users, function(key, value){
+                $('.offcanvas-body').append(
+                    "<div class=userbox_" + key + ">" +
+                    "<div class='room_user_box'>" +
+                    "<img class='room_user_profile' src=/upload/" + value.user.profile.profilePath + ">" +
+                    "<div class='room_user_name'>" + value.user.username + "</div>" +
+                    "<div>" +
+                    "<div>"
+                );
+                buyingChatRoomUserArray.push({userObject: value});
+            })
+        }
+    })
+}
+
 
 var preDate = null;
 function showDate(message){
@@ -118,9 +152,17 @@ function showExit(message){
     );
 }
 
+buyingChatRoomUserArray = new Array();
 function showContent(message){
 
     var content;
+
+    var profileId = (function() {
+        for (var key in buyingChatRoomUserArray)
+            if (buyingChatRoomUserArray[key].userObject.user.id == message.userId)
+                return buyingChatRoomUserArray[key].userObject.user.profile.profilePath;
+    }())
+
     if(message.type == 'image'){
         content = "<img style='width: 260px; height: 200px; object-fit: cover;' src=/upload/" + message.message + ">";
     }else{
@@ -138,7 +180,7 @@ function showContent(message){
 
     var targetMessage = "<div class='message_box'>" +
                         "<div class='target_message_box'>" +
-                        "<div><img class='target_profile_img' src=/upload/" + $('.login_user_profile').val() + "></div>" +
+                        "<div><img class='target_profile_img' src=/upload/" + profileId + "></div>" +
                         "<div style='margin-left: 10px;'>" +
                         "<div class='message_sender'>" + message.sender + "</div>" +
                         "<div class='message_content'>" + content + "</div>" +
@@ -178,31 +220,6 @@ function loadBuyingRoomChatData(){
         success: function (response) {
             $.each(response, function(key, message) {
                 showMessage(message);
-            })
-        }
-    })
-}
-
-function loadBuyingRoomData(){
-    globalThis.roomId = $('.buying_roomId').val();
-
-    var data = {roomId: globalThis.roomId}
-    $.ajax({
-        url: '/api/buying/getRoomInfo',
-        type: 'GET',
-        data: data,
-        success: function(response){
-
-            document.getElementsByClassName('chatroom__title')[0].innerHTML = response.roomTitle + ' 채팅방';
-            document.getElementById('offcanvasRightLabel').innerHTML = '대화멤버 목록[' + response.users.length + '/' + response.limitUsers + ']';
-
-            $.each(response.users, function(value){
-                $('.offcanvas-body').append(
-                    "<div class='room_user_box'>" +
-                    "<img class='room_user_profile' src=/upload/" + response.users[value].user.profile.profilePath + ">" +
-                    "<div class='room_user_name'>" + response.users[value].user.username + "</div>" +
-                    "<div>"
-                );
             })
         }
     })

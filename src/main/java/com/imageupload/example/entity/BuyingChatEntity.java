@@ -26,11 +26,11 @@ public class BuyingChatEntity {
 
     @Id @GeneratedValue
     private Long id;
+    private Long userId;
     private String message;
     private String sender;
     private String type;
     private String profilePath;
-
     @ManyToOne()
     @JoinColumn(name = "roomId")
     @JsonIgnore

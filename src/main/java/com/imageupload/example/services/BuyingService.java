@@ -88,6 +88,7 @@ public class BuyingService {
 
         BuyingChatEntity buyingChatEntity = BuyingChatEntity.builder()
                 .roomId(buyingChatRoomEntity)
+                .userId(messageDTO.getUserId())
                 .type(messageDTO.getType())
                 .profilePath(messageDTO.getProfilePath())
                 .message(messageDTO.getMessage())
