@@ -30,7 +30,11 @@ public class BuyingChatEntity {
     private String sender;
     private String type;
     private String profilePath;
-    private Long roomId;
+
+    @ManyToOne()
+    @JoinColumn(name = "roomId")
+    @JsonIgnore
+    private BuyingChatRoomEntity roomId;
 
     @CreationTimestamp
     private Timestamp localDate;

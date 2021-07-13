@@ -29,9 +29,28 @@ $(function(){
     $("#input__buying__img").change(function(e){
         buyingPreview(e);
     });
-
+    $("#deletebtn").click(function(e){
+        deleteRoom();
+    });
 })
 
+
+function deleteRoom(){
+
+    var data = { roomId: $('.roomId').val(), username: $('.user__name').text() };
+
+    $.ajax({
+        url: '/api/buying/delete',
+        type: 'POST',
+        data: data,
+        contentType: 'application/x-www-form-urlencoded',
+        success: function (response){
+            alert('채팅방이 삭제되었습니다.');
+            window.location.reload();
+        }
+    })
+
+}
 
 function enterRoom(){
 
@@ -200,6 +219,7 @@ function createBuyingRoom(){
         processData: false,
         success: function(){
             alert('채팅방을 생성하였습니다.')
+            window.location.reload();
         }
     })
 }
@@ -219,7 +239,7 @@ function buyingPreview(e){
         reader.onload = function(e){
             var html = "<a href=\"javascript:void(0);\"" +
             "onclick=\"previewDelete(" + index + ")\"" +
-            "id=\"img_id_" + index + "\"><img style='display: inline-flex; padding: 10px;' src=\"" + e.target.result +
+            "id=\"img_id_" + index + "\"><img style='object-fit: cover; display: inline-flex; padding: 10px;' src=\"" + e.target.result +
             "\"boarder='10' height='200px' width='230px' data-file='" + f.name + "'" +
             "' class='selProductFile' title='사진 삭제'></a>";
 

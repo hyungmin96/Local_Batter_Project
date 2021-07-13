@@ -26,7 +26,43 @@ $(function (){
     $('.room_quit_btn').click(function(){
         exitRoom();
     })
+
+    $('#img_upload').click(function(){
+        $('#upload_dialog').click();
+    })
+
+    $('#upload_dialog').change(function(e){
+        buyingRoomImageUpload(e);
+    })
+
 })
+
+
+function buyingRoomImageUpload(e){
+
+    var files = e.target.files;
+    var fileArray = Array.prototype.slice.call(files);
+    var formData = new FormData();
+
+    formData.append('roomId', globalThis.roomId);
+    formData.append('profilePath', '/upload/' + $('.login_user_profile').val());
+    formData.append('sender', $('.buying_login_user').val());
+    formData.append('message', null);
+    formData.append('type', 'image');
+    formData.append('localDate', new Date().toISOString());
+
+    fileArray.forEach(function(value){
+        formData.append('img', value);
+    })
+
+    $.ajax({
+        url: '/api/buying/upload/',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false
+    })
+}
 
 function connect(){
     var socket = new SockJS('/ws');
@@ -40,10 +76,10 @@ function connect(){
     })
 }
 
-function sendMessage(message){
+function sendMessage(message, type = 'chat'){
     var data = {
         roomId: globalThis.roomId,
-        type: 'chat',
+        type: type,
         sender: $('.buying_login_user').val(),
         message: message,
         profilePath: '/upload/' + $('.login_user_profile').val(),
@@ -84,12 +120,18 @@ function showExit(message){
 
 function showContent(message){
 
+    var content;
+    if(message.type == 'image'){
+        content = "<img style='width: 260px; height: 200px; object-fit: cover;' src=/upload/" + message.message + ">";
+    }else{
+        content = message.message;
+    }
+
     var chatTime = new Date(message.localDate).toLocaleTimeString([], {'hour': '2-digit', 'minute': '2-digit'});
 
     var myMessage = "<div class='message_box'>" +
                         "<div class='me_message_box'>" +
-                        "<div class='message_sender'>" + message.sender + "</div>" +
-                        "<div class='me_message_content'>" + message.message + "</div>" +
+                        "<div class='me_message_content'>" + content + "</div>" +
                         "<div class='message_date'>" + chatTime + "</div>" +
                         "</div>" +
                         "</div>"
@@ -99,10 +141,8 @@ function showContent(message){
                         "<div><img class='target_profile_img' src=/upload/" + $('.login_user_profile').val() + "></div>" +
                         "<div style='margin-left: 10px;'>" +
                         "<div class='message_sender'>" + message.sender + "</div>" +
-                        "<div style='display: inline-flex'>" +
-                        "<div class='message_content'>" + message.message + "</div>" +
-                        "<div class='message_date' style='margin-top: 15px; margin-left: 10px;'>" + chatTime + "</div>" +
-                        "</div>" +
+                        "<div class='message_content'>" + content + "</div>" +
+                        "<div class='message_date'>" + chatTime + "</div>" +
                         "</div>" +
                         "</div>" +
                         "</div>"
@@ -136,7 +176,6 @@ function loadBuyingRoomChatData(){
         type: 'GET',
         data: data,
         success: function (response) {
-            console.log(response)
             $.each(response, function(key, message) {
                 showMessage(message);
             })

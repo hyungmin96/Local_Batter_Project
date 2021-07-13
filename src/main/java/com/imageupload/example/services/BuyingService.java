@@ -1,5 +1,6 @@
 package com.imageupload.example.services;
 
+import com.imageupload.example.components.DeleteFile;
 import com.imageupload.example.components.GenerateFile;
 import com.imageupload.example.dto.BuyingChatMessageDTO;
 import com.imageupload.example.dto.BuyingDTO;
@@ -15,7 +16,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
-
+import org.springframework.web.multipart.MultipartFile;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -28,8 +30,52 @@ public class BuyingService {
     private final BuyingUsersRepository buyingUsersRepository;
     private final UserRepository userRepository;
 
+    public void uploadImgToBuyingChatroom(BuyingChatMessageDTO messageDTO){
+
+        List<GenerateFileDTO> files = new GenerateFile(messageDTO.getImg()).createFile();
+        List<String> imgs = new ArrayList<>();
+        BuyingChatRoomEntity buyingChatRoomEntity = buyingChatRoomRepository.findById(messageDTO.getRoomId()).get();
+
+        for(GenerateFileDTO file : files){
+
+            BuyingChatEntity buyingChatEntity = BuyingChatEntity.builder()
+                    .roomId(buyingChatRoomEntity)
+                    .sender(messageDTO.getSender())
+                    .message(file.getFileName())
+                    .profilePath(messageDTO.getProfilePath())
+                    .type("image")
+                    .build();
+
+            imgs.add(file.getFileName());
+
+            buyingChatRepository.save(buyingChatEntity);
+        }
+            messageDTO.setImgPath(imgs);
+    }
+
+    public void deleteRoom(Long roomId, String username){
+
+        UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if(user.getUsername().equals(username)){
+            BuyingChatRoomEntity buyingChatRoomEntity = buyingChatRoomRepository.findById(roomId).get();
+
+            buyingChatRoomEntity.getChats().stream()
+                    .filter(item -> item.getType().equals("image")).forEach(item -> {
+                new DeleteFile(new String[] {item.getMessage()}).deleteFile();
+            });
+
+            buyingChatRoomRepository.delete(buyingChatRoomEntity);
+
+            List<String> files = new ArrayList<>();
+            buyingChatRoomEntity.getFiles().stream().map(value -> files.add(value.getName())).toArray();
+            new DeleteFile(files.toArray(new String[files.size()])).deleteFile();
+        }
+    }
+
     public List<BuyingChatEntity> getChats(Long roomId){
-        return buyingChatRepository.findAllByRoomId(roomId);
+        BuyingChatRoomEntity buyingChatRoomEntity = buyingChatRoomRepository.findById(roomId).get();
+        return buyingChatRepository.findAllByRoomId(buyingChatRoomEntity);
     }
 
     public BuyingChatRoomEntity getRoomInfo(Long id){
@@ -38,8 +84,10 @@ public class BuyingService {
 
     public void saveChatEntity(BuyingChatMessageDTO messageDTO){
 
+        BuyingChatRoomEntity buyingChatRoomEntity = buyingChatRoomRepository.findById(messageDTO.getRoomId()).get();
+
         BuyingChatEntity buyingChatEntity = BuyingChatEntity.builder()
-                .roomId(messageDTO.getRoomId())
+                .roomId(buyingChatRoomEntity)
                 .type(messageDTO.getType())
                 .profilePath(messageDTO.getProfilePath())
                 .message(messageDTO.getMessage())
@@ -120,7 +168,7 @@ public class BuyingService {
 
             for(GenerateFileDTO file : files){
                 BuyingFileEntity fileEntity = BuyingFileEntity.builder()
-                        .name(file.getName())
+                        .name(file.getFileName())
                         .path(file.getPath())
                         .buyingChatRoomEntity(buyingChatRoomEntity)
                         .build();

@@ -134,6 +134,7 @@
         <hr />
 
         <div class="modal_close_btn"><button id="close__btn" type="button" class="float-right btn btn-danger">닫기</button></div>
+        <div class="delete_btn"><button id="deletebtn" type="button" class="float-right btn btn-secondary">삭제</button></div>
         <button id="enter__btn" type="button" class="float-right btn btn-primary">입장</button>
         
     </div>

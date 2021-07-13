@@ -15,9 +15,10 @@
 </div>
 
 <div class="chatroom__file__container">
-        <div>이미지 첨부</div>
-        <div>프로필 전송</div>
-        <div>계좌 전송</div>
+        <div id="img_upload" style="margin: auto 0; cursor: pointer;">
+                <div><img src="/images/image_gallery_23px.png" style="margin-right: 5px; height: 23px; width: 23px;">이미지 첨부</div>
+        </div>
+        <input id="upload_dialog" type="file" accept="image/jpg, image/jpeg, image/png" class="custom-file-input" name="upload_file" multiple style="display: none;">
 </div>
 
 <div>

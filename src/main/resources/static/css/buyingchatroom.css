@@ -51,12 +51,11 @@
 
 .message_box{
     width: 100%;
-    padding: 5px 15px 10px 15px;
+    padding: 5px 15px 1px 15px;
     zoom: 1;
     position: relative;
     display: block;
     font-size: 13px;
-    margin-top: 10px;
 }
 
 .message_sender{
@@ -69,7 +68,7 @@
 }
 
 .me_message_content{
-    max-width: 220px;
+    max-width: 280px;
     display: inline-block;
     background-color: rgb(218, 243, 231);
     padding: 7px;
@@ -81,7 +80,7 @@
 }
 
 .message_content{
-    max-width: 220px;
+    max-width: 280px;
     display: inline-block;
     background-color: #f8f8f8;
     padding: 7px;

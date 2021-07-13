@@ -1,16 +1,12 @@
 package com.imageupload.example.entity;
 import java.sql.Timestamp;
 import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
@@ -37,8 +33,14 @@ public class BuyingChatRoomEntity {
     private Timestamp regTime;
 
     @OneToMany(mappedBy = "buyingChatRoomEntity")
+    @Cascade(value = org.hibernate.annotations.CascadeType.ALL)
     private List<BuyingFileEntity> files;
 
+    @OneToMany(mappedBy = "roomId")
+    @Cascade(value = org.hibernate.annotations.CascadeType.ALL)
+    private List<BuyingChatEntity> chats;
+
     @OneToMany(mappedBy = "buyingChatRoomEntity")
+    @Cascade(value = org.hibernate.annotations.CascadeType.ALL)
     private List<BuyingUsersEntity> users;
 }
