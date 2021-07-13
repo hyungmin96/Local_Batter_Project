@@ -1,6 +1,6 @@
 package com.imageupload.example.dto;
 
-import com.imageupload.example.entity.TransactionEnumType;
+import com.imageupload.example.enumtype.TransactionEnumType;
 
 import lombok.Data;
 

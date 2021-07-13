@@ -1,20 +1,22 @@
 package com.imageupload.example.services;
 
-import com.imageupload.example.components.GenerateBuyingFiles;
+import com.imageupload.example.components.GenerateFile;
 import com.imageupload.example.dto.BuyingChatMessageDTO;
 import com.imageupload.example.dto.BuyingDTO;
+import com.imageupload.example.dto.GenerateFileDTO;
 import com.imageupload.example.entity.*;
+import com.imageupload.example.enumtype.BuyingChatRoomEnterEnumType;
+import com.imageupload.example.enumtype.BuyingUsersEnumType;
 import com.imageupload.example.repositories.*;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -26,17 +28,18 @@ public class BuyingService {
     private final BuyingUsersRepository buyingUsersRepository;
     private final UserRepository userRepository;
 
+    public List<BuyingChatEntity> getChats(Long roomId){
+        return buyingChatRepository.findAllByRoomId(roomId);
+    }
+
     public BuyingChatRoomEntity getRoomInfo(Long id){
         return buyingChatRoomRepository.findById(id).get();
     }
 
     public void saveChatEntity(BuyingChatMessageDTO messageDTO){
 
-        BuyingChatRoomEntity buyingChatRoomEntity = buyingChatRoomRepository.findById(messageDTO.getRoomId()).get();
-
         BuyingChatEntity buyingChatEntity = BuyingChatEntity.builder()
-                .buyingChatRoomEntity(buyingChatRoomEntity)
-                .localDate(messageDTO.getLocalDate())
+                .roomId(messageDTO.getRoomId())
                 .type(messageDTO.getType())
                 .profilePath(messageDTO.getProfilePath())
                 .message(messageDTO.getMessage())
@@ -52,38 +55,39 @@ public class BuyingService {
         BuyingChatRoomEntity buyingChatRoomEntity = buyingChatRoomRepository.findById(roomId).get();
         BuyingUsersEntity buyingUsersEntity = buyingUsersRepository.findBybuyingChatRoomEntityAndUser(buyingChatRoomEntity, userEntity);
 
+        buyingChatRoomRepository.exitCurrentUsers(buyingChatRoomEntity.getId());
         buyingUsersRepository.delete(buyingUsersEntity);
     }
 
-    public boolean BuyingChatRoomEnter(Long roomId, String username){
+    public BuyingChatRoomEnterEnumType BuyingChatRoomEnter(Long roomId, String username){
 
         BuyingChatRoomEntity buyingChatRoomEntity = buyingChatRoomRepository.findById(roomId).get();
+        UserEntity userEntity = userRepository.findByUsername(username).get();
+        BuyingUsersEntity buyingUsersEntity = buyingUsersRepository.findBybuyingChatRoomEntityAndUser(buyingChatRoomEntity, userEntity);
 
-        if(buyingChatRoomEntity.getLimitUsers() > buyingChatRoomEntity.getCurrentUsers()){
-            UserEntity userEntity = userRepository.findByUsername(username).get();
-            BuyingUsersEntity buyingUsersEntity = buyingUsersRepository.findBybuyingChatRoomEntityAndUser(buyingChatRoomEntity, userEntity);
+        if(buyingChatRoomEntity.getUsers().contains(buyingUsersEntity)) {
+            return BuyingChatRoomEnterEnumType.enter;
+        }else if(buyingChatRoomEntity.getLimitUsers() > buyingChatRoomEntity.getCurrentUsers()){
+            BuyingUsersEnumType authorizationType;
 
-            if(buyingUsersEntity == null){
-                BuyingUsersEnumType authorizationType;
+            if(username.equals(buyingChatRoomEntity.getOwner()))
+                authorizationType = BuyingUsersEnumType.manager;
+            else
+                authorizationType = BuyingUsersEnumType.member;
 
-                if(username.equals(buyingChatRoomEntity.getOwner()))
-                    authorizationType = BuyingUsersEnumType.manager;
-                else
-                    authorizationType = BuyingUsersEnumType.member;
+             buyingUsersEntity = BuyingUsersEntity.builder()
+            .user(userEntity)
+            .buyingChatRoomEntity(buyingChatRoomEntity)
+            .authorization(authorizationType)
+            .build();
 
-                 buyingUsersEntity = BuyingUsersEntity.builder()
-                .user(userEntity)
-                .buyingChatRoomEntity(buyingChatRoomEntity)
-                .authorization(authorizationType)
-                .build();
+            buyingChatRoomRepository.enterCurrentUsers(buyingChatRoomEntity.getId());
+            buyingUsersRepository.save(buyingUsersEntity);
 
-                buyingUsersRepository.save(buyingUsersEntity);
-                buyingChatRoomRepository.updateCurrentUsers(buyingChatRoomEntity.getId());
-
-                return true;
-            }
+            return BuyingChatRoomEnterEnumType.greeting;
+        }else{
+            return BuyingChatRoomEnterEnumType.failed;
         }
-        return false;
     }
 
     public Page<BuyingChatRoomEntity> getBuyingRooms(PageRequest request){
@@ -110,8 +114,19 @@ public class BuyingService {
 
 
         if (buyingDTO.getFiles() != null && buyingDTO.getFiles().length > 0) {
-            GenerateBuyingFiles generateBuyingFiles = new GenerateBuyingFiles(buyingChatRoomEntity, buyingDTO.getFiles());
-            buyingFileRepository.saveAll(generateBuyingFiles.generateFileVoList());
+            GenerateFile generateBuyingFiles = new GenerateFile(buyingDTO.getFiles());
+
+            List<GenerateFileDTO> files = generateBuyingFiles.createFile();
+
+            for(GenerateFileDTO file : files){
+                BuyingFileEntity fileEntity = BuyingFileEntity.builder()
+                        .name(file.getName())
+                        .path(file.getPath())
+                        .buyingChatRoomEntity(buyingChatRoomEntity)
+                        .build();
+
+                buyingFileRepository.save(fileEntity);
+            }
         }
 
         BuyingUsersEntity buyingUsersEntity = BuyingUsersEntity.builder()

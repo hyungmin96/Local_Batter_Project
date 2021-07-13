@@ -1,4 +1,4 @@
-package com.imageupload.example.entity;
+package com.imageupload.example.enumtype;
 
 public enum TransactionEnumType {
     

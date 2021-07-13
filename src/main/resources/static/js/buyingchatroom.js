@@ -5,6 +5,7 @@ var roomId;
 $(document).ready(function (){
     connect();
     loadBuyingRoomData();
+    loadBuyingRoomChatData();
 })
 
 $('#chatroom_comment_box').on('keyup', function (event){
@@ -13,7 +14,7 @@ $('#chatroom_comment_box').on('keyup', function (event){
         if (event.shiftKey){
             event.preventDefault();
         }else{
-            if(textBoxMessage.length > 0){
+            if(textBoxMessage.length > 1){
                 // 보낼 메세지의 마지막에 \n 값을 빼고 전송
                 sendMessage(textBoxMessage.substring(0, textBoxMessage.lastIndexOf('\n')));
                 document.getElementById('chatroom_comment_box').value = '';
@@ -30,7 +31,7 @@ $(function (){
 function connect(){
     var socket = new SockJS('/ws');
     stompClient = Stomp.over(socket);
-    // stompClient.debug = null
+    stompClient.debug = null
     stompClient.connect({}, function(){
         stompClient.subscribe('/chat/buying/' + globalThis.roomId, function(message){
             var value = JSON.parse(message.body);
@@ -46,9 +47,23 @@ function sendMessage(message){
         sender: $('.buying_login_user').val(),
         message: message,
         profilePath: '/upload/' + $('.login_user_profile').val(),
-        localDate: new Date().toLocaleString([], {'hour': '2-digit', 'minute': '2-digit'})
+        localDate: new Date().toISOString()
     }
     stompClient.send('/app/send/chat/buying/' + globalThis.roomId, {}, JSON.stringify(data));
+    $('.buyingchatroom__chat__list')[0].scrollTop = $('.buyingchatroom__chat__list')[0].scrollHeight;
+}
+
+var preDate = null;
+function showDate(message){
+
+    if(globalThis.preDate == null || globalThis.preDate != new Date(message.localDate).toLocaleDateString()){
+        $('.buyingchatroom__chat__list').append(
+            "<div class='message_box_event'>" +
+            "<div class='message_noti'>" + new Date(message.localDate).toLocaleDateString() + "</div>" +
+            "</div>"
+        );
+        globalThis.preDate = new Date(message.localDate).toLocaleDateString();
+    }
 }
 
 function showGreeting(message){
@@ -69,41 +84,89 @@ function showExit(message){
 
 function showContent(message){
 
-    if($('.buying_login_user').val() == message.sender){
-        $('.buyingchatroom__chat__list').append(
-            "<div class='message_box'>" +
-            "<div class='me_message_box'>" +
-            "<div class='message_sender'>" + message.sender + "</div>" +
-            "<div class='me_message_content'>" + message.message + "</div>" +
-            "<div class='message_date'>" + message.localDate + "</div>" +
-            "</div>" +
-            "</div>"
-        );
-    }else{
-        $('.buyingchatroom__chat__list').append(
-            "<div class='message_box'>" +
-            "<div class='target_message_box'>" +
-            "<div><img class='target_profile_img' src=/upload/" + $('.login_user_profile').val() + "></div>" +
-            "<div style='margin-left: 10px;'>" +
-            "<div class='message_sender'>" + message.sender + "</div>" +
-            "<div style='display: inline-flex'>" +
-            "<div class='message_content'>" + message.message + "</div>" +
-            "<div class='message_date' style='margin-top: 15px; margin-left: 10px;'>" + message.localDate + "</div>" +
-            "</div>" +
-            "</div>" +
-            "</div>" +
-            "</div>"
-        );
-    }
+    var chatTime = new Date(message.localDate).toLocaleTimeString([], {'hour': '2-digit', 'minute': '2-digit'});
+
+    var myMessage = "<div class='message_box'>" +
+                        "<div class='me_message_box'>" +
+                        "<div class='message_sender'>" + message.sender + "</div>" +
+                        "<div class='me_message_content'>" + message.message + "</div>" +
+                        "<div class='message_date'>" + chatTime + "</div>" +
+                        "</div>" +
+                        "</div>"
+
+    var targetMessage = "<div class='message_box'>" +
+                        "<div class='target_message_box'>" +
+                        "<div><img class='target_profile_img' src=/upload/" + $('.login_user_profile').val() + "></div>" +
+                        "<div style='margin-left: 10px;'>" +
+                        "<div class='message_sender'>" + message.sender + "</div>" +
+                        "<div style='display: inline-flex'>" +
+                        "<div class='message_content'>" + message.message + "</div>" +
+                        "<div class='message_date' style='margin-top: 15px; margin-left: 10px;'>" + chatTime + "</div>" +
+                        "</div>" +
+                        "</div>" +
+                        "</div>" +
+                        "</div>"
+
+    if($('.buying_login_user').val() == message.sender)
+            $('.buyingchatroom__chat__list').append(myMessage);
+        else
+            $('.buyingchatroom__chat__list').append(targetMessage);
 }
 
 function showMessage(message){
+
+    showDate(message);
+
     if(message.type == 'greeting')
         showGreeting(message);
     else if(message.type == 'exit')
         showExit(message);
     else
         showContent(message)
+
+    $('.buyingchatroom__chat__list')[0].scrollTop = $('.buyingchatroom__chat__list')[0].scrollHeight;
+}
+
+function loadBuyingRoomChatData(){
+
+    var data = { roomId: globalThis.roomId };
+
+    $.ajax({
+        url: '/api/buying/chats',
+        type: 'GET',
+        data: data,
+        success: function (response) {
+            console.log(response)
+            $.each(response, function(key, message) {
+                showMessage(message);
+            })
+        }
+    })
+}
+
+function loadBuyingRoomData(){
+    globalThis.roomId = $('.buying_roomId').val();
+
+    var data = {roomId: globalThis.roomId}
+    $.ajax({
+        url: '/api/buying/getRoomInfo',
+        type: 'GET',
+        data: data,
+        success: function(response){
+
+            document.getElementsByClassName('chatroom__title')[0].innerHTML = response.roomTitle + ' 채팅방';
+            document.getElementById('offcanvasRightLabel').innerHTML = '대화멤버 목록[' + response.users.length + '/' + response.limitUsers + ']';
+
+            $.each(response.users, function(value){
+                $('.offcanvas-body').append(
+                    "<div class='room_user_box'>" +
+                    "<img class='room_user_profile' src=/upload/" + response.users[value].user.profile.profilePath + ">" +
+                    "<div class='room_user_name'>" + response.users[value].user.username + "</div>" +
+                    "<div>"
+                );
+            })
+        }
+    })
 }
 
 function exitRoom(){
@@ -121,35 +184,6 @@ function exitRoom(){
                 window.close();
                 location.href='http://localhost:8000/product/buying';
             }
-        }
-    })
-}
-
-function loadBuyingRoomData(){
-    globalThis.roomId = $('.buying_roomId').val();
-
-    var data = {roomId: globalThis.roomId}
-    $.ajax({
-        url: '/api/buying/getRoomInfo',
-        type: 'GET',
-        data: data,
-        success: function(response){
-            console.log(response)
-            document.getElementsByClassName('chatroom__title')[0].innerHTML = response.roomTitle + ' 채팅방';
-            document.getElementById('offcanvasRightLabel').innerHTML = '대화멤버 목록[' + response.users.length + '/' + response.limitUsers + ']';
-
-            $.each(response.chats, function(value){
-                showContent(response.chats[value])
-            })
-
-            $.each(response.users, function(value){
-                $('.offcanvas-body').append(
-                    "<div class='room_user_box'>" +
-                    "<img class='room_user_profile' src=/upload/" + response.users[value].user.profile.profilePath + ">" +
-                    "<div class='room_user_name'>" + response.users[value].user.username + "</div>" +
-                    "<div>"
-                );
-            })
         }
     })
 }

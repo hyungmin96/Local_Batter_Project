@@ -14,6 +14,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.sql.Time;
 import java.sql.Timestamp;
 
 @Entity
@@ -29,10 +30,9 @@ public class BuyingChatEntity {
     private String sender;
     private String type;
     private String profilePath;
-    private String localDate;
+    private Long roomId;
 
-    @ManyToOne
-    @JoinColumn(name = "chatRoomId")
-    @JsonIgnore
-    private BuyingChatRoomEntity buyingChatRoomEntity;
+    @CreationTimestamp
+    private Timestamp localDate;
+
 }

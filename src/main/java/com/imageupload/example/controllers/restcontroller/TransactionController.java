@@ -2,7 +2,7 @@ package com.imageupload.example.controllers.restcontroller;
 import java.security.Principal;
 import com.imageupload.example.dto.SubmitTransactionDTO;
 import com.imageupload.example.entity.TransactionEntity;
-import com.imageupload.example.entity.TransactionEnumType;
+import com.imageupload.example.enumtype.TransactionEnumType;
 import com.imageupload.example.services.BoardService;
 import com.imageupload.example.services.TransactionService;
 import org.springframework.data.domain.Page;

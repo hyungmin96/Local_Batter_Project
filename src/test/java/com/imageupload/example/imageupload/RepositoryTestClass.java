@@ -3,12 +3,12 @@ package com.imageupload.example.imageupload;
 import com.imageupload.example.repositories.*;
 import com.imageupload.example.vo.Role;
 import java.util.Optional;
-import javax.management.Notification;
+
 import com.imageupload.example.entity.CommentEntity;
 import com.imageupload.example.entity.NotificationEntity;
 import com.imageupload.example.entity.ProfileEntity;
 import com.imageupload.example.entity.TransactionEntity;
-import com.imageupload.example.entity.TransactionEnumType;
+import com.imageupload.example.enumtype.TransactionEnumType;
 import com.imageupload.example.entity.UserEntity;
 import com.imageupload.example.entity.BoardEntity;
 import com.imageupload.example.entity.ChatEntity;

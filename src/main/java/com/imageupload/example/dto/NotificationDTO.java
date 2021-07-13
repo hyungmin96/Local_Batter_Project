@@ -1,6 +1,6 @@
 package com.imageupload.example.dto;
 
-import java.time.LocalDateTime;
+import com.imageupload.example.enumtype.NotificationEnumType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

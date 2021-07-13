@@ -8,8 +8,10 @@ import javax.transaction.Transactional;
 
 import com.imageupload.example.components.GenerateFile;
 import com.imageupload.example.components.createTime;
+import com.imageupload.example.dto.GenerateFileDTO;
 import com.imageupload.example.dto.PageableVo;
 import com.imageupload.example.entity.BoardEntity;
+import com.imageupload.example.entity.FileEntity;
 import com.imageupload.example.repositories.BoardRepository;
 import com.imageupload.example.repositories.FileRepository;
 import org.springframework.stereotype.Service;
@@ -44,8 +46,20 @@ public class BoardService {
     public void boardWrite(BoardEntity vo, MultipartFile[] uploadFiles) {
         boardRep.save(vo);
         if (uploadFiles != null && uploadFiles.length > 0) {
-            GenerateFile gen = new GenerateFile(vo, uploadFiles);
-            fileRep.saveAll(gen.generateFileVoList());
+
+            List<GenerateFileDTO> files = new GenerateFile(uploadFiles).createFile();
+
+            for(GenerateFileDTO file : files){
+                FileEntity fileEntity = FileEntity.builder()
+                        .fileSize(file.getFileSize())
+                        .filePath(file.getPath())
+                        .tempName(file.getFileName())
+                        .originName(file.getFileName())
+                        .board(vo)
+                        .build();
+
+                fileRep.save(fileEntity);
+            }
         }
     }
 
@@ -66,8 +80,18 @@ public class BoardService {
 
         if(inputVo != null){
             if (uploadFiles != null && uploadFiles.length > 0) {
-                GenerateFile gen = new GenerateFile(vo, uploadFiles);
-                fileRep.saveAll(gen.generateFileVoList());
+                List<GenerateFileDTO> files = new GenerateFile(uploadFiles).createFile();
+
+                for(GenerateFileDTO file : files){
+                    FileEntity fileEntity = FileEntity.builder()
+                            .fileSize(file.getFileSize())
+                            .filePath(file.getPath())
+                            .originName(file.getFileName())
+                            .board(vo)
+                            .build();
+
+                    fileRep.save(fileEntity);
+                }
             }
 
             vo.setCreateTime(inputVo.getCreateTime());
@@ -81,11 +105,6 @@ public class BoardService {
             vo.getFiles().forEach(element -> new File(element.getFilePath()).delete());
 
         boardRep.deleteById(id);
-    }
-
-    public Page<BoardEntity> searchBoards(String search, PageRequest page){
-        Page<BoardEntity> items = boardRep.findByTitleContainingOrderByIdDesc(search, page);
-        return items;
     }
 
     public Page<BoardEntity> getFastItems(){
@@ -132,10 +151,6 @@ public class BoardService {
         return boardRep.findById(id).orElseThrow(()->{
             return new IllegalArgumentException("정보없음");
         });
-    }
-
-    public Page<BoardEntity> getTopBoard(Pageable page){
-        return boardRep.findAll(page);
     }
 
 }

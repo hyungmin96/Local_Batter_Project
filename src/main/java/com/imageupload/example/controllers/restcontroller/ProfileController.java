@@ -7,6 +7,7 @@ import com.imageupload.example.entity.ProfileEntity;
 import com.imageupload.example.entity.UserEntity;
 import com.imageupload.example.services.ProfileService;
 import com.imageupload.example.services.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -20,16 +21,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/profile")
+@RequiredArgsConstructor
 public class ProfileController {
     
-    @Autowired
-    private ProfileService profileService;
-
-    @Autowired
-    private UserService userService;
+    private final ProfileService profileService;
+    private final UserService userService;
 
     @PostMapping("/save")
-    public ResponseEntity<String> saveProfile(Principal user, @RequestParam(required = false) MultipartFile profileImg, ProfileEntity profile) throws IOException{
+    public ResponseEntity<String> saveProfile(Principal user, @RequestParam(required = false) MultipartFile[] profileImg, ProfileEntity profile) throws IOException{
         UserEntity userEntity = userService.userUpdate(user, profileImg, profile);
         return new ResponseEntity<String>(userEntity.getUsername(), HttpStatus.OK);
     }

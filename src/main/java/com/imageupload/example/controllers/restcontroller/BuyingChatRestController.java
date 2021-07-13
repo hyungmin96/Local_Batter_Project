@@ -2,7 +2,9 @@ package com.imageupload.example.controllers.restcontroller;
 
 import com.imageupload.example.dto.BuyingChatMessageDTO;
 import com.imageupload.example.dto.BuyingDTO;
+import com.imageupload.example.entity.BuyingChatEntity;
 import com.imageupload.example.entity.BuyingChatRoomEntity;
+import com.imageupload.example.enumtype.BuyingChatRoomEnterEnumType;
 import com.imageupload.example.services.BuyingChatService;
 import com.imageupload.example.services.BuyingService;
 import org.springframework.data.domain.Page;
@@ -17,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,6 +28,11 @@ public class BuyingChatRestController {
 
     private final BuyingService buyingService;
     private final BuyingChatService buyingChatService;
+
+    @GetMapping("/chats")
+    public List<BuyingChatEntity> getChats(@RequestParam Long roomId){
+        return buyingService.getChats(roomId);
+    }
 
     @PostMapping("/exit")
     public ResponseEntity<String> exitRoom(@RequestParam Long roomId, @RequestParam String username){
@@ -44,22 +52,22 @@ public class BuyingChatRestController {
 
     @PostMapping("/enter")
     public ResponseEntity<String> enterRoom(@RequestParam Long roomId, @RequestParam String username){
+        switch(buyingService.BuyingChatRoomEnter(roomId, username)) {
+            case greeting:
+                BuyingChatMessageDTO messageDTO = BuyingChatMessageDTO.builder()
+                        .roomId(roomId)
+                        .type("greeting")
+                        .sender(username)
+                        .message(null)
+                        .localDate(LocalDate.now().toString())
+                        .build();
 
-        if(buyingService.BuyingChatRoomEnter(roomId, username)){
-            BuyingChatMessageDTO messageDTO = BuyingChatMessageDTO.builder()
-                    .roomId(roomId)
-                    .type("greeting")
-                    .sender(username)
-                    .message(null)
-                    .localDate(LocalDate.now().toString())
-                    .build();
-
-            buyingChatService.greetingUserToRoom(messageDTO);
-            return new ResponseEntity<String>("success", HttpStatus.OK);
-        }else{
-            return new ResponseEntity<String>("failed - exceed Users number", HttpStatus.BAD_REQUEST);
+                buyingChatService.greetingUserToRoom(messageDTO);
+                return new ResponseEntity<String>("success", HttpStatus.OK);
+            case enter:
+                return new ResponseEntity<String>("success", HttpStatus.OK);
         }
-
+        return new ResponseEntity<String>("failed - exceed Users number", HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/getlist")

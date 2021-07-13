@@ -2,7 +2,9 @@ package com.imageupload.example.services;
 
 import java.io.IOException;
 import java.security.Principal;
-import com.imageupload.example.components.GeneratePorifleImage;
+
+import com.imageupload.example.components.DeleteFile;
+import com.imageupload.example.components.GenerateFile;
 import com.imageupload.example.dto.UserDTO;
 import com.imageupload.example.entity.NotificationEntity;
 import com.imageupload.example.entity.ProfileEntity;
@@ -36,22 +38,25 @@ public class UserService implements UserDetailsService{
         return userVo;
     }
 
-    public UserEntity userUpdate(Principal user, MultipartFile file, ProfileEntity profile) throws IOException{
+    public UserEntity userUpdate(Principal user, MultipartFile[] file, ProfileEntity profile) throws IOException{
 
         UserEntity userEntity = userRepository.findByUsername(user.getName()).get();
 
-        String saveFilePath = (file != null) ? new GeneratePorifleImage(file).generateFile() : userEntity.getProfile().getProfilePath();
-        
-        if(userEntity != null){
-            profile.setId(userEntity.getProfile().getId());
-            profile.setProfilePath(saveFilePath);
-            profileRepository.save(profile);
-        }
+        String saveFilePath;
+
+        if(file != null){
+            saveFilePath = new GenerateFile(file).createFile().get(0).getFileName();
+            new DeleteFile(new String[]{userEntity.getProfile().getProfilePath()}).deleteFile();
+        } else saveFilePath = userEntity.getProfile().getProfilePath();
+
+        profile.setId(userEntity.getProfile().getId());
+        profile.setProfilePath(saveFilePath);
+        profileRepository.save(profile);
 
         return userEntity;
     }
 
-    public String userSave(UserDTO vo){
+    public void userSave(UserDTO vo){
 
         ProfileEntity profile = ProfileEntity.builder()
         .preferTime("상관없음")
@@ -75,7 +80,6 @@ public class UserService implements UserDetailsService{
         userEntity.setPassword(new BCryptPasswordEncoder().encode(vo.getPassword()));
         userEntity.setNotification(new NotificationEntity());
         userRepository.save(userEntity);
-        return "회원가입 성공";
     }
 
     public boolean checkUserName(String Email){

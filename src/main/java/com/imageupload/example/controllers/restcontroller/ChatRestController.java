@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import com.imageupload.example.dto.NotificationDTO;
-import com.imageupload.example.dto.NotificationEnumType;
+import com.imageupload.example.enumtype.NotificationEnumType;
 import com.imageupload.example.entity.UserEntity;
 import com.imageupload.example.entity.ChatEntity;
 import com.imageupload.example.entity.RoomEntity;

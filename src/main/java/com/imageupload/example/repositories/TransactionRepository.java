@@ -3,7 +3,7 @@ package com.imageupload.example.repositories;
 import com.imageupload.example.entity.UserEntity;
 import com.imageupload.example.entity.BoardEntity;
 import com.imageupload.example.entity.TransactionEntity;
-import com.imageupload.example.entity.TransactionEnumType;
+import com.imageupload.example.enumtype.TransactionEnumType;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

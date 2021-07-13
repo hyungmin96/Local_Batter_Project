@@ -6,28 +6,28 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import com.imageupload.example.dto.GenerateFileDTO;
 import com.imageupload.example.entity.BoardEntity;
 import com.imageupload.example.entity.FileEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 public class GenerateFile {
 
-    private MultipartFile[] files;
-    private BoardEntity vo;
+    private final MultipartFile[] files;
 
     private FileOutputStream fos;
     private final String root = "D:\\Spring projects\\SpringBoot LocalBatter\\src\\main\\downloads\\";
     private String tempName = "";
     private String extention;
 
-    public GenerateFile(BoardEntity vo, MultipartFile[] files) {
-        this.vo = vo;
+    public GenerateFile(MultipartFile[] files) {
         this.files = files;
     }
 
-    public List<FileEntity> generateFileVoList() {
+    public List<GenerateFileDTO> createFile() {
 
-        List<FileEntity> fileInfos = new ArrayList<>();
+        List<GenerateFileDTO> fileList = new ArrayList<>();
 
         for (MultipartFile file : files) {
 
@@ -39,26 +39,29 @@ public class GenerateFile {
 
                 byte[] bytes = file.getBytes();
 
-                fos = new FileOutputStream(new File(root + tempName + extention));
+                String filePath = root + tempName + extention;
+
+                fos = new FileOutputStream(new File(filePath));
 
                 fos.write(bytes);
 
+                GenerateFileDTO generateFileDTO = new GenerateFileDTO();
+                generateFileDTO.setFileSize(bytes.length);
+                generateFileDTO.setExtention(extention);
+                generateFileDTO.setFileName(tempName + extention);
+                generateFileDTO.setPath(filePath);
+
+                fileList.add(generateFileDTO);
+
                 fos.close();
-                
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            FileEntity filevo = FileEntity.builder()
-                            .tempName(tempName + extention)
-                            .filePath(root + tempName + extention)
-                            .originName(file.getOriginalFilename())
-                            .fileSize(file.getSize()).board(vo).build();
-
-            fileInfos.add(filevo);
         }
 
-        return fileInfos;
+        return fileList;
 
     }
 

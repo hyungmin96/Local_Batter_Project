@@ -1,4 +1,4 @@
-package com.imageupload.example.dto;
+package com.imageupload.example.enumtype;
 
 public enum NotificationEnumType {
     

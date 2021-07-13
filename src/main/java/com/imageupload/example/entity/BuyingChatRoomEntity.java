@@ -40,8 +40,5 @@ public class BuyingChatRoomEntity {
     private List<BuyingFileEntity> files;
 
     @OneToMany(mappedBy = "buyingChatRoomEntity")
-    private List<BuyingChatEntity> chats;
-
-    @OneToMany(mappedBy = "buyingChatRoomEntity")
     private List<BuyingUsersEntity> users;
 }
