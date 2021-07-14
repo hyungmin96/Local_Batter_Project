@@ -24,6 +24,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 
+import javax.servlet.http.HttpSession;
+
 @Service
 @RequiredArgsConstructor
 public class ChatService {
@@ -35,10 +37,9 @@ public class ChatService {
     private final UserRepository userRepository;
     private final NotificationRepository notificationRepository;
 
-    public void clearNotification(String Type){
+    public void clearNotification(HttpSession session, String Type){
 
-        UserDetails user = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserEntity userEntity = userRepository.findByUsername(user.getUsername()).get();
+        UserEntity userEntity = (UserEntity) session.getAttribute("userId");
 
         Long id = userEntity.getNotification().getId();
         
@@ -50,7 +51,7 @@ public class ChatService {
                 notificationRepository.clearNotification(id);
                 break;
             case "transaction":
-                notificationRepository.clearNotification(id);
+                notificationRepository.clearTransaction(id);
                 break;
         }
 
@@ -71,9 +72,9 @@ public class ChatService {
 
     }
 
-    public void sendNotification(NotificationDTO message){
+    public void sendNotification(HttpSession session, NotificationDTO message){
 
-        UserEntity userEntity = userRepository.findByUsername(message.getSender()).get();
+        UserEntity userEntity = (UserEntity) session.getAttribute("userId");
         UserEntity targetEntity = userRepository.findByUsername(message.getTarget()).get();
 
         Long id = targetEntity.getNotification().getId();

@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 
+import javax.servlet.http.HttpSession;
+
 @RestController
 @RequestMapping("/api/transaction")
 @RequiredArgsConstructor
@@ -43,12 +45,12 @@ public class TransactionController {
     }
 
     @PostMapping("/product")
-    public ResponseEntity<String> dealWithSeller(SubmitTransactionDTO transactionDTO){
+    public ResponseEntity<String> dealWithSeller(HttpSession session, SubmitTransactionDTO transactionDTO){
 
         if(transactionDTO.getType().equals(TransactionEnumType.cart))
             boardService.updateCartCount(transactionDTO.getBoardId());
 
-        if (transactionService.saveTransaction(transactionDTO)){
+        if (transactionService.saveTransaction(session, transactionDTO)){
             return new ResponseEntity<String>("success", HttpStatus.OK);
         }else{
             return new ResponseEntity<String>("failed", HttpStatus.OK);
@@ -56,14 +58,14 @@ public class TransactionController {
     }
 
     @GetMapping("/dealList")
-    public Page<TransactionEntity> getTransactionList(Principal user,
+    public Page<TransactionEntity> getTransactionList(HttpSession session,
     @RequestParam TransactionEnumType type, @RequestParam int page, @RequestParam int display){
-        return transactionService.getTransactionEntities(user, type, page, display);
+        return transactionService.getTransactionEntities(session, type, page, display);
     }
 
     @PostMapping("/submit")
-    public ResponseEntity<String> submitTransaction(SubmitTransactionDTO submitTransaction){
-        boolean result = transactionService.updateTransactionStatus(submitTransaction);  
+    public ResponseEntity<String> submitTransaction(HttpSession session, SubmitTransactionDTO submitTransaction){
+        boolean result = transactionService.updateTransactionStatus(session, submitTransaction);
         if(result)
             return new ResponseEntity<String>("success", HttpStatus.OK);
         else

@@ -39,17 +39,17 @@
                             <div id="step-2">
 
                                 <div class="article__item__box">
-                                    <label for="inputTitle" class="item__value">제목</label>
+                                    <label class="item__value">제목</label>
                                     <input type="text" name="title" id="buying__title" class="inputbox" placeholder="상품의 이름을 입력해주세요." />
                                 </div>
 
                                 <div class="article__item__box">
-                                    <label for="inputTitle" class="item__value">물품 설명</label>
+                                    <label class="item__value">물품 설명</label>
                                     <textarea class="inputbox" id="buying__desciption" rows="3"></textarea>
                                 </div>
 
                                 <div class="article__item__box">
-                                    <label for="inputTitle" class="item__value">기간 설정</label>
+                                    <label class="item__value">기간 설정</label>
                                     <div class="input-group date" id="datetimepicker4" data-target-input="nearest">
                                     <input type="text" id="buying__date" class="form-control datetimepicker-input" data-target="#datetimepicker4"/>
                                         <div class="input-group-append" data-target="#datetimepicker4" data-toggle="datetimepicker">
@@ -59,7 +59,7 @@
                                 </div>
 
                                 <div class="article__item__box">
-                                    <label for="inputTitle" class="item__value">모금 금액</label>
+                                    <label class="item__value">모금 금액</label>
                                     <input type="text" name="buying__price" id="buying__price" class="inputbox" placeholder="총 모금할 금액을 입력해주세요." />
                                 </div>
                                 <hr />
@@ -69,12 +69,12 @@
                             <div id="step-3">
                                 <div>
                                     <div class="article__item__box">
-                                        <label for="inputTitle" class="item__value">채팅방 이름</label>
+                                        <label class="item__value">채팅방 이름</label>
                                         <input type="text" name="title" id="buying__chat__title" class="inputbox" placeholder="생성할 채팅방의 이름을 입력해주세요." />
                                     </div>
 
                                     <div class="article__item__box">
-                                        <label for="inputTitle" class="item__value">채팅방 인원 설정</label>
+                                        <label class="item__value">채팅방 인원 설정</label>
                                         <input type="text" name="title" id="buying__chat__limit" class="inputbox" placeholder="채팅방 인원 제한 수를 입력해주세요." />
                                     </div>                                
 
@@ -128,7 +128,7 @@
         <hr />
 
         <div class="enter__desc">제품 설명</div>
-        <div class="product__img__desc" style="margin: 5px; 5px; min-height: 100px;">
+        <div class="product__img__desc" style="margin: 5px 5px; min-height: 100px;">
 
         </div>
         <hr />

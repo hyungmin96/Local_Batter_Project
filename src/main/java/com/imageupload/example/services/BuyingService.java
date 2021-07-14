@@ -16,7 +16,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
+
+import javax.mail.Session;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +46,7 @@ public class BuyingService {
                     .message(file.getFileName())
                     .profilePath(messageDTO.getProfilePath())
                     .type("image")
+                    .userId(messageDTO.getUserId())
                     .build();
 
             imgs.add(file.getFileName());
@@ -53,11 +56,11 @@ public class BuyingService {
             messageDTO.setImgPath(imgs);
     }
 
-    public void deleteRoom(Long roomId, String username){
+    public void deleteRoom(HttpSession session, Long roomId, String username){
 
-        UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserEntity userEntity = (UserEntity) session.getAttribute("userId");
 
-        if(user.getUsername().equals(username)){
+        if(userEntity.getUsername().equals(username)){
             BuyingChatRoomEntity buyingChatRoomEntity = buyingChatRoomRepository.findById(roomId).get();
 
             buyingChatRoomEntity.getChats().stream()
@@ -97,9 +100,9 @@ public class BuyingService {
         buyingChatRepository.save(buyingChatEntity);
     }
 
-    public void exitRoom(Long roomId, String username){
+    public void exitRoom(HttpSession session, Long roomId){
 
-        UserEntity userEntity = userRepository.findByUsername(username).get();
+        UserEntity userEntity = (UserEntity) session.getAttribute("userId");
 
         BuyingChatRoomEntity buyingChatRoomEntity = buyingChatRoomRepository.findById(roomId).get();
         BuyingUsersEntity buyingUsersEntity = buyingUsersRepository.findBybuyingChatRoomEntityAndUser(buyingChatRoomEntity, userEntity);
@@ -144,16 +147,14 @@ public class BuyingService {
     }
 
     @Transactional
-    public void createBuyingRoom(BuyingDTO buyingDTO){
+    public void createBuyingRoom(HttpSession session, BuyingDTO buyingDTO){
 
-        UserDetails user = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        UserEntity userEntity = userRepository.findByUsername(user.getUsername()).get();
+        UserEntity userEntity = (UserEntity) session.getAttribute("userId");
 
         BuyingChatRoomEntity buyingChatRoomEntity = BuyingChatRoomEntity.builder()
         .title(buyingDTO.getTitle())
         .description(buyingDTO.getDescription())
-        .owner(user.getUsername())
+        .owner(userEntity.getUsername())
         .price(Integer.parseInt(buyingDTO.getPrice()))
         .roomDate(buyingDTO.getDate())
         .roomTitle(buyingDTO.getRoomTitle())
@@ -186,6 +187,5 @@ public class BuyingService {
 
         buyingUsersRepository.save(buyingUsersEntity);
         buyingChatRoomRepository.save(buyingChatRoomEntity);
-
     }
 }

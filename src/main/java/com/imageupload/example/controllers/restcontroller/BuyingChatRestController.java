@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
@@ -40,8 +41,8 @@ public class BuyingChatRestController {
     }
 
     @PostMapping("/delete")
-    public ResponseEntity<String> deleteRoom(@RequestParam Long roomId, @RequestParam String username){
-        buyingService.deleteRoom(roomId, username);
+    public ResponseEntity<String> deleteRoom(HttpSession session, @RequestParam Long roomId, @RequestParam String username){
+        buyingService.deleteRoom(session, roomId, username);
         return new ResponseEntity<String>("Success", HttpStatus.OK);
     }
 
@@ -51,7 +52,7 @@ public class BuyingChatRestController {
     }
 
     @PostMapping("/exit")
-    public ResponseEntity<String> exitRoom(@RequestParam Long roomId, @RequestParam String username){
+    public ResponseEntity<String> exitRoom(HttpSession session, @RequestParam Long roomId, @RequestParam String username){
 
         BuyingChatMessageDTO messageDTO = BuyingChatMessageDTO.builder()
                 .roomId(roomId)
@@ -62,7 +63,7 @@ public class BuyingChatRestController {
                 .build();
 
         buyingChatService.sendBuyingRoomToChat(messageDTO);
-        buyingService.exitRoom(roomId, username);
+        buyingService.exitRoom(session, roomId);
         return new ResponseEntity<String>("Success", HttpStatus.OK);
     }
 
@@ -93,8 +94,8 @@ public class BuyingChatRestController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<String> createBuyingRoom(BuyingDTO buyingDTO){
-        buyingService.createBuyingRoom(buyingDTO);
+    public ResponseEntity<String> createBuyingRoom(HttpSession session, BuyingDTO buyingDTO){
+        buyingService.createBuyingRoom(session, buyingDTO);
         return new ResponseEntity<String>("success", HttpStatus.OK);
     }
 

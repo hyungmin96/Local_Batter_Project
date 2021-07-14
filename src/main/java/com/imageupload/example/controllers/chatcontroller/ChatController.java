@@ -34,13 +34,13 @@ public class ChatController {
     }
 
     @MessageMapping("/send/notification/{id}")
-    public void getConnectionMessage(@Payload NotificationDTO message){
-        chatService.sendNotification(message);
+    public void getConnectionMessage(HttpSession session,@Payload NotificationDTO message){
+        chatService.sendNotification(session, message);
     }
 
     @GetMapping("/chatlist/{username}")
-    public String getChatList(Model model, HttpServletRequest request){
-        chatService.clearNotification("chat");
+    public String getChatList(HttpSession session){
+        chatService.clearNotification(session, "chat");
         return "/chat/chatRoomList";
     }
 

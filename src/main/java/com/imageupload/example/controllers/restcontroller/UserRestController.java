@@ -2,8 +2,6 @@ package com.imageupload.example.controllers.restcontroller;
 
 import com.imageupload.example.services.UserService;
 import com.imageupload.example.dto.UserDTO;
-import com.imageupload.example.entity.UserEntity;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

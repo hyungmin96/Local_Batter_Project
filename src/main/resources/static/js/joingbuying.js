@@ -114,36 +114,33 @@ function loadBuyingChatRoomList(e, page = 0){
             buyingChatRoomArray = [];
 
             $.each(response.content, function(key, value){
-            
+
                 buyingChatRoomArray.push(value);
 
-                var files = (value.files.length > 0) ? value.files : null;
+                var files = (value.files.length > 0) ? value.files[0].username : '';
 
                 $('.buying__room__list').append(
                     "<div id='item__box__" + key + "' onclick='javascript:showModal(); showDataToModal(this);' class='buying__item__box'>" + 
-                    "<img src=/upload/" + files[0].name + ">" + 
-                        "<div class='buying__room__content'>" +
-                        "<div class = 'buying__room__title'>" + value.roomTitle + "</div>" +
-                        
-                        "<div style = 'display: flex; flex-direction: row;'>" +
-                            "<div>" +
+                    "<img src=/upload/" + files + ">" +
+                    "<div class='buying__room__content'>" +
+                        "<div>" +
+                            "<div class = 'buying__room__title'>" + value.roomTitle + "</div>" +
                                 "<div class = 'buying__room__description'>" + value.description + "</div>" +
-                                "<div class = 'buying__room__price'> 필요금액 : " + convertPrice(value.price) + "원</div>" +
-                            "</div>" +
-                            "<div>" +
-                                "<div class = 'buying__date'>" +
-                                    "<span>참여인원 : </span>" +
+                                    "<div>" +
+                                        "<span>참여인원 : </span>" +
                                         "<span class = 'buying__room__users'>" + value.users.length + "명</span>" + ' / ' +
                                         "<span class = 'buying__room__limit'>" + value.limitUsers + "명</span>" +
-                                    "</div>" +
-                                "<div class = 'buying__room__expiration'> 만료일자 : " + value.roomDate + "</div>" +
+                                    "<div class = 'buying__room__expiration'> 만료일자 : " + value.roomDate + "</div>" +
                                 "</div>" +
                             "</div>" +
                         "</div>" +
-
-                    "</div>" +
-                    "<hr />"
-                );  
+                        "<div class = 'buying__room__price'>" +
+                            "<div style='text-align: center'>" +
+                                "필요금액 : " + convertPrice(value.price) + "원" +
+                            "</div>" +
+                        "</div>" +
+                    "</div>"
+                );
             })
         }
     })

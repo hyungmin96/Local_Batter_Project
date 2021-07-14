@@ -10,6 +10,7 @@ import com.imageupload.example.entity.BoardEntity;
 import com.imageupload.example.components.createTime;
 import com.imageupload.example.dto.PageableVo;
 import com.imageupload.example.services.BoardService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +25,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
+@RequiredArgsConstructor
 public class BoardRestControllers {
-    
-    @Autowired
-    private BoardService boardService;
+
+    private final BoardService boardService;
 
     @GetMapping("/boards/api/")
     public Page<BoardEntity> scrollData(@RequestParam int page, @RequestParam int display){
@@ -60,11 +61,12 @@ public class BoardRestControllers {
     }
 
     @PostMapping("/upload")
-    public String uploadFiles(@AuthenticationPrincipal UserEntity principal, 
-            BoardEntity board, MultipartFile[] uploadFiles) throws IOException {
+    public String uploadFiles(HttpSession session, BoardEntity board, MultipartFile[] uploadFiles) throws IOException {
 
-        if (principal != null) {
-            board.setWriter(principal.getUsername());
+        UserEntity userEntity = (UserEntity) session.getAttribute("userId");
+
+        if (userEntity != null) {
+            board.setWriter(userEntity.getUsername());
             boardService.boardWrite(board, uploadFiles);
             return "업로드 성공";
         }
@@ -85,19 +87,14 @@ public class BoardRestControllers {
     }
 
     @PostMapping("/update")
-    public String updatePost(@AuthenticationPrincipal UserEntity principal, BoardEntity vo,
-            MultipartFile[] uploadFiles, @RequestParam Integer[] deleteIndex) {
-                
-        if (principal != null && (vo.getWriter().equals(principal.getUsername()))) {
+    public String updatePost(HttpSession session, BoardEntity vo, MultipartFile[] uploadFiles, @RequestParam Integer[] deleteIndex) {
+
+        UserEntity userEntity = (UserEntity) session.getAttribute("userId");
+
+        if (userEntity != null && (vo.getWriter().equals(userEntity.getUsername()))) {
             boardService.boardUpdate(vo, uploadFiles, deleteIndex);
             return "수정 성공";
         }
             return "권한이 없습니다.";
     }
-
-    @GetMapping("/getSessionId")
-    public String getSessionId(HttpSession session){
-        return session.getId();
-    }
-
 }

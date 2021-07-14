@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 
+import javax.servlet.http.HttpSession;
+
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
@@ -45,35 +47,32 @@ public class ChatRestController {
     }
 
     @GetMapping("/chat/chats/")
-    public Page<ChatEntity> getChats(@RequestParam long roomId,
-                                        @RequestParam int display,
-                                        @RequestParam int page){
-                                            
+    public Page<ChatEntity> getChats(@RequestParam long roomId, @RequestParam int display, @RequestParam int page){
         return chatService.getChatList(roomId, display, page);
     }
 
     @PostMapping("/create/room")
-    public NotificationDTO createRoom(@AuthenticationPrincipal UserEntity principal, 
-        @RequestParam("target") String targetString, 
-        @RequestParam("user") String user)
+    public NotificationDTO createRoom(HttpSession session, @RequestParam("target") String targetString, @RequestParam("user") String user)
     {
 
         UserJoinRoomEntity room = null;
 
+        UserEntity userEntity = (UserEntity) session.getAttribute("userId");
+
         Optional<UserEntity> target = userRepository.findByUsername(targetString);
 
-        List<UserJoinRoomEntity> list = chatRoomRepository.findAllByuserVoOrTarget(principal, principal);
+        List<UserJoinRoomEntity> list = chatRoomRepository.findAllByuserVoOrTarget(userEntity, userEntity);
 
         for(UserJoinRoomEntity item : list){
             if(item.getTarget().equals(target.get())){
                 room = item;
                 break;
             }
-    }
+        }
 
         NotificationDTO notification = NotificationDTO.builder()
         .notificationType(NotificationEnumType.chat)
-        .sender(principal.getUsername())
+        .sender(userEntity.getUsername())
         .target(targetString)
         .date(LocalDateTime.now().toString())
         .build();
@@ -85,7 +84,7 @@ public class ChatRestController {
     
             UserJoinRoomEntity userJoinRoomEntity = new UserJoinRoomEntity();
             userJoinRoomEntity.setTarget(target.get());
-            userJoinRoomEntity.setUserVo(principal);
+            userJoinRoomEntity.setUserVo(userEntity);
             userJoinRoomEntity.setTargetConnectionType(UserJoinRommEnumType.connected);
             userJoinRoomEntity.setUserConnectionType(UserJoinRommEnumType.connected);
             userJoinRoomEntity.setRoomEntity(roomEntity);
@@ -100,11 +99,8 @@ public class ChatRestController {
             notification.setRoomId(room.getRoomEntity().getId());
         }
         
-
-        chatService.sendNotification(notification);
+        chatService.sendNotification(session, notification);
 
         return notification;
-
-    }   
-
+    }
 }

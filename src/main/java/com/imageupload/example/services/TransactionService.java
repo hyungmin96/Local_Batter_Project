@@ -21,6 +21,8 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 
+import javax.servlet.http.HttpSession;
+
 @Service
 @RequiredArgsConstructor
 public class TransactionService {
@@ -49,9 +51,9 @@ public class TransactionService {
         return false;
     }
 
-    public Boolean updateTransactionStatus(SubmitTransactionDTO submitTransaction){
+    public Boolean updateTransactionStatus(HttpSession session, SubmitTransactionDTO submitTransaction){
 
-        Object user = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserEntity userEntity = (UserEntity) session.getAttribute("userId");
 
         UserEntity sellerEntity = userService.findById(Long.parseLong(submitTransaction.getSellerId()));
         UserEntity buyerEntity = userService.findById(Long.parseLong(submitTransaction.getBuyerId()));
@@ -60,7 +62,7 @@ public class TransactionService {
         TransactionEntity transactionEntity = transactionRepository.findByBuyerAndSellerAndBoardId(buyerEntity, sellerEntity, board);
         
         if(transactionEntity != null){
-            if(sellerEntity.getUsername().equals(((UserDetails)user).getUsername()))
+            if(sellerEntity.getUsername().equals(userEntity.getUsername()))
                 transactionEntity.setSellerComplete("true");
             else
                 transactionEntity.setBuyerComplete("true");
@@ -100,7 +102,7 @@ public class TransactionService {
     }
 
 
-    public boolean saveTransaction(SubmitTransactionDTO transactionDTO){
+    public boolean saveTransaction(HttpSession session, SubmitTransactionDTO transactionDTO){
         
         UserEntity sellerEntity = userService.findUserOne(transactionDTO.getSellerId());
         UserEntity buyerEntity = userService.findUserOne(transactionDTO.getBuyerId());
@@ -125,7 +127,7 @@ public class TransactionService {
             .build();
 
             if(!transactionDTO.getType().equals(TransactionEnumType.cart))
-                chatService.sendNotification(notificationDTO);
+                chatService.sendNotification(session, notificationDTO);
 
             return true;
         }
@@ -133,8 +135,9 @@ public class TransactionService {
         return false;
     }
 
-    public Page<TransactionEntity> getTransactionEntities(Principal user, TransactionEnumType type, int page, int display){
-        UserEntity userEntity = userService.findUserOne(user.getName());
+    public Page<TransactionEntity> getTransactionEntities(HttpSession session, TransactionEnumType type, int page, int display){
+
+        UserEntity userEntity = (UserEntity) session.getAttribute("userId");
         PageRequest request = PageRequest.of(page, display, Sort.Direction.DESC, "id");
         Page<TransactionEntity> List;
 

@@ -47,7 +47,8 @@ function buyingRoomImageUpload(e){
     var formData = new FormData();
 
     formData.append('roomId', globalThis.roomId);
-    formData.append('profilePath', '/upload/' + $('.login_user_profile').val());
+    formData.append('userId', $('.login_user_id').val());
+    formData.append('profilePath', 'profileId');
     formData.append('sender', $('.buying_login_user').val());
     formData.append('message', null);
     formData.append('type', 'image');

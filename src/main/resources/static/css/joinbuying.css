@@ -12,6 +12,13 @@
     font-style: normal;
 }
 
+.buying__room__price{
+    background-color: #f8f8f8;
+    font-family: ON-IGothic;
+    font-size: 14px;
+    width: 200px;
+}
+
 .buying__room__content{
     font-family: ON-IGothic;
     font-size: 14px;
@@ -23,7 +30,7 @@
     font-size: 15px;
     margin: 5px 5px;
     min-height: 50px;
-    min-width: 850px;
+    max-width: 450px;
     display: inline-block;
     white-space: nowrap;
     overflow: hidden;
@@ -42,37 +49,29 @@
 }
 
 .buying__item__box{
-    display: flex;
-    flex-direction: row;
-    padding: 10px;
+    display: inline-flex;
     cursor: pointer;
+    margin: 15px 15px;
 }
 
 .buying__room__content{
     margin: 5px 5px;
-    padding: 5px;
+    padding: 15px;
 }
 
 .page__container{
     text-align: center;
 }
 
-.buying__room__list hr{
-    margin: 5px 5px;
-    border: none;
-    background-color: rgb(145, 145, 145);
-    height: 1px;
-}
-
 .buying__room__list img{
-    height: 120px;
-    width: 150px;
+    height: 170px;
+    width: 180px;
     object-fit: cover;
 }
 
 
 .buying__room__list{
-    margin: 25px 25px;
+    margin: 10px 10px;
     min-height: 700px;
 }
 
