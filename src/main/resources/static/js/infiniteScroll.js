@@ -52,6 +52,7 @@ function loadData(){
                 html += '<div class="price">' + price + '<span class="k-money">원</span></div>';
                 html += '<span class="time">' + displayDate + '</span>';
                 html += '</div>';
+                html += '<hr style="border: none; height: 1px; background-color: #848484; margin: 5px 0 5px 0;"/>';
                 html += '<span class="badge bg-secondary">' + location + '</span>';
                 html += '</div>';
                 html += '</div>';

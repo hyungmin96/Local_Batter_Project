@@ -67,32 +67,10 @@
 </div>
 
 <div class="header">
-    <div class="user-info-box">
-        <div class="container">
-                <c:choose>
-                    <c:when test="${empty principal}">
-                        <div class="none-login">
-                            <a href="/user/login" style="color: rgb(255, 255, 255);">로그인</a>
-                            <a href="/user/join" style="color: rgb(255, 255, 255);">회원가입</a>
-                        </div>
-                    </c:when>
-                    <c:otherwise>
-                        <div class="on-login">
-                            <div class="user_name_info" style="color: rgb(133, 191, 238);">
-                                [<span class="user__name">${principal.username}</span>]님
-                            </div>
-                            <a href="/user/logout" style="color: rgb(255, 255, 255);">로그아웃</a>
-                            <a href="/profile/user=${principal.username}" style="color: rgb(255, 255, 255);">마이페이지</a>
-                        </div>
-                    </c:otherwise>
-                </c:choose>
-        </div>
-    </div>
-
     <div class="container">
         <div class="header_box" style="margin: auto auto;">
-            <a class="site_icon" href="/">
-            <img src="/images/header/icon.png" style="width: 40px; height: 40px; margin-left: 50px;"><span class="logo__text">로컬바터</span></a>
+            <div><a class="site_icon" href="/"></a></div>
+            <a href="/" class="logo__text">Local Batter</a>
 
                 <div class="wrapper">
                     <div class="search-input">
@@ -105,28 +83,44 @@
                     </div>
                 </div>
 
-            <div class="btn-header-btns">
-                <div class="btn-board-reg">
-                    <button class="header-product-reg" onclick="location.href='/write'">
-                        <img src="/images/header/paper_money_28px.png"/>
-                        <span class="btn__text">판매하기</span>
-                    </button>
-                </div>
+            <c:choose>
+                <c:when test="${principal ne null}">
+                    <div class="btn-header-btns">
+                        <div class="header_ btn-board-reg">
+                            <button class="header-product-reg" onclick="location.href='/write'">
+                                <img src="/images/header/notification.png"/>
+                            </button>
+                        </div>
 
-                <div class="btn-profile">
-                    <button class="header-product-reg" onclick="location.href='/transaction/itemList'">
-                        <img src="/images/header/packaging_28px.png"/>
-                        <span class="btn__text">상품관리</span>
-                    </button>
-                </div>
+                        <div class="header_ btn-profile">
+                            <button class="header-product-reg" onclick="location.href='/transaction/itemList'">
+                                <img src="/images/header/chat.png"/>
+                            </button>
+                        </div>
 
-                <div class="btn-chat">
-                    <button onclick="location.href='/chatlist/${principal.username}'" class="header-product-reg">
-                        <img src="/images/header/message.png"/>
-                        <span class="btn__text">채팅하기</span>
-                    </button>
-                </div>
-            </div>
+                        <div class="header_ btn-chat">
+                            <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img src="/images/header/user.png">
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    <li><a href="/profile/user=${principal.username}" class="dropdown-item" href="#">프로필 보기</a><hr/></li>
+                                    <li><a href="/write" class="dropdown-item" href="#">판매글 작성</a></li>
+                                    <li><a class="dropdown-item" href="#">내 상점</a><hr/></li>
+                                    <li><a href="/user/logout" class="dropdown-item" href="#">로그아웃</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <div class="none_login">
+                        <a href="/user/login" style="color: rgb(113 113 113);">로그인</a>
+                        <a href="/user/join" style="color: rgb(113 113 113);">회원가입</a>
+                    </div>
+                </c:otherwise>
+            </c:choose>
+
         </div>
     </div>
 </div>
@@ -167,3 +161,9 @@ chatElement.addEventListener("DOMSubtreeModified", function(){
         chatElement.style.display = 'block';
 })
 </script>
+
+<style>
+    body{
+        background-color: #f5f5f5;
+    }
+</style>

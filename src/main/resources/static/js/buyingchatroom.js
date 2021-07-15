@@ -5,9 +5,6 @@ var roomId;
 $(document).ready(function (){
     connect();
     loadBuyingRoomData();
-    setTimeout(function() {
-        loadBuyingRoomChatData();
-    }, 100);
 })
 
 $('#chatroom_comment_box').on('keyup', function (event){
@@ -94,36 +91,6 @@ function sendMessage(message, type = 'chat'){
     $('.buyingchatroom__chat__list')[0].scrollTop = $('.buyingchatroom__chat__list')[0].scrollHeight;
 }
 
-
-function loadBuyingRoomData(){
-    globalThis.roomId = $('.buying_roomId').val();
-
-    var data = {roomId: globalThis.roomId}
-    $.ajax({
-        url: '/api/buying/getRoomInfo',
-        type: 'GET',
-        data: data,
-        success: function(response){
-
-            document.getElementsByClassName('chatroom__title')[0].innerHTML = response.roomTitle + ' 채팅방';
-            document.getElementById('offcanvasRightLabel').innerHTML = '대화멤버 목록[' + response.users.length + '/' + response.limitUsers + ']';
-
-            $.each(response.users, function(key, value){
-                $('.offcanvas-body').append(
-                    "<div class=userbox_" + key + ">" +
-                    "<div class='room_user_box'>" +
-                    "<img class='room_user_profile' src=/upload/" + value.user.profile.profilePath + ">" +
-                    "<div class='room_user_name'>" + value.user.username + "</div>" +
-                    "<div>" +
-                    "<div>"
-                );
-                buyingChatRoomUserArray.push({userObject: value});
-            })
-        }
-    })
-}
-
-
 var preDate = null;
 function showDate(message){
 
@@ -175,7 +142,10 @@ function showContent(message){
     var myMessage = "<div class='message_box'>" +
                         "<div class='me_message_box'>" +
                         "<div class='me_message_content'>" + content + "</div>" +
-                        "<div class='message_date'>" + chatTime + "</div>" +
+                        "<div>" +
+                        "<span><img id = message_" + message.id + " onclick='chatButton(this);' class='message_menu' src='/images/menu_14px.png'></span>" +
+                        "<span class='message_date'>" + chatTime + "</span>" +
+                        "</div>" +
                         "</div>" +
                         "</div>"
 
@@ -185,15 +155,33 @@ function showContent(message){
                         "<div style='margin-left: 10px;'>" +
                         "<div class='message_sender'>" + message.sender + "</div>" +
                         "<div class='message_content'>" + content + "</div>" +
+                        "<div style='display: flex; flex-direction: row'>" +
                         "<div class='message_date'>" + chatTime + "</div>" +
+                        "<span id = message_" + message.id + " onclick='chatButton(this);'><img class='message_menu' src='/images/menu_14px.png'></span>" +
+                        "</div>" +
                         "</div>" +
                         "</div>" +
                         "</div>"
 
-    if($('.buying_login_user').val() == message.sender)
+        if($('.buying_login_user').val() == message.sender)
             $('.buyingchatroom__chat__list').append(myMessage);
         else
             $('.buyingchatroom__chat__list').append(targetMessage);
+}
+
+function chatButton(e){
+
+    let menu =  "<div style='width: 200px; height: 200px;'>" +
+                "<ul class='lyMenu message_menu_list'>" +
+                "<li><button data-uiselector='menuButton' type='button' data-menutype='MENU_TYPE_EMOTION'>표정짓기</button></li>" +
+                "<li><button data-uiselector='menuButton' type='button' data-menutype='MENU_TYPE_EMOTION'>표정짓기</button></li>" +
+                "<li><button data-uiselector='menuButton' type='button' data-menutype='setUserNotice'>공지로 등록</button></li>" +
+                "<li><button data-uiselector='menuButton' type='button' data-menutype='MENU_TYPE_REPORT'>신고하기</button></li>" +
+                "</ul>" +
+                "</div>"
+
+    $('#' + e.id).append(menu);
+
 }
 
 function showMessage(message){
@@ -210,18 +198,35 @@ function showMessage(message){
     $('.buyingchatroom__chat__list')[0].scrollTop = $('.buyingchatroom__chat__list')[0].scrollHeight;
 }
 
-function loadBuyingRoomChatData(){
+function loadBuyingRoomData(){
+    globalThis.roomId = $('.buying_roomId').val();
 
-    var data = { roomId: globalThis.roomId };
-
+    var data = {roomId: globalThis.roomId}
     $.ajax({
-        url: '/api/buying/chats',
+        url: '/api/buying/getRoomInfo',
         type: 'GET',
         data: data,
-        success: function (response) {
-            $.each(response, function(key, message) {
-                showMessage(message);
+        success: function(response){
+
+            document.getElementsByClassName('chatroom__title')[0].innerHTML = response.roomTitle + ' 채팅방';
+            document.getElementById('offcanvasRightLabel').innerHTML = '대화멤버 목록[' + response.users.length + '/' + response.limitUsers + ']';
+
+            $.each(response.users, function(key, value){
+                $('.offcanvas-body').append(
+                    "<div class=userbox_" + key + ">" +
+                    "<div class='room_user_box'>" +
+                    "<img class='room_user_profile' src=/upload/" + value.user.profile.profilePath + ">" +
+                    "<div class='room_user_name'>" + value.user.username + "</div>" +
+                    "<div>" +
+                    "<div>"
+                );
+                buyingChatRoomUserArray.push({userObject: value});
             })
+
+            $.each(response.chats, function(key, message){
+                showMessage(message);
+            });
+
         }
     })
 }

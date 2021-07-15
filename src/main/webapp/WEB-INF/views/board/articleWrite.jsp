@@ -69,11 +69,11 @@
                     </div>
                 </div>
 
-            <div class="article__item__box float-right">
+            <div class="article__item__box float-right" style="float: right; margin: 0 0 0 0;">
                 <button type="button" id="btn_upload" class="btn btn-secondary">상품등록</button>
             </div>
 
-            <div class="article__item__box dropdown" style="float: right; margin-right: 0;">
+            <div class="article__item__box dropdown" style="float: right; margin: 0 10px 0 0;">
                 <button type="button" id="toggleBtn" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
                     게시판 설정
                 </button>
@@ -82,9 +82,6 @@
                     <a class="dropdown-item">긴급</a>
                 </div>
             </div>
-
-            <br />
-
         </form>
     </div>
 </div>

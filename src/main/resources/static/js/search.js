@@ -51,8 +51,8 @@ function callBoardsDataToJson(page = 0) {
             var html = '';
 
             $.each(data.content, function (index, value) {
-                totalPages = data.totalPages;
 
+                let totalPages = data.totalPages;
                 let fileName = value.files.length > 0 ? value.files[0].tempName : '';
 
                 html += '<div id="item__' + value.id + '"class="search__item__box">';
@@ -67,6 +67,8 @@ function callBoardsDataToJson(page = 0) {
                 html += '<div class="price">' + value.price + '<span class="k-money">원</span></div>';
                 html += '<span class="time">' + value.displayDate + '</span>';
                 html += '</div>';
+                html += '<hr style="border: none; height: 1px; background-color: #848484; margin: 5px 0 5px 0;"/>';
+                html += '<span class="badge bg-secondary">' + value.location + '</span>';
                 html += '</div>';
                 html += '</div>';
                 html += '</a>';

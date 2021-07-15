@@ -18,7 +18,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @ToString
 public class BuyingUsersEntity {
-    
+
     @Id @GeneratedValue
     private Long id;
 
@@ -35,4 +35,5 @@ public class BuyingUsersEntity {
 
     @CreationTimestamp
     private Timestamp regTime;
+
 }

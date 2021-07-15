@@ -6,7 +6,7 @@
     <div class="container">
         <input type="hidden" class="boardId" value="${board.id}">
         <div class="header__line">
-            <h1>홈 > 제품</h1>
+            <div class="product_category">홈 > 제품</div>
             <c:choose>
                 <c:when test="${principal.username eq board.writer}">
                     <div class="dropdown">
@@ -19,7 +19,6 @@
                     </div>
                 </c:when>
             </c:choose>
-            <hr/>
         </div>
 
 

@@ -11,6 +11,8 @@ import com.imageupload.example.components.createTime;
 import com.imageupload.example.dto.PageableVo;
 import com.imageupload.example.services.BoardService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,15 +77,16 @@ public class BoardRestControllers {
     }
 
     @PostMapping("/board/delete")
-    public String deletePost(@AuthenticationPrincipal UserEntity principal,
-            @RequestBody Map<String, String> param) {
+    public ResponseEntity<String> deletePost(HttpSession session, @RequestBody Map<String, String> param) {
 
-        if (principal != null && (param.get("writerId").equals(principal.getUsername()))) {
+        UserEntity userEntity = (UserEntity) session.getAttribute("userId");
+
+        if (userEntity != null && (param.get("writerId").equals(userEntity.getUsername()))) {
             Long boardId = Long.parseLong(param.get("boardId"));
             boardService.boardDelete(boardId);
-            return "삭제 성공";
+            return new ResponseEntity<String>("Success", HttpStatus.OK);
         }
-        return "권한이 없습니다.";
+        return new ResponseEntity<String>("failed", HttpStatus.FORBIDDEN);
     }
 
     @PostMapping("/update")

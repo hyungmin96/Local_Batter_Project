@@ -46,11 +46,6 @@ public class BuyingChatRestController {
         return new ResponseEntity<String>("Success", HttpStatus.OK);
     }
 
-    @GetMapping("/chats")
-    public List<BuyingChatEntity> getChats(@RequestParam Long roomId){
-        return buyingService.getChats(roomId);
-    }
-
     @PostMapping("/exit")
     public ResponseEntity<String> exitRoom(HttpSession session, @RequestParam Long roomId, @RequestParam String username){
 
@@ -80,11 +75,11 @@ public class BuyingChatRestController {
                         .build();
 
                 buyingChatService.sendBuyingRoomToChat(messageDTO);
-                return new ResponseEntity<String>("create success", HttpStatus.OK);
+                return new ResponseEntity<String>("Success", HttpStatus.OK);
             case enter:
-                return new ResponseEntity<String>("enter", HttpStatus.OK);
+                return new ResponseEntity<String>("Enter", HttpStatus.OK);
         }
-        return new ResponseEntity<String>("failed - exceed Users number", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<String>("Failed - exceed Users number", HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/getlist")

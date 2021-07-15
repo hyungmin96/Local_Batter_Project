@@ -13,6 +13,8 @@ import javax.persistence.OneToOne;
 
 import com.imageupload.example.entitylistener.TransactionListener;
 import com.imageupload.example.enumtype.TransactionEnumType;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.CreationTimestamp;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

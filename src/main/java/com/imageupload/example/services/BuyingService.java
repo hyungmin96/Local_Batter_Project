@@ -76,11 +76,6 @@ public class BuyingService {
         }
     }
 
-    public List<BuyingChatEntity> getChats(Long roomId){
-        BuyingChatRoomEntity buyingChatRoomEntity = buyingChatRoomRepository.findById(roomId).get();
-        return buyingChatRepository.findAllByRoomId(buyingChatRoomEntity);
-    }
-
     public BuyingChatRoomEntity getRoomInfo(Long id){
         return buyingChatRoomRepository.findById(id).get();
     }
@@ -128,10 +123,10 @@ public class BuyingService {
                 authorizationType = BuyingUsersEnumType.member;
 
              buyingUsersEntity = BuyingUsersEntity.builder()
-            .user(userEntity)
-            .buyingChatRoomEntity(buyingChatRoomEntity)
-            .authorization(authorizationType)
-            .build();
+                    .user(userEntity)
+                    .buyingChatRoomEntity(buyingChatRoomEntity)
+                    .authorization(authorizationType)
+                    .build();
 
             buyingChatRoomRepository.enterCurrentUsers(buyingChatRoomEntity.getId());
             buyingUsersRepository.save(buyingUsersEntity);

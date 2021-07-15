@@ -26,9 +26,9 @@
 
 .container__write .container{
     background-color: #fff;
-    border-radius: 6px;
     padding: 30px;
     margin-bottom: 40px;
+    height: 900px;
 }
 
 .container hr{

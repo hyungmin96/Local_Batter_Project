@@ -1,13 +1,16 @@
 .detail-wraper{
-    margin-top: 180px;
+    margin-top: 100px;
 }
 
-.header__line h1{
-    font-size: 18px;
+.header__line{
+    background-color: white;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
 }
-
-.header__line hr{
-    border: 1px solid rgb(139, 139, 139)
+.product_category{
+    font-size: 17px;
+    font-family: NanumBarunGothic;
 }
 
 .product-small-img{
@@ -31,6 +34,7 @@
 .product_info{
     display: flex;
     background-color: #ffffff;
+    padding: 20px;
 }
 
 .site_icon a:hover{
@@ -183,7 +187,8 @@ li .product__info__content{
 
 .new__reg__product{
     margin: 25px 0;
-    margin-left: 25px;
+    background-color: white;
+    padding: 15px;
 }
 
 .new__reg__product .container{

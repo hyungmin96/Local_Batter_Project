@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ include file="../common/header.jsp" %>
 
-<div class="join-wrapper" style="margin-top: 185px;">
+<div class="join-wrapper" style="margin-top: 115px;">
 
  <div id="join__container" class="container" style="width: 500px;">
         <div class="col-md-12 order-md-1">

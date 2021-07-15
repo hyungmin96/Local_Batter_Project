@@ -46,6 +46,7 @@
                 <button class="room_quit_btn"><img src="/images/exit_32px.png">대화방 나가기</button>
         </div>
 </div>
+
 <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 <script src="/webjars/sockjs-client/sockjs.min.js"></script>
 <script src="/webjars/stomp-websocket/stomp.min.js"></script>

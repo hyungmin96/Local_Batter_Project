@@ -5,6 +5,23 @@
     font-style: normal;
 }
 
+.lyMenu{
+    position: absolute;
+}
+
+.message_menu_list{
+    top: 100%;
+    z-index: 100;
+    min-width: 125px;
+    margin-top: 11px;
+}
+
+.message_menu{
+    cursor: pointer;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
 .target_message_box{
     display: inline-flex;
 }
@@ -22,7 +39,6 @@
 
 .message_noti{
     color: #a8a8a8;
-    text-align: center;
     font-size: 13px;
     border-radius: 10px;
     padding: 5px;
@@ -31,10 +47,11 @@
 }
 
 .message_box_event{
+    display: flex;
+    justify-content: center;
     padding: 5px 70px 5px 59px;
     zoom: 1;
     position: relative;
-    display: block;
     font-size: 13px;
     margin: 15px 15px;
 }
@@ -51,7 +68,7 @@
 
 .message_box{
     width: 100%;
-    padding: 5px 15px 1px 15px;
+    padding: 5px 23px 1px 15px;
     zoom: 1;
     position: relative;
     display: block;

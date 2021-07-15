@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ include file="../common/header.jsp" %>
 
-<div class="login__wrapper" style="margin-top: 175px; height: 625px;">
+<div class="login__wrapper" style="margin-top: 115px; height: 690px;">
     <div class="container">
         <div class="panel-body">
             <div class="mb-3">
@@ -41,7 +41,6 @@
                     </div>
         </div>
     </div>
-</div>
 
 <%@ include file="../common/footer.jsp" %>
 

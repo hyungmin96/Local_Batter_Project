@@ -6,7 +6,11 @@
 }
 
 #search__container{
-    margin-top: 185px;
+    margin-top: 115px;
+}
+
+.search__detail__box{
+    background-color: white;
 }
 
 .search__keyword span{
@@ -46,6 +50,7 @@
     flex-direction: row;
     flex-wrap: wrap;
     margin: 10px 5px;
+    min-height: 800px;
 }
 
 .search__item__box{
