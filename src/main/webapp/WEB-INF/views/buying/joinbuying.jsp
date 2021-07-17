@@ -4,14 +4,15 @@
 
 <div id="buying__wrapper" class="container" style="margin-top: 155px; min-height: 800px;">
 
+        <input type="hidden" class="join_user_id" value="${user_id}">
+        <input type="hidden" class="join_user_name" value="${user_name}">
+
         <div class="fast__sale_products">
-            <span class="fast__category">물품 공동구매 목록</span>
-            <span class="sub__category">| 구하기 힘든 물품 함께 구매해요</span>
+            <span class="fast__category">그룹 목록</span>
             <span style="float: right;">
-            <span><button id="room__list" type="button" class="btn btn-secondary">방 목록</button></span>
 
 <!-- Modal -->
-<span><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"> 등록 </button> </span> 
+<span><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">그룹 등록</button> </span>
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content" style="height: 100%;">
@@ -39,28 +40,27 @@
                             <div id="step-2">
 
                                 <div class="article__item__box">
-                                    <label class="item__value">제목</label>
+                                    <label class="item__value">그룹 이름</label>
                                     <input type="text" name="title" id="buying__title" class="inputbox" placeholder="상품의 이름을 입력해주세요." />
                                 </div>
 
                                 <div class="article__item__box">
-                                    <label class="item__value">물품 설명</label>
+                                    <label class="item__value">그룹 설명</label>
                                     <textarea class="inputbox" id="buying__desciption" rows="3"></textarea>
                                 </div>
 
                                 <div class="article__item__box">
-                                    <label class="item__value">기간 설정</label>
-                                    <div class="input-group date" id="datetimepicker4" data-target-input="nearest">
-                                    <input type="text" id="buying__date" class="form-control datetimepicker-input" data-target="#datetimepicker4"/>
-                                        <div class="input-group-append" data-target="#datetimepicker4" data-toggle="datetimepicker">
-                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                        </div>
-                                    </div>
+                                    <label class="item__value">그룹 태그</label>
+                                    <input type="text" name="tag" id="tags" class="inputbox" placeholder="그룹과 관련된 물품들을 입력해주세요" />
                                 </div>
 
                                 <div class="article__item__box">
-                                    <label class="item__value">모금 금액</label>
-                                    <input type="text" name="buying__price" id="buying__price" class="inputbox" placeholder="총 모금할 금액을 입력해주세요." />
+                                    <label class="item__value">그룹 설정</label>
+                                    <div class="chk _group" style="display: inline-flex; width: 100%">
+                                        <div class="checkbox _openChk" onclick="checkboxOnLoad(this);"><input type="checkbox" id="chk_1" checked="checked" value="1"/>전체 공개</div>
+                                        <div class="checkbox _partChk" onclick="checkboxOnLoad(this);"><input type="checkbox" id="chk_2" value="0"/>일부 공개</div>
+                                        <div class="checkbox _secretChk" onclick="checkboxOnLoad(this);"><input type="checkbox" id="chk_3" value="0"/>비공개</div>
+                                    </div>
                                 </div>
                                 <hr />
 
@@ -118,16 +118,16 @@
         <input type="hidden" class="roomId" value="0"/>
         <input type="hidden" class="roomTitle" value=""/>
 
-        <div class="enter__title">채팅방 입장</div>
+        <div class="enter__title">그룹 입장</div>
         <hr />
 
-        <div class="enter__img">제품 이미지</div>
+        <div class="enter__img">그룹 이미지</div>
         <div class="product__img__container" style="min-height: 170px;">
 
         </div>
         <hr />
 
-        <div class="enter__desc">제품 설명</div>
+        <div class="enter__desc">그룹 설명</div>
         <div class="product__img__desc" style="margin: 5px 5px; min-height: 100px;">
 
         </div>
@@ -148,5 +148,5 @@
 <link href="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/smart_wizard_theme_dots.min.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/jquery.smartWizard.min.js"></script>
 <link rel="stylesheet" href="/css/joinbuying.css">
-<script type="text/javascript" src="/js/joingbuying.js"></script>
+<script type="text/javascript" src="/js/joinbuying.js"></script>
 <%@ include file="../common/footer.jsp"%>

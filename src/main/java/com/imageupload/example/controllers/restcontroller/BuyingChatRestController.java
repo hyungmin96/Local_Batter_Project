@@ -63,13 +63,13 @@ public class BuyingChatRestController {
     }
 
     @PostMapping("/enter")
-    public ResponseEntity<String> enterRoom(@RequestParam Long roomId, @RequestParam String username){
-        switch(buyingService.BuyingChatRoomEnter(roomId, username)) {
+    public ResponseEntity<String> enterRoom(@RequestParam Long room_Id, @RequestParam Long user_id, @RequestParam String user_name){
+        switch(buyingService.BuyingChatRoomEnter(room_Id, user_name)) {
             case greeting:
                 BuyingChatMessageDTO messageDTO = BuyingChatMessageDTO.builder()
-                        .roomId(roomId)
+                        .roomId(room_Id)
                         .type("greeting")
-                        .sender(username)
+                        .sender(user_name)
                         .message(null)
                         .localDate(LocalDate.now().toString())
                         .build();

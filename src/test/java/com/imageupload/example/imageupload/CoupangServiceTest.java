@@ -20,6 +20,7 @@ import org.jsoup.nodes.Document;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -30,7 +31,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 public class CoupangServiceTest {
 
     private static Logger log = LogManager.getLogger();
-    final String root = "D:\\Spring projects\\SpringBoot LocalBatter\\src\\main\\downloads\\";
+    private final String root = "D:\\Spring projects\\SpringBoot LocalBatter\\src\\main\\downloads\\";;
 
     @Autowired
     private BoardRepository boardRep;
@@ -41,9 +42,9 @@ public class CoupangServiceTest {
     @Test
     void 쿠팡_게시글_가져오기_테스트() throws IOException {
 
-        int page = 1;
-        int boardNums = 10;
-        String category = "긴급";
+        int page = 10;
+        int boardNums = 600;
+        String category = "일반";
 
         for (int i = 1; i <= page; i++) {
 

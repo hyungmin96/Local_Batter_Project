@@ -1,10 +1,6 @@
 package com.imageupload.example.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -31,7 +27,7 @@ public class BuyingChatEntity {
     private String sender;
     private String type;
     private String profilePath;
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "roomId")
     @JsonIgnore
     private BuyingChatRoomEntity roomId;

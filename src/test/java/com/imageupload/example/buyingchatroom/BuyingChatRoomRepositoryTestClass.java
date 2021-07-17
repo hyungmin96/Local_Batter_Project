@@ -1,6 +1,7 @@
 package com.imageupload.example.buyingchatroom;
 
 import com.imageupload.example.entity.BuyingChatRoomEntity;
+import com.imageupload.example.entity.BuyingFileEntity;
 import com.imageupload.example.repositories.BuyingChatRepository;
 import com.imageupload.example.repositories.BuyingChatRoomRepository;
 import com.imageupload.example.repositories.BuyingFileRepository;
@@ -27,18 +28,35 @@ public class BuyingChatRoomRepositoryTestClass {
     private BuyingChatRepository buyingChatRepository;
 
     @Test
-    void 공동구매_채팅방_생성_테스트(){
+    void 그룹_게시글_작성(){
 
-        for(int i = 1; i <= 10; i++){
+    }
+
+    @Test
+    void 그룹_생성_테스트(){
+
+        buyingChatRoomRepository.deleteAll();
+
+        for(int i = 1; i <= 100; i++){
+
             BuyingChatRoomEntity buyingChatRoomEntity = BuyingChatRoomEntity.builder()
                     .roomTitle("공동구매 채팅방" + i)
                     .currentUsers(1)
                     .owner("tester")
+                    .type(BuyingChatRoomEntity.roomEnumType.공개)
                     .limitUsers(5)
                     .description("description")
-                    .price(200000)
                     .build();
+
+            BuyingFileEntity buyingFileEntity = BuyingFileEntity.builder()
+                    .name("upload.png")
+                    .path("D:\\Spring projects\\SpringBoot LocalBatter\\src\\main\\resources\\static\\images\\upload.png")
+                    .buyingChatRoomEntity(buyingChatRoomEntity)
+                    .build();
+
             buyingChatRoomRepository.save(buyingChatRoomEntity);
+
+            buyingFileRepository.save(buyingFileEntity);
         }
     }
 }

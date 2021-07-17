@@ -2,10 +2,8 @@ package com.imageupload.example.entity;
 
 import java.io.Serializable;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,7 +29,7 @@ public class ProfileEntity implements Serializable {
     private String accountNumber;
     private String preferTime;
     
-    @OneToOne(mappedBy = "profile")
+    @OneToOne(mappedBy = "profile", fetch = FetchType.LAZY)
     @JsonIgnore
     private UserEntity user;
 

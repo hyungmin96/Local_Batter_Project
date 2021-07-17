@@ -16,14 +16,14 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Long>{
     public Page<BoardEntity> findByTitleContainingOrderByIdDesc(String title, Pageable page);
     public Page<BoardEntity> findAllBycategory(String category, Pageable page);
 
-    @Query(value = "select * from boardentity order by rand() limit 6", nativeQuery = true)
+    @Query(value = "select * from BoardEntity order by rand() limit 6", nativeQuery = true)
     public List<BoardEntity> viewRandomBoardList();
 
     @Modifying
-    @Query(value = "update boardentity set view = view + 1 where id = :id", nativeQuery = true)
+    @Query(value = "update BoardEntity set view = view + 1 where id = :id", nativeQuery = true)
     public void updateView(Long id);
 
     @Modifying
-    @Query(value = "update boardentity set cart = cart + 1 where id = :id", nativeQuery = true)
+    @Query(value = "update BoardEntity set cart = cart + 1 where id = :id", nativeQuery = true)
     public void updateCart(Long id);
 }

@@ -12,12 +12,11 @@ function product_list_paging(e){
     let test = document.getElementById(e.id).innerText;
 
     callBoardsDataToJson(page = (test - 1));
-    console.log(e.className)
     Array.from(document.getElementsByClassName('page__number__box')[0].children, item=>{
-        item.style.backgroundColor = 'white';
+        item.style.backgroundColor = 'rgb(238, 240, 243)';
     });
 
-    e.style.backgroundColor = 'rgb(236, 236, 236)';
+    e.style.backgroundColor = 'rgb(222,218,218)';
 
     window.scrollTo(0,0);
 }

@@ -55,7 +55,7 @@ function callBoardsDataToJson(page = 0) {
                 let totalPages = data.totalPages;
                 let fileName = value.files.length > 0 ? value.files[0].tempName : '';
 
-                html += '<div id="item__' + value.id + '"class="search__item__box">';
+                html += '<div id="item__' + value.id + '" class="search__item__box">';
                 html += '<a href="/board/article/' + value.id + '">';
                 html += '<div class="search__box__img">';
                 html +='<img src="/upload/' + fileName + '"onerror=this.src="/images/noImage.png" style="height: 180px; display=none">';
@@ -69,7 +69,6 @@ function callBoardsDataToJson(page = 0) {
                 html += '</div>';
                 html += '<hr style="border: none; height: 1px; background-color: #848484; margin: 5px 0 5px 0;"/>';
                 html += '<span class="badge bg-secondary">' + value.location + '</span>';
-                html += '</div>';
                 html += '</div>';
                 html += '</a>';
                 html += '</div>';

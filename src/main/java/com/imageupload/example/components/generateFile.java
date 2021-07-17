@@ -6,10 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
 import com.imageupload.example.dto.GenerateFileDTO;
-import com.imageupload.example.entity.BoardEntity;
-import com.imageupload.example.entity.FileEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 public class GenerateFile {

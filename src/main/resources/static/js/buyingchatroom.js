@@ -142,8 +142,8 @@ function showContent(message){
     var myMessage = "<div class='message_box'>" +
                         "<div class='me_message_box'>" +
                         "<div class='me_message_content'>" + content + "</div>" +
-                        "<div>" +
-                        "<span><img id = message_" + message.id + " onclick='chatButton(this);' class='message_menu' src='/images/menu_14px.png'></span>" +
+                        "<div class='aside'>" +
+                        "<span id = message_" + message.id + " onclick='chatButton(this);'><img class='message_menu' src='/images/menu_14px.png'></span>" +
                         "<span class='message_date'>" + chatTime + "</span>" +
                         "</div>" +
                         "</div>" +
@@ -171,16 +171,17 @@ function showContent(message){
 
 function chatButton(e){
 
-    let menu =  "<div style='width: 200px; height: 200px;'>" +
-                "<ul class='lyMenu message_menu_list'>" +
-                "<li><button data-uiselector='menuButton' type='button' data-menutype='MENU_TYPE_EMOTION'>표정짓기</button></li>" +
-                "<li><button data-uiselector='menuButton' type='button' data-menutype='MENU_TYPE_EMOTION'>표정짓기</button></li>" +
-                "<li><button data-uiselector='menuButton' type='button' data-menutype='setUserNotice'>공지로 등록</button></li>" +
-                "<li><button data-uiselector='menuButton' type='button' data-menutype='MENU_TYPE_REPORT'>신고하기</button></li>" +
-                "</ul>" +
-                "</div>"
+    if (document.querySelector('.message_menu_list') == null){
+        let menu =  "<div class='message_menu_list'>" +
+                    "<ul class='lyMenu message_menu_list'>" +
+                    "<li><button data-uiselector='menuButton' type='button' class='reg_notice'>공지로 등록</button><hr/></li>" +
+                    "<li><button data-uiselector='menuButton' type='button' class='message_delete'>삭제하기</button><hr/></li>" +
+                    "<li><button data-uiselector='menuButton' type='button' class='menu_close'>닫기</button><hr/></li>" +
+                    "</ul>" +
+                    "</div>"
 
-    $('#' + e.id).append(menu);
+        $('#' + e.id).append(menu);
+    } else $('.message_menu_list').remove();
 
 }
 

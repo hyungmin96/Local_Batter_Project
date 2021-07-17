@@ -145,7 +145,7 @@
 <script>
 
 var seller = $('.item__writer').text();
-var user = $('.user__name').text();
+var user = $('.user__name').val();
 var boardId = $('.boardId').val();
 
 function imgView(e){

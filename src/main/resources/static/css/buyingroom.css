@@ -1,0 +1,140 @@
+#buyingroom{
+    min-height: 950px;
+    width: 600px;
+    margin: 0 20px 0 20px;
+    padding: 0;
+}
+
+.contentWriterBox .main{
+    margin-bottom: 15px;
+}
+
+._notice{
+    height: 180px;
+    background-color: white;
+}
+
+._contentList{
+    min-height: 300px;
+    background-color: white;
+    margin-bottom: 140px;
+}
+
+._activitySection .card{
+    margin: 0 0 15px 0;
+}
+
+.main_container{
+    margin: 15px 0 15px 0;
+}
+
+.contentWriterBox{
+    width: 100%;
+    height: 160px;
+    background-color: white;
+    box-shadow: 0 2px 3px 0 rgba(161, 161, 161, 0.12);
+}
+
+.fileArea button{
+    border: none;
+    background-color: white;
+}
+
+#chatroom_comment_box{
+    border: none;
+    resize: none;
+    width: 100%;
+    height: 90px;
+    padding: 10px;
+    font-size: 13px;
+}
+
+#chatroom_comment_box:focus{
+    outline: none;
+    border: none;
+    resize: none;
+}
+
+.search_bar{
+    background: #fff;
+    width: 100%;
+    position: relative;
+    font-weight: 100;
+    box-shadow: 0 2px 3px 0 rgba(161, 161, 161, 0.12);
+}
+
+.search_bar input {
+    height: 35px;
+    width: 100%;
+    outline: none;
+    border: none;
+    padding: 0 40px 0 15px;
+    font-size: 13px;
+}
+
+.search_bar .icon{
+    position: absolute;
+    right: -10px;
+    top: -14px;
+    height: 45px;
+    width: 55px;
+    text-align: center;
+    line-height: 55px;
+    font-size: 20px;
+    color: rgb(124, 124, 124);
+    cursor: pointer;
+}
+
+.room_inner_info{
+    background-color: white;
+    margin: 20px 0 10px 0;
+    text-align: left;
+    padding: 10px;
+    box-shadow: 0 2px 3px 0 rgba(161, 161, 161, 0.12);
+}
+
+.room_inner_info hr{
+    border: none;
+    background-color: #bbbbbb;
+    height: 1px;
+    margin: 10px 0 10px 0;
+}
+
+.buying_product{
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px;
+}
+
+._room_description{
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 12px;
+    color: #888;
+    word-wrap: break-word;
+    word-break: break-word;
+    margin: 5px 0 0 5px;
+}
+
+#RoomInnerInfo img{
+    cursor: pointer;
+}
+
+.card{
+    border: none;
+    border-radius: 0;
+    box-shadow: 0 2px 3px 0 rgba(161, 161, 161, 0.12);
+}
+
+.card-header{
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 13px;
+}
+
+::-webkit-scrollbar{
+    width: 3px;
+    background-color: #ffffff;
+}
+
+::-webkit-scrollbar-thumb{
+    border-radius: 3px;
+    background-color: rgb(124, 124, 124);
+}

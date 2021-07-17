@@ -2,14 +2,7 @@ package com.imageupload.example.entity;
 
 import java.sql.Timestamp;
 
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 import com.imageupload.example.entitylistener.TransactionListener;
 import com.imageupload.example.enumtype.TransactionEnumType;
@@ -34,11 +27,11 @@ public class TransactionEntity {
     @Id @GeneratedValue
     private long id;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="board")
     private BoardEntity boardId;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="buyer")
     private UserEntity buyer;
 
@@ -46,7 +39,7 @@ public class TransactionEntity {
 
     private String buyerCommentId;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="seller")
     private UserEntity seller;
 

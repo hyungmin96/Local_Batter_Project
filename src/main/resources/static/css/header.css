@@ -13,8 +13,9 @@
 }
 
 .dropdown-menu .dropdown-item{
-    font-family: ON-IGothic;
-    font-size: 13px;
+    font-family: Noto Sans KR;
+    font-size: 12px;
+    color: #5c5c5c;
 }
 
 .dropdown-menu hr{
@@ -24,11 +25,11 @@
     margin: 5px 0 5px 0;
 }
 
-.dropdown-toggle::after{ color: #767676; }
-.dropdown .btn {background: #ffffff; color:#fff; }
-.dropdown .btn:hover {background: #ffffff; color: #ffffff;}
-.dropdown .btn:active {background: #ffffff; color: #ffffff;}
-.dropdown .btn:focus {background: #ffffff; color: #ffffff; border: none}
+#dropdownMenuButton1 .dropdown-toggle::after{ color: #767676; }
+#dropdownMenuButton1 .btn {background: #ffffff; color:#fff; }
+#dropdownMenuButton1 .btn:hover {background: #ffffff; color: #ffffff;}
+#dropdownMenuButton1 .btn:active {background: #ffffff; color: #ffffff;}
+#dropdownMenuButton1 .btn:focus {background: #ffffff; color: #ffffff; border: none}
 
 .btn__text{
     font-size: 13px;
@@ -45,10 +46,9 @@
 
 .none_login{
     display: flex;
-    align-items: flex-end;
-    justify-content: flex-end;
-    font-size: 13px;
+    font-size: 11px;
     font-family: 'ON-IGothic';
+    margin-left: auto;
 }
 
 .none_login a{
@@ -86,7 +86,8 @@
 }
 
 .btn-header-btns{
-    display: inline-flex;
+    display: flex;
+    margin-left: auto;
 }
 
 .btn-header-btns .header_{
@@ -100,7 +101,6 @@
     font-size: 0.8rem;
     font-family: Noto Sans KR;
     letter-spacing: 1.1px;
-    padding: 5px;
     border: none;
     outline: none;
 }
@@ -197,7 +197,7 @@
     font-family: Noto Sans KR;
 }
 
-@media all and (max-width: 1390px) {
+@media all and (max-width: 1000px) {
     .btn-header-btns .btn__text{
         display: none;
     }

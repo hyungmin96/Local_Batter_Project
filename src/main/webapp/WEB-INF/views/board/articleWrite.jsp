@@ -2,6 +2,26 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="../common/header.jsp" %>
 
+<div class="bottom _ButtonFixBox">
+    <div class="container">
+            <div style="margin: 15px;">
+            <div class="article__item__box" style="float: right; margin: 0 0 0 0;">
+                <button type="button" id="btn_upload" class="btn btn-secondary">상품등록</button>
+            </div>
+
+            <div class="article__item__box dropdown" style="float: right; margin: 0 10px 0 0;">
+                <button type="button" id="toggleBtn" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                    게시판 설정
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item">일반</a>
+                    <a class="dropdown-item">긴급</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="container__write">
     <div id="content__box" class="container">
         <form action="/upload" method="post" class="was-validated" encrtype="multipart/form-data">
@@ -69,19 +89,7 @@
                     </div>
                 </div>
 
-            <div class="article__item__box float-right" style="float: right; margin: 0 0 0 0;">
-                <button type="button" id="btn_upload" class="btn btn-secondary">상품등록</button>
-            </div>
 
-            <div class="article__item__box dropdown" style="float: right; margin: 0 10px 0 0;">
-                <button type="button" id="toggleBtn" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                    게시판 설정
-                </button>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item">일반</a>
-                    <a class="dropdown-item">긴급</a>
-                </div>
-            </div>
         </form>
     </div>
 </div>
@@ -136,4 +144,13 @@
     }
 </script>
 
-<%@ include file="../common/footer.jsp" %>
+<script src="/webjars/sockjs-client/sockjs.min.js"></script>
+<script src="/webjars/stomp-websocket/stomp.min.js"></script>
+<script type="text/javascript" src="/js/pagination.js"></script>
+<script src="/js/join.js"></script>
+<script type="text/javascript" src="/js/slider.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+<script src="/js/boardPost.js"></script>
+<script src="/js/board.js"></script>
+<script src="/js/login.js"></script>
+<script type="text/javascript" src="/js/notificationStomp.js"></script>

@@ -2,7 +2,12 @@
   "properties": [
     {
       "name": "custom.path.resource",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "custom.path.download",
       "type": "java.lang.String",
-      "description": "Description for custom.path.resource."
-  }
-] }
+      "description": "Description for custom.path.download."
+    }
+  ]
+}

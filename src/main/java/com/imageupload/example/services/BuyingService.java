@@ -32,6 +32,10 @@ public class BuyingService {
     private final BuyingUsersRepository buyingUsersRepository;
     private final UserRepository userRepository;
 
+    public BuyingChatRoomEntity findRoom(Long room_id){
+        return buyingChatRoomRepository.findById(room_id).get();
+    }
+
     public void uploadImgToBuyingChatroom(BuyingChatMessageDTO messageDTO){
 
         List<GenerateFileDTO> files = new GenerateFile(messageDTO.getImg()).createFile();
@@ -147,11 +151,9 @@ public class BuyingService {
         UserEntity userEntity = (UserEntity) session.getAttribute("userId");
 
         BuyingChatRoomEntity buyingChatRoomEntity = BuyingChatRoomEntity.builder()
-        .title(buyingDTO.getTitle())
         .description(buyingDTO.getDescription())
         .owner(userEntity.getUsername())
-        .price(Integer.parseInt(buyingDTO.getPrice()))
-        .roomDate(buyingDTO.getDate())
+        .type(buyingDTO.getType())
         .roomTitle(buyingDTO.getRoomTitle())
         .currentUsers(1)
         .limitUsers(Integer.parseInt(buyingDTO.getLimit()))

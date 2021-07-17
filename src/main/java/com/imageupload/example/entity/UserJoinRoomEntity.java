@@ -2,13 +2,7 @@ package com.imageupload.example.entity;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 import com.imageupload.example.entity.UserEntity;
 import com.imageupload.example.repositories.UserJoinRommEnumType;
@@ -33,15 +27,15 @@ public class UserJoinRoomEntity implements Serializable{
     @Enumerated(EnumType.STRING)
     private UserJoinRommEnumType targetConnectionType;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "targetId")
     private UserEntity target;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
     private UserEntity userVo;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "createRoomId")
     private RoomEntity roomEntity;
 

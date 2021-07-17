@@ -14,11 +14,11 @@ public interface BuyingChatRoomRepository extends JpaRepository<BuyingChatRoomEn
 
     @Transactional
     @Modifying
-    @Query(value = "update buyingchatroomentity set currentUsers = currentUsers + 1 where roomId =:roomId", nativeQuery = true)
+    @Query(value = "update BuyingChatRoomEntity set currentUsers = currentUsers + 1 where roomId =:roomId", nativeQuery = true)
     void enterCurrentUsers(Long roomId);
 
     @Transactional
     @Modifying
-    @Query(value = "update buyingchatroomentity set currentUsers = currentUsers - 1 where roomId =:roomId", nativeQuery = true)
+    @Query(value = "update BuyingChatRoomEntity set currentUsers = currentUsers - 1 where roomId =:roomId", nativeQuery = true)
     void exitCurrentUsers(Long roomId);
 }

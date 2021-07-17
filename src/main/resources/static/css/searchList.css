@@ -42,7 +42,7 @@
 .active{
     font-weight: 800;
     color: rgb(228, 28, 28);
-    background-color: white;
+    background-color: rgb(238, 240, 243);
 }
 
 .search__item__list{
@@ -55,7 +55,7 @@
 
 .search__item__box{
     width: 200px;
-    height: 250px;
+    height: 100%;
     border: 1px solid rgb(223, 223, 223);
     border-radius: 3px;
     margin: 5px 5px;

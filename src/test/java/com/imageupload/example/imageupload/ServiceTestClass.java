@@ -17,12 +17,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 public class ServiceTestClass {
-
-    private static Logger log = LogManager.getLogger();
 
     @Autowired
     private ChatRoomRepository chatRoomRepository;
@@ -38,6 +37,8 @@ public class ServiceTestClass {
 
     @Autowired
     private BoardService boardService;
+
+    private final static Logger log = LogManager.getLogger();
 
     @Test
     public void 거래요청_게시글_저장(){

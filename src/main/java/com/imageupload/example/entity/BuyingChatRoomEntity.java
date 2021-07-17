@@ -1,4 +1,5 @@
 package com.imageupload.example.entity;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 import javax.persistence.*;
@@ -14,7 +15,7 @@ import org.hibernate.annotations.CreationTimestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class BuyingChatRoomEntity {
+public class BuyingChatRoomEntity implements Serializable {
     
     @Id @GeneratedValue
     @Column(name = "roomId")
@@ -23,11 +24,16 @@ public class BuyingChatRoomEntity {
     private String title;
     private String description;
     private String roomTitle;
-    private String roomDate;
     private int currentUsers;
     private int limitUsers;
-    private int price;
     private String owner;
+
+    @Enumerated(EnumType.STRING)
+    private roomEnumType type;
+
+    public enum roomEnumType{
+        공개, 일부공개, 비공개
+    }
 
     @CreationTimestamp
     private Timestamp regTime;

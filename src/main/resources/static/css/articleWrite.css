@@ -3,6 +3,15 @@
     font-family: 'Noto Sans KR', sans-serif;
 }
 
+._ButtonFixBox{
+    width: 100%;
+    background-color: rgb(178, 190, 181);
+    height: 65px;
+    position: fixed;
+    bottom: 0;
+    z-index: 1001;
+}
+
 .container__write{
     margin-top: 125px;
 }
@@ -14,7 +23,7 @@
 .upload-btn{
     width: 200px;
     height: 200px;
-    border: 1px solid rgb(185, 185, 185);
+    border: 1px solid rgb(213, 208, 208);
 }
 
 .write-info{
@@ -28,7 +37,7 @@
     background-color: #fff;
     padding: 30px;
     margin-bottom: 40px;
-    height: 900px;
+    min-height: 800px;
 }
 
 .container hr{

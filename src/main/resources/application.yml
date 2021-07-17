@@ -2,6 +2,7 @@ custom:
   path:
     resource: file:///D:/Spring projects/SpringBoot LocalBatter/src/main/downloads/
     upload: /upload/**
+    download: D:\Spring projects\SpringBoot LocalBatter\src\main\downloads\
 
 
 server:
@@ -29,7 +30,7 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/localbatterdb?serverTimezone=Asia/Seoul
+    url: jdbc:mysql://127.0.0.1:3307/localbatterdb?serverTimezone=Asia/Seoul
     username: root
     password: 110731
     

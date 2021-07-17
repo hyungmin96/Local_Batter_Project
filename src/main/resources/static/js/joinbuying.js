@@ -37,7 +37,7 @@ $(function(){
 
 function deleteRoom(){
 
-    var data = { roomId: $('.roomId').val(), username: $('.user__name').text() };
+    var data = { roomId: $('.roomId').val(), username: $('.user__name').val() };
 
     $.ajax({
         url: '/api/buying/delete',
@@ -54,7 +54,11 @@ function deleteRoom(){
 
 function enterRoom(){
 
-    var data = { roomId: $('.roomId').val() * 1, username: $('.user__name').text()}
+    var data = { room_Id: $('.roomId').val() * 1,
+                 user_id: $('.join_user_id').val(),
+                 user_name: $('.join_user_name').val()
+    }
+
     $.ajax({
 
         url: '/api/buying/enter',
@@ -62,8 +66,8 @@ function enterRoom(){
         data:  data,
         contentType: 'application/x-www-form-urlencoded',
         success: function(){
-            window.open("/buying/chat/" + $('.roomId')[0].value, $('.roomTitle')[0].value, "width=400, height=650");
             $('#close__btn').click();
+            window.location.href='/buying/room/' + data.room_Id;
         }
     })
 }
@@ -71,18 +75,18 @@ function enterRoom(){
 let buyingChatRoomArray = [];
 
 let page = 0;
-let display = 10;
+let display = 30;
 let pagination = false;
 let boardPagination = false;
 
 function loadBoardPagination(e, pages){
 
     Array.from(document.getElementsByClassName('page__number__box')[0].children, item=>{
-        item.style.backgroundColor = 'white';
+        item.style.backgroundColor = 'rgb(238, 240, 243)';
     });
 
     if(e != null)
-        e.style.backgroundColor = 'rgb(236, 236, 236)';
+        e.style.backgroundColor = 'rgb(222,218,218)';
 
     if(!boardPagination){
         boardPagination = true;
@@ -117,28 +121,21 @@ function loadBuyingChatRoomList(e, page = 0){
 
                 buyingChatRoomArray.push(value);
 
-                var files = (value.files.length > 0) ? value.files[0].username : '';
+                var files = (value.files.length > 0) ? value.files[0].name : '';
 
                 $('.buying__room__list').append(
                     "<div id='item__box__" + key + "' onclick='javascript:showModal(); showDataToModal(this);' class='buying__item__box'>" + 
                     "<img src=/upload/" + files + ">" +
                     "<div class='buying__room__content'>" +
-                        "<div>" +
-                            "<div class = 'buying__room__title'>" + value.roomTitle + "</div>" +
-                                "<div class = 'buying__room__description'>" + value.description + "</div>" +
-                                    "<div>" +
-                                        "<span>참여인원 : </span>" +
-                                        "<span class = 'buying__room__users'>" + value.users.length + "명</span>" + ' / ' +
-                                        "<span class = 'buying__room__limit'>" + value.limitUsers + "명</span>" +
-                                    "<div class = 'buying__room__expiration'> 만료일자 : " + value.roomDate + "</div>" +
-                                "</div>" +
+                        "<div class = 'buying__room__title'>" + value.roomTitle + "</div>" +
+                            "<div class='user_number'>" +
+                                "<span>인원 : </span>" +
+                                "<span class = 'buying__room__users'>" + value.users.length + "명</span>" + ' / ' +
+                                "<span class = 'buying__room__limit'>" + value.limitUsers + "명</span>" +
                             "</div>" +
                         "</div>" +
-                        "<div class = 'buying__room__price'>" +
-                            "<div style='text-align: center'>" +
-                                "필요금액 : " + convertPrice(value.price) + "원" +
-                            "</div>" +
                         "</div>" +
+                    "</div>" +
                     "</div>"
                 );
             })
@@ -176,28 +173,17 @@ function showDataToModal(e){
     )
 }
 
-function convertPrice(num){
-    var len, point, str;  
-    num = num + ""; 
-    point = num.length % 3 ;
-    len = num.length; 
-    str = num.substring(0, point); 
-    while (point < len) { 
-        if (str != "") str += ","; 
-        str += num.substring(point, point + 3); 
-        point += 3; 
-    } 
-    return str;
-}
-
 function createBuyingRoom(){
 
     var formData = new FormData();
+    var checkboxArary = $(".checkbox");
 
     formData.append('title', $('#buying__title').val());
     formData.append('description', $('#buying__desciption').val());
-    formData.append('date', $('#buying__date').val());
-    formData.append('price', $('#buying__price').val());
+    formData.append('tag', $('#tags').val());
+    formData.append('chk_1', $('#' + checkboxArary[0].children[0].id).val());
+    formData.append('chk_2', $('#' + checkboxArary[1].children[0].id).val());
+    formData.append('chk_3', $('#' + checkboxArary[2].children[0].id).val());
     formData.append('roomTitle', $('#buying__chat__title').val());
     formData.append('limit', $('#buying__chat__limit').val());
 
@@ -254,3 +240,17 @@ function previewDelete(index){
     chatRoomImgDeleteIndex.push(index);
 }
 
+function checkboxOnLoad(e){
+    var checkboxArary = $(".checkbox");
+
+    for(let i = 0; i < checkboxArary.length; i ++){
+        if(checkboxArary[i].children[0].id != e.childNodes[0].id){
+            document.getElementById(checkboxArary[i].children[0].id).checked = false;
+            document.getElementById(checkboxArary[i].children[0].id).value = '0';
+        }
+        else{
+            document.getElementById(e.childNodes[0].id).checked = true;
+            document.getElementById(checkboxArary[i].children[0].id).value = '1';
+        }
+    }
+}

@@ -69,9 +69,9 @@
 <div class="header">
     <div class="container">
         <div class="header_box" style="margin: auto auto;">
-            <div><a class="site_icon" href="/"></a></div>
-            <a href="/" class="logo__text">Local Batter</a>
-
+                <div style="margin-left: 80px; width: 120px;">
+                    <a href="/" class="logo__text">Local Batter</a>
+                </div>
                 <div class="wrapper">
                     <div class="search-input">
                         <a href="" target="_blank" hidden></a>
@@ -82,9 +82,11 @@
                             </div>
                     </div>
                 </div>
-
             <c:choose>
                 <c:when test="${principal ne null}">
+
+                    <input type="hidden" class="user__name" value="${principal.username}">
+
                     <div class="btn-header-btns">
                         <div class="header_ btn-board-reg">
                             <button class="header-product-reg" onclick="location.href='/write'">
@@ -104,10 +106,10 @@
                                     <img src="/images/header/user.png">
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    <li><a href="/profile/user=${principal.username}" class="dropdown-item" href="#">프로필 보기</a><hr/></li>
-                                    <li><a href="/write" class="dropdown-item" href="#">판매글 작성</a></li>
-                                    <li><a class="dropdown-item" href="#">내 상점</a><hr/></li>
-                                    <li><a href="/user/logout" class="dropdown-item" href="#">로그아웃</a></li>
+                                    <li><a href="/profile/user=${principal.username}" class="dropdown-item">프로필 보기</a><hr/></li>
+                                    <li><a href="/write" class="dropdown-item">판매글 작성</a></li>
+                                    <li><a href="#" class="dropdown-item">내 상점</a><hr/></li>
+                                    <li><a href="/user/logout" class="dropdown-item">로그아웃</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -164,6 +166,6 @@ chatElement.addEventListener("DOMSubtreeModified", function(){
 
 <style>
     body{
-        background-color: #f5f5f5;
+        background-color: rgb(238, 240, 243);
     }
 </style>

@@ -1,7 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
-</body>
-
     <div class="footer__section">
         <hr />
         <div class="container">
@@ -30,4 +28,3 @@
         <script src="/js/board.js"></script>
         <script src="/js/login.js"></script>
         <script type="text/javascript" src="/js/notificationStomp.js"></script>
-</html>

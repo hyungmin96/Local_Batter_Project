@@ -5,15 +5,30 @@
     font-style: normal;
 }
 
-.lyMenu{
-    position: absolute;
-}
-
 .message_menu_list{
     top: 100%;
     z-index: 100;
-    min-width: 125px;
-    margin-top: 11px;
+    width: 100px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border: 1px solid #f7f7f7;
+}
+
+.message_menu_list button{
+    border: none;
+    font-family: 'ON_IGothic', sans-serif;
+    font-size: 13px;
+    color: #6f6f6f;
+    width: 100%;
+    background-color: #ffffff;
+}
+
+.message_menu_list hr{
+    border: none;
+    height: 1px;
+    background-color: #cbcbcb;
+    margin: 5px 0 0 0;
 }
 
 .message_menu{

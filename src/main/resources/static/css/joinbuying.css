@@ -1,47 +1,44 @@
 @font-face {
-    font-family: 'SEBANG_Gothic_Regular';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2104@1.0/SEBANG_Gothic_Regular.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
     font-family: 'ON-IGothic';
     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_eleven@1.0/ON-IGothic.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }
+@font-face {
+    font-family: 'Noto Sans KR';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.0/Noto Sans KR.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
 
-.buying__room__price{
-    background-color: rgb(253, 253, 253);
-    font-family: ON-IGothic;
+.checkbox input{
+    margin-right: 5px;
+}
+
+._group div{
+    margin-right: 25px;
+    font-family: Noto Sans KR;
     font-size: 14px;
-    width: 160px;
+}
+
+.user_number{
+    font-size: 11px;
+    color: #a1a1a1;
+    margin-top: 5px;
 }
 
 .buying__room__content{
-    font-family: ON-IGothic;
-    font-size: 14px;
-}
-
-.buying__room__description{
-    font-family: ON-IGothic;
-    letter-spacing: 0.5px;
-    font-size: 15px;
-    margin: 5px 5px;
-    min-height: 50px;
-    max-width: 450px;
-    display: inline-block;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    font-family: Noto Sans KR;
+    font-size: 13px;
+    height: 75px;
+    padding: 15px;
 }
 
 .buying__room__title{
-    font-family: ON-IGothic;
-    letter-spacing: 0.5px;
-    font-size: 17px;
-    width: 200px;
+    font-family: 'Noto Sans KR';
+    font-size: 12px;
+    font-weight: 400;
+    width: 170px;
 }
 
 .buying__item__box:hover{
@@ -50,14 +47,11 @@
 }
 
 .buying__item__box{
-    display: inline-flex;
     cursor: pointer;
-    margin: 15px 15px;
-}
-
-.buying__room__content{
-    margin: 5px 5px;
-    padding: 10px;
+    margin: 5px 10px 5px 10px;
+    max-width: 185px;
+    height: 200px;
+    background-color: white;
 }
 
 .page__container{
@@ -65,15 +59,18 @@
 }
 
 .buying__room__list img{
-    height: 170px;
-    width: 180px;
+    width: 185px;
+    height: 135px;
     object-fit: cover;
 }
 
 
 .buying__room__list{
     margin: 10px 10px;
-    min-height: 700px;
+    min-height: 400px;
+    display: inline-flex;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 
 #smartwizard hr{
@@ -94,14 +91,10 @@
 }
 
 .fast__sale_products button{
-    font-family: SEBANG_Gothic_Regular;
+    font-family: Noto Sans KR;
     font-size: 15px;
     margin-top: 10px;
     letter-spacing: 1px;
-}
-
-body {
-    background-color: 'white';
 }
 
 .form-control:focus {

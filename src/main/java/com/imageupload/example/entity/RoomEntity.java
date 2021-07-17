@@ -2,10 +2,8 @@ package com.imageupload.example.entity;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
+
 import lombok.Data;
 
 @Entity
@@ -15,7 +13,7 @@ public class RoomEntity {
     @Id @GeneratedValue
     private Long id;
 
-    @OneToMany(mappedBy = "roomEntity")
+    @OneToMany(mappedBy = "roomEntity", fetch = FetchType.LAZY)
     private List<ChatEntity> chats = new ArrayList<>();
 
 }
