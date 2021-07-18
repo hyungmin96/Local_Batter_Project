@@ -1,4 +1,4 @@
-let buyingRoomInfoImgs = [];
+let GroupRoomInfoImgs = [];
 let chatRoomImgDeleteIndex = [-1];
 let roomValue;
 
@@ -10,7 +10,7 @@ $(document).ready(function(){
     transitionEffect:'fade',
     showStepURLhash: false,
     });
-    loadBuyingChatRoomList();
+    loadGroupChatRoomList();
 });
 
 $(function(){
@@ -18,16 +18,16 @@ $(function(){
         enterRoom();
     })
     $('#room__create').click(function(){
-        createBuyingRoom();
+        createGroupRoom();
     })
     $('#datetimepicker4').datetimepicker({
         format: 'L'
     });
     $('#img__upload').click(function(){
-        $('#input__buying__img').click();
+        $('#input__Group__img').click();
     })
-    $("#input__buying__img").change(function(e){
-        buyingPreview(e);
+    $("#input__Group__img").change(function(e){
+        GroupPreview(e);
     });
     $("#deletebtn").click(function(e){
         deleteRoom();
@@ -40,7 +40,7 @@ function deleteRoom(){
     var data = { roomId: $('.roomId').val(), username: $('.user__name').val() };
 
     $.ajax({
-        url: '/api/buying/delete',
+        url: '/api/group/delete',
         type: 'POST',
         data: data,
         contentType: 'application/x-www-form-urlencoded',
@@ -61,18 +61,20 @@ function enterRoom(){
 
     $.ajax({
 
-        url: '/api/buying/enter',
+        url: '/api/group/enter',
         type: 'POST',
         data:  data,
         contentType: 'application/x-www-form-urlencoded',
-        success: function(){
+        success: function(response){
             $('#close__btn').click();
-            window.location.href='/buying/room/' + data.room_Id;
+            window.location.href='/group/room/' + data.room_Id;
         }
-    })
+        }).fail(function(){
+            alert('해당 그룹은 가입할 수 없습니다. - 설정인원 초과');
+        })
 }
 
-let buyingChatRoomArray = [];
+let GroupChatRoomArray = [];
 
 let page = 0;
 let display = 30;
@@ -93,19 +95,19 @@ function loadBoardPagination(e, pages){
         if(pages < 1) pages = 1;
         for(let i = 1; i <= pages; i++){
             $('.page__number__box').append(
-                "<li id='boardnum-" + i + "' class='page__number' onclick='loadBuyingChatRoomList(this, " + (i - 1) + ");'>" + 
+                "<li id='boardnum-" + i + "' class='page__number' onclick='loadGroupChatRoomList(this, " + (i - 1) + ");'>" + 
                 "<a href='javascript:void(0)'>" + i + "</a></li>"
             );
         }
     }
 }
 
-function loadBuyingChatRoomList(e, page = 0){
+function loadGroupChatRoomList(e, page = 0){
 
     var data = {page: page, display: display};
 
     $.ajax({
-        url: '/api/buying/getlist',
+        url: '/api/group/getlist',
         type: 'GET',
         data: data,
         success: function(response){
@@ -113,25 +115,25 @@ function loadBuyingChatRoomList(e, page = 0){
             var lastPage = document.getElementsByClassName('lastpage')[0];
             lastPage.dataset.value = response.totalPages
 
-            $('.buying__room__list').empty();
+            $('.Group__room__list').empty();
             loadBoardPagination(e, response.totalPages);
-            buyingChatRoomArray = [];
+            GroupChatRoomArray = [];
 
             $.each(response.content, function(key, value){
 
-                buyingChatRoomArray.push(value);
+                GroupChatRoomArray.push(value);
 
                 var files = (value.files.length > 0) ? value.files[0].name : '';
 
-                $('.buying__room__list').append(
-                    "<div id='item__box__" + key + "' onclick='javascript:showModal(); showDataToModal(this);' class='buying__item__box'>" + 
+                $('.Group__room__list').append(
+                    "<div id='item__box__" + key + "' onclick='javascript:showModal(); showDataToModal(this);' class='Group__item__box'>" + 
                     "<img src=/upload/" + files + ">" +
-                    "<div class='buying__room__content'>" +
-                        "<div class = 'buying__room__title'>" + value.roomTitle + "</div>" +
+                    "<div class='Group__room__content'>" +
+                        "<div class = 'Group__room__title'>" + value.roomTitle + "</div>" +
                             "<div class='user_number'>" +
                                 "<span>인원 : </span>" +
-                                "<span class = 'buying__room__users'>" + value.users.length + "명</span>" + ' / ' +
-                                "<span class = 'buying__room__limit'>" + value.limitUsers + "명</span>" +
+                                "<span class = 'Group__room__users'>" + value.users.length + "명</span>" + ' / ' +
+                                "<span class = 'Group__room__limit'>" + value.limitUsers + "명</span>" +
                             "</div>" +
                         "</div>" +
                         "</div>" +
@@ -146,14 +148,12 @@ function loadBuyingChatRoomList(e, page = 0){
 function showDataToModal(e){
     
     let id = e.id.split('item__box__')[1]
-    let value = buyingChatRoomArray[id];
+    let value = GroupChatRoomArray[id];
     
     $('.roomId')[0].value = value.id;
     $('.roomTitle')[0].value = value.roomTitle;
 
     globalThis.roomValue = value;
-
-    console.log(value)
 
     $('.product__img__container').empty();
     $('.product__img__desc').empty();
@@ -173,29 +173,29 @@ function showDataToModal(e){
     )
 }
 
-function createBuyingRoom(){
+function createGroupRoom(){
 
     var formData = new FormData();
     var checkboxArary = $(".checkbox");
 
-    formData.append('title', $('#buying__title').val());
-    formData.append('description', $('#buying__desciption').val());
+    formData.append('title', $('#Group__title').val());
+    formData.append('description', $('#Group__desciption').val());
     formData.append('tag', $('#tags').val());
     formData.append('chk_1', $('#' + checkboxArary[0].children[0].id).val());
     formData.append('chk_2', $('#' + checkboxArary[1].children[0].id).val());
     formData.append('chk_3', $('#' + checkboxArary[2].children[0].id).val());
-    formData.append('roomTitle', $('#buying__chat__title').val());
-    formData.append('limit', $('#buying__chat__limit').val());
+    formData.append('roomTitle', $('#Group__chat__title').val());
+    formData.append('limit', $('#Group__chat__limit').val());
 
-    for(var i = buyingRoomInfoImgs.length - 1; i > -1; i--)
-        if(buyingRoomInfoImgs[i] == null) buyingRoomInfoImgs.splice(i, 1);
+    for(var i = GroupRoomInfoImgs.length - 1; i > -1; i--)
+        if(GroupRoomInfoImgs[i] == null) GroupRoomInfoImgs.splice(i, 1);
 
-    for (var i = 0; i < buyingRoomInfoImgs.length; i++)
-        formData.append('files', buyingRoomInfoImgs[i]);
+    for (var i = 0; i < GroupRoomInfoImgs.length; i++)
+        formData.append('files', GroupRoomInfoImgs[i]);
 
     $.ajax({
 
-        url: '/api/buying/create',
+        url: '/api/group/create',
         type: 'POST',
         data: formData,
         contentType: false,
@@ -207,7 +207,7 @@ function createBuyingRoom(){
     })
 }
 
-function buyingPreview(e){
+function GroupPreview(e){
 
     var files = e.target.files;
     var filesArr = Array.prototype.slice.call(files);
@@ -217,7 +217,7 @@ function buyingPreview(e){
             alert("이미지파일만 업로드가 가능합니다.");
             return;
         }
-        buyingRoomInfoImgs.push(f);
+        GroupRoomInfoImgs.push(f);
         var reader = new FileReader();
         reader.onload = function(e){
             var html = "<a href=\"javascript:void(0);\"" +
@@ -234,7 +234,7 @@ function buyingPreview(e){
 }
 
 function previewDelete(index){
-    buyingRoomInfoImgs[index] = null;
+    GroupRoomInfoImgs[index] = null;
     var img_id = "#img_id_" + index;
     $(img_id).remove();
     chatRoomImgDeleteIndex.push(index);

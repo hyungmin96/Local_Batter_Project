@@ -19,7 +19,7 @@
                     <a href="#"><img src="/images/main/delivery.png" class="d-block w-100"></a>
                 </div>
                 <div class="carousel-item" data-bs-interval="4000">
-                    <a href="/product/buying"><img src="/images/main/buy.png" class="d-block w-100"></a>
+                    <a href="/product/group"><img src="/images/main/buy.png" class="d-block w-100"></a>
                 </div>
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">

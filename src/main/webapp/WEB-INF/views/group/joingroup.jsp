@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="../common/header.jsp"%>
 
-<div id="buying__wrapper" class="container" style="margin-top: 155px; min-height: 800px;">
+<div id="Group__wrapper" class="container" style="margin-top: 155px; min-height: 800px;">
 
         <input type="hidden" class="join_user_id" value="${user_id}">
         <input type="hidden" class="join_user_name" value="${user_name}">
@@ -30,7 +30,7 @@
                             <div id="step-1">
                                 <div style="display: flex; flex-direction: row;">
                                     <img id="img__upload" src="/images/upload.png">
-                                    <input id="input__buying__img" type="file" accept="image/jpg, image/jpeg, image/png" class="custom-file-input" name="upload_file" multiple style="display: none">
+                                    <input id="input__Group__img" type="file" accept="image/jpg, image/jpeg, image/png" class="custom-file-input" name="upload_file" multiple style="display: none">
                                     <div id="preview__img__container"></div>
                                 </div>
                                 <hr>
@@ -41,12 +41,12 @@
 
                                 <div class="article__item__box">
                                     <label class="item__value">그룹 이름</label>
-                                    <input type="text" name="title" id="buying__title" class="inputbox" placeholder="상품의 이름을 입력해주세요." />
+                                    <input type="text" name="title" id="Group__title" class="inputbox" placeholder="상품의 이름을 입력해주세요." />
                                 </div>
 
                                 <div class="article__item__box">
                                     <label class="item__value">그룹 설명</label>
-                                    <textarea class="inputbox" id="buying__desciption" rows="3"></textarea>
+                                    <textarea class="inputbox" id="Group__desciption" rows="3"></textarea>
                                 </div>
 
                                 <div class="article__item__box">
@@ -70,12 +70,12 @@
                                 <div>
                                     <div class="article__item__box">
                                         <label class="item__value">채팅방 이름</label>
-                                        <input type="text" name="title" id="buying__chat__title" class="inputbox" placeholder="생성할 채팅방의 이름을 입력해주세요." />
+                                        <input type="text" name="title" id="Group__chat__title" class="inputbox" placeholder="생성할 채팅방의 이름을 입력해주세요." />
                                     </div>
 
                                     <div class="article__item__box">
                                         <label class="item__value">채팅방 인원 설정</label>
-                                        <input type="text" name="title" id="buying__chat__limit" class="inputbox" placeholder="채팅방 인원 제한 수를 입력해주세요." />
+                                        <input type="text" name="title" id="Group__chat__limit" class="inputbox" placeholder="채팅방 인원 제한 수를 입력해주세요." />
                                     </div>                                
 
                                     <div style="display: flex; justify-content: flex-end; margin-right: 10px;">
@@ -95,7 +95,7 @@
 <!-- Modal -->
     </span>
     <hr style="border: none; height: 1px; background-color: #ccc;" />
-        <div class="buying__room__list">
+        <div class="Group__room__list">
             
         </div>
         <div class="page__container">

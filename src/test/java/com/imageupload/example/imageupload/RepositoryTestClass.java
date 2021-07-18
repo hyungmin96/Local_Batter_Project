@@ -52,7 +52,7 @@ public class RepositoryTestClass{
     private NotificationRepository notificationRepository;
 
     @Autowired
-    private BuyingUsersRepository buyingUsersRepository;
+    private GroupUsersRepository GroupUsersRepository;
 
     @Test
     void 알림_테이블_생성(){

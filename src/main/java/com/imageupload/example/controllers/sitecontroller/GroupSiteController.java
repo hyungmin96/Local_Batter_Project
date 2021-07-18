@@ -1,10 +1,11 @@
 package com.imageupload.example.controllers.sitecontroller;
 
-import com.imageupload.example.entity.BuyingChatRoomEntity;
-import com.imageupload.example.entity.BuyingFileEntity;
+import com.imageupload.example.entity.GroupChatRoomEntity;
+import com.imageupload.example.entity.GroupFileEntity;
+import com.imageupload.example.entity.GroupUsersEntity;
 import com.imageupload.example.entity.UserEntity;
 import com.imageupload.example.repositories.UserRepository;
-import com.imageupload.example.services.BuyingService;
+import com.imageupload.example.services.GroupService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,42 +21,45 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-public class BuyingChatController {
+public class GroupSiteController {
 
-    private final BuyingService buyingService;
+    private final GroupService GroupService;
 
-    @GetMapping("/buying/room/{room_id}")
-    public String getBuyingroom(HttpSession session, @PathVariable Long room_id){
+    @GetMapping("/group/room/{room_id}")
+    public String getGrouproom(HttpSession session, @PathVariable Long room_id){
 
-        BuyingChatRoomEntity buyingChatRoomEntity = buyingService.findRoom(room_id);
+        GroupChatRoomEntity GroupChatRoomEntity = GroupService.findRoom(room_id);
         UserEntity userEntity = (UserEntity) session.getAttribute("userId");
 
-        session.setAttribute("buying_room_id", buyingChatRoomEntity);
-        session.setAttribute("buying_room_files", buyingChatRoomEntity.getFiles());
+        GroupUsersEntity groupUsersEntity = GroupService.findUserEntity(userEntity);
+
+        session.setAttribute("Group_room_id", GroupChatRoomEntity);
+        session.setAttribute("Group_room_files", GroupChatRoomEntity.getFiles());
+        session.setAttribute("group_user_entity", groupUsersEntity);
         session.setAttribute("user_id", userEntity);
 
-        return "/buying/buyingroom";
+        return "/group/grouproom";
     }
 
-    @GetMapping("/product/buying")
-    public String getBuying(HttpSession session, Model model){
+    @GetMapping("/product/group")
+    public String getGroup(HttpSession session, Model model){
 
         UserEntity userEntity = (UserEntity) session.getAttribute("userId");
 
         model.addAttribute("user_id", userEntity.getId());
         model.addAttribute("user_name", userEntity.getUsername());
 
-        return "buying/joinbuying";
+        return "group/joingroup";
     }
 
-    @GetMapping("/buying/chat/{id}")
-    public String getBuyingChatRoom(HttpSession session, Model model, @PathVariable Long id){
+    @GetMapping("/group/chat/{id}")
+    public String getGroupChatRoom(HttpSession session, Model model, @PathVariable Long id){
 
         UserEntity userEntity = (UserEntity) session.getAttribute("userId");
 
         model.addAttribute("roomId", id);
         model.addAttribute("username", userEntity.getUsername());
         model.addAttribute("userId", userEntity.getId());
-        return "buying/buyingchatroom";
+        return "group/groupchatroom";
     }
 }

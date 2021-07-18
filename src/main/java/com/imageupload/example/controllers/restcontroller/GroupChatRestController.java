@@ -1,55 +1,45 @@
 package com.imageupload.example.controllers.restcontroller;
 
-import com.imageupload.example.components.GenerateFile;
-import com.imageupload.example.dto.BuyingChatMessageDTO;
-import com.imageupload.example.dto.BuyingDTO;
-import com.imageupload.example.dto.GenerateFileDTO;
-import com.imageupload.example.entity.BuyingChatEntity;
-import com.imageupload.example.entity.BuyingChatRoomEntity;
-import com.imageupload.example.enumtype.BuyingChatRoomEnterEnumType;
-import com.imageupload.example.services.BuyingChatService;
-import com.imageupload.example.services.BuyingService;
+import com.imageupload.example.dto.GroupChatMessageDTO;
+import com.imageupload.example.dto.GroupDTO;
+import com.imageupload.example.services.GroupChatService;
+import com.imageupload.example.entity.GroupChatRoomEntity;
+import com.imageupload.example.services.GroupService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
-
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
-
 import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/buying")
-public class BuyingChatRestController {
+@RequestMapping("/api/group")
+public class GroupChatRestController {
 
-    private final BuyingService buyingService;
-    private final BuyingChatService buyingChatService;
+    private final GroupService groupService;
+    private final GroupChatService groupChatService;
 
     @PostMapping("/upload")
-    public ResponseEntity<String> uploadImgToChatRoom(BuyingChatMessageDTO messageDTO){
-        buyingService.uploadImgToBuyingChatroom(messageDTO);
-        buyingChatService.sendImageToBuyingChatRoom(messageDTO);
+    public ResponseEntity<String> uploadImgToChatRoom(GroupChatMessageDTO messageDTO){
+        groupService.uploadImgToGroupChatroom(messageDTO);
+        groupChatService.sendImageToGroupChatRoom(messageDTO);
         return new ResponseEntity<String>("Success", HttpStatus.OK);
     }
 
     @PostMapping("/delete")
     public ResponseEntity<String> deleteRoom(HttpSession session, @RequestParam Long roomId, @RequestParam String username){
-        buyingService.deleteRoom(session, roomId, username);
+        groupService.deleteRoom(session, roomId, username);
         return new ResponseEntity<String>("Success", HttpStatus.OK);
     }
 
     @PostMapping("/exit")
     public ResponseEntity<String> exitRoom(HttpSession session, @RequestParam Long roomId, @RequestParam String username){
 
-        BuyingChatMessageDTO messageDTO = BuyingChatMessageDTO.builder()
+        GroupChatMessageDTO messageDTO = GroupChatMessageDTO.builder()
                 .roomId(roomId)
                 .type("exit")
                 .sender(username)
@@ -57,16 +47,16 @@ public class BuyingChatRestController {
                 .localDate(LocalDate.now().toString())
                 .build();
 
-        buyingChatService.sendBuyingRoomToChat(messageDTO);
-        buyingService.exitRoom(session, roomId);
+        groupChatService.sendGroupRoomToChat(messageDTO);
+        groupService.exitRoom(session, roomId);
         return new ResponseEntity<String>("Success", HttpStatus.OK);
     }
 
     @PostMapping("/enter")
     public ResponseEntity<String> enterRoom(@RequestParam Long room_Id, @RequestParam Long user_id, @RequestParam String user_name){
-        switch(buyingService.BuyingChatRoomEnter(room_Id, user_name)) {
+        switch(groupService.GroupChatRoomEnter(room_Id, user_name)) {
             case greeting:
-                BuyingChatMessageDTO messageDTO = BuyingChatMessageDTO.builder()
+                GroupChatMessageDTO messageDTO = GroupChatMessageDTO.builder()
                         .roomId(room_Id)
                         .type("greeting")
                         .sender(user_name)
@@ -74,7 +64,7 @@ public class BuyingChatRestController {
                         .localDate(LocalDate.now().toString())
                         .build();
 
-                buyingChatService.sendBuyingRoomToChat(messageDTO);
+                groupChatService.sendGroupRoomToChat(messageDTO);
                 return new ResponseEntity<String>("Success", HttpStatus.OK);
             case enter:
                 return new ResponseEntity<String>("Enter", HttpStatus.OK);
@@ -83,20 +73,20 @@ public class BuyingChatRestController {
     }
 
     @GetMapping("/getlist")
-    public Page<BuyingChatRoomEntity> getBuyingRoomList(@RequestParam int page, @RequestParam int display){
+    public Page<GroupChatRoomEntity> getGroupRoomList(@RequestParam int page, @RequestParam int display){
         PageRequest request = PageRequest.of(page, display, Sort.Direction.DESC, "id");
-        return buyingService.getBuyingRooms(request);
+        return groupService.getGroupRooms(request);
     }
 
     @PostMapping("/create")
-    public ResponseEntity<String> createBuyingRoom(HttpSession session, BuyingDTO buyingDTO){
-        buyingService.createBuyingRoom(session, buyingDTO);
+    public ResponseEntity<String> createGroupRoom(HttpSession session, GroupDTO GroupDTO){
+        groupService.createGroupRoom(session, GroupDTO);
         return new ResponseEntity<String>("success", HttpStatus.OK);
     }
 
     @GetMapping("/getRoomInfo")
-    public BuyingChatRoomEntity getRoomInfo(@RequestParam Long roomId){
-        return buyingService.getRoomInfo(roomId);
+    public GroupChatRoomEntity getRoomInfo(@RequestParam Long roomId){
+        return groupService.getRoomInfo(roomId);
     }
 
 }

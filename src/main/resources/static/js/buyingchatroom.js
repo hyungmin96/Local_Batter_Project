@@ -4,7 +4,7 @@ var roomId;
 
 $(document).ready(function (){
     connect();
-    loadBuyingRoomData();
+    loadGroupRoomData();
 })
 
 $('#chatroom_comment_box').on('keyup', function (event){
@@ -31,13 +31,13 @@ $(function (){
     })
 
     $('#upload_dialog').change(function(e){
-        buyingRoomImageUpload(e);
+        GroupRoomImageUpload(e);
     })
 
 })
 
 
-function buyingRoomImageUpload(e){
+function GroupRoomImageUpload(e){
 
     var files = e.target.files;
     var fileArray = Array.prototype.slice.call(files);
@@ -46,7 +46,7 @@ function buyingRoomImageUpload(e){
     formData.append('roomId', globalThis.roomId);
     formData.append('userId', $('.login_user_id').val());
     formData.append('profilePath', 'profileId');
-    formData.append('sender', $('.buying_login_user').val());
+    formData.append('sender', $('.Group_login_user').val());
     formData.append('message', null);
     formData.append('type', 'image');
     formData.append('localDate', new Date().toISOString());
@@ -56,7 +56,7 @@ function buyingRoomImageUpload(e){
     })
 
     $.ajax({
-        url: '/api/buying/upload/',
+        url: '/api/group/upload/',
         type: 'POST',
         data: formData,
         contentType: false,
@@ -69,7 +69,7 @@ function connect(){
     stompClient = Stomp.over(socket);
     stompClient.debug = null
     stompClient.connect({}, function(){
-        stompClient.subscribe('/chat/buying/' + globalThis.roomId, function(message){
+        stompClient.subscribe('/chat/Group/' + globalThis.roomId, function(message){
             var value = JSON.parse(message.body);
             showMessage(value);
         })
@@ -82,20 +82,20 @@ function sendMessage(message, type = 'chat'){
         userId: $('.login_user_id').val(),
         roomId: globalThis.roomId,
         type: type,
-        sender: $('.buying_login_user').val(),
+        sender: $('.Group_login_user').val(),
         message: message,
         profilePath: '/upload/' + globalThis.profilePath,
         localDate: new Date().toISOString()
     }
-    stompClient.send('/app/send/chat/buying/' + globalThis.roomId, {}, JSON.stringify(data));
-    $('.buyingchatroom__chat__list')[0].scrollTop = $('.buyingchatroom__chat__list')[0].scrollHeight;
+    stompClient.send('/app/send/chat/Group/' + globalThis.roomId, {}, JSON.stringify(data));
+    $('.Groupchatroom__chat__list')[0].scrollTop = $('.Groupchatroom__chat__list')[0].scrollHeight;
 }
 
 var preDate = null;
 function showDate(message){
 
     if(globalThis.preDate == null || globalThis.preDate != new Date(message.localDate).toLocaleDateString()){
-        $('.buyingchatroom__chat__list').append(
+        $('.Groupchatroom__chat__list').append(
             "<div class='message_box_event'>" +
             "<div class='message_noti'>" + new Date(message.localDate).toLocaleDateString() + "</div>" +
             "</div>"
@@ -105,7 +105,7 @@ function showDate(message){
 }
 
 function showGreeting(message){
-    $('.buyingchatroom__chat__list').append(
+    $('.Groupchatroom__chat__list').append(
         "<div class='message_box_event'>" +
             "<div class='message_noti'>" + message.sender + "님이 대화방에 참여하였습니다.</div>" +
         "</div>"
@@ -113,22 +113,22 @@ function showGreeting(message){
 }
 
 function showExit(message){
-    $('.buyingchatroom__chat__list').append(
+    $('.Groupchatroom__chat__list').append(
         "<div class='message_box_event'>" +
             "<div class='message_noti'>" + message.sender + "님이 나갔습니다.</div>" +
         "</div>"
     );
 }
 
-buyingChatRoomUserArray = new Array();
+GroupChatRoomUserArray = new Array();
 function showContent(message){
 
     var content;
 
     var profileId = (function() {
-        for (var key in buyingChatRoomUserArray)
-            if (buyingChatRoomUserArray[key].userObject.user.id == message.userId)
-                return buyingChatRoomUserArray[key].userObject.user.profile.profilePath;
+        for (var key in GroupChatRoomUserArray)
+            if (GroupChatRoomUserArray[key].userObject.user.id == message.userId)
+                return GroupChatRoomUserArray[key].userObject.user.profile.profilePath;
     }())
 
     if(message.type == 'image'){
@@ -163,10 +163,10 @@ function showContent(message){
                         "</div>" +
                         "</div>"
 
-        if($('.buying_login_user').val() == message.sender)
-            $('.buyingchatroom__chat__list').append(myMessage);
+        if($('.Group_login_user').val() == message.sender)
+            $('.Groupchatroom__chat__list').append(myMessage);
         else
-            $('.buyingchatroom__chat__list').append(targetMessage);
+            $('.Groupchatroom__chat__list').append(targetMessage);
 }
 
 function chatButton(e){
@@ -196,15 +196,15 @@ function showMessage(message){
     else
         showContent(message)
 
-    $('.buyingchatroom__chat__list')[0].scrollTop = $('.buyingchatroom__chat__list')[0].scrollHeight;
+    $('.Groupchatroom__chat__list')[0].scrollTop = $('.Groupchatroom__chat__list')[0].scrollHeight;
 }
 
-function loadBuyingRoomData(){
-    globalThis.roomId = $('.buying_roomId').val();
+function loadGroupRoomData(){
+    globalThis.roomId = $('.Group_roomId').val();
 
     var data = {roomId: globalThis.roomId}
     $.ajax({
-        url: '/api/buying/getRoomInfo',
+        url: '/api/group/getRoomInfo',
         type: 'GET',
         data: data,
         success: function(response){
@@ -221,7 +221,7 @@ function loadBuyingRoomData(){
                     "<div>" +
                     "<div>"
                 );
-                buyingChatRoomUserArray.push({userObject: value});
+                GroupChatRoomUserArray.push({userObject: value});
             })
 
             $.each(response.chats, function(key, message){
@@ -234,10 +234,10 @@ function loadBuyingRoomData(){
 
 function exitRoom(){
 
-    var data = { roomId: globalThis.roomId, username: $('.buying_login_user').val()};
+    var data = { roomId: globalThis.roomId, username: $('.Group_login_user').val()};
 
     $.ajax({
-        url: '/api/buying/exit',
+        url: '/api/group/exit',
         type: 'POST',
         data: data,
         contentType: 'application/x-www-form-urlencoded',
@@ -245,7 +245,7 @@ function exitRoom(){
             if(response.includes('Success')){
                 alert('대화방을 나갔습니다.');
                 window.close();
-                location.href='http://localhost:8000/product/buying';
+                location.href='http://localhost:8000/product/Group';
             }
         }
     })

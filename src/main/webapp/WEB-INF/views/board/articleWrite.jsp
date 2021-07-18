@@ -93,7 +93,8 @@
         </form>
     </div>
 </div>
-
+<script src="/js/boardPost.js"></script>
+<script src="/js/board.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2f665d933d93346898df736499236f77&libraries=services"></script>
 <script>

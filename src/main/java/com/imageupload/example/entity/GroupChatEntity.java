@@ -3,33 +3,37 @@ package com.imageupload.example.entity;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.io.Serializable;
+import java.sql.Time;
 import java.sql.Timestamp;
 
 @Entity
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class BuyingFileEntity implements Serializable {
+public class GroupChatEntity {
 
     @Id @GeneratedValue
     private Long id;
-    private String path;
-    private String name;
+    private Long userId;
+    private String message;
+    private String sender;
+    private String type;
+    private String profilePath;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "roomId")
     @JsonIgnore
-    private BuyingChatRoomEntity buyingChatRoomEntity;
+    private GroupChatRoomEntity roomId;
 
     @CreationTimestamp
-    private Timestamp regTime;
+    private Timestamp localDate;
+
 }

@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @Builder
-public class BuyingChatMessageDTO {
+public class GroupChatMessageDTO {
 
     private Long roomId;
     private Long userId;

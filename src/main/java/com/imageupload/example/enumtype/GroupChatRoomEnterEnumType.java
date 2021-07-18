@@ -1,5 +1,5 @@
 package com.imageupload.example.enumtype;
 
-public enum BuyingChatRoomEnterEnumType {
+public enum GroupChatRoomEnterEnumType {
     greeting, enter, failed
 }

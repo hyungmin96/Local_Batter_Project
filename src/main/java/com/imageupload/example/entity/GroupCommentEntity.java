@@ -1,6 +1,7 @@
 package com.imageupload.example.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,7 +14,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class BuyingCommentEntity {
+public class GroupCommentEntity {
 
     @Id @GeneratedValue
     private Long commentId;
@@ -23,6 +24,7 @@ public class BuyingCommentEntity {
 
     @ManyToOne
     @JoinColumn(name = "boardId")
-    private BuyingBoardEntity buyingBoard;
+    @JsonIgnore
+    private GroupBoardEntity groupBoard;
 
 }

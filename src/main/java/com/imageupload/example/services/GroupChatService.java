@@ -1,23 +1,22 @@
 package com.imageupload.example.services;
 
-import com.imageupload.example.dto.BuyingChatMessageDTO;
+import com.imageupload.example.dto.GroupChatMessageDTO;
+import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class BuyingChatService {
-
+public class GroupChatService {
     private final SimpMessagingTemplate simpMessagingTemplate;
-    private final BuyingService buyingService;
+    private final GroupService buyingService;
 
-    public void sendBuyingRoomToChat(BuyingChatMessageDTO messageDTO){
+    public void sendGroupRoomToChat(GroupChatMessageDTO messageDTO){
         buyingService.saveChatEntity(messageDTO);
         simpMessagingTemplate.convertAndSend("/chat/buying/" + messageDTO.getRoomId(), messageDTO);
     }
 
-    public void sendImageToBuyingChatRoom(BuyingChatMessageDTO messageDTO){
+    public void sendImageToGroupChatRoom(GroupChatMessageDTO messageDTO){
         messageDTO.setImg(null);
         for(String img : messageDTO.getImgPath()){
             messageDTO.setMessage(img);

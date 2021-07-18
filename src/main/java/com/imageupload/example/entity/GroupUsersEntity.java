@@ -4,13 +4,16 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import com.imageupload.example.enumtype.BuyingUsersEnumType;
+import com.imageupload.example.enumtype.GroupUsersEnumType;
 import groovy.lang.Lazy;
 import lombok.*;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -18,7 +21,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class BuyingUsersEntity {
+public class GroupUsersEntity implements Serializable {
 
     @Id @GeneratedValue
     private Long id;
@@ -27,12 +30,16 @@ public class BuyingUsersEntity {
     private UserEntity user;
 
     @Enumerated(EnumType.STRING)
-    private BuyingUsersEnumType authorization;
+    private GroupUsersEnumType authorization;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userRoomId")
     @JsonIgnore
-    private BuyingChatRoomEntity buyingChatRoomEntity;
+    private GroupChatRoomEntity groupChatRoomEntity;
+
+    @OneToMany(mappedBy = "groupUsersEntity")
+    @JsonIgnore
+    private List<GroupBoardEntity> groupBoardEntity;
 
     @CreationTimestamp
     private Timestamp regTime;

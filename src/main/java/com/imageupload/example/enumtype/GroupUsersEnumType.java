@@ -1,5 +1,5 @@
 package com.imageupload.example.enumtype;
 
-public enum BuyingUsersEnumType {
+public enum GroupUsersEnumType {
     manager, staff, member
 }

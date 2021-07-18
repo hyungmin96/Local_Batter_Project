@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<input type="hidden" class="buying_roomId" value="${roomId}">
-<input type="hidden" class="buying_login_user" value="${username}">
+<input type="hidden" class="Group_roomId" value="${roomId}">
+<input type="hidden" class="Group_login_user" value="${username}">
 <input type="hidden" class="login_user_id" value="${userId}">
 
         <div class="title__container">
@@ -11,7 +11,7 @@
                         <img src="/images/menu24.png" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                 </div>
         </div>
-        <div class="buyingchatroom__chat__list" style="height: 469px;">
+        <div class="Groupchatroom__chat__list" style="height: 469px;">
 </div>
 
 <div class="chatroom__file__container">
@@ -54,5 +54,5 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-<link rel="stylesheet" href="/css/buyingchatroom.css">
-<script src="/js/buyingchatroom.js"></script>
+<link rel="stylesheet" href="/css/Groupchatroom.css">
+<script src="/js/Groupchatroom.js"></script>

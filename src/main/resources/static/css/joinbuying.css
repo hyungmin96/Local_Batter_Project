@@ -27,26 +27,26 @@
     margin-top: 5px;
 }
 
-.buying__room__content{
+.Group__room__content{
     font-family: Noto Sans KR;
     font-size: 13px;
     height: 75px;
     padding: 15px;
 }
 
-.buying__room__title{
+.Group__room__title{
     font-family: 'Noto Sans KR';
     font-size: 12px;
     font-weight: 400;
     width: 170px;
 }
 
-.buying__item__box:hover{
+.Group__item__box:hover{
     background-color: rgb(245, 245, 245);
     box-shadow: 3px 3px 10px 3px rgba(0, 0, 0, 0.12);
 }
 
-.buying__item__box{
+.Group__item__box{
     cursor: pointer;
     margin: 5px 10px 5px 10px;
     max-width: 185px;
@@ -58,14 +58,14 @@
     text-align: center;
 }
 
-.buying__room__list img{
+.Group__room__list img{
     width: 185px;
     height: 135px;
     object-fit: cover;
 }
 
 
-.buying__room__list{
+.Group__room__list{
     margin: 10px 10px;
     min-height: 400px;
     display: inline-flex;

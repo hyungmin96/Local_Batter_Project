@@ -15,7 +15,7 @@ import org.hibernate.annotations.CreationTimestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class BuyingChatRoomEntity implements Serializable {
+public class GroupChatRoomEntity implements Serializable {
     
     @Id @GeneratedValue
     @Column(name = "roomId")
@@ -38,15 +38,15 @@ public class BuyingChatRoomEntity implements Serializable {
     @CreationTimestamp
     private Timestamp regTime;
 
-    @OneToMany(mappedBy = "buyingChatRoomEntity")
+    @OneToMany(mappedBy = "groupChatRoomEntity")
     @Cascade(value = org.hibernate.annotations.CascadeType.ALL)
-    private List<BuyingFileEntity> files;
+    private List<GroupFileEntity> files;
 
     @OneToMany(mappedBy = "roomId")
     @Cascade(value = org.hibernate.annotations.CascadeType.ALL)
-    private List<BuyingChatEntity> chats;
+    private List<GroupChatEntity> chats;
 
-    @OneToMany(mappedBy = "buyingChatRoomEntity")
+    @OneToMany(mappedBy = "groupChatRoomEntity")
     @Cascade(value = org.hibernate.annotations.CascadeType.ALL)
-    private List<BuyingUsersEntity> users;
+    private List<GroupUsersEntity> users;
 }
