@@ -1,5 +1,5 @@
 
-function modal(id, userId, sellerId, boardId, writer) {
+function modal(id, images) {
     var zIndex = 9999;
     var modal = document.getElementById(id);
 
@@ -14,12 +14,13 @@ function modal(id, userId, sellerId, boardId, writer) {
         height: '100%',
         overflow: 'auto',
         // 레이어 색갈은 여기서 바꾸면 됨
-        backgroundColor: 'rgba(0,0,0,0.4)'
+        backgroundColor: 'rgba(0, 0, 0, 0.85)'
     });
     document.body.append(bg);
 
     // 닫기 버튼 처리, 시꺼먼 레이어와 모달 div 지우기
     modal.querySelector('.modal_close_btn').addEventListener('click', function() {
+        document.body.className = ''
         bg.remove();
         modal.style.display = 'none';
     });
@@ -27,7 +28,6 @@ function modal(id, userId, sellerId, boardId, writer) {
     modal.setStyle({
         position: 'fixed',
         display: 'block',
-        boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
         zIndex: zIndex + 1,
         top: '50%',
         left: '50%',
@@ -36,10 +36,20 @@ function modal(id, userId, sellerId, boardId, writer) {
         webkitTransform: 'translate(-50%, -50%)'
     });
 
-    $('.text__container').empty();
-    $('.text__container').append(
-        "<button onclick='commentWrite(" + userId + ", " + sellerId + ", " + boardId + ", " + writer + ");' style='margin-top: 10px; float: right;' id='comment_btn' class='btn btn-primary'>작성</button>"
-    );
+    var html = '';
+    for(let i = 0; i < images.length; i ++){
+        var activeBoolean = '';
+        if(i == 0)
+            activeBoolean = "<div class='carousel-item active'>";
+        else
+            activeBoolean = "<div class='carousel-item'>";
+
+            html += activeBoolean +
+                "<img src=" + images[i] + " class='d-block w-100'>" +
+                "</div>"
+    }
+
+    $('.carousel-inner').append(html);
 
 }
 
@@ -49,10 +59,13 @@ Element.prototype.setStyle = function(styles) {
     return this;
 };
 
-function showModal(images){
+function showImgModal(e){
+    $('body').addClass('stop-scrolling')
+    var imgArray = document.getElementById(e.id).children;
+    var filenameArray = [];
+    for(let i = 0; i < imgArray.length; i++){
+        filenameArray.push(imgArray[i].children[0].firstChild.attributes[0].nodeValue);
+    }
 
-}
-
-function showModal(userId = null, sellerId = null, boardId = null, writer = null){
-    modal('my_modal', userId, sellerId, boardId, writer);
+    modal('imgModal', filenameArray);
 }

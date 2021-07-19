@@ -101,6 +101,7 @@ function getBoardList(){
         type: 'GET',
         data: data,
         success: function(response){
+
             if(response.content.length > 1){
 
                 $('.contentEmptyContiner').remove();
@@ -126,7 +127,7 @@ function getBoardList(){
                                     "</div>" +
                                 "</div>" +
                                 "<div class='board _content' style='padding: 10px 10px 0 10px;'>" + value.content + "</div>" +
-                            imgShow(value.files) +
+                            imgShow(value.boardId, value.files) +
                             "</div>" +
                             "<div class='board _eventBottom'>" +
                                 "<div class='eventButtonContainer' ' class='eventButton _emotionBtn'>좋아요</button></div>" +
@@ -141,34 +142,36 @@ function getBoardList(){
     page++;
 }
 
-function imgShow(file){
-console.log(file)
-        let dataNumber = (file.length >= 4) ? 4 : file.length;
+function imgShow(id, fileArray){
+
+        let dataNumber = (fileArray.length >= 4) ? 4 : fileArray.length;
         var imgBox = '';
 
-        if(file.length > 0){
+        if(fileArray.length > 0){
 
+        var displayBoolean = 'none';
         var imgContainer = '';
-        for(let i = 0; i < dataNumber; i ++){
-
+        for(let i = 0; i < fileArray.length; i ++){
             var moreButton = (function(){
-                if (i >= 3 && file.length != dataNumber) {
-                    return "<button type=\"button\" class=\"moreMedia _moreMedia\"><span class=\"moreText\">+" + (file.length - dataNumber) + "장</span></button>"
+                if (i == 3 && fileArray.length != dataNumber) {
+                    return "<button type=\"button\" class=\"moreMedia _moreMedia\"><span class=\"moreText\">+" + (fileArray.length - dataNumber) + "장</span></button>"
+                }else if(i >= 4){
+                    displayBoolean = 'none';
                 }else{
-                    return null;
+                    displayBoolean = 'block';
                 }
             })()
 
-            imgContainer += "<li data-viewname=\"DPhotoCollageImageItemView\" class=\"collageItem\">" +
+            imgContainer += "<li style=display:" + displayBoolean + " data-viewname=\"DPhotoCollageImageItemView\" class=\"collageItem\">" +
             "<button type=\"button\" class=\"collageImage _imageButton\">" +
-            "<img src=/upload/" + file[i].name + " alt='' class='_image'>" +
+            "<img src=/upload/" + fileArray[i].name + " alt='' class='_image'>" +
             "</button>" +
             moreButton +
             "</li>"
         }
 
-        imgBox = "<div data-viewname=\"DPostPhotoListView\" class=\"uWidget -displayBlock gCursorPointer\">" +
-            "<ul data-viewname=\"DPhotoCollageView\" class=\"uCollage -horizontal\" data-collage=" + (dataNumber) + ">" +
+            imgBox = "<div data-viewname=\"DPostPhotoListView\" class=\"uWidget -displayBlock gCursorPointer\">" +
+            "<ul id=board_" + id + " onclick='showImgModal(this);' data-viewname=\"DPhotoCollageView\" class=\"uCollage -horizontal\" data-collage=" + (dataNumber) + ">" +
             imgContainer +
             "</ul>" +
             "</div>"

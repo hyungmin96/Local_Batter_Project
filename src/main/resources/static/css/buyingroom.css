@@ -32,6 +32,11 @@
     font-size: 14px;
 }
 
+.stop-scrolling {
+    height: 100%;
+    overflow: hidden;
+}
+
 ._eventBottom{
     display: inline-flex;
     justify-content: space-between;

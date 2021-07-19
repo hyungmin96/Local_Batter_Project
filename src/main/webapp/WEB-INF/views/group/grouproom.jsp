@@ -8,41 +8,50 @@
     <input type="hidden" class="groupId" value="${Group_room_id.id}">
     <input type="hidden" class="user" value="${group_user_entity.id}">
 
-    <section id="RoomInnerInfo" style="width: 300px; margin-left: 160px; text-align: right;">
+    <div>
+        <section id="RoomInnerInfo" style="width: 300px; margin-left: 160px; text-align: right;">
+                <c:if test="${Group_room_files[0].name ne null }">
+                    <div class="product_img_thumbnail" style="margin: 0 0 15px auto; width: 300px; height: 250px; object-fit: cover;">
+                        <img id="thumbnail" src="/upload/${Group_room_files[0].name}" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                </c:if>
 
-            <c:if test="${Group_room_files[0].name ne null }">
-                <div class="product_img_thumbnail" style="margin: 0 0 15px auto; width: 300px; height: 250px; object-fit: cover;">
-                    <img id="thumbnail" src="/upload/${Group_room_files[0].name}" style="width: 100%; height: 100%; object-fit: cover;">
+                <div class="room_inner_info">
+                    <div class="Group_product _room_title">
+                        ${Group_room_id.roomTitle}
+                    </div>
+                    <div class="Group_product _room_description">
+                        ${Group_room_id.description}
+                    </div>
+
+                    <hr />
+                    <div class="Group_product _room_reader">
+                        관리자 ${Group_room_id.owner}
+                    </div>
+
+                    <hr />
+                    <div class="Group_product _room_members">
+                        멤버 ${Group_room_id.currentUsers}명
+                    </div>
+
+                    <hr />
+                    <div class="Group_product room_type">
+                        그룹설정 : ${Group_room_id.type}
+                    </div>
                 </div>
-            </c:if>
+        </section>
 
-            <div class="room_inner_info">
-
-                <div class="Group_product _room_title">
-                    ${Group_room_id.roomTitle}
+        <section class="aside _currentImages" style="margin-left: 160px; text-align: right;">
+            <div class="card _memberList" style="width: 300px; height: 330px; padding: 0">
+                <div class="card-header" style="background-color: white">
+                    최근 사진
                 </div>
-                <div class="Group_product _room_description">
-                    ${Group_room_id.description}
-                </div>
+                <div class="card-body" style="flex-wrap: wrap; overflow: scroll; padding: 0">
 
-                <hr />
-                <div class="Group_product _room_reader">
-                    관리자 ${Group_room_id.owner}
                 </div>
-
-                <hr />
-                <div class="Group_product _room_members">
-                    멤버 ${Group_room_id.currentUsers}명
-                </div>
-
-                <hr />
-                <div class="Group_product room_type">
-                    그룹설정 : ${Group_room_id.type}
-                </div>
-
             </div>
-
-    </section>
+        </section>
+    </div>
 
     <section id="content" role="main">
         <div id="contentWrapper" class="container">
@@ -100,6 +109,7 @@
                     </div>
                 </div>
             </div>
+        </div>
     </section>
 
     <section class="aside _activitySection">
@@ -123,7 +133,7 @@
             </div>
         </div>
 
-        <div class="card _articleCurrentList" style="height: 200px">
+        <div class="card _articleCurrentList" style="height: 280px">
             <div class="card-header" style="background-color: white">
                 최근 등록된 게시글
             </div>
@@ -135,7 +145,38 @@
 </div>
 </div>
 
+<!-- modal -->
+<div id="imgModal" style="padding: 20px; display: none; width: 1300px; height: 900px;">
+    <div class = "modal_close_btn"><img src="/images/delete_35px.png" style="width: 20px; height: 20px;float: right; cursor: pointer;"></div>
+
+    <div id="carouselExampleControls" class="carousel" data-interval="1000000" data-bs-ride="carousel">
+        <div class="carousel-inner">
+
+        </div>
+        <div>
+            <button class="orderButton carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+        </div>
+        <div>
+            <button class="orderButton carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="imgviewer _page">
+        0/1
+    </div>
+
+</div>
+<!-- modal -->
+
 <script type="text/javascript" src="/js/buyingroom.js"></script>
+<script type="text/javascript" src="/js/imgModal.js"></script>
 <link rel="stylesheet" href="/css/buyingroom.css">
+<link rel="stylesheet" href="/css/imgModal.css">
 <link rel="stylesheet" href="/css/imgGridGallery.css">
 <%@ include file="../common/footer.jsp"%>
