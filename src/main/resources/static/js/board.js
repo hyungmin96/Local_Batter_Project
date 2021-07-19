@@ -22,7 +22,7 @@ function deletePost() {
                 location.href = '/';
             }
         },
-    })
+        })
         .done(function (resp) {
             if(resp.includes("권한")){
                 alert('권한이 없습니다');

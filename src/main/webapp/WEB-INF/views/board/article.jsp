@@ -141,7 +141,7 @@
         </div>
 
     </div>
-
+<script src="/js/board.js"></script>
 <script>
 
 var seller = $('.item__writer').text();
@@ -215,5 +215,5 @@ $('.chat__product_btn').on("click", function(){
 
 </script>
 
-</div></div>
+</div>
 <%@ include file="../common/footer.jsp" %>

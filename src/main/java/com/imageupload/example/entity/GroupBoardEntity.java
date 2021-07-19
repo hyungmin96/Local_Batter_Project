@@ -22,7 +22,6 @@ public class GroupBoardEntity {
     private Long boardId;
 
     private Long groupId;
-    private String title;
     private String content;
     private String writer;
 

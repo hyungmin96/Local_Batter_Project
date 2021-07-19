@@ -50,7 +50,6 @@ public class GroupChatRoomRepositoryTestClass {
             GroupUsersEntity groupUsersEntity = GroupUsersRepository.findById(1L).get();
 
             GroupBoardEntity GroupBoardEntity = com.imageupload.example.entity.GroupBoardEntity.builder()
-                    .title("test" + i)
                     .content("content" + i)
                     .groupId(100L)
                     .groupUsersEntity(groupUsersEntity)

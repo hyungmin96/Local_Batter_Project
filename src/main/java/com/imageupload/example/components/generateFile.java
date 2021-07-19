@@ -26,40 +26,37 @@ public class GenerateFile {
 
         List<GenerateFileDTO> fileList = new ArrayList<>();
 
-        for (MultipartFile file : files) {
+            for (MultipartFile file : files) {
 
-            try {
+                try {
 
-                extention = file.getOriginalFilename().substring(file.getOriginalFilename().indexOf("."));
+                    extention = file.getOriginalFilename().substring(file.getOriginalFilename().indexOf("."));
 
-                tempName = UUID.randomUUID().toString();
+                    tempName = UUID.randomUUID().toString();
 
-                byte[] bytes = file.getBytes();
+                    byte[] bytes = file.getBytes();
 
-                String filePath = root + tempName + extention;
+                    String filePath = root + tempName + extention;
 
-                fos = new FileOutputStream(new File(filePath));
+                    fos = new FileOutputStream(new File(filePath));
 
-                fos.write(bytes);
+                    fos.write(bytes);
 
-                GenerateFileDTO generateFileDTO = new GenerateFileDTO();
-                generateFileDTO.setFileSize(bytes.length);
-                generateFileDTO.setExtention(extention);
-                generateFileDTO.setFileName(tempName + extention);
-                generateFileDTO.setPath(filePath);
+                    GenerateFileDTO generateFileDTO = new GenerateFileDTO();
+                    generateFileDTO.setFileSize(bytes.length);
+                    generateFileDTO.setExtention(extention);
+                    generateFileDTO.setFileName(tempName + extention);
+                    generateFileDTO.setPath(filePath);
 
-                fileList.add(generateFileDTO);
+                    fileList.add(generateFileDTO);
 
-                fos.close();
+                    fos.close();
 
-            } catch (IOException e) {
-                e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
 
-        }
-
-        return fileList;
-
+             return fileList;
     }
-
 }

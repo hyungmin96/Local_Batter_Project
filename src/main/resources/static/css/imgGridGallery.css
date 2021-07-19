@@ -1,0 +1,198 @@
+.uWidget.-displayBlock {
+    display: block;
+    table-layout: unset;
+}
+.uWidget {
+    z-index: 1;
+    position: relative;
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+    min-height: 65px;
+    margin: 10px 0 0;
+    text-align: left;
+    font-size: 0;
+}
+
+.gCursorPointer {
+    cursor: pointer!important;
+}
+
+.uCollage {
+    overflow: hidden;
+    position: relative;
+    max-width: 100%;
+    border: 0;
+    background: 0 0;
+    font-size: 0;
+    cursor: pointer;
+    padding: 0 15px 15px 15px;
+}
+ol, ul {
+    list-style: none;
+}
+button, dd, dl, dt, fieldset, ol, p, ul {
+    margin: 0;
+    padding: 0;
+}
+
+.uCollage .collageImage:after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 1px solid rgba(0,0,0,.05);
+    content: '';
+}
+
+.uCollage .collageItem {
+    overflow: hidden;
+    position: relative;
+    float: left;
+    background-color: #fafafa;
+    font-size: 0;
+    cursor: pointer;
+}
+
+.uCollage .collageImage {
+    width: 100%;
+    display: block;
+}
+
+.uCollage .collageImage img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    vertical-align: middle;
+}
+img {
+    border-style: none;
+}
+
+.uCollage.-horizontal[data-collage="4"] .collageItem {
+    width: 100%;
+    max-height: 330px;
+}
+.uCollage .collageItem {
+    overflow: hidden;
+    position: relative;
+    float: left;
+    background-color: #fafafa;
+    font-size: 0;
+    cursor: pointer;
+}
+.uCollage .collageImage {
+    width: 100%;
+    display: block;
+}
+[type=reset], [type=submit], button, html [type=button] {
+    -webkit-appearance: button;
+}
+button {
+    border: 0;
+    background-color: transparent;
+    border-radius: 0;
+    cursor: pointer;
+}
+.uCollage.-horizontal[data-collage="4"] .collageItem:nth-child(n+3) {
+    margin-left: 2px;
+}
+.uCollage.-horizontal[data-collage="4"] .collageItem:not(:nth-child(1)) {
+    width: 33%;
+    height: 174px;
+    margin-top: 2px;
+}
+
+.uCollage .collageImage {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+[type=reset], [type=submit], button, html [type=button] {
+    -webkit-appearance: button;
+}
+button {
+    border: 0;
+    background-color: transparent;
+    border-radius: 0;
+    cursor: pointer;
+}
+.uCollage .moreMedia {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    top: 0;
+    z-index: 1;
+    background: rgba(0,0,0,.5);
+    font-size: 16px;
+    width: 100%;
+}
+
+[type=reset], [type=submit], button, html [type=button] {
+    -webkit-appearance: button;
+}
+
+.uCollage.-horizontal[data-collage="3"] .collageItem:nth-child(n+3) {
+    margin-left: 2px;
+}
+
+.uCollage.-horizontal[data-collage="3"] .collageItem:not(:nth-child(1)) {
+    width: 49%;
+    width: calc(50% - 1px);
+    height: 174px;
+    max-height: 247px;
+    margin-top: 2px;
+}
+.uCollage.-horizontal[data-collage="3"] .collageItem {
+    width: 100%;
+    max-height: 248px;
+}
+
+button {
+    border: 0;
+    background-color: transparent;
+    border-radius: 0;
+    cursor: pointer;
+}
+
+.uCollage .collageItem {
+    overflow: hidden;
+    position: relative;
+    float: left;
+    background-color: #fafafa;
+    font-size: 0;
+    cursor: pointer;
+}
+.uCollage.-horizontal[data-collage="2"] .collageItem {
+    width: 100%;
+    max-height: 248px;
+}
+
+.uCollage[data-collage="2"] .collageItem {
+    width: 49%;
+}
+.uCollage.-horizontal[data-collage="3"] .collageItem {
+    width: 100%;
+    max-height: 248px;
+}
+.uCollage[data-collage="1"] .collageImage img {
+    max-height: 744px;
+}
+
+.uCollage.-horizontal[data-collage="1"] .collageItem {
+    min-height: 80px;
+}
+.uCollage[data-collage="1"] .collageItem {
+    float: none;
+}
+.uCollage .collageItem {
+    overflow: hidden;
+    position: relative;
+    float: left;
+    background-color: #fafafa;
+    font-size: 0;
+    cursor: pointer;
+    width: 100%;
+}

@@ -5,6 +5,12 @@
     padding: 0;
 }
 
+._moreMedia{
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 6px;
+    color: white;
+}
+
 .imgBox{
     padding: 10px;
     display: inline-flex;
@@ -15,9 +21,10 @@
 }
 
 ._imgPreviewSlider img{
-    width: 80px;
-    height: 80px;
+    width: 180px;
+    height: 140px;
     object-fit: cover;
+    border: 1px solid #f7f7f7;
 }
 
 .board{
@@ -32,6 +39,7 @@
     width: 100%;
     background-color: rgb(252, 252, 252);
     height: 40px;
+    border-top: 1px solid #ebebeb;
 }
 
 .eventButton{
@@ -69,10 +77,12 @@
 
 .contentAuthorBox{
     display: inline-flex;
+    width: 100%;
 }
 
 .contentInfoBox{
     margin-left: 10px;
+    width: 100%;
 }
 
 ._username{

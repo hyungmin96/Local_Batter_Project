@@ -135,6 +135,7 @@
 </div>
 </div>
 
-
+<script type="text/javascript" src="/js/buyingroom.js"></script>
 <link rel="stylesheet" href="/css/buyingroom.css">
+<link rel="stylesheet" href="/css/imgGridGallery.css">
 <%@ include file="../common/footer.jsp"%>
