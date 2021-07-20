@@ -86,7 +86,7 @@ $('.chat__log').scroll(function(){
 });
 
 function loadChatData(){
-    
+
     var display = 30;
 
     $.ajax({
@@ -96,9 +96,9 @@ function loadChatData(){
         dataType: 'json',
         success: function(response){
             let currentScrollTop = $('.chat__log')[0].scrollHeight;
-            
+
             $.each(response.content, function(key, value){
-                
+
                 if(response.last == true){
                     lastPage = true;
                     displayDateTrigger = true;
@@ -119,7 +119,7 @@ function loadChatData(){
                 if($('.user__name').text() == value.userVo.username)
                 // 로그인한 사용자가 보낸 채팅
                     $(".chat__list").prepend(
-                        "<div class='user__send'>" + 
+                        "<div class='user__send'>" +
                         "<span class='chat__message'>" + value.message + "</span>" +
                         "<span class='chat__time'>" + messageTime + "</span>" +
                         "</div>"
@@ -127,7 +127,7 @@ function loadChatData(){
                 else
                 // 상대 사용자가 보낸 채팅
                     $(".chat__list").prepend(
-                        "<div class='target__send'>" + 
+                        "<div class='target__send'>" +
                         "<div style = 'display: flex; flex-direction: row;'>" +
                         "<img src=" + profileimg + ">" +
                         "<div>" +
@@ -139,7 +139,7 @@ function loadChatData(){
                         "</div>" +
                         "</div>" +
                         "</div>"
-                );      
+                );
 
             })
 
@@ -149,14 +149,13 @@ function loadChatData(){
                 displayDate(itemDate);
 
             let atferScrollTop = $('.chat__log')[0].scrollHeight;
-
             $('.chat__log')[0].scrollTop = atferScrollTop - currentScrollTop;
 
             globalThis.page++;
             globalThis.flag = false;
         }
     })
-    
+
 }
 
 function displayDate(time){

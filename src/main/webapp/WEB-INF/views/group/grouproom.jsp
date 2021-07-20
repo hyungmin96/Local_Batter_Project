@@ -41,10 +41,10 @@
                 </div>
         </section>
 
-        <section class="aside _currentImages" style="margin-left: 160px; text-align: right;">
+        <section class="aside _currentImages" style="margin-left: 160px;">
             <div class="card _memberList" style="width: 300px; height: 330px; padding: 0">
                 <div class="card-header" style="background-color: white">
-                    최근 사진
+                    최근 게시물 사진
                 </div>
                 <div class="card-body" style="flex-wrap: wrap; overflow: scroll; padding: 0">
 
@@ -146,10 +146,10 @@
 </div>
 
 <!-- modal -->
-<div id="imgModal" style="padding: 20px; display: none; width: 1300px; height: 900px;">
-    <div class = "modal_close_btn"><img src="/images/delete_35px.png" style="width: 20px; height: 20px;float: right; cursor: pointer;"></div>
+<div id="imgModal" style="padding: 20px; display: none; width: 1300px; height: 820px;">
+    <div class = "modal_close_btn"><img src="/images/delete_35px.png" style="width: 30px; height: 30px;float: right; cursor: pointer;"></div>
 
-    <div id="carouselExampleControls" class="carousel" data-interval="1000000" data-bs-ride="carousel">
+    <div id="carouselExampleControls" class="carousel" data-interval="10000000" data-bs-ride="carousel">
         <div class="carousel-inner">
 
         </div>
@@ -168,12 +168,18 @@
     </div>
 
     <div class="imgviewer _page">
-        0/1
+        <span class="number _currentPageNumber"></span> /
+        <span class="number _lastPageNumber"></span>
     </div>
 
 </div>
 <!-- modal -->
-
+<script>
+    history.scrollRestoration = "manual"
+    $(window).on('unload', function() {
+        $(window).scrollTop(0);
+    });
+</script>
 <script type="text/javascript" src="/js/buyingroom.js"></script>
 <script type="text/javascript" src="/js/imgModal.js"></script>
 <link rel="stylesheet" href="/css/buyingroom.css">

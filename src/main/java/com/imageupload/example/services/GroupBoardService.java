@@ -5,8 +5,10 @@ import com.imageupload.example.dto.GenerateFileDTO;
 import com.imageupload.example.dto.GroupBoardDTO;
 import com.imageupload.example.entity.GroupBoardEntity;
 import com.imageupload.example.entity.GroupBoardFileEntity;
+import com.imageupload.example.entity.GroupCommentEntity;
 import com.imageupload.example.entity.GroupUsersEntity;
 import com.imageupload.example.repositories.GroupBoardRepository;
+import com.imageupload.example.repositories.GroupCommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,6 +22,19 @@ import java.util.List;
 public class GroupBoardService {
 
     private final GroupBoardRepository groupBoardRepository;
+    private final GroupCommentRepository groupCommentRepository;
+
+    public void commentWrite(GroupBoardEntity groupBoardEntity, GroupUsersEntity groupUsersEntity, String comment){
+
+        GroupCommentEntity groupCommentEntity = GroupCommentEntity.builder()
+                .comment(comment)
+                .writer(groupUsersEntity)
+                .groupBoard(groupBoardEntity)
+                .build();
+
+        groupCommentRepository.save(groupCommentEntity);
+
+    }
 
     public void delete(Long boardId, String username){
         groupBoardRepository.deleteById(boardId);

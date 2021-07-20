@@ -1,13 +1,126 @@
-$(document).ready(function(){
-    getBoardList();
-})
+
+document.addEventListener("DOMContentLoaded", function(event) {
+    var scrollpos = localStorage.getItem('scrollpos');
+    if (scrollpos){
+        window.scrollTo(0, 0);
+        getBoardList();
+    }
+});
+
+window.onbeforeunload = function(e) {
+    localStorage.setItem('scrollpos', window.scrollY);
+};
+
+$(document).scroll(function() {
+    if($(window).scrollTop() + $(window).height() == getDocHeight())
+        getBoardList();
+});
+
+function getDocHeight() {
+    var D = document;
+    return Math.max(
+        D.body.scrollHeight, D.documentElement.scrollHeight,
+        D.body.offsetHeight, D.documentElement.offsetHeight,
+        D.body.clientHeight, D.documentElement.clientHeight
+    );
+}
+
+var page = 0;
+var display = 12;
+var commentJsonObject = [];
+function getBoardList(){
+console.log('loaded!')
+    var data = {groupId: $('.groupId').val(), display: display, page: page}
+
+    $.ajax({
+        url: '/api/group/get_board_list',
+        type: 'GET',
+        data: data,
+        success: function(response){
+
+            if(response.content.length > 1){
+
+                $('.contentEmptyContiner').remove();
+                document.getElementsByClassName('_contentListWrapper')[0].setAttribute("style","hieght:500px");
+
+                $.each(response.content, function(key, value){
+                    commentJsonObject.push({ [value.boardId] : value.comments})
+
+                    $('#contentWrapper').append(
+                        "<input type='hidden' value=" + value.boardId + ">" +
+                        "<div class='boardItemBox' style='margin-bottom: 20px; box-shadow: 0 2px 3px 0 rgba(161, 161, 161, 0.12);'>" +
+                        "<input type='hidden' class='boardId' value=" + value.boardId + ">" +
+                        "<div class='contentItemBox'>" +
+                        "<div class='contentAuthorBox'>" +
+                        "<div><img class='board _userProfileImg' src=/upload/" + value.groupUsersEntity.user.profile.profilePath + "></div>" +
+                        "<div class='contentInfoBox'>" +
+                        "<div style='width: 100%; display: inline-flex; justify-content: space-between;'>" +
+                        "<div>" +
+                        "<div class='board _username'>" + value.groupUsersEntity.user.username + "</div>" +
+                        "<div class='board _regDate'>" + new Date(value.regDate).toLocaleTimeString() + "</div>" +
+                        "</div>" +
+                        "<div onclick='deletePost(" + value.boardId + ")' className='boardMenuButton'><img style='cursor: pointer; object-fit: cover;' src='/images/menu_14px.png'></div>" +
+                        "</div>" +
+                        "</div>" +
+                        "</div>" +
+                        "<div class='board _content' style='padding: 10px 10px 0 10px;'>" + value.content + "</div>" +
+                        imgShow(value.boardId, value.files) +
+                        "<div style='display: inline-flex'>" +
+                        "<div class='boardInfo _likeButton'>" +
+                        "<img src=/images/group/heart_22px.png> " + value.boardLike +
+                        "</div>" +
+                        "<div class='boardInfo _commentButton'>" +
+                        "<img src=/images/group/chat_bubble_22px.png> " + value.comments.length +
+                        "</div>" +
+                        "</div>" +
+                        "</div>" +
+                        "<div class='board _eventBottom'>" +
+                        "<div class='eventButtonContainer eventButton _emotionBtn'><img style='margin: 0 4px 4px 0;' src='/images/group/facebook_like_21px.png'>좋아요</div>" +
+                        "<div class='eventButtonContainer eventButton _commentBtn'><img style='margin: 0 4px 4px 0;' src='/images/group/speech_21px.png'>덧글작성</div>" +
+                        "</div>"+
+                        "<div class='boardCommentView' style='background-color: white;'>" +
+                        "<div class='commentListView'>" +
+
+                        "</div>" +
+                        "<div class='commentInputBox'>" +
+
+                        "</div>" +
+                        "</div>" +
+                        "</div>"
+                    );
+                })
+
+            }else document.getElementsByClassName('emptyIcon')[0].style.display = 'block';
+        }
+    })
+
+
+    page++;
+}
 
 $(function(){
+
     $('._imgUploadDialog').click(function (){
         $('#uploadFile').click();
     })
     $('.uploadBtn').click(function(){
         postContent();
+    })
+    $('.carousel-control-prev').click(function(){
+        var currentPage = document.getElementsByClassName('_currentPageNumber')[0];
+        var lastPage = document.getElementsByClassName('_lastPageNumber')[0];
+        if((currentPage.innerHTML * 1) > 1 && (lastPage.innerHTML * 1) >= currentPage.innerHTML)
+            currentPage.innerHTML = (currentPage.innerHTML * 1) - 1;
+        else
+            currentPage.innerHTML = lastPage.innerHTML;
+    })
+    $('.carousel-control-next').click(function(){
+        var currentPage = document.getElementsByClassName('_currentPageNumber')[0];
+        var lastPage = document.getElementsByClassName('_lastPageNumber')[0];
+        if((currentPage.innerHTML * 1) < (lastPage.innerHTML * 1))
+            currentPage.innerHTML = (currentPage.innerHTML * 1) + 1;
+        else
+            currentPage.innerHTML = 1;
     })
 })
 
@@ -90,57 +203,116 @@ function previewImgDelete(e){
     $('#' + e.id).parent().remove();
 }
 
-var page = 0;
-var display = 10;
-function getBoardList(){
+// 덧글입력 element 생성
+$(document).on('click', '._commentBtn', function(){
+    var index = $('._commentBtn').index(this);
+    var inputBox = $('._commentBtn')[index].parentNode.parentNode.children[3].children[1]
 
-    var data = {groupId: $('.groupId').val(), display: display, page: page}
+    if(!inputBox.hasChildNodes()){
+        var commentInputBox = document.createElement('div');
+        commentInputBox.setAttribute('class', 'commentWriteBox');
+        commentInputBox.style.cssText = 'padding: 13px;'
 
+        var commentTextbox = document.createElement('input');
+        commentTextbox.setAttribute('class', 'commentInputText');
+        commentTextbox.setAttribute('type', 'text');
+        commentTextbox.setAttribute('placeholder', '작성할 덧글내용을 입력해주세요.');
+
+        var commentSendButton = document.createElement('button');
+        commentSendButton.setAttribute('class', 'commentSendBtn');
+        commentSendButton.innerHTML = '작성';
+
+        commentInputBox.appendChild(commentTextbox);
+        commentInputBox.appendChild(commentSendButton);
+
+        inputBox.appendChild(commentInputBox);
+    }
+});
+
+// 덧글목록 element 생성
+$(document).on('click', '._commentButton', function (){
+
+    var index = $('._commentButton').index(this);
+    var commentListView = $('._commentButton')[index].parentNode.parentNode.parentNode.childNodes[3].childNodes[0];
+
+    var commentList = document.getElementsByClassName('commentListView')[index];
+
+    if(commentList.hasChildNodes()){
+        while(commentList.hasChildNodes())
+            commentList.removeChild(commentList.firstChild);
+    }else{
+        for(let i = 0; i < Object.values(commentJsonObject[index])[0].length; i++){
+            var value = Object.values(commentJsonObject[index])[0][i];
+
+            var commentBox = document.createElement('div');
+            commentBox.setAttribute('id', 'commentId_' + value.commentId);
+            commentBox.setAttribute('class', 'commentList _commentBox');
+
+                var commentProfile = document.createElement('div');
+                commentProfile.setAttribute('class', 'commentProfileBox');
+
+                    var ProfileImg = document.createElement('img');
+                    ProfileImg.src = '/upload/' + value.writer.user.profile.profilePath;
+                    commentProfile.appendChild(ProfileImg);
+                    commentBox.append(commentProfile)
+
+                var userInfoComment = document.createElement('div');
+                userInfoComment.setAttribute('class', 'userInfoComment');
+
+                    var commentUsername = document.createElement('div');
+                    commentUsername.setAttribute('class', 'commentUsername');
+                    commentUsername.innerHTML = value.writer.user.profile.nickname;
+                    userInfoComment.append(commentUsername)
+
+                    var commentContentBox = document.createElement('div');
+                    commentContentBox.setAttribute('class', 'commentContentBox');
+                    commentContentBox.innerHTML = value.comment;
+                    userInfoComment.append(commentContentBox)
+
+                    var commentRegTime = document.createElement('div');
+                    commentRegTime.setAttribute('class', 'commentRegTime');
+                    commentRegTime.innerHTML = new Date(value.regDate).toLocaleString();
+                    userInfoComment.append(commentRegTime);
+
+                    var menuImg = document.createElement('img');
+                    menuImg.setAttribute('class', 'commentMenuButton');
+                    menuImg.src = '/images/menu_14px.png';
+                    userInfoComment.append(menuImg);
+
+            commentBox.append(userInfoComment)
+            commentListView.appendChild(commentBox)
+
+        }
+    }
+});
+
+function commentWrite(boardId, userId, comment){
+
+    var data = {
+        boardId: boardId,
+        userId: userId,
+        comment: comment
+    }
+
+    console.log(data)
     $.ajax({
-        url: '/api/group/get_board_list',
-        type: 'GET',
+
+        url: '/api/group/board/comment/write',
+        type: 'POST',
+        contentType: 'application/x-www-form-urlencoded',
         data: data,
-        success: function(response){
+        success: function (response){
 
-            if(response.content.length > 1){
-
-                $('.contentEmptyContiner').remove();
-                document.getElementsByClassName('_contentListWrapper')[0].setAttribute("style","hieght:500px");
-
-                $.each(response.content, function(key, value){
-
-                    $('#contentWrapper').append(
-                        "<input type='hidden' value=" + value.boardId + ">" +
-                        "<div style='margin-bottom: 20px; box-shadow: 0 2px 3px 0 rgba(161, 161, 161, 0.12);'>" +
-                        "<input type='hidden' class='boardId' value=" + value.boardId + ">" +
-                            "<div class='contentItemBox'>" +
-                                "<div class='contentAuthorBox'>" +
-                                    "<div><img class='board _userProfileImg' src=/upload/" + value.groupUsersEntity.user.profile.profilePath + "></div>" +
-                                    "<div class='contentInfoBox'>" +
-                                        "<div style='width: 100%; display: inline-flex; justify-content: space-between;'>" +
-                                            "<div>" +
-                                                "<div class='board _username'>" + value.groupUsersEntity.user.username + "</div>" +
-                                                "<div class='board _regDate'>" + new Date(value.regDate).toLocaleTimeString() + "</div>" +
-                                            "</div>" +
-                                            "<div onclick='deletePost(" + value.boardId + ")' className='boardMenuButton'><img style='cursor: pointer; object-fit: cover;' src='/images/menu_14px.png'></div>" +
-                                        "</div>" +
-                                    "</div>" +
-                                "</div>" +
-                                "<div class='board _content' style='padding: 10px 10px 0 10px;'>" + value.content + "</div>" +
-                            imgShow(value.boardId, value.files) +
-                            "</div>" +
-                            "<div class='board _eventBottom'>" +
-                                "<div class='eventButtonContainer' ' class='eventButton _emotionBtn'>좋아요</button></div>" +
-                                "<div class='eventButtonContainer' ' class='eventButton _commentBtn'>덧글작성</button></div>" +
-                            "</div>"+
-                        "</div>"
-                    );
-                })
-            }else document.getElementsByClassName('emptyIcon')[0].style.display = 'block';
         }
     })
-    page++;
 }
+
+$(document).on('click', '.commentSendBtn', function(){
+    var boardId = $(this).closest('.boardItemBox')[0].children[0].value;
+    var userId = $(document)[0].all[57].value;
+    var commentValue = $(this).closest('.boardItemBox').children()[3].children[1].children[0].children[0].value;
+    commentWrite(boardId, userId, commentValue);
+})
 
 function imgShow(id, fileArray){
 

@@ -37,6 +37,10 @@ public class GroupUsersEntity implements Serializable {
     @JsonIgnore
     private GroupChatRoomEntity groupChatRoomEntity;
 
+    @OneToMany(mappedBy = "writer")
+    @JsonIgnore
+    private List<GroupCommentEntity> groupCommentEntity;
+
     @OneToMany(mappedBy = "groupUsersEntity")
     @JsonIgnore
     private List<GroupBoardEntity> groupBoardEntity;

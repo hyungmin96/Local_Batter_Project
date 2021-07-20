@@ -8,8 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,11 +37,29 @@ public class GroupChatRoomRepositoryTestClass {
     private final String root = "D:\\Spring projects\\SpringBoot LocalBatter\\src\\main\\downloads\\";
 
     @Test
+    void 그룹_게시글_덧글작성(){
+
+        GroupBoardEntity groupBoardEntity = GroupBoardRepository.findById(22L).get();
+        GroupUsersEntity groupUsersEntity = GroupUsersRepository.findById(1L).get();
+
+        for(int i = 0; i < 10; i ++){
+
+            GroupCommentEntity groupCommentEntity = GroupCommentEntity.builder()
+                    .groupBoard(groupBoardEntity)
+                    .comment("test" + i)
+                    .writer(groupUsersEntity)
+                    .build();
+
+            GroupCommentRepository.save(groupCommentEntity);
+        }
+    }
+
+    @Test
     void 그룹_게시글_작성(){
 
         GroupBoardRepository.deleteAll();
 
-        for(int i = 1; i <= 5; i++){
+        for(int i = 1; i <= 155; i++){
             List<GroupBoardFileEntity> GroupBoardFiles = new ArrayList<>();
             List<GroupCommentEntity> GroupBoardComment = new ArrayList<>();
 
@@ -66,7 +82,7 @@ public class GroupChatRoomRepositoryTestClass {
 
             GroupCommentEntity GroupBoardCommentEntity = GroupCommentEntity.builder()
                     .comment("comment")
-                    .writer("tester")
+//                    .writer("tester")
                     .groupBoard(GroupBoardEntity)
                     .build();
             GroupBoardComment.add(GroupBoardCommentEntity);

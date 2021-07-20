@@ -5,6 +5,102 @@
     padding: 0;
 }
 
+.commentProfileBox img{
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+    margin: 5px;
+}
+
+._commentBox{
+    padding: 10px 15px 0 15px;
+    border-top: 1px solid #f0f0f0;
+    background-color: rgb(252, 252, 252);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 13px;
+    display: inline-flex;
+    width: 100%;
+}
+
+.commentMenuButton{
+    object-fit: cover;
+    width: 15px;
+    height: 15px;
+    position: relative;
+    left: 95%;
+    top: -55px;
+    cursor: pointer;
+}
+
+.userInfoComment{
+    margin: 0 0 0 15px;
+    width: 100%;
+}
+
+.commentContentBox{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 15px;
+}
+
+.commentRegTime{
+    font-size: 12px;
+    color: #949292;
+}
+
+.commentItem{
+    background-color: rgb(252, 252, 252);
+    border-top: 1px solid #ebebeb;
+    padding: 14px 40px 14px 66px;
+}
+
+.commentItem:hover{
+    background-color: #f8f6f6;
+}
+
+.commentInputText{
+    border: 1px solid #f3f0f0;
+    border-radius: 5px;
+    padding: 5px;
+    width: 90%;
+}
+
+.commentInputText:hover, .commentInputText:focus{
+    outline: none;
+}
+
+.commentSendBtn{
+    background-color: rgb(43, 171, 39);
+    padding: 5px;
+    border: 1px solid #41a23f;
+    border-radius: 3px;
+    margin-left: 13px;
+    color: white;
+}
+
+.commentSendBtn:hover{
+    transform: scale(1.2);
+}
+
+.commentWriteBox{
+    border-top: 1px solid #ebebeb;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 13px;
+}
+
+.boardInfo{
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 12px;
+    color: #a7a5a5;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.boardInfo:hover{
+    background-color: #eaebec;
+}
+
 ._moreMedia{
     font-family: 'Noto Sans KR', sans-serif;
     font-size: 6px;
@@ -110,6 +206,7 @@
 }
 
 ._userItemBox img{
+    border: 1px solid #efe9e9;
     width: 35px;
     height: 35px;
     border-radius: 50%;

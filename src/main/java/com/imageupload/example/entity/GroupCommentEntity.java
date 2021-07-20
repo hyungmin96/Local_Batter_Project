@@ -6,8 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
 @Data
@@ -20,7 +22,13 @@ public class GroupCommentEntity {
     private Long commentId;
 
     private String comment;
-    private String writer;
+
+    @CreationTimestamp
+    private Timestamp regDate;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "writer_id")
+    private GroupUsersEntity writer;
 
     @ManyToOne
     @JoinColumn(name = "boardId")

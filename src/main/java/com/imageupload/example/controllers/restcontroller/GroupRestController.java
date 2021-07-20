@@ -3,6 +3,7 @@ package com.imageupload.example.controllers.restcontroller;
 import com.imageupload.example.dto.GroupBoardDTO;
 import com.imageupload.example.entity.GroupBoardEntity;
 import com.imageupload.example.entity.GroupUsersEntity;
+import com.imageupload.example.repositories.GroupBoardRepository;
 import com.imageupload.example.services.GroupBoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,25 +19,37 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/api/group")
 public class GroupRestController {
 
-    private final GroupBoardService groupGroupService;
+    private final GroupBoardService groupBoardService;
+    private final GroupBoardRepository groupBoardRepository;
+
+    @PostMapping("/board/comment/write")
+    public ResponseEntity<String> commentWrite(HttpSession session,@RequestParam Long boardId, @RequestParam String comment){
+
+        GroupBoardEntity groupBoardEntity = groupBoardRepository.findById(boardId).get();
+        GroupUsersEntity groupUsersEntity = (GroupUsersEntity) session.getAttribute("group_user_entity");
+
+        groupBoardService.commentWrite(groupBoardEntity, groupUsersEntity, comment);
+
+        return new ResponseEntity<String>("Success", HttpStatus.OK);
+    }
 
     @PostMapping("/board/delete")
     public ResponseEntity<String> deletePost(@RequestParam Long boardId, @RequestParam String username){
-        groupGroupService.delete(boardId, username);
+        groupBoardService.delete(boardId, username);
         return new ResponseEntity<String>("Success", HttpStatus.OK);
     }
 
     @PostMapping("/board/post")
     public ResponseEntity<String> groupPostContent(HttpSession session , GroupBoardDTO groupBoardDTO){
         GroupUsersEntity groupUsersEntity = (GroupUsersEntity) session.getAttribute("group_user_entity");
-        groupGroupService.post(groupUsersEntity, groupBoardDTO);
+        groupBoardService.post(groupUsersEntity, groupBoardDTO);
         return new ResponseEntity<String>("Success", HttpStatus.OK);
     }
 
     @GetMapping("/get_board_list")
     public Page<GroupBoardEntity> getBoardList(@RequestParam Long groupId, @RequestParam int display, @RequestParam int page){
         PageRequest request = PageRequest.of(page, display, Sort.Direction.DESC, "boardId");
-        return groupGroupService.getBoardList(groupId, request);
+        return groupBoardService.getBoardList(groupId, request);
     }
 
 }

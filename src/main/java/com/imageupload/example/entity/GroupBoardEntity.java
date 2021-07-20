@@ -24,6 +24,7 @@ public class GroupBoardEntity {
     private Long groupId;
     private String content;
     private String writer;
+    private int boardLike;
 
     @CreationTimestamp
     private Timestamp regDate;

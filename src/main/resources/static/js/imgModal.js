@@ -36,6 +36,8 @@ function modal(id, images) {
         webkitTransform: 'translate(-50%, -50%)'
     });
 
+    $('.carousel-inner').empty();
+
     var html = '';
     for(let i = 0; i < images.length; i ++){
         var activeBoolean = '';
@@ -50,6 +52,8 @@ function modal(id, images) {
     }
 
     $('.carousel-inner').append(html);
+    document.getElementsByClassName('_currentPageNumber')[0].innerHTML = 1;
+    document.getElementsByClassName('_lastPageNumber')[0].innerHTML = images.length;
 
 }
 
