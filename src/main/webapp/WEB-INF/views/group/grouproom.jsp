@@ -6,7 +6,7 @@
 <div style="display: inline-flex">
 
     <input type="hidden" class="groupId" value="${Group_room_id.id}">
-    <input type="hidden" class="user" value="${group_user_entity.id}">
+    <input type="hidden" class="user" value="${user_id.id}">
 
     <div>
         <section id="RoomInnerInfo" style="width: 300px; margin-left: 160px; text-align: right;">
@@ -18,7 +18,7 @@
 
                 <div class="room_inner_info">
                     <div class="Group_product _room_title">
-                        ${Group_room_id.roomTitle}
+                        ${Group_room_id.title}
                     </div>
                     <div class="Group_product _room_description">
                         ${Group_room_id.description}
@@ -122,10 +122,10 @@
                     <c:forEach var="item" items="${Group_room_id.users}" varStatus="status">
                         <div class="userList _userItemBox" style="cursor: pointer;">
                             <div class="userProfileBox">
-                                <img src="/upload/${item.user.profile.profilePath}">
+                                <img src="/upload/${item.profilePath}">
                             </div>
                             <div class="userName" style="margin: auto 0 auto 8px;">
-                                ${item.user.username}
+                                ${item.user_name}
                             </div>
                         </div>
                     </c:forEach>

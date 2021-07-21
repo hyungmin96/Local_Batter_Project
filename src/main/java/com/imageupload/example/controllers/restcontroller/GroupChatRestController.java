@@ -1,9 +1,9 @@
 package com.imageupload.example.controllers.restcontroller;
 
 import com.imageupload.example.dto.GroupChatMessageDTO;
-import com.imageupload.example.dto.GroupDTO;
+import com.imageupload.example.dto.GroupInfoDTO;
+import com.imageupload.example.entity.GroupEntity;
 import com.imageupload.example.services.GroupChatService;
-import com.imageupload.example.entity.GroupChatRoomEntity;
 import com.imageupload.example.services.GroupService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import lombok.RequiredArgsConstructor;
+
 import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 
@@ -22,6 +23,7 @@ public class GroupChatRestController {
 
     private final GroupService groupService;
     private final GroupChatService groupChatService;
+    private final HttpSession session;
 
     @PostMapping("/upload")
     public ResponseEntity<String> uploadImgToChatRoom(GroupChatMessageDTO messageDTO){
@@ -31,13 +33,13 @@ public class GroupChatRestController {
     }
 
     @PostMapping("/delete")
-    public ResponseEntity<String> deleteRoom(HttpSession session, @RequestParam Long roomId, @RequestParam String username){
+    public ResponseEntity<String> deleteRoom(@RequestParam Long roomId, @RequestParam String username){
         groupService.deleteRoom(session, roomId, username);
         return new ResponseEntity<String>("Success", HttpStatus.OK);
     }
 
     @PostMapping("/exit")
-    public ResponseEntity<String> exitRoom(HttpSession session, @RequestParam Long roomId, @RequestParam String username){
+    public ResponseEntity<String> exitRoom(@RequestParam Long roomId, @RequestParam String username){
 
         GroupChatMessageDTO messageDTO = GroupChatMessageDTO.builder()
                 .roomId(roomId)
@@ -73,19 +75,19 @@ public class GroupChatRestController {
     }
 
     @GetMapping("/getlist")
-    public Page<GroupChatRoomEntity> getGroupRoomList(@RequestParam int page, @RequestParam int display){
+    public Page<GroupEntity> getGroupRoomList(@RequestParam int page, @RequestParam int display){
         PageRequest request = PageRequest.of(page, display, Sort.Direction.DESC, "id");
         return groupService.getGroupRooms(request);
     }
 
     @PostMapping("/create")
-    public ResponseEntity<String> createGroupRoom(HttpSession session, GroupDTO GroupDTO){
+    public ResponseEntity<String> createGroupRoom(GroupInfoDTO GroupDTO){
         groupService.createGroupRoom(session, GroupDTO);
         return new ResponseEntity<String>("success", HttpStatus.OK);
     }
 
     @GetMapping("/getRoomInfo")
-    public GroupChatRoomEntity getRoomInfo(@RequestParam Long roomId){
+    public GroupEntity getRoomInfo(@RequestParam Long roomId){
         return groupService.getRoomInfo(roomId);
     }
 

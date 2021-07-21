@@ -1,35 +1,117 @@
 
-document.addEventListener("DOMContentLoaded", function(event) {
-    var scrollpos = localStorage.getItem('scrollpos');
-    if (scrollpos){
-        window.scrollTo(0, 0);
-        getBoardList();
+
+function get_comments(){
+
+    var data = {
+        groupId: '',
+        boardId: ''
     }
-});
 
-window.onbeforeunload = function(e) {
-    localStorage.setItem('scrollpos', window.scrollY);
-};
+    $.ajax({
+        url: '/api/group/get_comments',
+        type: 'GET',
+        data: data,
+        success: function(response){
 
-$(document).scroll(function() {
-    if($(window).scrollTop() + $(window).height() == getDocHeight())
-        getBoardList();
-});
+        }
+    })
+}
 
-function getDocHeight() {
-    var D = document;
-    return Math.max(
-        D.body.scrollHeight, D.documentElement.scrollHeight,
-        D.body.offsetHeight, D.documentElement.offsetHeight,
-        D.body.clientHeight, D.documentElement.clientHeight
-    );
+function commentWrite(e, boardId, userId, comment){
+
+    var data = {
+        boardId: boardId,
+        userId: userId,
+        comment: comment
+    }
+
+    $.ajax({
+
+        url: '/api/group/board/comment/write',
+        type: 'POST',
+        contentType: 'application/x-www-form-urlencoded',
+        data: data,
+        dataType: 'JSON',
+        success: function (response){
+            var commentList = $(e).closest('.boardItemBox')[0].childNodes[3].childNodes[0];
+
+            commentBox(commentList,
+                response.comment_id,
+                userInfoObject[0].profile,
+                userInfoObject[0].username,
+                response.comment,
+                new Date(response.date).toLocaleString())
+        }
+    })
+}
+
+function deletePost(boardId){
+
+    var data = {
+        boardId: boardId,
+        username: $('.user__name').val()
+    }
+
+    $.ajax({
+
+        url: '/api/group/board/delete',
+        type: 'POST',
+        data: data,
+        contentType: 'application/x-www-form-urlencoded',
+        success: function (response){
+            alert('해당 게시글이 삭제되었습니다.');
+            window.location.reload();
+        }
+    })
+}
+
+function postContent(){
+
+    var groupId = $('.groupId').val();
+    var formData = new FormData();
+
+    formData.append('groupId', groupId);
+    formData.append('writer', $('.user').val());
+    formData.append('content', $('#chatroom_comment_box').val());
+
+    for(let i = 0; i < infoImgs.length; i++)
+        if(infoImgs[i] != null)
+            formData.append('board_img', infoImgs[i]);
+
+    $.ajax({
+
+        url: '/api/group/board/post',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function(response){
+            window.location.reload();
+        }
+    })
+}
+
+
+var userInfoObject = [];
+function getUserInfo(){
+    $.ajax({
+        url: '/api/group/get/userInfo',
+        type: "GET",
+        success: function (response){
+            console.log(response)
+            userInfoObject.push({
+                id: response.id,
+                username: response.user.profile.nickname,
+                profile: response.user.profile.profilePath
+            })
+        }
+    })
 }
 
 var page = 0;
 var display = 12;
 var commentJsonObject = [];
 function getBoardList(){
-console.log('loaded!')
     var data = {groupId: $('.groupId').val(), display: display, page: page}
 
     $.ajax({
@@ -45,6 +127,7 @@ console.log('loaded!')
 
                 $.each(response.content, function(key, value){
                     commentJsonObject.push({ [value.boardId] : value.comments})
+                    console.log(value)
 
                     $('#contentWrapper').append(
                         "<input type='hidden' value=" + value.boardId + ">" +
@@ -93,7 +176,6 @@ console.log('loaded!')
             }else document.getElementsByClassName('emptyIcon')[0].style.display = 'block';
         }
     })
-
 
     page++;
 }
@@ -151,52 +233,6 @@ $('#uploadFile').change(function (e){
     });
 })
 
-function deletePost(boardId){
-
-    var data = {
-        boardId: boardId,
-        username: $('.user__name').val()
-    }
-
-    $.ajax({
-
-        url: '/api/group/board/delete',
-        type: 'POST',
-        data: data,
-        contentType: 'application/x-www-form-urlencoded',
-        success: function (response){
-            alert('해당 게시글이 삭제되었습니다.');
-            window.location.reload();
-        }
-    })
-}
-
-function postContent(){
-
-    var groupId = $('.groupId').val();
-    var formData = new FormData();
-
-    formData.append('groupId', groupId);
-    formData.append('writer', $('.user').val());
-    formData.append('content', $('#chatroom_comment_box').val());
-
-    for(let i = 0; i < infoImgs.length; i++)
-        if(infoImgs[i] != null)
-            formData.append('board_img', infoImgs[i]);
-
-    $.ajax({
-
-        url: '/api/group/board/post',
-        type: 'POST',
-        data: formData,
-        contentType: false,
-        processData: false,
-        success: function(response){
-            window.location.reload();
-        }
-    })
-}
-
 function previewImgDelete(e){
     var index = e.id.split('_')[1];
     infoImgs[index] = null;
@@ -205,8 +241,18 @@ function previewImgDelete(e){
 
 // 덧글입력 element 생성
 $(document).on('click', '._commentBtn', function(){
-    var index = $('._commentBtn').index(this);
-    var inputBox = $('._commentBtn')[index].parentNode.parentNode.children[3].children[1]
+    showCommentInputBox(this);
+});
+
+// 덧글목록 element 생성
+$(document).on('click', '._commentButton', function (){
+    showCommentList(this);
+    showCommentInputBox(this);
+});
+
+function showCommentInputBox(e){
+
+    var inputBox = $(e).closest('.boardItemBox')[0].childNodes[3].childNodes[1];
 
     if(!inputBox.hasChildNodes()){
         var commentInputBox = document.createElement('div');
@@ -227,91 +273,13 @@ $(document).on('click', '._commentBtn', function(){
 
         inputBox.appendChild(commentInputBox);
     }
-});
-
-// 덧글목록 element 생성
-$(document).on('click', '._commentButton', function (){
-
-    var index = $('._commentButton').index(this);
-    var commentListView = $('._commentButton')[index].parentNode.parentNode.parentNode.childNodes[3].childNodes[0];
-
-    var commentList = document.getElementsByClassName('commentListView')[index];
-
-    if(commentList.hasChildNodes()){
-        while(commentList.hasChildNodes())
-            commentList.removeChild(commentList.firstChild);
-    }else{
-        for(let i = 0; i < Object.values(commentJsonObject[index])[0].length; i++){
-            var value = Object.values(commentJsonObject[index])[0][i];
-
-            var commentBox = document.createElement('div');
-            commentBox.setAttribute('id', 'commentId_' + value.commentId);
-            commentBox.setAttribute('class', 'commentList _commentBox');
-
-                var commentProfile = document.createElement('div');
-                commentProfile.setAttribute('class', 'commentProfileBox');
-
-                    var ProfileImg = document.createElement('img');
-                    ProfileImg.src = '/upload/' + value.writer.user.profile.profilePath;
-                    commentProfile.appendChild(ProfileImg);
-                    commentBox.append(commentProfile)
-
-                var userInfoComment = document.createElement('div');
-                userInfoComment.setAttribute('class', 'userInfoComment');
-
-                    var commentUsername = document.createElement('div');
-                    commentUsername.setAttribute('class', 'commentUsername');
-                    commentUsername.innerHTML = value.writer.user.profile.nickname;
-                    userInfoComment.append(commentUsername)
-
-                    var commentContentBox = document.createElement('div');
-                    commentContentBox.setAttribute('class', 'commentContentBox');
-                    commentContentBox.innerHTML = value.comment;
-                    userInfoComment.append(commentContentBox)
-
-                    var commentRegTime = document.createElement('div');
-                    commentRegTime.setAttribute('class', 'commentRegTime');
-                    commentRegTime.innerHTML = new Date(value.regDate).toLocaleString();
-                    userInfoComment.append(commentRegTime);
-
-                    var menuImg = document.createElement('img');
-                    menuImg.setAttribute('class', 'commentMenuButton');
-                    menuImg.src = '/images/menu_14px.png';
-                    userInfoComment.append(menuImg);
-
-            commentBox.append(userInfoComment)
-            commentListView.appendChild(commentBox)
-
-        }
-    }
-});
-
-function commentWrite(boardId, userId, comment){
-
-    var data = {
-        boardId: boardId,
-        userId: userId,
-        comment: comment
-    }
-
-    console.log(data)
-    $.ajax({
-
-        url: '/api/group/board/comment/write',
-        type: 'POST',
-        contentType: 'application/x-www-form-urlencoded',
-        data: data,
-        success: function (response){
-
-        }
-    })
 }
 
 $(document).on('click', '.commentSendBtn', function(){
     var boardId = $(this).closest('.boardItemBox')[0].children[0].value;
     var userId = $(document)[0].all[57].value;
     var commentValue = $(this).closest('.boardItemBox').children()[3].children[1].children[0].children[0].value;
-    commentWrite(boardId, userId, commentValue);
+    commentWrite(this, boardId, userId, commentValue);
 })
 
 function imgShow(id, fileArray){
@@ -350,4 +318,34 @@ function imgShow(id, fileArray){
 
         }
         return imgBox;
+}
+
+document.addEventListener("DOMContentLoaded", function(event) {
+    var scrollpos = localStorage.getItem('scrollpos');
+    if (scrollpos){
+        window.scrollTo(0, 0);
+        getBoardList();
+    }
+});
+
+window.onbeforeunload = function(e) {
+    localStorage.setItem('scrollpos', window.scrollY);
+};
+
+$(document).scroll(function() {
+    if($(window).scrollTop() + $(window).height() == getDocHeight())
+        getBoardList();
+});
+
+$(document).ready(function(){
+    getUserInfo();
+})
+
+function getDocHeight() {
+    var D = document;
+    return Math.max(
+        D.body.scrollHeight, D.documentElement.scrollHeight,
+        D.body.offsetHeight, D.documentElement.offsetHeight,
+        D.body.clientHeight, D.documentElement.clientHeight
+    );
 }

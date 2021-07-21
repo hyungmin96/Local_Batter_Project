@@ -29,7 +29,6 @@ public class UserEntity implements UserDetails {
     @Column
     private long id;
 
-    // accout email info.
     @Column(unique = true)
     private String username;
 

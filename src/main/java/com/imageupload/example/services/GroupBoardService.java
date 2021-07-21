@@ -24,7 +24,7 @@ public class GroupBoardService {
     private final GroupBoardRepository groupBoardRepository;
     private final GroupCommentRepository groupCommentRepository;
 
-    public void commentWrite(GroupBoardEntity groupBoardEntity, GroupUsersEntity groupUsersEntity, String comment){
+    public GroupCommentEntity commentWrite(GroupBoardEntity groupBoardEntity, GroupUsersEntity groupUsersEntity, String comment){
 
         GroupCommentEntity groupCommentEntity = GroupCommentEntity.builder()
                 .comment(comment)
@@ -34,6 +34,7 @@ public class GroupBoardService {
 
         groupCommentRepository.save(groupCommentEntity);
 
+        return groupCommentEntity;
     }
 
     public void delete(Long boardId, String username){
@@ -61,7 +62,7 @@ public class GroupBoardService {
                 boardFileList.add(groupBoardFileEntity);
             }
 
-            groupBoardEntity.setFiles(boardFileList);
+//            groupBoardEntity.setFiles(boardFileList);
         }
 
         groupBoardRepository.save(groupBoardEntity);

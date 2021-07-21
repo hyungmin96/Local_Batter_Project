@@ -16,34 +16,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Data
-@Builder
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@NoArgsConstructor
-@ToString
-public class GroupUsersEntity implements Serializable {
+@Builder
+public class GroupUsersEntity {
 
     @Id @GeneratedValue
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    private UserEntity user;
+    private Long userId;
+    private String user_name;
+    private String profilePath;
 
     @Enumerated(EnumType.STRING)
     private GroupUsersEnumType authorization;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userRoomId")
+    @JoinColumn(name = "group_id")
     @JsonIgnore
-    private GroupChatRoomEntity groupChatRoomEntity;
-
-    @OneToMany(mappedBy = "writer")
-    @JsonIgnore
-    private List<GroupCommentEntity> groupCommentEntity;
-
-    @OneToMany(mappedBy = "groupUsersEntity")
-    @JsonIgnore
-    private List<GroupBoardEntity> groupBoardEntity;
+    private GroupEntity groupEntity;
 
     @CreationTimestamp
     private Timestamp regTime;

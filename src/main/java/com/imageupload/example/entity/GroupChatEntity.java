@@ -4,21 +4,19 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.io.Serializable;
 import java.sql.Time;
 import java.sql.Timestamp;
 
 @Entity
-@Data
-@NoArgsConstructor
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class GroupChatEntity {
+public class GroupChatEntity{
 
     @Id @GeneratedValue
     private Long id;
@@ -31,7 +29,7 @@ public class GroupChatEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "roomId")
     @JsonIgnore
-    private GroupChatRoomEntity roomId;
+    private GroupEntity groupEntity;
 
     @CreationTimestamp
     private Timestamp localDate;

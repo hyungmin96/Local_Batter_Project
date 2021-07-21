@@ -1,22 +1,17 @@
 package com.imageupload.example.entity;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-
 import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@Data
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@NoArgsConstructor
 @Builder
-public class GroupCommentEntity {
+public class GroupCommentEntity{
 
     @Id @GeneratedValue
     private Long commentId;
@@ -27,7 +22,7 @@ public class GroupCommentEntity {
     private Timestamp regDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "writer_id")
+    @JoinColumn(name = "writer")
     private GroupUsersEntity writer;
 
     @ManyToOne

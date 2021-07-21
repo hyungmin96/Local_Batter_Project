@@ -1,9 +1,14 @@
 package com.imageupload.example.controllers.restcontroller;
 
 import com.imageupload.example.dto.GroupBoardDTO;
+import com.imageupload.example.dto.GroupCommentDTO;
+import com.imageupload.example.dto.GroupUserInfoDTO;
 import com.imageupload.example.entity.GroupBoardEntity;
+import com.imageupload.example.entity.GroupCommentEntity;
 import com.imageupload.example.entity.GroupUsersEntity;
+import com.imageupload.example.entity.UserEntity;
 import com.imageupload.example.repositories.GroupBoardRepository;
+import com.imageupload.example.repositories.GroupUsersRepository;
 import com.imageupload.example.services.GroupBoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,16 +26,36 @@ public class GroupRestController {
 
     private final GroupBoardService groupBoardService;
     private final GroupBoardRepository groupBoardRepository;
+    private final GroupUsersRepository groupUsersRepository;
+    private final HttpSession session;
+
+    @GetMapping("/get/userInfo")
+    public GroupUserInfoDTO getUserInfo(){
+
+        UserEntity userEntity = (UserEntity) session.getAttribute("user_id");
+
+        GroupUserInfoDTO groupUserInfoDTO = new GroupUserInfoDTO();
+//        groupUserInfoDTO.setUser_id(item.getId());
+//        groupUserInfoDTO.setUser_name(item.getUser().getUsername());
+//        groupUserInfoDTO.setUser_profile(item.getUser().getProfile().getProfilePath());
+
+        return groupUserInfoDTO;
+    }
 
     @PostMapping("/board/comment/write")
-    public ResponseEntity<String> commentWrite(HttpSession session,@RequestParam Long boardId, @RequestParam String comment){
+    public ResponseEntity<GroupCommentDTO> commentWrite(@RequestParam Long boardId, @RequestParam String comment){
 
         GroupBoardEntity groupBoardEntity = groupBoardRepository.findById(boardId).get();
         GroupUsersEntity groupUsersEntity = (GroupUsersEntity) session.getAttribute("group_user_entity");
 
-        groupBoardService.commentWrite(groupBoardEntity, groupUsersEntity, comment);
+        GroupCommentEntity commentEntity = groupBoardService.commentWrite(groupBoardEntity, groupUsersEntity, comment);
 
-        return new ResponseEntity<String>("Success", HttpStatus.OK);
+        GroupCommentDTO commentDTO = new GroupCommentDTO();
+        commentDTO.setComment_id(commentEntity.getCommentId());
+        commentDTO.setComment(commentEntity.getComment());
+        commentDTO.setDate(commentEntity.getRegDate());
+
+        return new ResponseEntity<>(commentDTO, HttpStatus.OK);
     }
 
     @PostMapping("/board/delete")
@@ -40,7 +65,7 @@ public class GroupRestController {
     }
 
     @PostMapping("/board/post")
-    public ResponseEntity<String> groupPostContent(HttpSession session , GroupBoardDTO groupBoardDTO){
+    public ResponseEntity<String> groupPostContent(GroupBoardDTO groupBoardDTO){
         GroupUsersEntity groupUsersEntity = (GroupUsersEntity) session.getAttribute("group_user_entity");
         groupBoardService.post(groupUsersEntity, groupBoardDTO);
         return new ResponseEntity<String>("Success", HttpStatus.OK);

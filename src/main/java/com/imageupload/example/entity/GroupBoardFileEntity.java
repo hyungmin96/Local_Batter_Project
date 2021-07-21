@@ -1,17 +1,14 @@
 package com.imageupload.example.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@Data
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@NoArgsConstructor
 @Builder
 public class GroupBoardFileEntity {
 
@@ -22,7 +19,7 @@ public class GroupBoardFileEntity {
     private String path;
     private Long size;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "BoardId")
     @JsonIgnore
     private GroupBoardEntity groupBoard;

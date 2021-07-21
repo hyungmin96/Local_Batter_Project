@@ -121,6 +121,7 @@ function loadGroupChatRoomList(e, page = 0){
 
             $.each(response.content, function(key, value){
 
+                console.log(value)
                 GroupChatRoomArray.push(value);
 
                 var files = (value.files.length > 0) ? value.files[0].name : '';
@@ -129,11 +130,10 @@ function loadGroupChatRoomList(e, page = 0){
                     "<div id='item__box__" + key + "' onclick='javascript:showModal(); showDataToModal(this);' class='Group__item__box'>" + 
                     "<img src=/upload/" + files + ">" +
                     "<div class='Group__room__content'>" +
-                        "<div class = 'Group__room__title'>" + value.roomTitle + "</div>" +
+                        "<div class = 'Group__room__title'>" + value.title + "</div>" +
                             "<div class='user_number'>" +
                                 "<span>인원 : </span>" +
-                                "<span class = 'Group__room__users'>" + value.users.length + "명</span>" + ' / ' +
-                                "<span class = 'Group__room__limit'>" + value.limitUsers + "명</span>" +
+                                "<span class = 'Group__room__users'>" + value.users.length + "명</span>" +
                             "</div>" +
                         "</div>" +
                         "</div>" +
