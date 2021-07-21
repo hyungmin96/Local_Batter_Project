@@ -127,7 +127,6 @@ function getBoardList(){
 
                 $.each(response.content, function(key, value){
                     commentJsonObject.push({ [value.boardId] : value.comments})
-                    console.log(value)
 
                     $('#contentWrapper').append(
                         "<input type='hidden' value=" + value.boardId + ">" +
@@ -135,11 +134,11 @@ function getBoardList(){
                         "<input type='hidden' class='boardId' value=" + value.boardId + ">" +
                         "<div class='contentItemBox'>" +
                         "<div class='contentAuthorBox'>" +
-                        "<div><img class='board _userProfileImg' src=/upload/" + value.groupUsersEntity.user.profile.profilePath + "></div>" +
+                        "<div><img class='board _userProfileImg' src=/upload/" + value.groupUsersEntity.profilePath + "></div>" +
                         "<div class='contentInfoBox'>" +
                         "<div style='width: 100%; display: inline-flex; justify-content: space-between;'>" +
                         "<div>" +
-                        "<div class='board _username'>" + value.groupUsersEntity.user.username + "</div>" +
+                        "<div class='board _username'>" + value.groupUsersEntity.user_name + "</div>" +
                         "<div class='board _regDate'>" + new Date(value.regDate).toLocaleTimeString() + "</div>" +
                         "</div>" +
                         "<div onclick='deletePost(" + value.boardId + ")' className='boardMenuButton'><img style='cursor: pointer; object-fit: cover;' src='/images/menu_14px.png'></div>" +

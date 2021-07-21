@@ -1,6 +1,7 @@
 let GroupRoomInfoImgs = [];
 let chatRoomImgDeleteIndex = [-1];
 let roomValue;
+var index;
 
 $(document).ready(function(){
     $('#smartwizard').smartWizard({

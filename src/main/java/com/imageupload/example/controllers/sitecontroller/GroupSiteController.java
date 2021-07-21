@@ -21,8 +21,11 @@ public class GroupSiteController {
     @GetMapping("/group/room/{room_id}")
     public String getGrouproom(@PathVariable Long room_id){
 
+        UserEntity userEntity = (UserEntity) session.getAttribute("userId");
         GroupEntity groupEntity = groupService.findRoom(room_id);
+
         session.setAttribute("Group_room_id", groupEntity);
+        session.setAttribute("userId", userEntity);
 
         return "/group/grouproom";
     }

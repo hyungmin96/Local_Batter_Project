@@ -8,8 +8,8 @@ import lombok.Setter;
 
 @Setter @Getter
 public class GroupBoardFileDTO {
-    private String path;
     private String name;
+    private String path;
     private GroupBoardEntity boardId;
     private int size;
 

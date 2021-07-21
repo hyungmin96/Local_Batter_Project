@@ -2,7 +2,7 @@ package com.imageupload.example.controllers.restcontroller;
 
 import com.imageupload.example.dto.GroupBoardDTO;
 import com.imageupload.example.dto.GroupCommentDTO;
-import com.imageupload.example.dto.GroupUserInfoDTO;
+import com.imageupload.example.dto.GroupUsersDTO;
 import com.imageupload.example.entity.GroupBoardEntity;
 import com.imageupload.example.entity.GroupCommentEntity;
 import com.imageupload.example.entity.GroupUsersEntity;
@@ -30,11 +30,11 @@ public class GroupRestController {
     private final HttpSession session;
 
     @GetMapping("/get/userInfo")
-    public GroupUserInfoDTO getUserInfo(){
+    public GroupUsersDTO getUserInfo(){
 
         UserEntity userEntity = (UserEntity) session.getAttribute("user_id");
 
-        GroupUserInfoDTO groupUserInfoDTO = new GroupUserInfoDTO();
+        GroupUsersDTO groupUserInfoDTO = new GroupUsersDTO();
 //        groupUserInfoDTO.setUser_id(item.getId());
 //        groupUserInfoDTO.setUser_name(item.getUser().getUsername());
 //        groupUserInfoDTO.setUser_profile(item.getUser().getProfile().getProfilePath());

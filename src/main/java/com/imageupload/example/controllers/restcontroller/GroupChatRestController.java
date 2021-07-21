@@ -34,7 +34,7 @@ public class GroupChatRestController {
 
     @PostMapping("/delete")
     public ResponseEntity<String> deleteRoom(@RequestParam Long roomId, @RequestParam String username){
-        groupService.deleteRoom(session, roomId, username);
+        groupService.deleteRoom(roomId, username);
         return new ResponseEntity<String>("Success", HttpStatus.OK);
     }
 
@@ -50,7 +50,7 @@ public class GroupChatRestController {
                 .build();
 
         groupChatService.sendGroupRoomToChat(messageDTO);
-        groupService.exitRoom(session, roomId);
+        groupService.exitRoom(roomId);
         return new ResponseEntity<String>("Success", HttpStatus.OK);
     }
 
@@ -82,7 +82,7 @@ public class GroupChatRestController {
 
     @PostMapping("/create")
     public ResponseEntity<String> createGroupRoom(GroupInfoDTO GroupDTO){
-        groupService.createGroupRoom(session, GroupDTO);
+        groupService.createGroupRoom(GroupDTO);
         return new ResponseEntity<String>("success", HttpStatus.OK);
     }
 

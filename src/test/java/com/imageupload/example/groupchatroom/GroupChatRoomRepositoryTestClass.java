@@ -68,27 +68,29 @@ public class GroupChatRoomRepositoryTestClass {
 
         GroupBoardRepository.deleteAll();
 
-        for(int i = 1; i <= 155; i++){
+        GroupUsersEntity groupUsersEntity = GroupUsersRepository.getOne(3L);
+
+        for(int i = 1; i <= 50; i++){
             List<GroupBoardFileEntity> GroupBoardFiles = new ArrayList<>();
 
             GroupBoardDTO groupBoardDTO = new GroupBoardDTO();
-            groupBoardDTO.setGroupId(1L);
+            groupBoardDTO.setGroupId(3L);
             groupBoardDTO.setContent("test content");
-            groupBoardDTO.setUser_id("1");
-            groupBoardDTO.setUser_name("test");
-            groupBoardDTO.setProfile_img("test");
+            groupBoardDTO.setUser(groupUsersEntity);
+
+            GroupBoardEntity groupBoardEntity = groupBoardDTO.toEntity();
+            GroupBoardRepository.save(groupBoardEntity);
 
             GroupBoardFileDTO groupBoardFileDTO = new GroupBoardFileDTO();
             groupBoardFileDTO.setPath(root + "6d2cb620-6add-4fb1-8efa-771458093a6b.jpg");
             groupBoardFileDTO.setName("6d2cb620-6add-4fb1-8efa-771458093a6b.jpg");
-            groupBoardFileDTO.setBoardId(groupBoardDTO.toEntity());
-            groupBoardFileDTO.setSize(312155);
+            groupBoardFileDTO.setBoardId(groupBoardEntity);
 
-            GroupBoardFiles.add(groupBoardFileDTO.toEntity());
+            GroupBoardFileEntity groupBoardFileEntity = groupBoardFileDTO.toEntity();
+            GroupBoardFiles.add(groupBoardFileEntity);
 
             groupBoardFileRepository.saveAll(GroupBoardFiles);
 
-            GroupBoardRepository.save(groupBoardDTO.toEntity());
         }
     }
 
@@ -117,10 +119,9 @@ public class GroupChatRoomRepositoryTestClass {
 
             GroupEntity groupEntity = groupInfoDTO.toEntity();
 
-            GroupUserInfoDTO groupUserInfoDTO = new GroupUserInfoDTO();
-            groupUserInfoDTO.setUser_name("test");
+            GroupUsersDTO groupUserInfoDTO = new GroupUsersDTO();
+//            groupUserInfoDTO.setUser(user);
             groupUserInfoDTO.setAuthorization(GroupUsersEnumType.member);
-            groupUserInfoDTO.setProfilePath("/upload/00d923a2-2841-45ba-a75b-5ca2c9db3143.jpg");
             groupUserInfoDTO.setGroupEntity(groupEntity);
 
             GroupFileDTO groupFileDTO = new GroupFileDTO();
@@ -130,8 +131,6 @@ public class GroupChatRoomRepositoryTestClass {
 
             groupRepository.save(groupEntity);
             groupUsersRepository.save(groupUserInfoDTO.toEntity());
-
-//            GroupFileRepository.save(groupFileDTO.toEntity());
 
         }
     }

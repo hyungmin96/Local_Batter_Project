@@ -25,9 +25,8 @@ public class GroupUsersEntity {
     @Id @GeneratedValue
     private Long id;
 
-    private Long userId;
-    private String user_name;
-    private String profilePath;
+    @OneToOne(fetch = FetchType.LAZY)
+    private UserEntity user;
 
     @Enumerated(EnumType.STRING)
     private GroupUsersEnumType authorization;
