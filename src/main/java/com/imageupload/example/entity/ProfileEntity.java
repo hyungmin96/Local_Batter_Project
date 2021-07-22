@@ -5,13 +5,11 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -28,9 +26,8 @@ public class ProfileEntity implements Serializable {
     private String location;
     private String accountNumber;
     private String preferTime;
-    
-    @OneToOne(mappedBy = "profile", fetch = FetchType.LAZY)
-    @JsonIgnore
+
+    @OneToOne(mappedBy = "profile")
     private UserEntity user;
 
 }

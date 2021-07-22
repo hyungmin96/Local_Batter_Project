@@ -35,9 +35,9 @@ public class GroupRestController {
         UserEntity userEntity = (UserEntity) session.getAttribute("user_id");
 
         GroupUsersDTO groupUserInfoDTO = new GroupUsersDTO();
-//        groupUserInfoDTO.setUser_id(item.getId());
-//        groupUserInfoDTO.setUser_name(item.getUser().getUsername());
-//        groupUserInfoDTO.setUser_profile(item.getUser().getProfile().getProfilePath());
+        groupUserInfoDTO.setUser_id(userEntity.getId());
+        groupUserInfoDTO.setUser_name(userEntity.getUsername());
+        groupUserInfoDTO.setProfilePath(userEntity.getProfile().getProfilePath());
 
         return groupUserInfoDTO;
     }
@@ -66,8 +66,11 @@ public class GroupRestController {
 
     @PostMapping("/board/post")
     public ResponseEntity<String> groupPostContent(GroupBoardDTO groupBoardDTO){
+
         GroupUsersEntity groupUsersEntity = (GroupUsersEntity) session.getAttribute("group_user_entity");
-        groupBoardService.post(groupUsersEntity, groupBoardDTO);
+        groupBoardDTO.setUser(groupUsersEntity);
+
+        groupBoardService.post(groupBoardDTO);
         return new ResponseEntity<String>("Success", HttpStatus.OK);
     }
 

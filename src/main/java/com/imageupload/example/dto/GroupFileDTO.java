@@ -16,6 +16,7 @@ public class GroupFileDTO {
         return GroupFileEntity.builder()
                 .name(name)
                 .path(path)
+                .groupEntity(groupEntity)
                 .build();
     }
 

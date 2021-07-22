@@ -6,6 +6,6 @@ import com.imageupload.example.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface GroupUsersRepository extends JpaRepository<GroupUsersEntity, Long>{
-    GroupUsersEntity findBygroupEntityAndUserId(GroupEntity groupEntity, Long UserId);
-    GroupUsersEntity findByUserId(Long UserId);
+    GroupUsersEntity findByuserIdAndGroupEntity(Long userId, GroupEntity groupEntity);
+    GroupUsersEntity findByuserId(Long userId);
 }

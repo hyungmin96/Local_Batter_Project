@@ -40,7 +40,6 @@ public class GroupChatRestController {
 
     @PostMapping("/exit")
     public ResponseEntity<String> exitRoom(@RequestParam Long roomId, @RequestParam String username){
-
         GroupChatMessageDTO messageDTO = GroupChatMessageDTO.builder()
                 .roomId(roomId)
                 .type("exit")
@@ -67,10 +66,10 @@ public class GroupChatRestController {
                         .build();
 
                 groupChatService.sendGroupRoomToChat(messageDTO);
-                return new ResponseEntity<String>("Success", HttpStatus.OK);
             case enter:
                 return new ResponseEntity<String>("Enter", HttpStatus.OK);
         }
+
         return new ResponseEntity<String>("Failed - exceed Users number", HttpStatus.BAD_REQUEST);
     }
 

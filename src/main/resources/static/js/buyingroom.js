@@ -101,8 +101,8 @@ function getUserInfo(){
             console.log(response)
             userInfoObject.push({
                 id: response.id,
-                username: response.user.profile.nickname,
-                profile: response.user.profile.profilePath
+                username: response.nickname,
+                profile: response.profilePath
             })
         }
     })
@@ -111,72 +111,80 @@ function getUserInfo(){
 var page = 0;
 var display = 12;
 var commentJsonObject = [];
+var lastPage = false;
 function getBoardList(){
     var data = {groupId: $('.groupId').val(), display: display, page: page}
 
-    $.ajax({
-        url: '/api/group/get_board_list',
-        type: 'GET',
-        data: data,
-        success: function(response){
+    if(!lastPage){
 
-            if(response.content.length > 1){
+        $.ajax({
+            url: '/api/group/get_board_list',
+            type: 'GET',
+            data: data,
+            success: function(response){
 
-                $('.contentEmptyContiner').remove();
-                document.getElementsByClassName('_contentListWrapper')[0].setAttribute("style","hieght:500px");
+                console.log(response)
+                if(response.last == true) lastPage = true;
 
-                $.each(response.content, function(key, value){
-                    commentJsonObject.push({ [value.boardId] : value.comments})
+                if(response.content.length > 0){
 
-                    $('#contentWrapper').append(
-                        "<input type='hidden' value=" + value.boardId + ">" +
-                        "<div class='boardItemBox' style='margin-bottom: 20px; box-shadow: 0 2px 3px 0 rgba(161, 161, 161, 0.12);'>" +
-                        "<input type='hidden' class='boardId' value=" + value.boardId + ">" +
-                        "<div class='contentItemBox'>" +
-                        "<div class='contentAuthorBox'>" +
-                        "<div><img class='board _userProfileImg' src=/upload/" + value.groupUsersEntity.profilePath + "></div>" +
-                        "<div class='contentInfoBox'>" +
-                        "<div style='width: 100%; display: inline-flex; justify-content: space-between;'>" +
-                        "<div>" +
-                        "<div class='board _username'>" + value.groupUsersEntity.user_name + "</div>" +
-                        "<div class='board _regDate'>" + new Date(value.regDate).toLocaleTimeString() + "</div>" +
-                        "</div>" +
-                        "<div onclick='deletePost(" + value.boardId + ")' className='boardMenuButton'><img style='cursor: pointer; object-fit: cover;' src='/images/menu_14px.png'></div>" +
-                        "</div>" +
-                        "</div>" +
-                        "</div>" +
-                        "<div class='board _content' style='padding: 10px 10px 0 10px;'>" + value.content + "</div>" +
-                        imgShow(value.boardId, value.files) +
-                        "<div style='display: inline-flex'>" +
-                        "<div class='boardInfo _likeButton'>" +
-                        "<img src=/images/group/heart_22px.png> " + value.boardLike +
-                        "</div>" +
-                        "<div class='boardInfo _commentButton'>" +
-                        "<img src=/images/group/chat_bubble_22px.png> " + value.comments.length +
-                        "</div>" +
-                        "</div>" +
-                        "</div>" +
-                        "<div class='board _eventBottom'>" +
-                        "<div class='eventButtonContainer eventButton _emotionBtn'><img style='margin: 0 4px 4px 0;' src='/images/group/facebook_like_21px.png'>좋아요</div>" +
-                        "<div class='eventButtonContainer eventButton _commentBtn'><img style='margin: 0 4px 4px 0;' src='/images/group/speech_21px.png'>덧글작성</div>" +
-                        "</div>"+
-                        "<div class='boardCommentView' style='background-color: white;'>" +
-                        "<div class='commentListView'>" +
+                    $('.contentEmptyContiner').remove();
+                    document.getElementsByClassName('_contentListWrapper')[0].setAttribute("style","hieght:500px");
 
-                        "</div>" +
-                        "<div class='commentInputBox'>" +
+                    $.each(response.content, function(key, value){
 
-                        "</div>" +
-                        "</div>" +
-                        "</div>"
-                    );
-                })
+                        commentJsonObject.push({ [value.boardId] : value.comments})
 
-            }else document.getElementsByClassName('emptyIcon')[0].style.display = 'block';
-        }
-    })
+                        $('#contentWrapper').append(
+                            "<input type='hidden' value=" + value.boardId + ">" +
+                            "<div class='boardItemBox' style='margin-bottom: 20px; box-shadow: 0 2px 3px 0 rgba(161, 161, 161, 0.12);'>" +
+                            "<input type='hidden' class='boardId' value=" + value.boardId + ">" +
+                            "<div class='contentItemBox'>" +
+                            "<div class='contentAuthorBox'>" +
+                            "<div><img class='board _userProfileImg' src=/upload/" + value.groupUsersEntity.profilePath + "></div>" +
+                            "<div class='contentInfoBox'>" +
+                            "<div style='width: 100%; display: inline-flex; justify-content: space-between;'>" +
+                            "<div>" +
+                            "<div class='board _username'>" + value.groupUsersEntity.userName + "</div>" +
+                            "<div class='board _regDate'>" + new Date(value.regDate).toLocaleTimeString() + "</div>" +
+                            "</div>" +
+                            "<div onclick='deletePost(" + value.boardId + ")' className='boardMenuButton'><img style='cursor: pointer; object-fit: cover;' src='/images/menu_14px.png'></div>" +
+                            "</div>" +
+                            "</div>" +
+                            "</div>" +
+                            "<div class='board _content' style='padding: 10px 10px 0 10px;'>" + value.content + "</div>" +
+                            imgShow(value.boardId, value.files) +
+                            "<div style='display: inline-flex'>" +
+                            "<div class='boardInfo _likeButton'>" +
+                            "<img src=/images/group/heart_22px.png> " + value.boardLike +
+                            "</div>" +
+                            "<div class='boardInfo _commentButton'>" +
+                            "<img src=/images/group/chat_bubble_22px.png> " + value.comments.length +
+                            "</div>" +
+                            "</div>" +
+                            "</div>" +
+                            "<div class='board _eventBottom'>" +
+                            "<div class='eventButtonContainer eventButton _emotionBtn'><img style='margin: 0 4px 4px 0;' src='/images/group/facebook_like_21px.png'>좋아요</div>" +
+                            "<div class='eventButtonContainer eventButton _commentBtn'><img style='margin: 0 4px 4px 0;' src='/images/group/speech_21px.png'>덧글작성</div>" +
+                            "</div>"+
+                            "<div class='boardCommentView' style='background-color: white;'>" +
+                            "<div class='commentListView'>" +
 
-    page++;
+                            "</div>" +
+                            "<div class='commentInputBox'>" +
+
+                            "</div>" +
+                            "</div>" +
+                            "</div>"
+                        );
+                    })
+
+                }else if(page == 0) document.getElementsByClassName('emptyIcon')[0].style.display = 'block';
+            }
+        })
+        page++;
+
+    }
 }
 
 $(function(){

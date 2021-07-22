@@ -119,13 +119,13 @@
             </div>
             <div class="card-body" style="flex-wrap: wrap; overflow: scroll; padding: 0">
                 <div class="userList" style="display: flex; flex-direction: column;">
-                    <c:forEach var="item" items="${Group_room_id.users}" varStatus="status">
+                    <c:forEach var="item" items="${group_users_entity}" varStatus="status">
                         <div class="userList _userItemBox" style="cursor: pointer;">
                             <div class="userProfileBox">
                                 <img src="/upload/${item.profilePath}">
                             </div>
                             <div class="userName" style="margin: auto 0 auto 8px;">
-                                ${item.user_name}
+                                ${item.userName}
                             </div>
                         </div>
                     </c:forEach>

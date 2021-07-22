@@ -16,7 +16,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class GroupChatEntity{
+public class GroupChatEntity implements Serializable{
 
     @Id @GeneratedValue
     private Long id;

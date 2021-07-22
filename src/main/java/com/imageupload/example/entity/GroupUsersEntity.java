@@ -20,13 +20,14 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class GroupUsersEntity {
+public class GroupUsersEntity implements Serializable {
 
     @Id @GeneratedValue
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    private UserEntity user;
+    private Long userId;
+    private String userName;
+    private String profilePath;
 
     @Enumerated(EnumType.STRING)
     private GroupUsersEnumType authorization;

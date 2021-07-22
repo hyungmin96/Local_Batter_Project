@@ -175,6 +175,8 @@ public class RepositoryTestClass{
     @Test
     public void 회원가입_테스트(){
 
+        userRepository.deleteAll();
+
         for(int i = 1; i < 61; i ++){
 
             NotificationEntity notificationEntity = NotificationEntity.builder()
@@ -201,7 +203,7 @@ public class RepositoryTestClass{
             .notification(notificationEntity)
             .Role(Role.ROLE_USER)
             .build();
-            
+
             userRepository.save(user);
 
         }

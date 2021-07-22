@@ -2,7 +2,6 @@ package com.imageupload.example.dto;
 
 import com.imageupload.example.entity.GroupBoardEntity;
 import com.imageupload.example.entity.GroupBoardFileEntity;
-import com.imageupload.example.entity.GroupFileEntity;
 import lombok.Getter;
 import lombok.Setter;
 
