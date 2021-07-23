@@ -1,14 +1,26 @@
 package com.imageupload.example.dto;
 
+import com.imageupload.example.entity.GroupBoardEntity;
+import com.imageupload.example.entity.GroupCommentEntity;
+import com.imageupload.example.entity.GroupUsersEntity;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.sql.Timestamp;
 
 @Getter @Setter
 public class GroupCommentDTO {
     private Long comment_id;
-    private String user_name;
+    private Long boardId;
+    private String regDate;
+    private GroupUsersEntity writer;
     private String comment;
-    private Timestamp date;
+    private GroupBoardEntity groupBoard;
+
+    public GroupCommentEntity toEntity(){
+        return GroupCommentEntity.builder()
+                .comment(comment)
+                .writer(writer)
+                .groupBoard(groupBoard)
+                .build();
+    }
+
 }

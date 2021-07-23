@@ -1,50 +1,4 @@
 
-
-function get_comments(){
-
-    var data = {
-        groupId: '',
-        boardId: ''
-    }
-
-    $.ajax({
-        url: '/api/group/get_comments',
-        type: 'GET',
-        data: data,
-        success: function(response){
-
-        }
-    })
-}
-
-function commentWrite(e, boardId, userId, comment){
-
-    var data = {
-        boardId: boardId,
-        userId: userId,
-        comment: comment
-    }
-
-    $.ajax({
-
-        url: '/api/group/board/comment/write',
-        type: 'POST',
-        contentType: 'application/x-www-form-urlencoded',
-        data: data,
-        dataType: 'JSON',
-        success: function (response){
-            var commentList = $(e).closest('.boardItemBox')[0].childNodes[3].childNodes[0];
-
-            commentBox(commentList,
-                response.comment_id,
-                userInfoObject[0].profile,
-                userInfoObject[0].username,
-                response.comment,
-                new Date(response.date).toLocaleString())
-        }
-    })
-}
-
 function deletePost(boardId){
 
     var data = {
@@ -91,23 +45,6 @@ function postContent(){
     })
 }
 
-
-var userInfoObject = [];
-function getUserInfo(){
-    $.ajax({
-        url: '/api/group/get/userInfo',
-        type: "GET",
-        success: function (response){
-            console.log(response)
-            userInfoObject.push({
-                id: response.id,
-                username: response.nickname,
-                profile: response.profilePath
-            })
-        }
-    })
-}
-
 var page = 0;
 var display = 12;
 var commentJsonObject = [];
@@ -123,7 +60,6 @@ function getBoardList(){
             data: data,
             success: function(response){
 
-                console.log(response)
                 if(response.last == true) lastPage = true;
 
                 if(response.content.length > 0){
@@ -154,12 +90,14 @@ function getBoardList(){
                             "</div>" +
                             "<div class='board _content' style='padding: 10px 10px 0 10px;'>" + value.content + "</div>" +
                             imgShow(value.boardId, value.files) +
-                            "<div style='display: inline-flex'>" +
-                            "<div class='boardInfo _likeButton'>" +
-                            "<img src=/images/group/heart_22px.png> " + value.boardLike +
+                            "<div style='display: inline-flex; margin-top: 15px;'>" +
+                            "<div style='display: inline-flex;' class='boardInfo _likeButton'>" +
+                            "<div class='commentLikeBox'><img src=/images/group/heart_22px.png></div>" +
+                            "<div style='margin-left: 5px; padding: 0' class='boardInfo commentLikeBox'>" + value.boardLike + "</div>" +
                             "</div>" +
-                            "<div class='boardInfo _commentButton'>" +
-                            "<img src=/images/group/chat_bubble_22px.png> " + value.comments.length +
+                            "<div style='display: inline-flex' class='boardInfo _commentButton'>" +
+                            "<div class='commentIconBox'><img src=/images/group/chat_bubble_22px.png></div>" +
+                            "<div style='margin-left: 5px; padding: 0' class='boardInfo commentCountBox'>" + value.comments.length + "</div>" +
                             "</div>" +
                             "</div>" +
                             "</div>" +
@@ -168,8 +106,8 @@ function getBoardList(){
                             "<div class='eventButtonContainer eventButton _commentBtn'><img style='margin: 0 4px 4px 0;' src='/images/group/speech_21px.png'>덧글작성</div>" +
                             "</div>"+
                             "<div class='boardCommentView' style='background-color: white;'>" +
-                            "<div class='commentListView'>" +
-
+                            "<div style='display: none;' class='commentListView'>" +
+                            commentBox(value.comments) +
                             "</div>" +
                             "<div class='commentInputBox'>" +
 
@@ -179,16 +117,45 @@ function getBoardList(){
                         );
                     })
 
-                }else if(page == 0) document.getElementsByClassName('emptyIcon')[0].style.display = 'block';
+                }else document.getElementsByClassName('emptyIcon')[0].style.display = 'block';
             }
         })
         page++;
-
     }
 }
 
-$(function(){
+function commentBox(comments){
 
+    var result = '';
+
+    if(comments.length > 0){
+        for(let i = 0; i < comments.length; i ++){
+            var date = (comments[i].regDate == null) ? new Date().toLocaleString([], {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit'}) : new Date(comments[i].regDate).toLocaleString([], {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit'})
+            result +=
+                    "<div id=commentId_" + comments[i].commentId + " class='commentList _commentBox'>" +
+                        "<div class='commentProfileBox'>" +
+                        "<img src=/upload/" + comments[i].writer.profilePath + ">" +
+                        "</div>" +
+                    "<div class='userInfoComment'>" +
+                        "<div class='commentUsername'>" +
+                            comments[i].writer.userName +
+                        "</div>" +
+                        "<div class='commentContentBox'>" +
+                            comments[i].comment +
+                        "</div>" +
+                        "<div class='commentRegTime'>" +
+                            date +
+                        "</div>" +
+                    "<img class='commentMenuButton' src='/images/menu_14px.png'>" +
+                    "</div>" +
+                    "</div>"
+        }
+    }
+    return result;
+}
+
+
+$(function(){
     $('._imgUploadDialog').click(function (){
         $('#uploadFile').click();
     })
@@ -253,7 +220,13 @@ $(document).on('click', '._commentBtn', function(){
 
 // 덧글목록 element 생성
 $(document).on('click', '._commentButton', function (){
-    showCommentList(this);
+    var index = $('._commentButton').index(this);
+
+    if(document.getElementsByClassName('commentListView')[index].style.display == 'none')
+        document.getElementsByClassName('commentListView')[index].style.display = 'block';
+    else
+        document.getElementsByClassName('commentListView')[index].style.display = 'none';
+
     showCommentInputBox(this);
 });
 
@@ -282,11 +255,43 @@ function showCommentInputBox(e){
     }
 }
 
+// comment Write
 $(document).on('click', '.commentSendBtn', function(){
     var boardId = $(this).closest('.boardItemBox')[0].children[0].value;
+    var index = $('.commentSendBtn').index(this);
     var userId = $(document)[0].all[57].value;
     var commentValue = $(this).closest('.boardItemBox').children()[3].children[1].children[0].children[0].value;
-    commentWrite(this, boardId, userId, commentValue);
+
+    var commentInfoArray = [];
+
+    var data = {
+        boardId: boardId,
+        userId: userId,
+        comment: commentValue,
+    }
+
+    $.ajax({
+
+        url: '/api/group/board/comment/write',
+        type: 'POST',
+        contentType: 'application/x-www-form-urlencoded',
+        data: data,
+        dataType: 'JSON',
+        success: function (response){
+            commentInfoArray.push(response)
+            document.getElementsByClassName('commentListView')[index].style.display = 'block';
+
+            var xmlString = commentBox(commentInfoArray);
+            var wrapper= document.createElement('div');
+            wrapper.innerHTML= xmlString;
+
+            $('.commentListView')[index].append(
+                wrapper.firstChild
+            )
+            $('.commentCountBox')[index].innerText = ($('.commentCountBox')[index].innerText * 1) + 1;
+        }
+    })
+    $(this).closest('.boardItemBox').children()[3].children[1].children[0].children[0].value = '';
 })
 
 function imgShow(id, fileArray){
@@ -343,10 +348,6 @@ $(document).scroll(function() {
     if($(window).scrollTop() + $(window).height() == getDocHeight())
         getBoardList();
 });
-
-$(document).ready(function(){
-    getUserInfo();
-})
 
 function getDocHeight() {
     var D = document;

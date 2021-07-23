@@ -4,6 +4,7 @@ import com.imageupload.example.components.GenerateFile;
 import com.imageupload.example.dto.GenerateFileDTO;
 import com.imageupload.example.dto.GroupBoardDTO;
 import com.imageupload.example.dto.GroupBoardFileDTO;
+import com.imageupload.example.dto.GroupCommentDTO;
 import com.imageupload.example.entity.GroupBoardEntity;
 import com.imageupload.example.entity.GroupBoardFileEntity;
 import com.imageupload.example.entity.GroupCommentEntity;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,18 +28,20 @@ public class GroupBoardService {
     private final GroupBoardRepository groupBoardRepository;
     private final GroupCommentRepository groupCommentRepository;
     private final GroupBoardFileRepository groupBoardFileRepository;
+    private final HttpSession session;
 
-    public GroupCommentEntity commentWrite(GroupBoardEntity groupBoardEntity, GroupUsersEntity groupUsersEntity, String comment){
+    public void commentWrite(GroupCommentDTO groupCommentDTO){
 
-        GroupCommentEntity groupCommentEntity = GroupCommentEntity.builder()
-                .comment(comment)
-                .writer(groupUsersEntity)
-                .groupBoard(groupBoardEntity)
-                .build();
+        GroupUsersEntity groupUsersEntity = (GroupUsersEntity) session.getAttribute("group_user_entity");
+        GroupBoardEntity groupBoardEntity = groupBoardRepository.getOne(groupCommentDTO.getBoardId());
+
+        groupCommentDTO.setGroupBoard(groupBoardEntity);
+        groupCommentDTO.setWriter(groupUsersEntity);
+
+        GroupCommentEntity groupCommentEntity = groupCommentDTO.toEntity();
 
         groupCommentRepository.save(groupCommentEntity);
 
-        return groupCommentEntity;
     }
 
     public void delete(Long boardId, String username){

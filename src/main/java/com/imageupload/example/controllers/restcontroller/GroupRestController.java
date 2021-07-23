@@ -11,6 +11,7 @@ import com.imageupload.example.repositories.GroupBoardRepository;
 import com.imageupload.example.repositories.GroupUsersRepository;
 import com.imageupload.example.services.GroupBoardService;
 import lombok.RequiredArgsConstructor;
+import org.joda.time.DateTime;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -25,8 +26,6 @@ import javax.servlet.http.HttpSession;
 public class GroupRestController {
 
     private final GroupBoardService groupBoardService;
-    private final GroupBoardRepository groupBoardRepository;
-    private final GroupUsersRepository groupUsersRepository;
     private final HttpSession session;
 
     @GetMapping("/get/userInfo")
@@ -43,19 +42,9 @@ public class GroupRestController {
     }
 
     @PostMapping("/board/comment/write")
-    public ResponseEntity<GroupCommentDTO> commentWrite(@RequestParam Long boardId, @RequestParam String comment){
-
-        GroupBoardEntity groupBoardEntity = groupBoardRepository.findById(boardId).get();
-        GroupUsersEntity groupUsersEntity = (GroupUsersEntity) session.getAttribute("group_user_entity");
-
-        GroupCommentEntity commentEntity = groupBoardService.commentWrite(groupBoardEntity, groupUsersEntity, comment);
-
-        GroupCommentDTO commentDTO = new GroupCommentDTO();
-        commentDTO.setComment_id(commentEntity.getCommentId());
-        commentDTO.setComment(commentEntity.getComment());
-        commentDTO.setDate(commentEntity.getRegDate());
-
-        return new ResponseEntity<>(commentDTO, HttpStatus.OK);
+    public ResponseEntity<GroupCommentDTO> commentWrite(GroupCommentDTO groupCommentDTO){
+        groupBoardService.commentWrite(groupCommentDTO);
+        return new ResponseEntity<>(groupCommentDTO, HttpStatus.OK);
     }
 
     @PostMapping("/board/delete")

@@ -6,9 +6,9 @@
 }
 
 .commentProfileBox img{
-    border: 1px solid #e6e3e3;
-    width: 35px;
-    height: 35px;
+    border: 1px solid #f9f5f5;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     object-fit: cover;
     cursor: pointer;
@@ -36,7 +36,7 @@
 }
 
 .userInfoComment{
-    margin: 0 0 0 15px;
+    margin: 0 0 0 5px;
     width: 100%;
 }
 
