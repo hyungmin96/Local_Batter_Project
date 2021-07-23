@@ -3,10 +3,7 @@ package com.imageupload.example.entity;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import javax.persistence.*;
-
-import com.imageupload.example.entity.UserEntity;
 import com.imageupload.example.repositories.UserJoinRommEnumType;
-
 import org.springframework.data.annotation.LastModifiedDate;
 import lombok.AllArgsConstructor;
 import lombok.Data;

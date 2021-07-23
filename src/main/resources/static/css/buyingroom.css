@@ -5,6 +5,74 @@
     padding: 0;
 }
 
+._noticeText{
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 12px;
+    color: #60a85f;
+    margin-right: 10px;
+}
+
+._noticeContentBox{
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px;
+    display: inline-flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 8px 23px 11px 20px;
+    border-bottom: 1px solid whitesmoke;
+}
+
+._noticeContent{
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    word-break: normal;
+    word-wrap: normal;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    color: #333;
+}
+
+._noticeContent:hover{
+    border-bottom: 1px solid #666565;
+}
+
+._noticeDate{
+    font-size: 11px;
+    color: #868484;
+}
+
+.boardMenuBox hr{
+    margin: 0;
+    height: 1px;
+    border: none;
+    background-color: #dbe1e6;
+}
+
+.boardmenu{
+    cursor: pointer;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 10px;
+}
+
+.boardmenu:hover{
+    background-color: #f1efef;
+}
+
+.boardMenuBox{
+    background-color: white;
+    position: relative;
+    width: 130px;
+    display: block;
+    z-index: 12;
+    top: 25px;
+    left: 0;
+    text-align: left;
+    -webkit-box-shadow: 0 0 0 1px rgb(175 170 170), 0 0 0 0 rgb(226 221 221);
+}
+
 .commentProfileBox img{
     border: 1px solid #f9f5f5;
     width: 40px;
@@ -194,6 +262,7 @@
 ._regDate{
     font-size: 11px;
     color: #a09a9a;
+    margin: auto auto;
 }
 
 ._userItemBox{
@@ -224,7 +293,7 @@
 }
 
 ._notice{
-    height: 180px;
+    height: 100%;
     background-color: white;
     margin-bottom: 20px;
 }
@@ -262,7 +331,7 @@
     transform: scale(1.2);
 }
 
-#chatroom_comment_box{
+#board_content_box{
     border: none;
     resize: none;
     width: 100%;
@@ -271,7 +340,7 @@
     font-size: 13px;
 }
 
-#chatroom_comment_box:focus{
+#board_content_box:focus{
     outline: none;
     border: none;
     resize: none;
@@ -317,9 +386,9 @@
 
 .room_inner_info hr{
     border: none;
-    background-color: #bbbbbb;
+    background-color: #b1afaf;
     height: 1px;
-    margin: 10px 0 10px 0;
+    margin: 8px 0 8px 0;
 }
 
 .Group_product{
@@ -327,13 +396,8 @@
     font-size: 13px;
 }
 
-._room_title{
-    font-size: 19px;
-}
-
 ._room_description{
     font-family: 'Noto Sans KR', sans-serif;
-    font-size: 16px;
     color: #888;
     word-wrap: break-word;
     word-break: break-word;

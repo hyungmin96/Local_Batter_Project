@@ -20,16 +20,28 @@ public class GroupBoardEntity {
     private String content;
     private int boardLike;
 
+    @Enumerated(EnumType.STRING)
+    private BoardType type;
+
     @CreationTimestamp
     private Timestamp regDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "writer")
-    private GroupUsersEntity groupUsersEntity;
+    private GroupUsersEntity user;
 
     @OneToMany(mappedBy = "groupBoard", cascade = CascadeType.ALL)
     private List<GroupCommentEntity> comments;
 
     @OneToMany(mappedBy = "groupBoard", cascade = CascadeType.ALL)
     private List<GroupBoardFileEntity> files;
+
+    public enum BoardType{
+        general, notice, fix
+    }
+
+    public void updateNotice(BoardType type){
+        this.type = type;
+    }
+
 }

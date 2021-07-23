@@ -16,7 +16,6 @@ import com.imageupload.example.repositories.UserJoinRommEnumType;
 import com.imageupload.example.repositories.UserRepository;
 import com.imageupload.example.services.ChatService;
 import org.springframework.data.domain.Page;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface GroupUsersRepository extends JpaRepository<GroupUsersEntity, Long>{
     GroupUsersEntity findByuserIdAndGroupEntity(Long userId, GroupEntity groupEntity);
-    GroupUsersEntity findByuserId(Long userId);
+    GroupUsersEntity findBygroupEntityAndUserId(GroupEntity groupEntity, Long userId);
 }

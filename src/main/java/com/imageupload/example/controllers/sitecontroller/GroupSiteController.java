@@ -29,7 +29,7 @@ public class GroupSiteController {
         GroupEntity groupEntity = groupService.findRoom(room_id);
         UserEntity userEntity = (UserEntity) session.getAttribute("userId");
 
-        GroupUsersEntity groupUsersEntity = groupService.findUserEntity(userEntity);
+        GroupUsersEntity groupUsersEntity = groupService.findUserEntity(groupEntity, userEntity);
 
         session.setAttribute("Group_room_id", groupEntity);
         session.setAttribute("Group_room_files", groupEntity.getFiles());

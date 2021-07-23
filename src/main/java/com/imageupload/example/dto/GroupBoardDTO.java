@@ -6,28 +6,48 @@ import com.imageupload.example.entity.GroupUsersEntity;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
-
+import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Getter @Setter
-public class GroupBoardDTO {
+public class GroupBoardDTO implements Serializable {
 
     private Long groupId;
+    private Long boardId;
+
+    private int page;
+    private int display;
+    private String type = "general";
+
+    private String username;
     private String content;
     private GroupUsersEntity user;
+    private int boardLike = 0;
+    private Timestamp regDate = new Timestamp(new Date().getTime());
     private MultipartFile[] board_img;
     private List<GroupBoardFileEntity> files = new ArrayList<>();
+    private GroupCommentDTO[] comments = new GroupCommentDTO[0];
+
+    public GroupBoardEntity.BoardType getType(){
+        if(this.type.equals("notice"))
+            return GroupBoardEntity.BoardType.notice;
+        else if(this.type.equals("fixed"))
+            return GroupBoardEntity.BoardType.fix;
+        else
+            return GroupBoardEntity.BoardType.general;
+    }
 
     public GroupBoardEntity toEntity(){
         return GroupBoardEntity.builder()
                 .groupId(groupId)
                 .content(content)
                 .boardLike(0)
-                .groupUsersEntity(user)
+                .type(getType())
                 .files(files)
+                .user(user)
                 .build();
-
     }
-
 }

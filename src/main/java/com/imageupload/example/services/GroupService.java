@@ -33,8 +33,8 @@ public class GroupService {
         return groupRepository.findById(room_id).get();
     }
 
-    public GroupUsersEntity findUserEntity(UserEntity userEntity){
-        return groupUsersRepository.findByuserId(userEntity.getId());
+    public GroupUsersEntity findUserEntity(GroupEntity groupEntity, UserEntity userEntity){
+        return groupUsersRepository.findBygroupEntityAndUserId(groupEntity, userEntity.getId());
     }
 
     public void uploadImgToGroupChatroom(GroupChatMessageDTO messageDTO){
@@ -149,14 +149,12 @@ public class GroupService {
     public void createGroupRoom(GroupInfoDTO GroupDTO){
 
         UserEntity userEntity = (UserEntity) session.getAttribute("userId");
-
         GroupEntity groupEntity = GroupDTO.toEntity();
+        groupRepository.save(groupEntity);
 
         if (GroupDTO.getFiles() != null && GroupDTO.getFiles().length > 0) {
+
             GenerateFile generateGroupFiles = new GenerateFile(GroupDTO.getFiles());
-
-            groupRepository.save(groupEntity);
-
             List<GenerateFileDTO> files = generateGroupFiles.createFile();
 
             for(GenerateFileDTO file : files){

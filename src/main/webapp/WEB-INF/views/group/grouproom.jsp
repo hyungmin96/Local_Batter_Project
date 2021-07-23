@@ -17,6 +17,11 @@
                 </c:if>
 
                 <div class="room_inner_info">
+                    <div class="Group_product">
+                        그룹정보
+                    </div>
+                    <hr />
+
                     <div class="Group_product _room_title">
                         ${Group_room_id.title}
                     </div>
@@ -40,17 +45,6 @@
                     </div>
                 </div>
         </section>
-
-        <section class="aside _currentImages" style="margin-left: 160px;">
-            <div class="card _memberList" style="width: 300px; height: 330px; padding: 0">
-                <div class="card-header" style="background-color: white">
-                    최근 게시물 사진
-                </div>
-                <div class="card-body" style="flex-wrap: wrap; overflow: scroll; padding: 0">
-
-                </div>
-            </div>
-        </section>
     </div>
 
     <section id="content" role="main">
@@ -71,7 +65,7 @@
 
                     <div class="main _contentWriteBox">
                         <div style="padding: 10px 18px 10px 18px;">
-                            <textarea cols="20" rows="2" class="commentWrite _use_keyup_event" id="chatroom_comment_box" placeholder="다른 멤버들과 소통해보세요."></textarea>
+                            <textarea cols="20" rows="2" class="commentWrite _use_keyup_event" id="board_content_box" placeholder="다른 멤버들과 소통해보세요." value=""></textarea>
                         </div>
                         <div class="upload _contentUploadBox" style="display: inline-flex; width: 100%">
                             <input type="file" id="uploadFile" multiple="multiple" style="display: none;">
@@ -89,7 +83,7 @@
                 </div>
             </div>
 
-            <div class="main _notice">
+            <div style="display: none" class="main _notice">
                 <div class="card-header" style="background-color: white">
                     공지사항
                 </div>
@@ -98,14 +92,19 @@
                 </div>
             </div>
 
-            <div class="main _contentListWrapper" style="height: 340px; background-color: white">
+            <div class="main _contentListWrapper" style="height: 100%; background-color: white">
                 <div class="card-header" style="background-color: white;">
                     게시글 목록
                 </div>
-                 <div class="contentEmptyContiner" style="height: 80%; display: flex;">
-                    <div class="emptyIcon" style="margin: auto auto; display: none;">
-                        <div style="margin-left: 45px;"><img src="/images/group/add_to_clipboard_50px.png"></div>
-                        <div style="color: #8d8d8d">첫 게시글을 작성해보세요.<div>
+                <div class="contentContainer">
+
+                </div>
+                 <div class="contentEmptyContiner" style="display: none; height: 340px;">
+                     <div style="display: flex; height: 330px;">
+                        <div class="emptyIcon" style="margin: auto;">
+                            <div style="text-align: center;"><img src="/images/group/add_to_clipboard_50px.png"></div>
+                            <div style="color: #8d8d8d">첫 게시글을 작성해보세요.<div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -133,9 +132,20 @@
             </div>
         </div>
 
+        <section class="aside _currentImages">
+            <div class="card _memberList" style="height: 330px; padding: 0">
+                <div class="card-header" style="background-color: white">
+                    최근 게시물 사진
+                </div>
+                <div class="card-body" style="flex-wrap: wrap; overflow: scroll; padding: 0">
+
+                </div>
+            </div>
+        </section>
+
         <div class="card _articleCurrentList" style="height: 280px">
             <div class="card-header" style="background-color: white">
-                최근 등록된 게시글
+                최근 등록된 덧글
             </div>
             <div class="card-body">
 

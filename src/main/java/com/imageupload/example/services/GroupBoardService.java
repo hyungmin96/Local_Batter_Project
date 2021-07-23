@@ -1,5 +1,6 @@
 package com.imageupload.example.services;
 
+import com.imageupload.example.components.DeleteFile;
 import com.imageupload.example.components.GenerateFile;
 import com.imageupload.example.dto.GenerateFileDTO;
 import com.imageupload.example.dto.GroupBoardDTO;
@@ -15,6 +16,7 @@ import com.imageupload.example.repositories.GroupCommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
@@ -30,6 +32,19 @@ public class GroupBoardService {
     private final GroupBoardFileRepository groupBoardFileRepository;
     private final HttpSession session;
 
+    public void updateNotice(GroupBoardDTO groupBoardDTO){
+
+        GroupBoardEntity groupBoardEntity = groupBoardRepository.getOne(groupBoardDTO.getBoardId());
+        groupBoardDTO.setBoardId(groupBoardEntity.getBoardId());
+        groupBoardEntity.updateNotice(groupBoardDTO.getType());
+        groupBoardRepository.save(groupBoardEntity);
+    }
+
+    public Page<GroupBoardEntity> getNoticeList(GroupBoardDTO groupBoardDTO){
+        PageRequest request = PageRequest.of(groupBoardDTO.getPage(), groupBoardDTO.getDisplay(), Sort.Direction.DESC, "boardId");
+        return groupBoardRepository.findAllBygroupIdAndType(groupBoardDTO.getGroupId(), GroupBoardEntity.BoardType.notice, request);
+    }
+
     public void commentWrite(GroupCommentDTO groupCommentDTO){
 
         GroupUsersEntity groupUsersEntity = (GroupUsersEntity) session.getAttribute("group_user_entity");
@@ -44,14 +59,19 @@ public class GroupBoardService {
 
     }
 
-    public void delete(Long boardId, String username){
-        groupBoardRepository.deleteById(boardId);
+    public void delete(GroupBoardDTO groupBoardDTO){
+
+        GroupBoardEntity groupBoardEntity = groupBoardRepository.getOne(groupBoardDTO.getBoardId());
+
+        String[] filePathArray = groupBoardEntity.getFiles().stream().map(item -> item.getName()).toArray(String[]::new);
+
+        new DeleteFile(filePathArray).deleteFile();
+        groupBoardRepository.deleteById(groupBoardDTO.getBoardId());
     }
 
     public void post(GroupBoardDTO groupBoardDTO){
 
         GroupBoardEntity groupBoardEntity = groupBoardDTO.toEntity();
-
         groupBoardRepository.save(groupBoardEntity);
 
         if(groupBoardDTO.getBoard_img() != null){
@@ -63,12 +83,15 @@ public class GroupBoardService {
                 groupBoardFileEntity.setName(item.getFileName());
                 groupBoardFileEntity.setBoardId(groupBoardEntity);
                 groupBoardFileEntity.setPath(item.getPath());
-
                 boardFileList.add(groupBoardFileEntity.toEntity());
-            }
 
-            groupBoardFileRepository.saveAll(boardFileList);
+                groupBoardFileRepository.saveAll(boardFileList);
+            }
+            groupBoardDTO.setFiles(boardFileList);
+            groupBoardDTO.setBoard_img(null);
         }
+
+        groupBoardDTO.setBoardId(groupBoardEntity.getBoardId());
     }
 
     public Page<GroupBoardEntity> getBoardList(Long groupId, PageRequest request){
