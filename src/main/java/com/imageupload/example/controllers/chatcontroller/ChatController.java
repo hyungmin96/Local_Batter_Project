@@ -5,6 +5,7 @@ import javax.servlet.http.HttpSession;
 import com.imageupload.example.dto.GroupChatMessageDTO;
 import com.imageupload.example.dto.MessageDTO;
 import com.imageupload.example.dto.NotificationDTO;
+import com.imageupload.example.entity.GroupUsersEntity;
 import com.imageupload.example.services.ChatService;
 import com.imageupload.example.services.GroupChatService;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -21,8 +22,9 @@ public class ChatController {
     
     private final ChatService chatService;
     private final GroupChatService groupChatService;
+    private final HttpSession session;
 
-    @MessageMapping("/send/chat/Group/{id}")
+    @MessageMapping("/send/chat/group/{id}")
     public void GroupRoomChat(GroupChatMessageDTO messageDTO){
         groupChatService.sendGroupRoomToChat(messageDTO);
     }

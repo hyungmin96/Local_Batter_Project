@@ -114,7 +114,13 @@
     <section class="aside _activitySection">
         <div class="card _memberList" style="height: 330px; padding: 0">
             <div class="card-header" style="background-color: white">
-                멤버 목록
+                <div style = 'display: flex; justify-content: space-between; margin-right: 5px;'>
+                    <div>멤버 목록</div>
+                    <div class="usersOptionContainer">
+                        <button class="chattingButton">채팅하기</button>
+                        <button class="moreUsersMenu">더 보기</button>
+                    </div>
+                </div>
             </div>
             <div class="card-body" style="flex-wrap: wrap; overflow: scroll; padding: 0">
                 <div class="userList" style="display: flex; flex-direction: column;">
@@ -133,21 +139,21 @@
         </div>
 
         <section class="aside _currentImages">
-            <div class="card _memberList" style="height: 330px; padding: 0">
+            <div class="card _memberList" style="height: 297px; padding: 0">
                 <div class="card-header" style="background-color: white">
                     최근 게시물 사진
                 </div>
-                <div class="card-body" style="flex-wrap: wrap; overflow: scroll; padding: 0">
+                <div class="card-body _latestImageContainer" style="flex-wrap: wrap;display: inline-flex; padding: 10px 1px 1px 10px;">
 
                 </div>
             </div>
         </section>
 
-        <div class="card _articleCurrentList" style="height: 280px">
+        <div class="card _articleCurrentList" style="height: 240px">
             <div class="card-header" style="background-color: white">
                 최근 등록된 덧글
             </div>
-            <div class="card-body">
+            <div class="card-body _latestCommentContainer">
 
             </div>
         </div>
@@ -192,6 +198,7 @@
 </script>
 <script type="text/javascript" src="/js/buyingroom.js"></script>
 <script type="text/javascript" src="/js/imgModal.js"></script>
+<script type="text/javascript" src="/js/buyingchatroom.js"></script>
 <link rel="stylesheet" href="/css/buyingroom.css">
 <link rel="stylesheet" href="/css/imgModal.css">
 <link rel="stylesheet" href="/css/imgGridGallery.css">

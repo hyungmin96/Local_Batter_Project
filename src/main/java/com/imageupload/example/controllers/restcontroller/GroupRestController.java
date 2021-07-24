@@ -1,8 +1,11 @@
 package com.imageupload.example.controllers.restcontroller;
 
 import com.imageupload.example.dto.GroupBoardDTO;
+import com.imageupload.example.dto.GroupBoardFileDTO;
 import com.imageupload.example.dto.GroupCommentDTO;
 import com.imageupload.example.entity.GroupBoardEntity;
+import com.imageupload.example.entity.GroupBoardFileEntity;
+import com.imageupload.example.entity.GroupCommentEntity;
 import com.imageupload.example.entity.GroupUsersEntity;
 import com.imageupload.example.services.GroupBoardService;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,9 +26,19 @@ public class GroupRestController {
     private final GroupBoardService groupBoardService;
     private final HttpSession session;
 
+    @GetMapping("/comment/get_latest_comments")
+    public Page<GroupCommentEntity> getLatestComments(GroupBoardDTO groupBoardDTO){
+        return groupBoardService.getLatestComments(groupBoardDTO);
+    }
+
+    @GetMapping("/board/get_latest_images")
+    public Page<GroupBoardFileEntity> getLatestImages(GroupBoardDTO groupBoardDTO){
+        return groupBoardService.getLatestImages(groupBoardDTO);
+    }
+
     @PostMapping("/board/update/notice")
-    public void updateNotice(GroupBoardDTO groupBoardDTO){
-        groupBoardService.updateNotice(groupBoardDTO);
+    public ResponseEntity<GroupBoardDTO> updateNotice(GroupBoardDTO groupBoardDTO){
+        return groupBoardService.updateNotice(groupBoardDTO);
     }
 
     @GetMapping("/board/get_notice_list")

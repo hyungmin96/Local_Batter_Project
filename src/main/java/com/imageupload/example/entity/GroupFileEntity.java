@@ -15,7 +15,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class GroupFileEntity implements Serializable{
+public class GroupFileEntity extends BaseTimeEntity implements Serializable{
 
     @Id @GeneratedValue
     private Long id;
@@ -27,6 +27,4 @@ public class GroupFileEntity implements Serializable{
     @JsonIgnore
     private GroupEntity groupEntity;
 
-    @CreationTimestamp
-    private Timestamp regTime;
 }

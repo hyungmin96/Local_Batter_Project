@@ -2,7 +2,6 @@ package com.imageupload.example.dto;
 
 import com.imageupload.example.entity.GroupEntity;
 import com.imageupload.example.entity.GroupUsersEntity;
-import com.imageupload.example.enumtype.GroupUsersEnumType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,7 +11,7 @@ public class GroupUsersDTO {
     private Long user_id;
     private String user_name;
     private String profilePath;
-    private GroupUsersEnumType authorization;
+    private GroupUsersEntity.GroupUsersEnumType authorization;
     private GroupEntity groupEntity;
 
     public GroupUsersEntity toEntity(){

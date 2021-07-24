@@ -36,6 +36,7 @@ public class webSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/write").authenticated()
                 .antMatchers("/board/article/update/**").authenticated()
                 .antMatchers("/transaction/itemList").authenticated()
+                .antMatchers("/group/**").authenticated()
                 .antMatchers("/chatlist/**").authenticated()
             .and()
                 .formLogin()

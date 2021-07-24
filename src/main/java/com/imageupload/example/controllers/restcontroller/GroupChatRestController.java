@@ -2,6 +2,7 @@ package com.imageupload.example.controllers.restcontroller;
 
 import com.imageupload.example.dto.GroupChatMessageDTO;
 import com.imageupload.example.dto.GroupInfoDTO;
+import com.imageupload.example.dto.GroupJoinRequestDTO;
 import com.imageupload.example.entity.GroupEntity;
 import com.imageupload.example.services.GroupChatService;
 import com.imageupload.example.services.GroupService;
@@ -39,31 +40,25 @@ public class GroupChatRestController {
     }
 
     @PostMapping("/exit")
-    public ResponseEntity<String> exitRoom(@RequestParam Long roomId, @RequestParam String username){
-        GroupChatMessageDTO messageDTO = GroupChatMessageDTO.builder()
-                .roomId(roomId)
-                .type("exit")
-                .sender(username)
-                .message(null)
-                .localDate(LocalDate.now().toString())
-                .build();
+    public ResponseEntity<String> exitRoom(GroupJoinRequestDTO groupJoinRequestDTO){
+        GroupChatMessageDTO messageDTO = new GroupChatMessageDTO();
+        messageDTO.setGroupId(groupJoinRequestDTO.getGroupId());
+        messageDTO.setType("exit");
+        messageDTO.setMessage(null);
 
         groupChatService.sendGroupRoomToChat(messageDTO);
-        groupService.exitRoom(roomId);
+        groupService.exitRoom(groupJoinRequestDTO.getGroupId());
         return new ResponseEntity<String>("Success", HttpStatus.OK);
     }
 
     @PostMapping("/enter")
-    public ResponseEntity<String> enterRoom(@RequestParam Long room_Id, @RequestParam Long user_id, @RequestParam String user_name){
-        switch(groupService.GroupChatRoomEnter(room_Id, user_name)) {
+    public ResponseEntity<String> enterRoom(GroupJoinRequestDTO groupJoinRequestDTO){
+        switch(groupService.GroupChatRoomEnter(groupJoinRequestDTO)) {
             case greeting:
-                GroupChatMessageDTO messageDTO = GroupChatMessageDTO.builder()
-                        .roomId(room_Id)
-                        .type("greeting")
-                        .sender(user_name)
-                        .message(null)
-                        .localDate(LocalDate.now().toString())
-                        .build();
+                GroupChatMessageDTO messageDTO = new GroupChatMessageDTO();
+                messageDTO.setGroupId(groupJoinRequestDTO.getGroupId());
+                messageDTO.setType("greeting");
+                messageDTO.setMessage(null);
 
                 groupChatService.sendGroupRoomToChat(messageDTO);
             case enter:
@@ -86,8 +81,8 @@ public class GroupChatRestController {
     }
 
     @GetMapping("/getRoomInfo")
-    public GroupEntity getRoomInfo(@RequestParam Long roomId){
-        return groupService.getRoomInfo(roomId);
+    public GroupEntity getRoomInfo(@RequestParam Long groupId){
+        return groupService.getRoomInfo(groupId);
     }
 
 }

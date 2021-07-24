@@ -1,15 +1,15 @@
 package com.imageupload.example.groupchatroom;
 
-import com.imageupload.example.components.GenerateFile;
 import com.imageupload.example.dto.*;
 import com.imageupload.example.entity.*;
-import com.imageupload.example.enumtype.GroupUsersEnumType;
 import com.imageupload.example.repositories.*;
+import com.imageupload.example.services.GroupBoardService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 import org.springframework.test.context.TestPropertySource;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,26 +42,22 @@ public class GroupChatRoomRepositoryTestClass {
     @Autowired
     private GroupUsersRepository groupUsersRepository;
 
+    @Autowired
+    private GroupBoardService groupBoardService;
+
     private final Logger log = LogManager.getLogger();
     private final String root = "D:\\Spring projects\\SpringBoot LocalBatter\\src\\main\\downloads\\";
 
-//    @Test
-//    void 그룹_게시글_덧글작성(){
-//
-//        GroupBoardEntity groupBoardEntity = GroupBoardRepository.findById(22L).get();
-//        GroupUsersEntity groupUsersEntity = GroupUsersRepository.findById(1L).get();
-//
-//        for(int i = 0; i < 10; i ++){
-//
-//            GroupCommentEntity groupCommentEntity = GroupCommentEntity.builder()
-//                    .groupBoard(groupBoardEntity)
-//                    .comment("test" + i)
-//                    .writer(groupUsersEntity)
-//                    .build();
-//
-//            GroupCommentRepository.save(groupCommentEntity);
-//        }
-//    }
+    @Test
+    void 최신_게시글_사진가져오기(){
+
+        GroupBoardDTO groupBoardDTO = new GroupBoardDTO();
+        groupBoardDTO.setGroupId(16L);
+
+        Page<GroupBoardFileEntity> test = groupBoardService.getLatestImages(groupBoardDTO);
+
+        log.info("test");
+    }
 
     @Test
     void 그룹_게시글_작성(){
@@ -121,7 +117,7 @@ public class GroupChatRoomRepositoryTestClass {
 
             GroupUsersDTO groupUserInfoDTO = new GroupUsersDTO();
 //            groupUserInfoDTO.setUser(user);
-            groupUserInfoDTO.setAuthorization(GroupUsersEnumType.member);
+            groupUserInfoDTO.setAuthorization(GroupUsersEntity.GroupUsersEnumType.member);
             groupUserInfoDTO.setGroupEntity(groupEntity);
 
             GroupFileDTO groupFileDTO = new GroupFileDTO();

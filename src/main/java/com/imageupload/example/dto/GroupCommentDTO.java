@@ -10,6 +10,7 @@ import lombok.Setter;
 public class GroupCommentDTO {
     private Long comment_id;
     private Long boardId;
+    private Long groupId;
     private String regDate;
     private GroupUsersEntity writer;
     private String comment;
@@ -19,6 +20,7 @@ public class GroupCommentDTO {
         return GroupCommentEntity.builder()
                 .comment(comment)
                 .writer(writer)
+                .groupId(groupId)
                 .groupBoard(groupBoard)
                 .build();
     }

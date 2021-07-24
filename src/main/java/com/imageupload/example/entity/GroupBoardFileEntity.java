@@ -10,14 +10,15 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class GroupBoardFileEntity {
+public class GroupBoardFileEntity extends BaseTimeEntity {
 
     @Id @GeneratedValue
-    private Long Id;
+    private Long id;
 
     private String name;
     private String path;
     private Long size;
+    private Long groupId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "BoardId")

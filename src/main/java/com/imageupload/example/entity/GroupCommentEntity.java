@@ -1,25 +1,23 @@
 package com.imageupload.example.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
-import java.sql.Timestamp;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class GroupCommentEntity{
+public class GroupCommentEntity extends BaseTimeEntity{
 
     @Id @GeneratedValue
     private Long commentId;
 
+    private Long groupId;
     private String comment;
-
-    @CreationTimestamp
-    private Timestamp regDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "writer")
@@ -27,7 +25,7 @@ public class GroupCommentEntity{
 
     @ManyToOne
     @JoinColumn(name = "boardId")
-    @JsonIgnore
+    @JsonIgnoreProperties({"comments", "files", "groupId"})
     private GroupBoardEntity groupBoard;
 
 }

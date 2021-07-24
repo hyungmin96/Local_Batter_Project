@@ -38,7 +38,7 @@ $(function(){
 
 function deleteRoom(){
 
-    var data = { roomId: $('.roomId').val(), username: $('.user__name').val() };
+    var data = { groupId: $('.groupId').val(), username: $('.user__name').val() };
 
     $.ajax({
         url: '/api/group/delete',
@@ -55,9 +55,10 @@ function deleteRoom(){
 
 function enterRoom(){
 
-    var data = { room_Id: $('.roomId').val() * 1,
-                 user_id: $('.join_user_id').val(),
-                 user_name: $('.join_user_name').val()
+    var data = {
+        userId: $('.join_user_id').val(),
+        username: $('.join_user_name').val(),
+        groupId: $('.groupId').val()
     }
 
     $.ajax({
@@ -68,7 +69,7 @@ function enterRoom(){
         contentType: 'application/x-www-form-urlencoded',
         success: function(response){
             $('#close__btn').click();
-            window.location.href='/group/room/' + data.room_Id;
+            window.location.href='/group/room/' + data.groupId;
         }
         }).fail(function(){
             alert('해당 그룹은 가입할 수 없습니다. - 설정인원 초과');
@@ -151,7 +152,7 @@ function showDataToModal(e){
     let id = e.id.split('item__box__')[1]
     let value = GroupChatRoomArray[id];
     
-    $('.roomId')[0].value = value.id;
+    $('.groupId')[0].value = value.id;
     $('.roomTitle')[0].value = value.roomTitle;
 
     globalThis.roomValue = value;

@@ -5,6 +5,64 @@
     padding: 0;
 }
 
+.usersOptionContainer{
+    margin: 0 0 0 25px;
+    display: inline-flex;
+}
+
+.usersOptionContainer button{
+    margin: 0 3px 0 3px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 11px;
+    color: #a5a3a3;
+}
+
+.usersOptionContainer button:hover{
+    border-bottom: 1px solid #686666;
+}
+
+._latestCommentContainer a{
+    color: #575858;
+}
+
+._commentContent:hover{
+    border-bottom: 1px solid #4e4d4d;
+    cursor: pointer;
+}
+
+._latestCommentContainer{
+    flex-wrap: wrap;
+    padding: 0;
+}
+
+._latestCommentBox{
+    padding: 5px 0 5px 15px;
+    line-height: 1.7;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 13px;
+}
+
+._latestImageContainer{
+    flex-wrap: wrap;
+    display: flex;
+    padding: 10px 1px 1px 10px;
+    flex-direction: row;
+    max-height: 30px;
+}
+
+._latestImageContainer img{
+    width: 70px;
+    height: 75px;
+    object-fit: cover;
+    border: 1px solid #f3f1f1;
+    margin: 2px 3px;
+}
+
+._noticeEmphasis{
+    color: #d93838;
+    margin-right: 10px;
+}
+
 ._noticeText{
     font-family: 'Noto Sans KR', sans-serif;
     font-size: 12px;
@@ -67,8 +125,8 @@
     width: 130px;
     display: block;
     z-index: 12;
-    top: 25px;
-    left: 0;
+    top: 20px;
+    left: -12px;
     text-align: left;
     -webkit-box-shadow: 0 0 0 1px rgb(175 170 170), 0 0 0 0 rgb(226 221 221);
 }
@@ -256,7 +314,7 @@
 }
 
 ._username{
-
+    margin-bottom: -3px;
 }
 
 ._regDate{

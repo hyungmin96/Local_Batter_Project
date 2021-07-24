@@ -10,6 +10,7 @@ public class GroupBoardFileDTO {
     private String name;
     private String path;
     private GroupBoardEntity boardId;
+    private Long groupId;
     private int size;
 
     public GroupBoardFileEntity toEntity(){
@@ -17,6 +18,7 @@ public class GroupBoardFileDTO {
                 .name(name)
                 .path(path)
                 .groupBoard(boardId)
+                .groupId(groupId)
                 .build();
     }
 

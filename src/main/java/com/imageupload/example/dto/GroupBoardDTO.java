@@ -21,12 +21,13 @@ public class GroupBoardDTO implements Serializable {
     private int page;
     private int display;
     private String type = "general";
-
     private String username;
     private String content;
-    private GroupUsersEntity user;
     private int boardLike = 0;
-    private Timestamp regDate = new Timestamp(new Date().getTime());
+    private GroupUsersEntity user;
+    private String result;
+
+    private Timestamp regTime = new Timestamp(new Date().getTime());
     private MultipartFile[] board_img;
     private List<GroupBoardFileEntity> files = new ArrayList<>();
     private GroupCommentDTO[] comments = new GroupCommentDTO[0];

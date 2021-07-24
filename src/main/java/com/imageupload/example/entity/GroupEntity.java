@@ -13,7 +13,7 @@ import org.hibernate.annotations.CreationTimestamp;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class GroupEntity implements Serializable{
+public class GroupEntity extends BaseTimeEntity implements Serializable{
     
     @Id @GeneratedValue
     private Long id;
@@ -29,9 +29,6 @@ public class GroupEntity implements Serializable{
     public enum roomEnumType{
         공개, 일부공개, 비공개
     }
-
-    @CreationTimestamp
-    private Timestamp regTime;
 
     @OneToMany(mappedBy = "groupEntity")
     @Cascade(value = org.hibernate.annotations.CascadeType.ALL)

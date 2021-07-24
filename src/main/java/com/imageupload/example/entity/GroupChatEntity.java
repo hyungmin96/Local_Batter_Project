@@ -16,22 +16,21 @@ import java.sql.Timestamp;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class GroupChatEntity implements Serializable{
+public class GroupChatEntity extends BaseTimeEntity{
 
     @Id @GeneratedValue
     private Long id;
-    private Long userId;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "groupUsersEntity")
+    private GroupUsersEntity groupUsersEntity;
+
     private String message;
-    private String sender;
     private String type;
-    private String profilePath;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "roomId")
     @JsonIgnore
     private GroupEntity groupEntity;
-
-    @CreationTimestamp
-    private Timestamp localDate;
 
 }

@@ -4,23 +4,16 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import com.imageupload.example.enumtype.GroupUsersEnumType;
-import groovy.lang.Lazy;
 import lombok.*;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CreationTimestamp;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class GroupUsersEntity implements Serializable {
+public class GroupUsersEntity extends BaseTimeEntity implements Serializable {
 
     @Id @GeneratedValue
     private Long id;
@@ -37,7 +30,8 @@ public class GroupUsersEntity implements Serializable {
     @JsonIgnore
     private GroupEntity groupEntity;
 
-    @CreationTimestamp
-    private Timestamp regTime;
+    public enum GroupUsersEnumType {
+        manager, staff, member
+    }
 
 }

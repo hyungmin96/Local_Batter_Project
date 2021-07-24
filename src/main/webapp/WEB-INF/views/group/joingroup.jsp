@@ -115,7 +115,7 @@
 <!-- modal -->
     <div id="my_modal" style="overflow:auto; margin-top: 25px; width: 850px;">
 
-        <input type="hidden" class="roomId" value="0"/>
+        <input type="hidden" class="groupId" value="0"/>
         <input type="hidden" class="roomTitle" value=""/>
 
         <div class="enter__title">그룹 입장</div>

@@ -1,9 +1,8 @@
 package com.imageupload.example.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.util.List;
 
 @Entity
@@ -11,7 +10,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class GroupBoardEntity {
+public class GroupBoardEntity extends BaseTimeEntity {
 
     @Id @GeneratedValue
     private Long boardId;
@@ -22,9 +21,6 @@ public class GroupBoardEntity {
 
     @Enumerated(EnumType.STRING)
     private BoardType type;
-
-    @CreationTimestamp
-    private Timestamp regDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "writer")

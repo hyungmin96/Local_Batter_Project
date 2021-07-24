@@ -2,8 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <input type="hidden" class="Group_roomId" value="${roomId}">
-<input type="hidden" class="Group_login_user" value="${username}">
-<input type="hidden" class="login_user_id" value="${userId}">
+<input type="hidden" class="login_user_id" value="${group_user_entity.userId}">
 
         <div class="title__container">
                 <div class="chatroom__title">ChatRoom Title</div>
@@ -16,7 +15,7 @@
 
 <div class="chatroom__file__container">
         <div id="img_upload" style="margin: auto 0; cursor: pointer;">
-                <div><img src="/images/image_gallery_23px.png" style="margin-right: 5px; height: 23px; width: 23px;">이미지 첨부</div>
+                <div><img src="/images/group/image_gallery_23px.png" style="margin-right: 5px; height: 23px; width: 23px;">이미지 첨부</div>
         </div>
         <input id="upload_dialog" type="file" accept="image/jpg, image/jpeg, image/png" class="custom-file-input" name="upload_file" multiple style="display: none;">
 </div>
@@ -54,5 +53,5 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-<link rel="stylesheet" href="/css/Groupchatroom.css">
-<script src="/js/Groupchatroom.js"></script>
+<link rel="stylesheet" href="/css/buyingchatroom.css">
+<script src="/js/buyingchatroom.js"></script>

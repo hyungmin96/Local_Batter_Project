@@ -6,7 +6,6 @@ import com.imageupload.example.dto.*;
 import com.imageupload.example.entity.*;
 import com.imageupload.example.entity.GroupChatEntity;
 import com.imageupload.example.enumtype.GroupChatRoomEnterEnumType;
-import com.imageupload.example.enumtype.GroupUsersEnumType;
 import com.imageupload.example.repositories.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import javax.servlet.http.HttpSession;
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,24 +39,25 @@ public class GroupService {
 
         List<GenerateFileDTO> files = new GenerateFile(messageDTO.getImg()).createFile();
         List<String> imgs = new ArrayList<>();
-        GroupEntity GroupChatRoomEntity = groupRepository.findById(messageDTO.getRoomId()).get();
+
+        GroupEntity GroupChatRoomEntity = groupRepository.getOne(messageDTO.getGroupId());
+        GroupUsersEntity groupUsersEntity = (GroupUsersEntity) session.getAttribute("group_user_entity");
 
         for(GenerateFileDTO file : files){
 
             GroupChatEntity GroupChatEntity = com.imageupload.example.entity.GroupChatEntity.builder()
                     .groupEntity(GroupChatRoomEntity)
-                    .sender(messageDTO.getSender())
+                    .groupUsersEntity(groupUsersEntity)
                     .message(file.getFileName())
-                    .profilePath(messageDTO.getProfilePath())
                     .type("image")
-                    .userId(messageDTO.getUserId())
                     .build();
 
             imgs.add(file.getFileName());
 
             groupChatRepository.save(GroupChatEntity);
         }
-            messageDTO.setImgPath(imgs);
+
+        messageDTO.setImgPath(imgs);
     }
 
     public void deleteRoom(Long roomId, String username){
@@ -86,46 +85,36 @@ public class GroupService {
     }
 
     public void saveChatEntity(GroupChatMessageDTO messageDTO){
-
-        GroupEntity GroupChatRoomEntity = groupRepository.findById(messageDTO.getRoomId()).get();
-
-        GroupChatEntity GroupChatEntity = com.imageupload.example.entity.GroupChatEntity.builder()
-                .groupEntity(GroupChatRoomEntity)
-                .userId(messageDTO.getUserId())
-                .type(messageDTO.getType())
-                .profilePath(messageDTO.getProfilePath())
-                .message(messageDTO.getMessage())
-                .sender(messageDTO.getSender()).build();
-
-        groupChatRepository.save(GroupChatEntity);
+        groupChatRepository.save(messageDTO.toEntity());
     }
 
     public void exitRoom(Long roomId){
 
         UserEntity userEntity = (UserEntity) session.getAttribute("userId");
 
-        GroupEntity groupEntity = groupRepository.findById(roomId).get();
+        GroupEntity groupEntity = groupRepository.getOne(roomId);
         GroupUsersEntity GroupUsersEntity = groupUsersRepository.findByuserIdAndGroupEntity(userEntity.getId(), groupEntity);
 
         groupRepository.exitCurrentUsers(groupEntity.getId());
         groupUsersRepository.delete(GroupUsersEntity);
     }
 
-    public GroupChatRoomEnterEnumType GroupChatRoomEnter(Long roomId, String username){
+    public GroupChatRoomEnterEnumType GroupChatRoomEnter(GroupJoinRequestDTO groupJoinRequestDTO){
 
-        GroupEntity groupEntity = groupRepository.findById(roomId).get();
-        UserEntity userEntity = userRepository.findByUsername(username).get();
+        UserEntity userEntity = userRepository.getOne(groupJoinRequestDTO.getUserId());
+        GroupEntity groupEntity = groupRepository.getOne(groupJoinRequestDTO.getGroupId());
         GroupUsersEntity GroupUsersEntity = groupUsersRepository.findByuserIdAndGroupEntity(userEntity.getId(), groupEntity);
 
         if(groupEntity.getUsers().contains(GroupUsersEntity)) {
             return GroupChatRoomEnterEnumType.enter;
         }else{
-            GroupUsersEnumType authorizationType;
-            if(username.equals(groupEntity.getOwner()))
-                authorizationType = GroupUsersEnumType.manager;
+            com.imageupload.example.entity.GroupUsersEntity.GroupUsersEnumType authorizationType;
+            if(groupJoinRequestDTO.getUsername().equals(groupEntity.getOwner()))
+                authorizationType = com.imageupload.example.entity.GroupUsersEntity.GroupUsersEnumType.manager;
             else
-                authorizationType = GroupUsersEnumType.member;
+                authorizationType = com.imageupload.example.entity.GroupUsersEntity.GroupUsersEnumType.member;
 
+            // Update current users number
             groupRepository.enterCurrentUsers(groupEntity.getId());
 
             GroupUsersDTO groupUsersDTO = new GroupUsersDTO();
@@ -149,6 +138,8 @@ public class GroupService {
     public void createGroupRoom(GroupInfoDTO GroupDTO){
 
         UserEntity userEntity = (UserEntity) session.getAttribute("userId");
+
+        GroupDTO.setCurrentUsers(1);
         GroupEntity groupEntity = GroupDTO.toEntity();
         groupRepository.save(groupEntity);
 
@@ -172,7 +163,7 @@ public class GroupService {
         groupUsersDTO.setUser_name(userEntity.getUsername());
         groupUsersDTO.setProfilePath(userEntity.getProfile().getProfilePath());
         groupUsersDTO.setGroupEntity(groupEntity);
-        groupUsersDTO.setAuthorization(GroupUsersEnumType.manager);
+        groupUsersDTO.setAuthorization(GroupUsersEntity.GroupUsersEnumType.manager);
 
         groupUsersRepository.save(groupUsersDTO.toEntity());
     }

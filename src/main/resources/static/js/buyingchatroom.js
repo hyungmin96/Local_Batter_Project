@@ -1,6 +1,6 @@
 
 var stompClient = null;
-var roomId;
+var groupId;
 
 $(document).ready(function (){
     connect();
@@ -33,7 +33,9 @@ $(function (){
     $('#upload_dialog').change(function(e){
         GroupRoomImageUpload(e);
     })
-
+    $('.chattingButton').click(function(){
+        window.open("/group/chat/" + $('.groupId')[0].value, $('._room_title')[0].value, "width=400, height=650");
+    })
 })
 
 
@@ -43,7 +45,7 @@ function GroupRoomImageUpload(e){
     var fileArray = Array.prototype.slice.call(files);
     var formData = new FormData();
 
-    formData.append('roomId', globalThis.roomId);
+    formData.append('groupId', globalThis.groupId);
     formData.append('userId', $('.login_user_id').val());
     formData.append('profilePath', 'profileId');
     formData.append('sender', $('.Group_login_user').val());
@@ -69,7 +71,7 @@ function connect(){
     stompClient = Stomp.over(socket);
     stompClient.debug = null
     stompClient.connect({}, function(){
-        stompClient.subscribe('/chat/Group/' + globalThis.roomId, function(message){
+        stompClient.subscribe('/chat/group/' + globalThis.groupId, function(message){
             var value = JSON.parse(message.body);
             showMessage(value);
         })
@@ -77,30 +79,25 @@ function connect(){
 }
 
 function sendMessage(message, type = 'chat'){
-
     var data = {
+        groupId: globalThis.groupId,
         userId: $('.login_user_id').val(),
-        roomId: globalThis.roomId,
         type: type,
-        sender: $('.Group_login_user').val(),
         message: message,
-        profilePath: '/upload/' + globalThis.profilePath,
-        localDate: new Date().toISOString()
     }
-    stompClient.send('/app/send/chat/Group/' + globalThis.roomId, {}, JSON.stringify(data));
+    stompClient.send('/app/send/chat/group/' + globalThis.groupId, {}, JSON.stringify(data));
     $('.Groupchatroom__chat__list')[0].scrollTop = $('.Groupchatroom__chat__list')[0].scrollHeight;
 }
 
 var preDate = null;
 function showDate(message){
-
-    if(globalThis.preDate == null || globalThis.preDate != new Date(message.localDate).toLocaleDateString()){
+    if(globalThis.preDate == null || globalThis.preDate != new Date(message.regTime).toLocaleDateString()){
         $('.Groupchatroom__chat__list').append(
             "<div class='message_box_event'>" +
-            "<div class='message_noti'>" + new Date(message.localDate).toLocaleDateString() + "</div>" +
+            "<div class='message_noti'>" + new Date(message.regTime).toLocaleDateString() + "</div>" +
             "</div>"
         );
-        globalThis.preDate = new Date(message.localDate).toLocaleDateString();
+        globalThis.preDate = new Date(message.regTime).toLocaleDateString();
     }
 }
 
@@ -122,14 +119,8 @@ function showExit(message){
 
 GroupChatRoomUserArray = new Array();
 function showContent(message){
-
+console.log(message)
     var content;
-
-    var profileId = (function() {
-        for (var key in GroupChatRoomUserArray)
-            if (GroupChatRoomUserArray[key].userObject.user.id == message.userId)
-                return GroupChatRoomUserArray[key].userObject.user.profile.profilePath;
-    }())
 
     if(message.type == 'image'){
         content = "<img style='width: 260px; height: 200px; object-fit: cover;' src=/upload/" + message.message + ">";
@@ -137,7 +128,7 @@ function showContent(message){
         content = message.message;
     }
 
-    var chatTime = new Date(message.localDate).toLocaleTimeString([], {'hour': '2-digit', 'minute': '2-digit'});
+    var chatTime = new Date(message.regTime).toLocaleTimeString([], {'hour': '2-digit', 'minute': '2-digit'});
 
     var myMessage = "<div class='message_box'>" +
                         "<div class='me_message_box'>" +
@@ -151,9 +142,9 @@ function showContent(message){
 
     var targetMessage = "<div class='message_box'>" +
                         "<div class='target_message_box'>" +
-                        "<div><img class='target_profile_img' src=/upload/" + profileId + "></div>" +
+                        "<div><img class='target_profile_img' src=/upload/" + message.groupUsersEntity.profilePath + "></div>" +
                         "<div style='margin-left: 10px;'>" +
-                        "<div class='message_sender'>" + message.sender + "</div>" +
+                        "<div class='message_sender'>" + message.groupUsersEntity.userName + "</div>" +
                         "<div class='message_content'>" + content + "</div>" +
                         "<div style='display: flex; flex-direction: row'>" +
                         "<div class='message_date'>" + chatTime + "</div>" +
@@ -163,7 +154,7 @@ function showContent(message){
                         "</div>" +
                         "</div>"
 
-        if($('.Group_login_user').val() == message.sender)
+        if($('.login_user_id').val() == message.groupUsersEntity.userId)
             $('.Groupchatroom__chat__list').append(myMessage);
         else
             $('.Groupchatroom__chat__list').append(targetMessage);
@@ -200,41 +191,39 @@ function showMessage(message){
 }
 
 function loadGroupRoomData(){
-    globalThis.roomId = $('.Group_roomId').val();
+    globalThis.groupId = $('.Group_roomId').val();
 
-    var data = {roomId: globalThis.roomId}
+    var data = {groupId: globalThis.groupId}
     $.ajax({
         url: '/api/group/getRoomInfo',
         type: 'GET',
         data: data,
         success: function(response){
 
-            document.getElementsByClassName('chatroom__title')[0].innerHTML = response.roomTitle + ' 채팅방';
+            document.getElementsByClassName('chatroom__title')[0].innerHTML = response.title + ' 채팅방';
             document.getElementById('offcanvasRightLabel').innerHTML = '대화멤버 목록[' + response.users.length + '/' + response.limitUsers + ']';
 
             $.each(response.users, function(key, value){
                 $('.offcanvas-body').append(
                     "<div class=userbox_" + key + ">" +
                     "<div class='room_user_box'>" +
-                    "<img class='room_user_profile' src=/upload/" + value.user.profile.profilePath + ">" +
-                    "<div class='room_user_name'>" + value.user.username + "</div>" +
+                    "<img class='room_user_profile' src=/upload/" + value.profilePath + ">" +
+                    "<div class='room_user_name'>" + value.userName + "</div>" +
                     "<div>" +
                     "<div>"
                 );
                 GroupChatRoomUserArray.push({userObject: value});
             })
-
             $.each(response.chats, function(key, message){
                 showMessage(message);
             });
-
         }
     })
 }
 
 function exitRoom(){
 
-    var data = { roomId: globalThis.roomId, username: $('.Group_login_user').val()};
+    var data = { groupId: globalThis.groupId, username: $('.Group_login_user').val()};
 
     $.ajax({
         url: '/api/group/exit',

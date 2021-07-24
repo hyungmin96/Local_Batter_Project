@@ -17,6 +17,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
@@ -32,12 +34,34 @@ public class GroupBoardService {
     private final GroupBoardFileRepository groupBoardFileRepository;
     private final HttpSession session;
 
-    public void updateNotice(GroupBoardDTO groupBoardDTO){
+    public Page<GroupCommentEntity> getLatestComments(GroupBoardDTO groupBoardDTO){
+        PageRequest request = PageRequest.of(groupBoardDTO.getPage(), groupBoardDTO.getDisplay(), Sort.Direction.DESC, "commentId");
+        return groupCommentRepository.findTop6ByGroupId(groupBoardDTO.getGroupId(), request);
+    }
 
-        GroupBoardEntity groupBoardEntity = groupBoardRepository.getOne(groupBoardDTO.getBoardId());
-        groupBoardDTO.setBoardId(groupBoardEntity.getBoardId());
-        groupBoardEntity.updateNotice(groupBoardDTO.getType());
-        groupBoardRepository.save(groupBoardEntity);
+    public Page<GroupBoardFileEntity> getLatestImages(GroupBoardDTO groupBoardDTO){
+        PageRequest request = PageRequest.of(groupBoardDTO.getPage(), groupBoardDTO.getDisplay(), Sort.Direction.DESC, "id");
+        return groupBoardFileRepository.findTop9BygroupId(groupBoardDTO.getGroupId(), request);
+    }
+
+    public ResponseEntity<GroupBoardDTO> updateNotice(GroupBoardDTO groupBoardDTO){
+
+        GroupUsersEntity groupUsersEntity = (GroupUsersEntity) session.getAttribute("group_user_entity");
+
+        // Check Authorization to enter user
+        boolean isUserHasAuthority = groupUsersEntity.getAuthorization().equals(GroupUsersEntity.GroupUsersEnumType.member);
+
+        if(isUserHasAuthority){
+            GroupBoardEntity groupBoardEntity = groupBoardRepository.getOne(groupBoardDTO.getBoardId());
+            groupBoardDTO.setBoardId(groupBoardEntity.getBoardId());
+            groupBoardEntity.updateNotice(groupBoardDTO.getType());
+            groupBoardRepository.save(groupBoardEntity);
+            groupBoardDTO.setResult("Success");
+
+            return new ResponseEntity<>(groupBoardDTO, HttpStatus.OK);
+        }
+        groupBoardDTO.setResult("Failed - No request authority");
+        return new ResponseEntity<>(groupBoardDTO, HttpStatus.BAD_REQUEST);
     }
 
     public Page<GroupBoardEntity> getNoticeList(GroupBoardDTO groupBoardDTO){
@@ -50,6 +74,7 @@ public class GroupBoardService {
         GroupUsersEntity groupUsersEntity = (GroupUsersEntity) session.getAttribute("group_user_entity");
         GroupBoardEntity groupBoardEntity = groupBoardRepository.getOne(groupCommentDTO.getBoardId());
 
+        groupCommentDTO.setGroupId(groupCommentDTO.getGroupId());
         groupCommentDTO.setGroupBoard(groupBoardEntity);
         groupCommentDTO.setWriter(groupUsersEntity);
 
@@ -82,6 +107,7 @@ public class GroupBoardService {
                 GroupBoardFileDTO groupBoardFileEntity = new GroupBoardFileDTO();
                 groupBoardFileEntity.setName(item.getFileName());
                 groupBoardFileEntity.setBoardId(groupBoardEntity);
+                groupBoardFileEntity.setGroupId(groupBoardDTO.getGroupId());
                 groupBoardFileEntity.setPath(item.getPath());
                 boardFileList.add(groupBoardFileEntity.toEntity());
 
