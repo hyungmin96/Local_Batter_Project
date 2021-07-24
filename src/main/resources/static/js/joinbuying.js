@@ -38,7 +38,7 @@ $(function(){
 
 function deleteRoom(){
 
-    var data = { groupId: $('.groupId').val(), username: $('.user__name').val() };
+    const data = {groupId: $('.groupId').val(), username: $('.user__name').val()};
 
     $.ajax({
         url: '/api/group/delete',

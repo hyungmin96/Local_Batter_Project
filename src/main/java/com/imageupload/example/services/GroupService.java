@@ -118,9 +118,7 @@ public class GroupService {
             groupRepository.enterCurrentUsers(groupEntity.getId());
 
             GroupUsersDTO groupUsersDTO = new GroupUsersDTO();
-            groupUsersDTO.setUser_id(userEntity.getId());
-            groupUsersDTO.setUser_name(userEntity.getUsername());
-            groupUsersDTO.setProfilePath(userEntity.getProfile().getProfilePath());
+            groupUsersDTO.setUser(userEntity);
             groupUsersDTO.setGroupEntity(groupEntity);
             groupUsersDTO.setAuthorization(authorizationType);
 
@@ -159,9 +157,7 @@ public class GroupService {
         }
 
         GroupUsersDTO groupUsersDTO = new GroupUsersDTO();
-        groupUsersDTO.setUser_id(userEntity.getId());
-        groupUsersDTO.setUser_name(userEntity.getUsername());
-        groupUsersDTO.setProfilePath(userEntity.getProfile().getProfilePath());
+        groupUsersDTO.setUser(userEntity);
         groupUsersDTO.setGroupEntity(groupEntity);
         groupUsersDTO.setAuthorization(GroupUsersEntity.GroupUsersEnumType.manager);
 

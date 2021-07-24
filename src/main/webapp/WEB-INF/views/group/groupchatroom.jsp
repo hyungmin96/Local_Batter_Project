@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<input type="hidden" class="Group_roomId" value="${roomId}">
-<input type="hidden" class="login_user_id" value="${group_user_entity.userId}">
+<input type="hidden" class="groupId" value="${roomId}">
+<input type="hidden" class="login_user_id" value="${user_id.id}">
 
         <div class="title__container">
                 <div class="chatroom__title">ChatRoom Title</div>

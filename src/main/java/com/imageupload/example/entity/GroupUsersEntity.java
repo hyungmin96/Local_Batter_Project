@@ -18,9 +18,9 @@ public class GroupUsersEntity extends BaseTimeEntity implements Serializable {
     @Id @GeneratedValue
     private Long id;
 
-    private Long userId;
-    private String userName;
-    private String profilePath;
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
 
     @Enumerated(EnumType.STRING)
     private GroupUsersEnumType authorization;

@@ -204,17 +204,18 @@ function getBoardList() {
 }
 
 function inputPostBox(value) {
-    var boardType = (value.type != 'general') ? "<span class='notice _noticeText'>공지</span>" : '';
+
+    const boardType = (value.type !== 'general') ? "<span class='notice _noticeText'>공지</span>" : '';
     return "<input type='hidden' value=" + value.boardId + ">" +
         "<div class='boardItemBox' style='animation: fadein 1.5s; margin-bottom: 20px; box-shadow: 0 2px 3px 0 rgba(161, 161, 161, 0.12);'>" +
         "<input type='hidden' class='boardId' value=" + value.boardId + ">" +
         "<div class='contentItemBox'>" +
         "<div class='contentAuthorBox'>" +
-        "<div><img class='board _userProfileImg' src=/upload/" + value.user.profilePath + "></div>" +
+        "<div><img class='board _userProfileImg' src=/upload/" + value.user.user.profile.profilePath + "></div>" +
         "<div class='contentInfoBox'>" +
         "<div style='width: 100%; display: inline-flex; justify-content: space-between;'>" +
         "<div>" +
-        "<div class='board _username'>" + value.user.userName + "</div>" +
+        "<div class='board _username'>" + value.user.user.username + "</div>" +
         "<div class='boardMoreInfoBox' style='display: inline-flex'>" +
         boardType +
         "<div class='board _regDate'>" + new Date(value.regTime).toLocaleString([], {
@@ -261,7 +262,10 @@ function inputPostBox(value) {
 }
 
 function commentBox(comments) {
-    var result = '';
+
+    console.log(comments)
+
+    let result = '';
     if (comments.length > 0) {
         for (let i = 0; i < comments.length; i++) {
             var date = (comments[i].regDate == null) ? new Date().toLocaleString([], {
@@ -280,11 +284,11 @@ function commentBox(comments) {
             result +=
                 "<div id=commentId_" + comments[i].commentId + " class='commentList _commentBox'>" +
                 "<div class='commentProfileBox'>" +
-                "<img src=/upload/" + comments[i].writer.profilePath + ">" +
+                "<img src=/upload/" + comments[i].writer.user.profile.profilePath + ">" +
                 "</div>" +
                 "<div class='userInfoComment'>" +
                 "<div class='commentUsername'>" +
-                comments[i].writer.userName +
+                comments[i].writer.user.userName +
                 "</div>" +
                 "<div class='commentContentBox'>" +
                 comments[i].comment +

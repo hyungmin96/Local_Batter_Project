@@ -79,19 +79,19 @@ function connect(){
 }
 
 function sendMessage(message, type = 'chat'){
-    var data = {
+    const data = {
         groupId: globalThis.groupId,
         userId: $('.login_user_id').val(),
         type: type,
         message: message,
-    }
+    };
     stompClient.send('/app/send/chat/group/' + globalThis.groupId, {}, JSON.stringify(data));
     $('.Groupchatroom__chat__list')[0].scrollTop = $('.Groupchatroom__chat__list')[0].scrollHeight;
 }
 
 var preDate = null;
 function showDate(message){
-    if(globalThis.preDate == null || globalThis.preDate != new Date(message.regTime).toLocaleDateString()){
+    if(globalThis.preDate == null || globalThis.preDate !== new Date(message.regTime).toLocaleDateString()){
         $('.Groupchatroom__chat__list').append(
             "<div class='message_box_event'>" +
             "<div class='message_noti'>" + new Date(message.regTime).toLocaleDateString() + "</div>" +
@@ -119,42 +119,42 @@ function showExit(message){
 
 GroupChatRoomUserArray = new Array();
 function showContent(message){
-console.log(message)
-    var content;
+    console.log(message)
+    let content;
 
-    if(message.type == 'image'){
+    if(message.type === 'image'){
         content = "<img style='width: 260px; height: 200px; object-fit: cover;' src=/upload/" + message.message + ">";
     }else{
         content = message.message;
     }
 
-    var chatTime = new Date(message.regTime).toLocaleTimeString([], {'hour': '2-digit', 'minute': '2-digit'});
+    const chatTime = new Date(message.regTime).toLocaleTimeString([], {'hour': '2-digit', 'minute': '2-digit'});
 
-    var myMessage = "<div class='message_box'>" +
-                        "<div class='me_message_box'>" +
-                        "<div class='me_message_content'>" + content + "</div>" +
-                        "<div class='aside'>" +
-                        "<span id = message_" + message.id + " onclick='chatButton(this);'><img class='message_menu' src='/images/menu_14px.png'></span>" +
-                        "<span class='message_date'>" + chatTime + "</span>" +
-                        "</div>" +
-                        "</div>" +
-                        "</div>"
+    const myMessage = "<div class='message_box'>" +
+        "<div class='me_message_box'>" +
+        "<div class='me_message_content'>" + content + "</div>" +
+        "<div class='aside'>" +
+        "<span id = message_" + message.id + " onclick='chatButton(this);'><img class='message_menu' src='/images/menu_14px.png'></span>" +
+        "<span class='message_date'>" + chatTime + "</span>" +
+        "</div>" +
+        "</div>" +
+        "</div>";
 
-    var targetMessage = "<div class='message_box'>" +
-                        "<div class='target_message_box'>" +
-                        "<div><img class='target_profile_img' src=/upload/" + message.groupUsersEntity.profilePath + "></div>" +
-                        "<div style='margin-left: 10px;'>" +
-                        "<div class='message_sender'>" + message.groupUsersEntity.userName + "</div>" +
-                        "<div class='message_content'>" + content + "</div>" +
-                        "<div style='display: flex; flex-direction: row'>" +
-                        "<div class='message_date'>" + chatTime + "</div>" +
-                        "<span id = message_" + message.id + " onclick='chatButton(this);'><img class='message_menu' src='/images/menu_14px.png'></span>" +
-                        "</div>" +
-                        "</div>" +
-                        "</div>" +
-                        "</div>"
+    const targetMessage = "<div class='message_box'>" +
+        "<div class='target_message_box'>" +
+        "<div><img class='target_profile_img' src=/upload/" + message.groupUsersEntity.user.profile.profilePath + "></div>" +
+        "<div style='margin-left: 10px;'>" +
+        "<div class='message_sender'>" + message.groupUsersEntity.user.username + "</div>" +
+        "<div class='message_content'>" + content + "</div>" +
+        "<div style='display: flex; flex-direction: row'>" +
+        "<div class='message_date'>" + chatTime + "</div>" +
+        "<span id = message_" + message.id + " onclick='chatButton(this);'><img class='message_menu' src='/images/menu_14px.png'></span>" +
+        "</div>" +
+        "</div>" +
+        "</div>" +
+        "</div>";
 
-        if($('.login_user_id').val() == message.groupUsersEntity.userId)
+        if($('.login_user_id').val() == message.groupUsersEntity.user.id)
             $('.Groupchatroom__chat__list').append(myMessage);
         else
             $('.Groupchatroom__chat__list').append(targetMessage);
@@ -180,9 +180,9 @@ function showMessage(message){
 
     showDate(message);
 
-    if(message.type == 'greeting')
+    if(message.type === 'greeting')
         showGreeting(message);
-    else if(message.type == 'exit')
+    else if(message.type === 'exit')
         showExit(message);
     else
         showContent(message)
@@ -191,9 +191,11 @@ function showMessage(message){
 }
 
 function loadGroupRoomData(){
-    globalThis.groupId = $('.Group_roomId').val();
+    globalThis.groupId = $('.groupId').val();
+    const data = {
+        groupId: globalThis.groupId
+    };
 
-    var data = {groupId: globalThis.groupId}
     $.ajax({
         url: '/api/group/getRoomInfo',
         type: 'GET',

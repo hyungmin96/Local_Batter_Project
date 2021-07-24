@@ -25,9 +25,7 @@ public class GroupChatService {
         GroupUsersEntity groupUsersEntity = groupService.findUserEntity(groupEntity, userEntity);
 
         GroupUsersDTO groupUsersDTO = new GroupUsersDTO();
-        groupUsersDTO.setUser_id(groupUsersEntity.getUserId());
-        groupUsersDTO.setUser_name(groupUsersEntity.getUserName());
-        groupUsersDTO.setProfilePath(groupUsersEntity.getProfilePath());
+        groupUsersDTO.setUser(userEntity);
 
         messageDTO.setGroupUsersEntity(groupUsersEntity);
 

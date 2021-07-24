@@ -127,10 +127,10 @@
                     <c:forEach var="item" items="${group_users_entity}" varStatus="status">
                         <div class="userList _userItemBox" style="cursor: pointer;">
                             <div class="userProfileBox">
-                                <img src="/upload/${item.profilePath}">
+                                <img src="/upload/${item.user.profile.profilePath}">
                             </div>
                             <div class="userName" style="margin: auto 0 auto 8px;">
-                                ${item.userName}
+                                ${item.user.username}
                             </div>
                         </div>
                     </c:forEach>
