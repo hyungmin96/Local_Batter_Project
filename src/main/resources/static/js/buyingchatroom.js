@@ -1,6 +1,6 @@
 
-var stompClient = null;
-var groupId;
+let stompClient = null;
+let groupId;
 
 $(document).ready(function (){
     connect();
@@ -8,7 +8,7 @@ $(document).ready(function (){
 })
 
 $('#chatroom_comment_box').on('keyup', function (event){
-    var textBoxMessage = $('#chatroom_comment_box').val();
+    const textBoxMessage = $('#chatroom_comment_box').val();
     if(event.keyCode == 13)
         if (event.shiftKey){
             event.preventDefault();
@@ -22,7 +22,7 @@ $('#chatroom_comment_box').on('keyup', function (event){
 })
 
 $(function (){
-    $('.room_quit_btn').click(function(){
+    $('._groupExitButton').click(function(){
         exitRoom();
     })
 
@@ -33,17 +33,14 @@ $(function (){
     $('#upload_dialog').change(function(e){
         GroupRoomImageUpload(e);
     })
-    $('.chattingButton').click(function(){
-        window.open("/group/chat/" + $('.groupId')[0].value, $('._room_title')[0].value, "width=400, height=650");
-    })
 })
 
 
 function GroupRoomImageUpload(e){
 
-    var files = e.target.files;
-    var fileArray = Array.prototype.slice.call(files);
-    var formData = new FormData();
+    const files = e.target.files;
+    const fileArray = Array.prototype.slice.call(files);
+    const formData = new FormData();
 
     formData.append('groupId', globalThis.groupId);
     formData.append('userId', $('.login_user_id').val());
@@ -67,7 +64,7 @@ function GroupRoomImageUpload(e){
 }
 
 function connect(){
-    var socket = new SockJS('/ws');
+    const socket = new SockJS('/ws');
     stompClient = Stomp.over(socket);
     stompClient.debug = null
     stompClient.connect({}, function(){
@@ -104,7 +101,7 @@ function showDate(message){
 function showGreeting(message){
     $('.Groupchatroom__chat__list').append(
         "<div class='message_box_event'>" +
-            "<div class='message_noti'>" + message.sender + "님이 대화방에 참여하였습니다.</div>" +
+            "<div class='message_noti'>" + message.message + "</div>" +
         "</div>"
     );
 }
@@ -112,21 +109,21 @@ function showGreeting(message){
 function showExit(message){
     $('.Groupchatroom__chat__list').append(
         "<div class='message_box_event'>" +
-            "<div class='message_noti'>" + message.sender + "님이 나갔습니다.</div>" +
+            "<div class='message_noti'>" + message.message + "</div>" +
         "</div>"
     );
 }
 
-GroupChatRoomUserArray = new Array();
 function showContent(message){
-    console.log(message)
+
+    let userProfile = (message.grouUserEntity != null) ? message.groupUsersEntity.user.profile.profilePath : null
+    let username = (message.grouUserEntity != null) ? message.groupUsersEntity.user.username : '알수없음'
     let content;
 
-    if(message.type === 'image'){
+    if(message.type === 'image')
         content = "<img style='width: 260px; height: 200px; object-fit: cover;' src=/upload/" + message.message + ">";
-    }else{
+    else
         content = message.message;
-    }
 
     const chatTime = new Date(message.regTime).toLocaleTimeString([], {'hour': '2-digit', 'minute': '2-digit'});
 
@@ -142,9 +139,9 @@ function showContent(message){
 
     const targetMessage = "<div class='message_box'>" +
         "<div class='target_message_box'>" +
-        "<div><img class='target_profile_img' src=/upload/" + message.groupUsersEntity.user.profile.profilePath + "></div>" +
+        "<div><img class='target_profile_img' src=/upload/" + userProfile + "></div>" +
         "<div style='margin-left: 10px;'>" +
-        "<div class='message_sender'>" + message.groupUsersEntity.user.username + "</div>" +
+        "<div class='message_sender'>" + username + "</div>" +
         "<div class='message_content'>" + content + "</div>" +
         "<div style='display: flex; flex-direction: row'>" +
         "<div class='message_date'>" + chatTime + "</div>" +
@@ -154,7 +151,7 @@ function showContent(message){
         "</div>" +
         "</div>";
 
-        if($('.login_user_id').val() == message.groupUsersEntity.user.id)
+        if(message.groupUsersEntity != null && $('.login_user_id').val() == message.groupUsersEntity.user.id)
             $('.Groupchatroom__chat__list').append(myMessage);
         else
             $('.Groupchatroom__chat__list').append(targetMessage);
@@ -203,19 +200,19 @@ function loadGroupRoomData(){
         success: function(response){
 
             document.getElementsByClassName('chatroom__title')[0].innerHTML = response.title + ' 채팅방';
-            document.getElementById('offcanvasRightLabel').innerHTML = '대화멤버 목록[' + response.users.length + '/' + response.limitUsers + ']';
+            document.getElementById('offcanvasRightLabel').innerHTML = '대화멤버 목록[' + response.users.length + '명]';
 
             $.each(response.users, function(key, value){
                 $('.offcanvas-body').append(
                     "<div class=userbox_" + key + ">" +
                     "<div class='room_user_box'>" +
-                    "<img class='room_user_profile' src=/upload/" + value.profilePath + ">" +
-                    "<div class='room_user_name'>" + value.userName + "</div>" +
+                    "<img class='room_user_profile' src=/upload/" + value.user.profile.profilePath + ">" +
+                    "<div class='room_user_name'>" + value.user.username + "</div>" +
                     "<div>" +
                     "<div>"
                 );
-                GroupChatRoomUserArray.push({userObject: value});
             })
+
             $.each(response.chats, function(key, message){
                 showMessage(message);
             });
@@ -225,7 +222,11 @@ function loadGroupRoomData(){
 
 function exitRoom(){
 
-    var data = { groupId: globalThis.groupId, username: $('.Group_login_user').val()};
+    const data = {
+        groupId: globalThis.groupId,
+        username: $('.groupUsername').val(),
+        userId: $('.user').val()
+    }
 
     $.ajax({
         url: '/api/group/exit',
@@ -234,9 +235,8 @@ function exitRoom(){
         contentType: 'application/x-www-form-urlencoded',
         success: function(response){
             if(response.includes('Success')){
-                alert('대화방을 나갔습니다.');
-                window.close();
-                location.href='http://localhost:8000/product/Group';
+                alert('그룹을 나갔습니다.');
+                location.href='http://localhost:8000/product/group';
             }
         }
     })

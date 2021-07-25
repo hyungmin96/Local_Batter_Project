@@ -6,10 +6,7 @@ import com.imageupload.example.dto.GenerateFileDTO;
 import com.imageupload.example.dto.GroupBoardDTO;
 import com.imageupload.example.dto.GroupBoardFileDTO;
 import com.imageupload.example.dto.GroupCommentDTO;
-import com.imageupload.example.entity.GroupBoardEntity;
-import com.imageupload.example.entity.GroupBoardFileEntity;
-import com.imageupload.example.entity.GroupCommentEntity;
-import com.imageupload.example.entity.GroupUsersEntity;
+import com.imageupload.example.entity.*;
 import com.imageupload.example.repositories.GroupBoardFileRepository;
 import com.imageupload.example.repositories.GroupBoardRepository;
 import com.imageupload.example.repositories.GroupCommentRepository;
@@ -20,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
@@ -36,7 +34,7 @@ public class GroupBoardService {
 
     public Page<GroupCommentEntity> getLatestComments(GroupBoardDTO groupBoardDTO){
         PageRequest request = PageRequest.of(groupBoardDTO.getPage(), groupBoardDTO.getDisplay(), Sort.Direction.DESC, "commentId");
-        return groupCommentRepository.findTop6ByGroupId(groupBoardDTO.getGroupId(), request);
+        return groupCommentRepository.findTop5ByGroupId(groupBoardDTO.getGroupId(), request);
     }
 
     public Page<GroupBoardFileEntity> getLatestImages(GroupBoardDTO groupBoardDTO){
@@ -69,33 +67,17 @@ public class GroupBoardService {
         return groupBoardRepository.findAllBygroupIdAndType(groupBoardDTO.getGroupId(), GroupBoardEntity.BoardType.notice, request);
     }
 
-    public void commentWrite(GroupCommentDTO groupCommentDTO){
-
-        GroupUsersEntity groupUsersEntity = (GroupUsersEntity) session.getAttribute("group_user_entity");
-        GroupBoardEntity groupBoardEntity = groupBoardRepository.getOne(groupCommentDTO.getBoardId());
-
-        groupCommentDTO.setGroupId(groupCommentDTO.getGroupId());
-        groupCommentDTO.setGroupBoard(groupBoardEntity);
-        groupCommentDTO.setWriter(groupUsersEntity);
-
-        GroupCommentEntity groupCommentEntity = groupCommentDTO.toEntity();
-
-        groupCommentRepository.save(groupCommentEntity);
-
-    }
-
     public void delete(GroupBoardDTO groupBoardDTO){
-
         GroupBoardEntity groupBoardEntity = groupBoardRepository.getOne(groupBoardDTO.getBoardId());
-
-        String[] filePathArray = groupBoardEntity.getFiles().stream().map(item -> item.getName()).toArray(String[]::new);
-
+        String[] filePathArray = groupBoardEntity.getFiles().stream().map(GroupBoardFileEntity::getName).toArray(String[]::new);
         new DeleteFile(filePathArray).deleteFile();
         groupBoardRepository.deleteById(groupBoardDTO.getBoardId());
     }
 
+    @Transactional
     public void post(GroupBoardDTO groupBoardDTO){
-
+        GroupUsersEntity groupUsersEntity = (GroupUsersEntity) session.getAttribute("group_user_entity");
+        groupBoardDTO.setUser(groupUsersEntity);
         GroupBoardEntity groupBoardEntity = groupBoardDTO.toEntity();
         groupBoardRepository.save(groupBoardEntity);
 

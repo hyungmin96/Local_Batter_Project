@@ -55,11 +55,11 @@ function deleteRoom(){
 
 function enterRoom(){
 
-    var data = {
+    const data = {
         userId: $('.join_user_id').val(),
         username: $('.join_user_name').val(),
         groupId: $('.groupId').val()
-    }
+    };
 
     $.ajax({
 

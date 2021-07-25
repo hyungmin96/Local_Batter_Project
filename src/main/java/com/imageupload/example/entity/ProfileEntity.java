@@ -27,8 +27,4 @@ public class ProfileEntity implements Serializable {
     private String accountNumber;
     private String preferTime;
 
-    @OneToOne(mappedBy = "profile")
-    @JsonIgnore
-    private UserEntity user;
-
 }

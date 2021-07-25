@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import lombok.RequiredArgsConstructor;
 
@@ -33,18 +34,13 @@ public class GroupChatRestController {
         return new ResponseEntity<String>("Success", HttpStatus.OK);
     }
 
-    @PostMapping("/delete")
-    public ResponseEntity<String> deleteRoom(@RequestParam Long roomId, @RequestParam String username){
-        groupService.deleteRoom(roomId, username);
-        return new ResponseEntity<String>("Success", HttpStatus.OK);
-    }
-
     @PostMapping("/exit")
     public ResponseEntity<String> exitRoom(GroupJoinRequestDTO groupJoinRequestDTO){
         GroupChatMessageDTO messageDTO = new GroupChatMessageDTO();
         messageDTO.setGroupId(groupJoinRequestDTO.getGroupId());
+        messageDTO.setUserId(groupJoinRequestDTO.getUserId());
+        messageDTO.setMessage(groupJoinRequestDTO.getUsername() + " 님이 나갔습니다.");
         messageDTO.setType("exit");
-        messageDTO.setMessage(null);
 
         groupChatService.sendGroupRoomToChat(messageDTO);
         groupService.exitRoom(groupJoinRequestDTO.getGroupId());
@@ -52,20 +48,21 @@ public class GroupChatRestController {
     }
 
     @PostMapping("/enter")
-    public ResponseEntity<String> enterRoom(GroupJoinRequestDTO groupJoinRequestDTO){
+    public ResponseEntity<GroupJoinRequestDTO> enterRoom(GroupJoinRequestDTO groupJoinRequestDTO){
         switch(groupService.GroupChatRoomEnter(groupJoinRequestDTO)) {
             case greeting:
                 GroupChatMessageDTO messageDTO = new GroupChatMessageDTO();
+                messageDTO.setUserId(groupJoinRequestDTO.getUserId());
                 messageDTO.setGroupId(groupJoinRequestDTO.getGroupId());
+                messageDTO.setMessage(groupJoinRequestDTO.getUsername() + " 님이 대화방에 참여하였습니다.");
                 messageDTO.setType("greeting");
-                messageDTO.setMessage(null);
 
                 groupChatService.sendGroupRoomToChat(messageDTO);
             case enter:
-                return new ResponseEntity<String>("Enter", HttpStatus.OK);
+                return new ResponseEntity<GroupJoinRequestDTO>(groupJoinRequestDTO, HttpStatus.OK);
         }
 
-        return new ResponseEntity<String>("Failed - exceed Users number", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<GroupJoinRequestDTO>(groupJoinRequestDTO, HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/getlist")

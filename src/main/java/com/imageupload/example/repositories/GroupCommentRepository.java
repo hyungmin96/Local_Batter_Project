@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface GroupCommentRepository extends JpaRepository<GroupCommentEntity, Long>{
     List<GroupCommentEntity> findAllByGroupBoard(GroupBoardEntity GroupBoard);
-    Page<GroupCommentEntity> findTop6ByGroupId(Long groupId, Pageable request);
+    Page<GroupCommentEntity> findTop5ByGroupId(Long groupId, Pageable request);
 }

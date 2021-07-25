@@ -3,6 +3,7 @@ package com.imageupload.example.dto;
 import com.imageupload.example.entity.GroupBoardEntity;
 import com.imageupload.example.entity.GroupBoardFileEntity;
 import com.imageupload.example.entity.GroupUsersEntity;
+import com.imageupload.example.entity.UserEntity;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;

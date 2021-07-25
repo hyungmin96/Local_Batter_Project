@@ -8,6 +8,7 @@ import com.imageupload.example.entity.GroupBoardFileEntity;
 import com.imageupload.example.entity.GroupCommentEntity;
 import com.imageupload.example.entity.GroupUsersEntity;
 import com.imageupload.example.services.GroupBoardService;
+import com.imageupload.example.services.GroupCommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,7 +25,12 @@ import java.util.List;
 public class GroupRestController {
 
     private final GroupBoardService groupBoardService;
-    private final HttpSession session;
+    private final GroupCommentService groupCommentService;
+
+    @PostMapping("/comment/delete")
+    public ResponseEntity<GroupCommentDTO> deleteComment(GroupCommentDTO groupCommentDTO){
+        return groupCommentService.deleteComment(groupCommentDTO);
+    }
 
     @GetMapping("/comment/get_latest_comments")
     public Page<GroupCommentEntity> getLatestComments(GroupBoardDTO groupBoardDTO){
@@ -48,7 +54,7 @@ public class GroupRestController {
 
     @PostMapping("/board/comment/write")
     public ResponseEntity<GroupCommentDTO> commentWrite(GroupCommentDTO groupCommentDTO){
-        groupBoardService.commentWrite(groupCommentDTO);
+        groupCommentService.commentWrite(groupCommentDTO);
         return new ResponseEntity<>(groupCommentDTO, HttpStatus.OK);
     }
 
@@ -60,8 +66,7 @@ public class GroupRestController {
 
     @PostMapping("/board/post")
     public ResponseEntity<GroupBoardDTO> groupPostContent(GroupBoardDTO groupBoardDTO){
-        GroupUsersEntity groupUsersEntity = (GroupUsersEntity) session.getAttribute("group_user_entity");
-        groupBoardDTO.setUser(groupUsersEntity);
+
         groupBoardService.post(groupBoardDTO);
         return new ResponseEntity<>(groupBoardDTO, HttpStatus.OK);
     }

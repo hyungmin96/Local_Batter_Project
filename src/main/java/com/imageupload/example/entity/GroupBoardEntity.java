@@ -16,6 +16,7 @@ public class GroupBoardEntity extends BaseTimeEntity {
     private Long boardId;
 
     private Long groupId;
+    @Lob
     private String content;
     private int boardLike;
 

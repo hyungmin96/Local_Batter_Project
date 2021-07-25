@@ -13,6 +13,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 @Service
 @RequiredArgsConstructor
 public class GroupChatService {
+
     private final UserRepository userRepository;
     private final SimpMessagingTemplate simpMessagingTemplate;
     private final GroupService groupService;
@@ -21,7 +22,6 @@ public class GroupChatService {
 
         UserEntity userEntity = userRepository.getOne(messageDTO.getUserId());
         GroupEntity groupEntity = groupService.findRoom(messageDTO.getGroupId());
-
         GroupUsersEntity groupUsersEntity = groupService.findUserEntity(groupEntity, userEntity);
 
         GroupUsersDTO groupUsersDTO = new GroupUsersDTO();
@@ -40,4 +40,5 @@ public class GroupChatService {
             simpMessagingTemplate.convertAndSend("/chat/group/" + messageDTO.getGroupId(), messageDTO);
         }
     }
+
 }

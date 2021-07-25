@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +30,7 @@ public class GroupChatRoomRepositoryTestClass {
     private GroupUsersRepository GroupUsersRepository;
 
     @Autowired
-    private GroupChatRepository GroupChatRepository;
+    private GroupChatRepository groupChatRepository;
 
     @Autowired
     private GroupCommentRepository GroupCommentRepository;
@@ -47,6 +49,20 @@ public class GroupChatRoomRepositoryTestClass {
 
     private final Logger log = LogManager.getLogger();
     private final String root = "D:\\Spring projects\\SpringBoot LocalBatter\\src\\main\\downloads\\";
+
+    @Test
+    void 그룹_멤버_삭제(){
+        GroupUsersEntity groupUsersEntity = groupUsersRepository.findById(9L).get();
+        List<GroupChatEntity> list = groupUsersRepository.findAllEntityGraph();
+
+        for(GroupChatEntity item : list){
+            item.setGroupUsersEntity(null);
+            groupChatRepository.save(item);
+        }
+
+        groupUsersEntity.setGroupChatEntity(null);
+        GroupUsersRepository.deleteById(9L);
+    }
 
     @Test
     void 최신_게시글_사진가져오기(){

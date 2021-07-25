@@ -7,8 +7,11 @@ import com.imageupload.example.entity.*;
 import com.imageupload.example.entity.GroupChatEntity;
 import com.imageupload.example.enumtype.GroupChatRoomEnterEnumType;
 import com.imageupload.example.repositories.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +29,7 @@ public class GroupService {
     private final GroupUsersRepository groupUsersRepository;
     private final UserRepository userRepository;
     private final HttpSession session;
+    private final Logger log = LogManager.getLogger();
 
     public GroupEntity findRoom(Long room_id){
         return groupRepository.findById(room_id).get();
@@ -60,26 +64,6 @@ public class GroupService {
         messageDTO.setImgPath(imgs);
     }
 
-    public void deleteRoom(Long roomId, String username){
-
-        UserEntity userEntity = (UserEntity) session.getAttribute("userId");
-
-        if(userEntity.getUsername().equals(username)){
-            GroupEntity GroupChatRoomEntity = groupRepository.findById(roomId).get();
-
-            GroupChatRoomEntity.getChats().stream()
-                    .filter(item -> item.getType().equals("image")).forEach(item -> {
-                new DeleteFile(new String[] {item.getMessage()}).deleteFile();
-            });
-
-            groupRepository.delete(GroupChatRoomEntity);
-
-            List<String> files = new ArrayList<>();
-            GroupChatRoomEntity.getFiles().stream().map(value -> files.add(value.getName())).toArray();
-            new DeleteFile(files.toArray(new String[files.size()])).deleteFile();
-        }
-    }
-
     public GroupEntity getRoomInfo(Long id){
         return groupRepository.findById(id).get();
     }
@@ -88,15 +72,20 @@ public class GroupService {
         groupChatRepository.save(messageDTO.toEntity());
     }
 
+    @Transactional
     public void exitRoom(Long roomId){
-
         UserEntity userEntity = (UserEntity) session.getAttribute("userId");
-
         GroupEntity groupEntity = groupRepository.getOne(roomId);
-        GroupUsersEntity GroupUsersEntity = groupUsersRepository.findByuserIdAndGroupEntity(userEntity.getId(), groupEntity);
+        GroupUsersEntity groupUsersEntity = groupUsersRepository.findByuserIdAndGroupEntity(userEntity.getId(), groupEntity);
+        List<GroupChatEntity> list = groupUsersEntity.getGroupChatEntity();
 
-        groupRepository.exitCurrentUsers(groupEntity.getId());
-        groupUsersRepository.delete(GroupUsersEntity);
+        for(GroupChatEntity item : list){
+            item.setGroupUsersEntity(null);
+            groupChatRepository.save(item);
+        }
+
+        groupUsersEntity.setGroupChatEntity(null);
+        groupUsersRepository.deleteById(groupUsersEntity.getId());
     }
 
     public GroupChatRoomEnterEnumType GroupChatRoomEnter(GroupJoinRequestDTO groupJoinRequestDTO){
@@ -113,9 +102,6 @@ public class GroupService {
                 authorizationType = com.imageupload.example.entity.GroupUsersEntity.GroupUsersEnumType.manager;
             else
                 authorizationType = com.imageupload.example.entity.GroupUsersEntity.GroupUsersEnumType.member;
-
-            // Update current users number
-            groupRepository.enterCurrentUsers(groupEntity.getId());
 
             GroupUsersDTO groupUsersDTO = new GroupUsersDTO();
             groupUsersDTO.setUser(userEntity);

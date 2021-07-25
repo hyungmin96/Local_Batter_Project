@@ -9,5 +9,6 @@ public class GroupJoinRequestDTO {
     private Long userId;
     private String username;
     private Long groupId;
+    private String result;
 
 }

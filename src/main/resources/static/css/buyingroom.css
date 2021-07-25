@@ -5,6 +5,51 @@
     padding: 0;
 }
 
+.commenOptionBox{
+    display: inline-flex;
+}
+
+.optionButton{
+    margin: 0 3px 0 3px;
+    color: #535252;
+    border: none;
+    font-size: 12px;
+}
+
+.commenOptionBox button{
+    outline: none;
+}
+
+.commenOptionBox button:hover{
+    border-bottom: 1px solid #4c4b4b;
+}
+
+._contentUploadBox{
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 13px;
+}
+
+._groupExitButton{
+    cursor: pointer;
+}
+
+._groupExitButton:hover{
+    cursor: pointer;
+    background-color: #FAF7FAFF;
+}
+
+.articleWordsBox{
+    margin: auto;
+    text-align: end;
+    width: 100%;
+    padding: 10px;
+}
+
+.contentItemBox ._content{
+    white-space: normal;
+    word-break: break-all;
+}
+
 .usersOptionContainer{
     margin: 0 0 0 25px;
     display: inline-flex;
@@ -142,7 +187,7 @@
 }
 
 ._commentBox{
-    padding: 10px 15px 0 15px;
+    padding: 10px 15px 8px 15px;
     border-top: 1px solid #f0f0f0;
     background-color: rgb(252, 252, 252);
     font-family: 'Noto Sans KR', sans-serif;
@@ -434,12 +479,14 @@
     cursor: pointer;
 }
 
-.room_inner_info{
+.groupAside{
     background-color: white;
     margin: 0 0 10px 0;
     text-align: left;
     padding: 10px;
     box-shadow: 0 2px 3px 0 rgba(161, 161, 161, 0.12);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 13px;
 }
 
 .room_inner_info hr{
@@ -447,11 +494,6 @@
     background-color: #b1afaf;
     height: 1px;
     margin: 8px 0 8px 0;
-}
-
-.Group_product{
-    font-family: 'Noto Sans KR', sans-serif;
-    font-size: 13px;
 }
 
 ._room_description{

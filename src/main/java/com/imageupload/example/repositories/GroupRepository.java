@@ -10,13 +10,4 @@ import javax.transaction.Transactional;
 
 public interface GroupRepository extends JpaRepository<GroupEntity, Long>{
 
-    @Transactional
-    @Modifying
-    @Query(value = "update GroupEntity set currentUsers = currentUsers + 1 where id =:id", nativeQuery = true)
-    void enterCurrentUsers(Long id);
-
-    @Transactional
-    @Modifying
-    @Query(value = "update GroupEntity set currentUsers = currentUsers - 1 where id =:id", nativeQuery = true)
-    void exitCurrentUsers(Long id);
 }

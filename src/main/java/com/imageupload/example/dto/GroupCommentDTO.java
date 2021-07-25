@@ -8,8 +8,9 @@ import lombok.Setter;
 
 @Getter @Setter
 public class GroupCommentDTO {
-    private Long comment_id;
+    private Long commentId;
     private Long boardId;
+    private Long userId;
     private Long groupId;
     private String regDate;
     private GroupUsersEntity writer;

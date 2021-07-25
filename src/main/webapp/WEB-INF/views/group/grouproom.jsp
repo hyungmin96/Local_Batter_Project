@@ -1,12 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="../common/header.jsp"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <div class="wrapper" style='margin: 80px 0 80px 0; display: flex; flex-direction: row; align-items: flex-start; position: relative; justify-content: center; padding: 30px; width: 90%'>
 <div style="display: inline-flex">
 
     <input type="hidden" class="groupId" value="${Group_room_id.id}">
     <input type="hidden" class="user" value="${user_id.id}">
+    <input type="hidden" class="groupUsername" value="${user_id.username}">
 
     <div>
         <section id="RoomInnerInfo" style="width: 300px; margin-left: 160px; text-align: right;">
@@ -16,7 +18,7 @@
                     </div>
                 </c:if>
 
-                <div class="room_inner_info">
+                <div class="groupAside room_inner_info">
                     <div class="Group_product">
                         그룹정보
                     </div>
@@ -36,13 +38,17 @@
 
                     <hr />
                     <div class="Group_product _room_members">
-                        멤버 ${Group_room_id.currentUsers}명
+                        멤버 ${fn:length(Group_room_id.users)}명
                     </div>
 
                     <hr />
                     <div class="Group_product room_type">
                         그룹설정 : ${Group_room_id.type}
                     </div>
+                </div>
+                <div style="text-align: center;" class="groupAside _groupExitButton">
+                    <img src="/images/exit_32px.png">
+                    <button>그룹 나가기</button>
                 </div>
         </section>
     </div>
@@ -69,8 +75,12 @@
                         </div>
                         <div class="upload _contentUploadBox" style="display: inline-flex; width: 100%">
                             <input type="file" id="uploadFile" multiple="multiple" style="display: none;">
-                            <div class="fileArea _imgUploadDialog" style="padding: 16px 15px 10px 18px;">
+                            <div class="fileArea _imgUploadDialog" style="cursor: pointer; padding: 16px 15px 10px 18px;">
                                 <button><img src="/images/group/image_gallery_23px.png"></button>
+                            </div>
+                            <div class="articleWordsBox">
+                                <span class="currentWords">0</span> /
+                                <span class="limitWords">300</span>
                             </div>
                             <div class="uploadBtn" style="margin-left: auto; align-items: flex-end; padding: 10px 10px 10px 5px;">
                                 <button style="height: 35px; width: 70px; padding: 3px 10px 3px 10px; color: white; background-color: rgb(56, 62, 76);">글 작성</button>
@@ -139,7 +149,7 @@
         </div>
 
         <section class="aside _currentImages">
-            <div class="card _memberList" style="height: 297px; padding: 0">
+            <div class="card _articleCurrentList" style="height: 297px; padding: 0">
                 <div class="card-header" style="background-color: white">
                     최근 게시물 사진
                 </div>
@@ -149,7 +159,7 @@
             </div>
         </section>
 
-        <div class="card _articleCurrentList" style="height: 240px">
+        <div class="card _commentCurrentList" style="max-height: 240px">
             <div class="card-header" style="background-color: white">
                 최근 등록된 덧글
             </div>
@@ -196,9 +206,8 @@
         $(window).scrollTop(0);
     });
 </script>
-<script type="text/javascript" src="/js/buyingroom.js"></script>
+<script type="text/javascript" src="/js/Group.js"></script>
 <script type="text/javascript" src="/js/imgModal.js"></script>
-<script type="text/javascript" src="/js/buyingchatroom.js"></script>
 <link rel="stylesheet" href="/css/buyingroom.css">
 <link rel="stylesheet" href="/css/imgModal.css">
 <link rel="stylesheet" href="/css/imgGridGallery.css">

@@ -1,8 +1,31 @@
+
+
+function deleteComment(e, commentId){
+
+    const data = {
+        groupId: globalThis.groupId,
+        userId: $('.user').val(),
+        commentId: commentId
+    }
+
+    $.ajax({
+        url: '/api/group/comment/delete',
+        type: 'POST',
+        data: data,
+        contentType: 'application/x-www-form-urlencoded',
+        success: function(response){
+            $('#commentId_' + commentId).remove();
+            e.innerHTML = (e.innerHTML * 1) - 1;
+        }
+    })
+
+}
+
 function loadLatestComments() {
-    var data = {
+    const data = {
         groupId: $('.groupId').val(),
         page: 0,
-        display: 6
+        display: 5
     }
 
     $.ajax({
@@ -22,7 +45,7 @@ function loadLatestComments() {
 }
 
 function loadLatestImages() {
-    var data = {
+    const data = {
         groupId: $('.groupId').val(),
         page: 0,
         display: 9
@@ -46,7 +69,7 @@ function loadLatestImages() {
 
 function loadNotices() {
 
-    var data = {
+    const data = {
         groupId: $('.groupId').val(),
         page: 0,
         display: 5
@@ -90,11 +113,11 @@ function updateNotice(e, noticeRegistered) {
     var noticeRegistered = (noticeRegistered) ? 'general' : 'notice'
 
     //type : general, fix, notice
-    var boardId = $(e)[0].path[7].children[0].value
-    var groupId = $('.groupId').val();
-    var username = $('.user').val();
+    const boardId = $(e)[0].path[7].children[0].value
+    const groupId = $('.groupId').val();
+    const username = $('.user').val();
 
-    var data = {
+    const data = {
         groupId: groupId,
         boardId: boardId,
         type: noticeRegistered,
@@ -107,7 +130,6 @@ function updateNotice(e, noticeRegistered) {
         data: data,
         contentType: 'application/x-www-form-urlencoded',
         success: function (response) {
-            console.log(response)
             if (JSON.stringify(response).includes('general'))
                 alert('해당 게시글 공지를 내렸습니다.')
             else
@@ -119,8 +141,8 @@ function updateNotice(e, noticeRegistered) {
 
 function deletePost(e) {
 
-    var boardId = $(e)[0].path[7].children[0].value
-    var data = {
+    const boardId = $(e)[0].path[7].children[0].value
+    const data = {
         boardId: boardId,
         username: $('.user__name').val()
     }
@@ -139,9 +161,11 @@ function deletePost(e) {
 
 function postContent() {
 
-    if (infoImgs.length > 0 || $('#board_content_box').val().length > 0) {
-        var groupId = $('.groupId').val();
-        var formData = new FormData();
+    if ($('#board_content_box').val().length > 301)  alert('300자 이하로 작성 가능합니다.')
+
+    else if (infoImgs.length > 0 || $('#board_content_box').val().length > 0) {
+        const groupId = $('.groupId').val();
+        const formData = new FormData();
 
         formData.append('groupId', groupId);
         formData.append('writer', $('.user').val());
@@ -172,12 +196,12 @@ function postContent() {
 
 }
 
-var page = 0;
-var display = 6;
-var lastPage = false;
+let page = 0;
+let display = 6;
+let lastPage = false;
 
 function getBoardList() {
-    var data = {groupId: $('.groupId').val(), display: display, page: page}
+    const data = {groupId: $('.groupId').val(), display: display, page: page}
 
     if (!lastPage) {
 
@@ -204,7 +228,6 @@ function getBoardList() {
 }
 
 function inputPostBox(value) {
-
     const boardType = (value.type !== 'general') ? "<span class='notice _noticeText'>공지</span>" : '';
     return "<input type='hidden' value=" + value.boardId + ">" +
         "<div class='boardItemBox' style='animation: fadein 1.5s; margin-bottom: 20px; box-shadow: 0 2px 3px 0 rgba(161, 161, 161, 0.12);'>" +
@@ -252,23 +275,34 @@ function inputPostBox(value) {
         "</div>" +
         "<div class='boardCommentView' style='background-color: white;'>" +
         "<div style='display: none;' class='commentListView'>" +
-        commentBox(value.comments) +
+            commentBox(value.comments) +
         "</div>" +
         "<div class='commentInputBox'>" +
 
         "</div>" +
-        "</div>" +
         "</div>"
 }
 
+$(document).on('click', '._commentDeleteButton', function (e){
+
+    let index = $('._commentDeleteButton').index(this);
+    let commentCountBox = $(this).closest('.boardItemBox').find(".commentCountBox")[0];
+    let commentBox = document.getElementsByClassName('_commentDeleteButton')[index].parentNode.parentNode.parentNode;
+    let commentId = commentBox.getAttribute('id').split('_')[1];
+
+    deleteComment(commentCountBox, commentId);
+
+})
+
+$('.chattingButton').click(function(){
+    window.open("/group/chat/" + $('.groupId')[0].value, $('._room_title')[0].value, "width=400, height=650");
+})
+
 function commentBox(comments) {
-
-    console.log(comments)
-
     let result = '';
     if (comments.length > 0) {
         for (let i = 0; i < comments.length; i++) {
-            var date = (comments[i].regDate == null) ? new Date().toLocaleString([], {
+            const date = (comments[i].regDate == null) ? new Date().toLocaleString([], {
                 year: 'numeric',
                 month: 'numeric',
                 day: 'numeric',
@@ -281,6 +315,7 @@ function commentBox(comments) {
                 hour: '2-digit',
                 minute: '2-digit'
             })
+
             result +=
                 "<div id=commentId_" + comments[i].commentId + " class='commentList _commentBox'>" +
                 "<div class='commentProfileBox'>" +
@@ -288,15 +323,17 @@ function commentBox(comments) {
                 "</div>" +
                 "<div class='userInfoComment'>" +
                 "<div class='commentUsername'>" +
-                comments[i].writer.user.userName +
+                    comments[i].writer.user.username +
                 "</div>" +
                 "<div class='commentContentBox'>" +
-                comments[i].comment +
+                    comments[i].comment +
                 "</div>" +
-                "<div class='commentRegTime'>" +
-                date +
+                "<div class='commenOptionBox'>" +
+                    "<div style='margin-right: 7px;' class='commentRegTime'>" + date +  "</div>" +
+                    "<button class='optionButton _commentUpdateButton'>수정</button>" +
+                    "<button class='optionButton _commentDeleteButton'>삭제</button>" +
+                    "<button class='optionButton _commentReplyButton'>답글</button>" +
                 "</div>" +
-                "<img class='commentMenuButton' src='/images/menu_14px.png'>" +
                 "</div>" +
                 "</div>"
         }
@@ -313,16 +350,16 @@ $(function () {
         postContent();
     })
     $('.carousel-control-prev').click(function () {
-        var currentPage = document.getElementsByClassName('_currentPageNumber')[0];
-        var lastPage = document.getElementsByClassName('_lastPageNumber')[0];
+        const currentPage = document.getElementsByClassName('_currentPageNumber')[0];
+        const lastPage = document.getElementsByClassName('_lastPageNumber')[0];
         if ((currentPage.innerHTML * 1) > 1 && (lastPage.innerHTML * 1) >= currentPage.innerHTML)
             currentPage.innerHTML = (currentPage.innerHTML * 1) - 1;
         else
             currentPage.innerHTML = lastPage.innerHTML;
     })
     $('.carousel-control-next').click(function () {
-        var currentPage = document.getElementsByClassName('_currentPageNumber')[0];
-        var lastPage = document.getElementsByClassName('_lastPageNumber')[0];
+        const currentPage = document.getElementsByClassName('_currentPageNumber')[0];
+        const lastPage = document.getElementsByClassName('_lastPageNumber')[0];
         if ((currentPage.innerHTML * 1) < (lastPage.innerHTML * 1))
             currentPage.innerHTML = (currentPage.innerHTML * 1) + 1
         else
@@ -347,16 +384,16 @@ function generateMenuBox(e) {
 
     else {
 
-        var noticeRegistered = $(e).closest('.boardItemBox')[0].childNodes[1].children[0].innerText.includes('공지');
-        var noticeText = (noticeRegistered) ? '공지 내리기' : '공지로 등록'
+        const noticeRegistered = $(e).closest('.boardItemBox')[0].childNodes[1].children[0].innerText.includes('공지');
+        const noticeText = (noticeRegistered) ? '공지 내리기' : '공지로 등록'
 
-        var line = document.createElement('hr');
-        var line2 = document.createElement('hr');
+        const line = document.createElement('hr');
+        const line2 = document.createElement('hr');
 
-        var boardMenuBox = document.createElement('div');
+        const boardMenuBox = document.createElement('div');
         boardMenuBox.setAttribute('class', 'boardMenuBox')
 
-        var noticeButton = document.createElement('div')
+        const noticeButton = document.createElement('div')
         noticeButton.setAttribute('class', 'boardmenu _boardNotice')
         noticeButton.addEventListener('click', function (e) {
             updateNotice(e, noticeRegistered)
@@ -365,7 +402,7 @@ function generateMenuBox(e) {
         boardMenuBox.append(noticeButton)
         boardMenuBox.append(line)
 
-        var updateButton = document.createElement('div')
+        const updateButton = document.createElement('div')
         updateButton.setAttribute('class', 'boardmenu _boardUpdate')
         updateButton.innerText = '수정'
         updateButton.addEventListener('click', function (e) {
@@ -390,8 +427,8 @@ function generateMenuBox(e) {
 
 let infoImgs = [];
 $('#uploadFile').change(function (e) {
-    var fileArray = Array.prototype.slice.call(e.target.files);
-    var imgIndex = 0;
+    const fileArray = Array.prototype.slice.call(e.target.files);
+    let imgIndex = 0;
 
     fileArray.forEach(function (f) {
         if (!f.type.match("image.*")) {
@@ -399,7 +436,7 @@ $('#uploadFile').change(function (e) {
             return;
         }
         infoImgs.push(f);
-        var reader = new FileReader();
+        const reader = new FileReader();
         reader.onload = function (e) {
             $('._imgPreviewSlider').prepend(
                 "<div class='imgBox' '>" +
@@ -413,7 +450,7 @@ $('#uploadFile').change(function (e) {
 })
 
 function previewImgDelete(e) {
-    var index = e.id.split('_')[1];
+    const index = e.id.split('_')[1];
     infoImgs[index] = null;
     $('#' + e.id).parent().remove();
 }
@@ -425,7 +462,7 @@ $(document).on('click', '._commentBtn', function () {
 
 // 덧글목록 element 생성
 $(document).on('click', '._commentButton', function () {
-    var index = $('._commentButton').index(this);
+    const index = $('._commentButton').index(this);
 
     if (document.getElementsByClassName('commentListView')[index].style.display == 'none')
         document.getElementsByClassName('commentListView')[index].style.display = 'block';
@@ -437,19 +474,19 @@ $(document).on('click', '._commentButton', function () {
 
 function showCommentInputBox(e) {
 
-    var inputBox = $(e).closest('.boardItemBox')[0].childNodes[3].childNodes[1];
+    const inputBox = $(e).closest('.boardItemBox')[0].childNodes[3].childNodes[1];
 
     if (!inputBox.hasChildNodes()) {
-        var commentInputBox = document.createElement('div');
+        const commentInputBox = document.createElement('div');
         commentInputBox.setAttribute('class', 'commentWriteBox');
         commentInputBox.style.cssText = 'padding: 13px;'
 
-        var commentTextbox = document.createElement('input');
+        const commentTextbox = document.createElement('input');
         commentTextbox.setAttribute('class', 'commentInputText');
         commentTextbox.setAttribute('type', 'text');
         commentTextbox.setAttribute('placeholder', '작성할 덧글내용을 입력해주세요.');
 
-        var commentSendButton = document.createElement('button');
+        const commentSendButton = document.createElement('button');
         commentSendButton.setAttribute('class', 'commentSendBtn');
         commentSendButton.innerHTML = '작성';
 
@@ -462,19 +499,19 @@ function showCommentInputBox(e) {
 
 // comment Write
 $(document).on('click', '.commentSendBtn', function (e) {
-    var boardId = $(this).closest('.boardItemBox')[0].children[0].value;
-    var commentListView = e.target.parentElement.parentElement.parentElement.children[0]
-    var userId = $(document)[0].all[57].value;
-    var commentValue = $(this).closest('.boardItemBox').children()[3].children[1].children[0].children[0].value;
-    var commentInfoArray = [];
-    var commentCount = e.target.parentNode.parentNode.parentNode.parentNode.children[1].lastChild.lastChild.lastChild;
+    const commentInfoArray = [];
+    const boardId = $(this).closest('.boardItemBox').find('.boardId')[0].value;
+    const commentListView = $(this).closest('.boardItemBox').find('.commentListView')[0]
+    const userId = $(document)[0].all[57].value;
+    const commentValue = $(this).closest('.boardItemBox').find('.commentInputText')[0]
+    const commentCount = $(this).closest('.boardItemBox').find(".commentCountBox")[0]
 
-    var data = {
+    const data = {
         groupId: $('.groupId').val(),
         boardId: boardId,
         userId: userId,
-        comment: commentValue,
-    }
+        comment: commentValue.value,
+    };
 
     $.ajax({
         url: '/api/group/board/comment/write',
@@ -486,8 +523,8 @@ $(document).on('click', '.commentSendBtn', function (e) {
             commentInfoArray.push(response)
             commentListView.style.display = 'block';
 
-            var xmlString = commentBox(commentInfoArray);
-            var wrapper = document.createElement('div');
+            const xmlString = commentBox(commentInfoArray);
+            const wrapper = document.createElement('div');
             wrapper.innerHTML = xmlString;
 
             commentListView.append(
@@ -502,14 +539,14 @@ $(document).on('click', '.commentSendBtn', function (e) {
 function imgShow(id, fileArray) {
 
     let dataNumber = (fileArray.length >= 4) ? 4 : fileArray.length;
-    var imgBox = '';
+    let imgBox = '';
 
     if (fileArray.length > 0) {
 
-        var displayBoolean = 'none';
-        var imgContainer = '';
+        let displayBoolean = 'none';
+        let imgContainer = '';
         for (let i = 0; i < fileArray.length; i++) {
-            var moreButton = (function () {
+            const moreButton = (function () {
                 if (i == 3 && fileArray.length != dataNumber) {
                     return "<button type=\"button\" class=\"moreMedia _moreMedia\"><span class=\"moreText\">+" + (fileArray.length - dataNumber) + "장</span></button>"
                 } else if (i >= 4) {
@@ -517,7 +554,7 @@ function imgShow(id, fileArray) {
                 } else {
                     displayBoolean = 'block';
                 }
-            })()
+            })();
 
             imgContainer += "<li style=display:" + displayBoolean + " data-viewname=\"DPhotoCollageImageItemView\" class=\"collageItem\">" +
                 "<button type=\"button\" class=\"collageImage _imageButton\">" +
@@ -537,8 +574,19 @@ function imgShow(id, fileArray) {
     return imgBox;
 }
 
+// Group article 글자수 제한
+$('#board_content_box').keyup(function (){
+    const article = $('#board_content_box')
+    const currentWords = document.getElementsByClassName('currentWords')[0];
+
+    if(article.val().length < 301)
+        currentWords.innerHTML = article.val().length
+    else
+        article.val(article.val().substring(0, 300))
+})
+
 document.addEventListener("DOMContentLoaded", function (event) {
-    var scrollpos = localStorage.getItem('scrollpos');
+    const scrollpos = localStorage.getItem('scrollpos');
     if (scrollpos) {
         window.scrollTo(0, 0);
         loadNotices();
@@ -558,7 +606,7 @@ $(document).scroll(function () {
 });
 
 function getDocHeight() {
-    var D = document;
+    const D = document;
     return Math.max(
         D.body.scrollHeight, D.documentElement.scrollHeight,
         D.body.offsetHeight, D.documentElement.offsetHeight,

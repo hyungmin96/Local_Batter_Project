@@ -21,6 +21,7 @@ public class GroupChatMessageDTO implements Serializable {
     private Long userId;
     private GroupUsersEntity groupUsersEntity;
     private String message;
+    private String username;
     private String type;
     private MultipartFile[] img;
     private List<String> imgPath;

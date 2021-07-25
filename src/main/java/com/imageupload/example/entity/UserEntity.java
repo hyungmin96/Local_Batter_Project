@@ -37,17 +37,13 @@ public class UserEntity implements UserDetails {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "notificationId")
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private NotificationEntity notification;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "profileId")
     private ProfileEntity profile;
-
-    @CreationTimestamp
-    private Timestamp createTime;
 
     @Column
     @Enumerated(EnumType.STRING)
