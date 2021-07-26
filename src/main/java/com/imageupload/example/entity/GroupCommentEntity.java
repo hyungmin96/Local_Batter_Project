@@ -28,4 +28,8 @@ public class GroupCommentEntity extends BaseTimeEntity{
     @JsonIgnoreProperties({"comments", "files", "groupId"})
     private GroupBoardEntity groupBoard;
 
+    public void update(String comment){
+        this.comment = comment;
+    }
+
 }

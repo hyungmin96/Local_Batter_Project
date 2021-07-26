@@ -18,7 +18,28 @@ function deleteComment(e, commentId){
             e.innerHTML = (e.innerHTML * 1) - 1;
         }
     })
+}
 
+function exitRoom(){
+
+    const data = {
+        groupId: $('.groupId').val(),
+        username: $('.groupUsername').val(),
+        userId: $('.user').val()
+    }
+
+    $.ajax({
+        url: '/api/group/exit',
+        type: 'POST',
+        data: data,
+        contentType: 'application/x-www-form-urlencoded',
+        success: function(response){
+            if(response.includes('Success')){
+                alert('그룹을 나갔습니다.');
+                location.href='http://localhost:8000/product/group';
+            }
+        }
+    })
 }
 
 function loadLatestComments() {
@@ -283,6 +304,62 @@ function inputPostBox(value) {
         "</div>"
 }
 
+// 덧글 수정
+$(document).on('click', '._commentUpdateButton', function(){
+
+    var index = $('._commentUpdateButton').index(this)
+
+    const boardId = $(this).closest('.boardItemBox').find('.boardId')[0].value;
+    const commentId = $(this).closest('._commentBox')[0].id.split('_')[1];
+
+    var commentBox = $(this).closest('.boardItemBox').find(".commentContentBox")[index]
+    var previousCommentText = commentBox.innerHTML
+    commentBox.innerHTML = ''
+
+    const commentTextbox = document.createElement('input');
+    commentTextbox.setAttribute('class', 'commentInputbox _commentUpdateText');
+    commentTextbox.setAttribute('type', 'text');
+    commentTextbox.setAttribute('placeholder', previousCommentText);
+    commentTextbox.addEventListener('keyup', (e) => {
+        if(e.key === 'Enter'){
+            updateCommentText(commentBox, boardId, commentId, commentTextbox.value);
+        }
+    })
+    commentBox.append(
+        commentTextbox
+    )
+})
+
+function updateCommentText(commentBox, boardId, commentId, comment){
+
+    if(comment.length > 0 ){
+
+        const commentContentBox = document.createElement('div');
+        commentContentBox.setAttribute('class', 'commentContentBox');
+        commentContentBox.innerHTML = comment
+
+        const data = {
+            groupId: $('.groupId').val(),
+            commentId: commentId,
+            boardId: boardId,
+            comment: comment,
+        }
+
+        $.ajax({
+            url: '/api/group/comment/update',
+            type: 'POST',
+            data: data,
+            contentType: 'application/x-www-form-urlencoded',
+            success: function (response){
+                if(JSON.stringify(response).includes('Success')){
+                    commentBox.children[0].remove()
+                    commentBox.append(commentContentBox)
+                }
+            }
+        })
+    } else alert('수정할 내용을 입력해주세요.')
+}
+
 $(document).on('click', '._commentDeleteButton', function (e){
 
     let index = $('._commentDeleteButton').index(this);
@@ -482,7 +559,7 @@ function showCommentInputBox(e) {
         commentInputBox.style.cssText = 'padding: 13px;'
 
         const commentTextbox = document.createElement('input');
-        commentTextbox.setAttribute('class', 'commentInputText');
+        commentTextbox.setAttribute('class', 'commentInputbox commentInputText');
         commentTextbox.setAttribute('type', 'text');
         commentTextbox.setAttribute('placeholder', '작성할 덧글내용을 입력해주세요.');
 
@@ -573,6 +650,11 @@ function imgShow(id, fileArray) {
     }
     return imgBox;
 }
+
+// 그룹 나가기
+$('._groupExitButton').click(function(){
+    exitRoom();
+})
 
 // Group article 글자수 제한
 $('#board_content_box').keyup(function (){

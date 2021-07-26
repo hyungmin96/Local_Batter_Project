@@ -21,6 +21,14 @@ public class GroupCommentService {
     private final GroupBoardRepository groupBoardRepository;
     private final HttpSession session;
 
+    public ResponseEntity<GroupCommentDTO> updateComment(GroupCommentDTO groupCommentDTO){
+
+        GroupCommentEntity groupCommentEntity = groupCommentRepository.getOne(groupCommentDTO.getCommentId());
+        groupCommentEntity.update(groupCommentDTO.getComment());
+        groupCommentDTO.setResult("Success");
+        groupCommentRepository.save(groupCommentEntity);
+        return new ResponseEntity<>(groupCommentDTO, HttpStatus.OK);
+    }
 
     public ResponseEntity<GroupCommentDTO> deleteComment(GroupCommentDTO groupCommentDTO){
         groupCommentRepository.deleteById(groupCommentDTO.getCommentId());

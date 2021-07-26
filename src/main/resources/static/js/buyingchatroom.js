@@ -22,9 +22,6 @@ $('#chatroom_comment_box').on('keyup', function (event){
 })
 
 $(function (){
-    $('._groupExitButton').click(function(){
-        exitRoom();
-    })
 
     $('#img_upload').click(function(){
         $('#upload_dialog').click();
@@ -220,24 +217,3 @@ function loadGroupRoomData(){
     })
 }
 
-function exitRoom(){
-
-    const data = {
-        groupId: globalThis.groupId,
-        username: $('.groupUsername').val(),
-        userId: $('.user').val()
-    }
-
-    $.ajax({
-        url: '/api/group/exit',
-        type: 'POST',
-        data: data,
-        contentType: 'application/x-www-form-urlencoded',
-        success: function(response){
-            if(response.includes('Success')){
-                alert('그룹을 나갔습니다.');
-                location.href='http://localhost:8000/product/group';
-            }
-        }
-    })
-}

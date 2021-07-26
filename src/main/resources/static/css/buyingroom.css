@@ -231,14 +231,14 @@
     background-color: #f8f6f6;
 }
 
-.commentInputText{
+.commentInputbox{
     border: 1px solid #f3f0f0;
     border-radius: 5px;
     padding: 5px;
     width: 90%;
 }
 
-.commentInputText:hover, .commentInputText:focus{
+.commentInputbox:hover, .commentInputbox:focus{
     outline: none;
 }
 

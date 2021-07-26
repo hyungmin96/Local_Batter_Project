@@ -16,6 +16,7 @@ public class GroupCommentDTO {
     private GroupUsersEntity writer;
     private String comment;
     private GroupBoardEntity groupBoard;
+    private String result;
 
     public GroupCommentEntity toEntity(){
         return GroupCommentEntity.builder()

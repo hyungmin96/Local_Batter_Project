@@ -27,6 +27,11 @@ public class GroupRestController {
     private final GroupBoardService groupBoardService;
     private final GroupCommentService groupCommentService;
 
+    @PostMapping("/comment/update")
+    public ResponseEntity<GroupCommentDTO> updateComment(GroupCommentDTO groupCommentDTO){
+        return groupCommentService.updateComment(groupCommentDTO);
+    }
+
     @PostMapping("/comment/delete")
     public ResponseEntity<GroupCommentDTO> deleteComment(GroupCommentDTO groupCommentDTO){
         return groupCommentService.deleteComment(groupCommentDTO);
