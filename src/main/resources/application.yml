@@ -50,9 +50,11 @@ spring:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
       use-new-id-generator-mappings: false
-    show-sql: false
+    show-sql: true
     properties:
-      hibernate.format_sql: true 
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 100
 
   jackson:
     serialization:

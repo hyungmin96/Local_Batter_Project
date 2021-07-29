@@ -67,6 +67,10 @@
 </div>
 
 <div class="header">
+
+    <input type="hidden" class="g_user_id" value="${g_user.id}">
+    <input type="hidden" class="g_user_name" value="${g_user.username}">
+
     <div class="container">
         <div class="header_box" style="margin: auto auto;">
                 <div style="margin-left: 80px; width: 120px;">

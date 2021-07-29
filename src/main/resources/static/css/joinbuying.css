@@ -4,11 +4,13 @@
     font-weight: normal;
     font-style: normal;
 }
-@font-face {
-    font-family: 'Noto Sans KR';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.0/Noto Sans KR.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
+
+#exampleModal .modal-header{
+    height: 40px;
+    font-size: 15px;
+    font-family: 'Noto Sans KR', sans-serif;
+    padding: 15px;
+    display: block;
 }
 
 .checkbox input{
@@ -41,14 +43,14 @@
     width: 170px;
 }
 
-.Group__item__box:hover{
+.group_item_box:hover{
     background-color: rgb(245, 245, 245);
     box-shadow: 3px 3px 10px 3px rgba(0, 0, 0, 0.12);
 }
 
-.Group__item__box{
+.group_item_box{
     cursor: pointer;
-    margin: 5px 10px 5px 10px;
+    margin: 5px 10px 10px 15px;
     max-width: 185px;
     height: 200px;
     background-color: white;
@@ -81,13 +83,14 @@
 }
 
 #preview__img__container{
-    max-width: 500px;
+    max-width: 100%;
 }
 
 #img__upload{
-    height: 198px;
-    width: 230px;
+    height: 130px;
+    width: 150px;
     border: 1px solid rgb(230, 230, 230);
+    margin-top: 9px;
 }
 
 .fast__sale_products button{

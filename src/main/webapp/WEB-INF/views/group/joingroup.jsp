@@ -4,9 +4,6 @@
 
 <div id="Group__wrapper" class="container" style="margin-top: 155px; min-height: 800px;">
 
-        <input type="hidden" class="join_user_id" value="${user_id}">
-        <input type="hidden" class="join_user_name" value="${user_name}">
-
         <div class="fast__sale_products">
             <span class="fast__category">그룹 목록</span>
             <span style="float: right;">
@@ -19,76 +16,52 @@
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">물품 공동구매 채팅방 생성</h5> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true"></span> </button>
                 </div>
+
                 <div class="modal-body">
-                    <div id="smartwizard">
-                        <ul>
-                            <li><a href="#step-1">1 단계<br /><small>물품 이미지 등록</small></a></li>
-                            <li><a href="#step-2">2 단계<br /><small>내용 설정</small></a></li>
-                            <li><a href="#step-3">3 단계<br /><small>채팅방 등록</small></a></li>
-                        </ul>
-                        <div style="padding: 10px; margin-top: 10px;">
-                            <div id="step-1">
-                                <div style="display: flex; flex-direction: row;">
-                                    <img id="img__upload" src="/images/upload.png">
-                                    <input id="input__Group__img" type="file" accept="image/jpg, image/jpeg, image/png" class="custom-file-input" name="upload_file" multiple style="display: none">
-                                    <div id="preview__img__container"></div>
-                                </div>
-                                <hr>
-                                <div>이미지는 총 8장까지 업로드 가능합니다.</div>
-                            </div>
-
-                            <div id="step-2">
-
-                                <div class="article__item__box">
-                                    <label class="item__value">그룹 이름</label>
-                                    <input type="text" name="title" id="Group__title" class="inputbox" placeholder="상품의 이름을 입력해주세요." />
-                                </div>
-
-                                <div class="article__item__box">
-                                    <label class="item__value">그룹 설명</label>
-                                    <textarea class="inputbox" id="Group__desciption" rows="3"></textarea>
-                                </div>
-
-                                <div class="article__item__box">
-                                    <label class="item__value">그룹 태그</label>
-                                    <input type="text" name="tag" id="tags" class="inputbox" placeholder="그룹과 관련된 물품들을 입력해주세요" />
-                                </div>
-
-                                <div class="article__item__box">
-                                    <label class="item__value">그룹 설정</label>
-                                    <div class="chk _group" style="display: inline-flex; width: 100%">
-                                        <div class="checkbox _openChk" onclick="checkboxOnLoad(this);"><input type="checkbox" id="chk_1" checked="checked" value="1"/>전체 공개</div>
-                                        <div class="checkbox _partChk" onclick="checkboxOnLoad(this);"><input type="checkbox" id="chk_2" value="0"/>일부 공개</div>
-                                        <div class="checkbox _secretChk" onclick="checkboxOnLoad(this);"><input type="checkbox" id="chk_3" value="0"/>비공개</div>
-                                    </div>
-                                </div>
-                                <hr />
-
-                            </div>
-
-                            <div id="step-3">
-                                <div>
-                                    <div class="article__item__box">
-                                        <label class="item__value">채팅방 이름</label>
-                                        <input type="text" name="title" id="Group__chat__title" class="inputbox" placeholder="생성할 채팅방의 이름을 입력해주세요." />
-                                    </div>
-
-                                    <div class="article__item__box">
-                                        <label class="item__value">채팅방 인원 설정</label>
-                                        <input type="text" name="title" id="Group__chat__limit" class="inputbox" placeholder="채팅방 인원 제한 수를 입력해주세요." />
-                                    </div>                                
-
-                                    <div style="display: flex; justify-content: flex-end; margin-right: 10px;">
-                                        <button id="room__create" class="btn btn-primary">생성</button>
-                                    </div>
-                                </div>
-                                <hr />
-
+                    <div style="padding: 10px; margin-top: 10px;">
+                        <div id="step-1">
+                            <div style="display: flex; flex-direction: row;">
+                                <img id="img__upload" src="/images/upload.png">
+                                <input id="input__Group__img" type="file" accept="image/jpg, image/jpeg, image/png" class="custom-file-input" name="upload_file" multiple style="display: none">
+                                <div id="preview__img__container"></div>
                             </div>
                         </div>
                     </div>
 
+                <div class="article__item__box">
+                    <label class="item__value">그룹 이름</label>
+                    <input type="text" name="title" id="Group__title" class="inputbox" placeholder="상품의 이름을 입력해주세요."/>
                 </div>
+
+                <div class="article__item__box">
+                    <label class="item__value">그룹 설명</label>
+                    <textarea class="inputbox" id="Group__desciption" rows="3"></textarea>
+                </div>
+
+                <div class="article__item__box">
+                    <label class="item__value">그룹 태그</label>
+                    <input type="text" name="tag" id="tags" class="inputbox" placeholder="그룹과 관련된 물품들을 입력해주세요"/>
+                </div>
+
+                <div class="article__item__box">
+                    <label class="item__value">그룹 설정</label>
+                    <div class="chk _group" style="display: inline-flex; width: 100%">
+                        <div class="checkbox _openChk" onclick="checkboxOnLoad(this);"><input
+                                type="checkbox" id="chk_1" checked="checked" value="1"/>전체 공개</div>
+                        <div class="checkbox _partChk" onclick="checkboxOnLoad(this);"><input
+                                type="checkbox" id="chk_2" value="0"/>일부 공개</div>
+                        <div class="checkbox _secretChk" onclick="checkboxOnLoad(this);"><input
+                                type="checkbox" id="chk_3" value="0"/>비공개</div>
+                    </div>
+                </div>
+
+                <div>
+                    <div style="display: flex; justify-content: flex-end; margin-right: 10px;">
+                        <button id="room__create" class="btn btn-primary">생성</button>
+                    </div>
+                </div>
+
+            </div>
             </div>
         </div>
     </div>
