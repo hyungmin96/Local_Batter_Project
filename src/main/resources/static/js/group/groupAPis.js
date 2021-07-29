@@ -7,7 +7,7 @@ function enterGroup(){
     }
 
     $.ajax({
-        url: '/api/group/exit',
+        url: '/api/group/enter',
         type: 'POST',
         data: data,
         contentType: 'application/x-www-form-urlencoded',

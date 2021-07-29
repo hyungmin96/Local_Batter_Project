@@ -23,7 +23,7 @@ public class GroupPageDTO {
     private List<String> img_name = new ArrayList<>();
 
     public GroupPageDTO(GroupEntity groupEntity) {
-        this.userId = groupEntity.getId();
+        this.groupId = groupEntity.getId();
         this.groupTitle = groupEntity.getGroupTitle();
         this.description = groupEntity.getDescription();
         this.owner = groupEntity.getOwner();

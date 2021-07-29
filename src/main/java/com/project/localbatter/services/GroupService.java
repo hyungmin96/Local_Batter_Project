@@ -36,28 +36,23 @@ public class GroupService {
     private static Logger log = LogManager.getLogger();
 
     public ResponseEntity<String> enterGroup(GroupPageDTO groupPageDTO){
-
-        GroupEntity groupEntity = groupRepository.getOne(groupPageDTO.getGroupId());
         UserEntity userEntity = userRepository.getOne(groupPageDTO.getUserId());
-
-        groupUserJoinRepository.deleteByGroup(userEntity, groupEntity);
+        GroupEntity groupEntity = groupRepository.getOne(groupPageDTO.getGroupId());
+        GroupUserJoinEntity groupUserJoinEntity = GroupUserJoinEntity.builder().user(userEntity).group(groupEntity).build();
+        groupUserJoinRepository.save(groupUserJoinEntity);
         return new ResponseEntity<String>("", HttpStatus.OK);
     }
 
     public ResponseEntity<String> exitGroup(GroupPageDTO groupPageDTO){
-
-        GroupEntity groupEntity = groupRepository.getOne(groupPageDTO.getGroupId());
         UserEntity userEntity = userRepository.getOne(groupPageDTO.getUserId());
-
+        GroupEntity groupEntity = groupRepository.getOne(groupPageDTO.getGroupId());
         groupUserJoinRepository.deleteByGroup(userEntity, groupEntity);
         return new ResponseEntity<String>("", HttpStatus.OK);
     }
 
     @Transactional(readOnly = true)
     public List<GroupPageDTO> getGroupList(GroupPageDTO groupPageDTO){
-
         Pageable page = PageRequest.of(groupPageDTO.getPage(), groupPageDTO.getDisplay());
-
        List<GroupEntity> items = queryFactory
                         .selectDistinct(groupEntity)
                         .from(groupEntity)
@@ -65,29 +60,24 @@ public class GroupService {
                         .offset(page.getOffset())
                         .limit(page.getPageSize())
                         .fetch();
-
         return items.stream().map(GroupPageDTO::new).collect(Collectors.toList());
     }
 
     public ResponseEntity<GroupCreateDTO> createGroupRoom(GroupCreateDTO groupCreateDTO){
-
         UserEntity userEntity = userRepository.getOne(groupCreateDTO.getUserId());
         GroupEntity groupEntity = groupCreateDTO.toEntity();
-
         groupRepository.save(groupEntity);
 
         GroupUserJoinEntity groupUserJoinEntity = GroupUserJoinEntity.builder()
                 .group(groupEntity)
                 .user(userEntity)
                 .build();
-
         groupUserJoinRepository.save(groupUserJoinEntity);
         groupRepository.memberCountUp(groupEntity.getId());
 
         if(groupCreateDTO.getFiles() != null && groupCreateDTO.getFiles().length > 0){
             GenerateFile generateGroupFiles = new GenerateFile(groupCreateDTO.getFiles());
             List<GenerateFileDTO> files = generateGroupFiles.createFile();
-
             for(GenerateFileDTO file : files){
                 GroupFileDTO groupFileDTO = new GroupFileDTO();
                 groupFileDTO.setName(file.getFileName());
@@ -106,7 +96,6 @@ public class GroupService {
     }
 
     public ResponseEntity<String> isMember(Long userId, Long groupId){
-
         Long isMemberCheck = queryFactory
                     .select(groupUserJoinEntity.id)
                     .from(groupUserJoinEntity)

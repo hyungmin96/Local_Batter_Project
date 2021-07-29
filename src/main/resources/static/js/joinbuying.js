@@ -52,11 +52,11 @@ function loadGroupChatRoomList(e, page = 0){
             $('.Group__room__list').empty();
 
             $.each(response, function(key, value){
-
+console.log(value)
                 const files = (value.img_name.length > 0) ? value.img_name[0] : '';
 
                 $('.Group__room__list').append(
-                    "<div id='item__box__" + value.id + "' class='group_item_box'>" +
+                    "<div id='item__box__" + value.groupId + "' class='group_item_box'>" +
                     "<img src=/upload/" + files + ">" +
                     "<div class='Group__room__content'>" +
                         "<div class = 'Group__room__title'>" + value.groupTitle + "</div>" +

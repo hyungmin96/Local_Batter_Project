@@ -1,9 +1,6 @@
 package com.project.localbatter.controllers.restcontroller;
 
-import com.project.localbatter.dto.GroupBoardDTO;
-import com.project.localbatter.dto.GroupCommentDTO;
-import com.project.localbatter.dto.GroupCreateDTO;
-import com.project.localbatter.dto.GroupPageDTO;
+import com.project.localbatter.dto.*;
 import com.project.localbatter.entity.GroupBoardEntity;
 import com.project.localbatter.entity.GroupBoardFileEntity;
 import com.project.localbatter.entity.GroupCommentEntity;
