@@ -31,6 +31,16 @@ public class GroupRestController {
     private final GroupBoardService groupBoardService;
     private final GroupCommentService groupCommentService;
 
+    @PostMapping("/enter")
+    public ResponseEntity<String> enterGroup(GroupPageDTO groupPageDTO){
+        return groupService.enterGroup(groupPageDTO);
+    }
+
+    @PostMapping("/exit")
+    public ResponseEntity<String> exitGroup(GroupPageDTO groupPageDTO){
+        return groupService.exitGroup(groupPageDTO);
+    }
+
     @GetMapping("/check/isMember")
     public ResponseEntity<String> checkMember(@RequestParam Long userId, @RequestParam Long groupId){
         return groupService.isMember(userId, groupId);

@@ -1,4 +1,40 @@
 
+function enterGroup(){
+
+    const data = {
+        userId: $('.g_user_id').val(),
+        groupId: $('.groupId').val(),
+    }
+
+    $.ajax({
+        url: '/api/group/exit',
+        type: 'POST',
+        data: data,
+        contentType: 'application/x-www-form-urlencoded',
+        success: function(response){
+
+        }
+    })
+}
+
+function exitGroup(){
+
+    const data = {
+        userId: $('.g_user_id').val(),
+        groupId: $('.groupId').val(),
+    }
+
+    $.ajax({
+        url: '/api/group/exit',
+        type: 'POST',
+        data: data,
+        contentType: 'application/x-www-form-urlencoded',
+        success: function(response){
+
+        }
+    })
+}
+
 function isMember(){
 
     const data = {
@@ -12,11 +48,12 @@ function isMember(){
         data: data,
         contentType: 'application/x-www-form-urlencoded',
         success: function(response){
-            $('#commentId_' + commentId).remove();
-            e.innerHTML = (e.innerHTML * 1) - 1;
+            if(response.includes('isMember'))
+                $('._groupExitButton').show()
+            else
+                $('._groupEnterButton').show()
         }
     })
-
 }
 
 function deleteComment(e, commentId){
@@ -35,28 +72,6 @@ function deleteComment(e, commentId){
         success: function(response){
             $('#commentId_' + commentId).remove();
             e.innerHTML = (e.innerHTML * 1) - 1;
-        }
-    })
-}
-
-function exitRoom(){
-
-    const data = {
-        groupId: $('.groupId').val(),
-        username: $('.groupUsername').val(),
-        userId: $('.user').val()
-    }
-
-    $.ajax({
-        url: '/api/group/exit',
-        type: 'POST',
-        data: data,
-        contentType: 'application/x-www-form-urlencoded',
-        success: function(response){
-            if(response.includes('Success')){
-                alert('그룹을 나갔습니다.');
-                location.href='http://localhost:8000/product/group';
-            }
         }
     })
 }

@@ -44,10 +44,12 @@
                         그룹설정 : ${groupObject.type}
                     </div>
                 </div>
-                <div style="text-align: center;" class="groupAside _groupExitButton">
-                    <img src="/images/exit_32px.png">
-                    <button>그룹 나가기</button>
+                <div style="cursor: pointer; display: none; background-color:#cde4cc; text-align: center;" class="groupAside _groupEnterButton">
+                    <button>그룹 가입하기</button>
                 </div>
+            <div style="cursor: pointer; display: none; background-color: #f3c3c3; text-align: center;" class="groupAside _groupExitButton">
+                <button>그룹 나가기</button>
+            </div>
         </section>
     </div>
 

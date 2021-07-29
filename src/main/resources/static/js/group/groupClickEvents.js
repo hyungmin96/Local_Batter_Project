@@ -1,6 +1,13 @@
 
+// 그룹 가입
+$(document).on('click', '._groupEnterButton', function(){
+    enterGroup();
+})
 
-
+// 그룹 나가기기
+$(document).on('click', '._groupExitButton', function(){
+    exitGroup();
+})
 
 $(function () {
     $('._imgUploadDialog').click(function () {
@@ -82,7 +89,6 @@ function generateMenuBox(e) {
 
         e.parentNode.append(boardMenuBox)
     }
-
 }
 
 let infoImgs = [];

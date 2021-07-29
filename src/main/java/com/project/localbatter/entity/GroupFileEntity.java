@@ -22,6 +22,7 @@ public class GroupFileEntity extends BaseTimeEntity implements Serializable{
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id")
+    @JsonIgnore
     private GroupEntity group;
 
 }

@@ -22,6 +22,7 @@ import javax.persistence.EntityNotFoundException;
 
 import static com.project.localbatter.entity.QGroupEntity.groupEntity;
 import static com.project.localbatter.entity.QGroupUserJoinEntity.groupUserJoinEntity;
+import static com.project.localbatter.entity.QUserEntity.userEntity;
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +33,25 @@ public class GroupService {
     private final GroupRepository groupRepository;
     private final GroupUserJoinRepository groupUserJoinRepository;
     private final JPAQueryFactory queryFactory;
-    private Logger log = LogManager.getLogger();
+    private static Logger log = LogManager.getLogger();
+
+    public ResponseEntity<String> enterGroup(GroupPageDTO groupPageDTO){
+
+        GroupEntity groupEntity = groupRepository.getOne(groupPageDTO.getGroupId());
+        UserEntity userEntity = userRepository.getOne(groupPageDTO.getUserId());
+
+        groupUserJoinRepository.deleteByGroup(userEntity, groupEntity);
+        return new ResponseEntity<String>("", HttpStatus.OK);
+    }
+
+    public ResponseEntity<String> exitGroup(GroupPageDTO groupPageDTO){
+
+        GroupEntity groupEntity = groupRepository.getOne(groupPageDTO.getGroupId());
+        UserEntity userEntity = userRepository.getOne(groupPageDTO.getUserId());
+
+        groupUserJoinRepository.deleteByGroup(userEntity, groupEntity);
+        return new ResponseEntity<String>("", HttpStatus.OK);
+    }
 
     @Transactional(readOnly = true)
     public List<GroupPageDTO> getGroupList(GroupPageDTO groupPageDTO){
@@ -42,7 +61,7 @@ public class GroupService {
        List<GroupEntity> items = queryFactory
                         .selectDistinct(groupEntity)
                         .from(groupEntity)
-                        .orderBy(groupEntity.id.asc())
+                        .orderBy(groupEntity.id.desc())
                         .offset(page.getOffset())
                         .limit(page.getPageSize())
                         .fetch();
@@ -63,6 +82,7 @@ public class GroupService {
                 .build();
 
         groupUserJoinRepository.save(groupUserJoinEntity);
+        groupRepository.memberCountUp(groupEntity.getId());
 
         if(groupCreateDTO.getFiles() != null && groupCreateDTO.getFiles().length > 0){
             GenerateFile generateGroupFiles = new GenerateFile(groupCreateDTO.getFiles());
@@ -81,18 +101,18 @@ public class GroupService {
 
     @Transactional(readOnly = true)
     public GroupPageDTO getGroupInfo(GroupPageDTO groupPageDTO){
-        GroupEntity groupEntity = groupRepository.findById(groupPageDTO.getId()).get();
+        GroupEntity groupEntity = groupRepository.findById(groupPageDTO.getUserId()).get();
         return new GroupPageDTO(groupEntity);
     }
 
     public ResponseEntity<String> isMember(Long userId, Long groupId){
 
         Long isMemberCheck = queryFactory
-                .select(groupUserJoinEntity.id)
-                .from(groupUserJoinEntity)
-                .where(groupUserJoinEntity.user.id.eq(userId)
-                .and(groupUserJoinEntity.group.id.eq(groupId)))
-                .fetchOne();
+                    .select(groupUserJoinEntity.id)
+                    .from(groupUserJoinEntity)
+                    .where(groupUserJoinEntity.user.id.eq(userId)
+                    .and(groupUserJoinEntity.group.id.eq(groupId)))
+                    .fetchOne();
 
             if(isMemberCheck == null)
                 return new ResponseEntity<String>("result: don't exist member List", HttpStatus.OK);

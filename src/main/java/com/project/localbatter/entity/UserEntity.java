@@ -36,7 +36,7 @@ public class UserEntity implements UserDetails {
     @JoinColumn(name = "notificationId")
     private NotificationEntity notification;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "profileId")
     private ProfileEntity profile;
 

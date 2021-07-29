@@ -13,15 +13,17 @@ public class GroupPageDTO {
 
     private int page;
     private int display;
-    private Long id;
+    private Long userId;
+    private Long groupId;
     private String groupTitle;
     private String description;
     private String owner;
     private int memberCount;
+    private String result;
     private List<String> img_name = new ArrayList<>();
 
     public GroupPageDTO(GroupEntity groupEntity) {
-        this.id = groupEntity.getId();
+        this.userId = groupEntity.getId();
         this.groupTitle = groupEntity.getGroupTitle();
         this.description = groupEntity.getDescription();
         this.owner = groupEntity.getOwner();

@@ -27,4 +27,6 @@ public class ProfileEntity implements Serializable {
     private String accountNumber;
     private String preferTime;
 
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private UserEntity user;
 }
