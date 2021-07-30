@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import com.project.localbatter.dto.GenerateFileDTO;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 public class GenerateFile {

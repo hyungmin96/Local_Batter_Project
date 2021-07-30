@@ -4,13 +4,9 @@ import com.project.localbatter.components.DeleteFile;
 import com.project.localbatter.components.GenerateFile;
 import com.project.localbatter.dto.GenerateFileDTO;
 import com.project.localbatter.dto.GroupBoardDTO;
-import com.project.localbatter.entity.GroupBoardEntity;
-import com.project.localbatter.entity.GroupBoardFileEntity;
-import com.project.localbatter.entity.GroupCommentEntity;
-import com.project.localbatter.entity.GroupUsersEntity;
-import com.project.localbatter.repositories.GroupBoardFileRepository;
-import com.project.localbatter.repositories.GroupBoardRepository;
-import com.project.localbatter.repositories.GroupCommentRepository;
+import com.project.localbatter.dto.GroupBoardFileDTO;
+import com.project.localbatter.entity.*;
+import com.project.localbatter.repositories.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,12 +22,20 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class GroupBoardService {
 
+    private final GroupRepository groupRepository;
+    private final UserRepository userRepository;
     private final GroupBoardRepository groupBoardRepository;
     private final GroupCommentRepository groupCommentRepository;
     private final GroupBoardFileRepository groupBoardFileRepository;
-    private final HttpSession session;
+    private final GroupUserJoinRepository groupUserJoinRepository;
+
+    @Transactional(readOnly = true)
+    public Page<GroupBoardEntity> getBoardList(Long groupId, PageRequest request){
+        return groupBoardRepository.findAllBygroupId(groupId, request);
+    }
 
     public Page<GroupCommentEntity> getLatestComments(GroupBoardDTO groupBoardDTO){
         PageRequest request = PageRequest.of(groupBoardDTO.getPage(), groupBoardDTO.getDisplay(), Sort.Direction.DESC, "commentId");
@@ -44,21 +48,17 @@ public class GroupBoardService {
     }
 
     public ResponseEntity<GroupBoardDTO> updateNotice(GroupBoardDTO groupBoardDTO){
-
-        GroupUsersEntity groupUsersEntity = (GroupUsersEntity) session.getAttribute("group_user_entity");
-
         // Check Authorization to enter user
-        boolean isUserHasAuthority = groupUsersEntity.getAuthorization().equals(GroupUsersEntity.GroupUsersEnumType.member);
 
-        if(isUserHasAuthority){
-            GroupBoardEntity groupBoardEntity = groupBoardRepository.getOne(groupBoardDTO.getBoardId());
-            groupBoardDTO.setBoardId(groupBoardEntity.getBoardId());
-            groupBoardEntity.updateNotice(groupBoardDTO.getType());
-            groupBoardRepository.save(groupBoardEntity);
-            groupBoardDTO.setResult("Success");
-
-            return new ResponseEntity<>(groupBoardDTO, HttpStatus.OK);
-        }
+//        if(isUserHasAuthority){
+//            GroupBoardEntity groupBoardEntity = groupBoardRepository.getOne(groupBoardDTO.getBoardId());
+//            groupBoardDTO.setBoardId(groupBoardEntity.getBoardId());
+//            groupBoardEntity.updateNotice(groupBoardDTO.getType());
+//            groupBoardRepository.save(groupBoardEntity);
+//            groupBoardDTO.setResult("Success");
+//
+//            return new ResponseEntity<>(groupBoardDTO, HttpStatus.OK);
+//        }
         groupBoardDTO.setResult("Failed - No request authority");
         return new ResponseEntity<>(groupBoardDTO, HttpStatus.BAD_REQUEST);
     }
@@ -75,10 +75,14 @@ public class GroupBoardService {
         groupBoardRepository.deleteById(groupBoardDTO.getBoardId());
     }
 
-    @Transactional
     public void post(GroupBoardDTO groupBoardDTO){
-        GroupUsersEntity groupUsersEntity = (GroupUsersEntity) session.getAttribute("group_user_entity");
-        groupBoardDTO.setUser(groupUsersEntity);
+
+        GroupEntity groupEntity = groupRepository.getOne(groupBoardDTO.getGroupId());
+        UserEntity userEntity = userRepository.getOne(groupBoardDTO.getUserId());
+
+        GroupUserJoinEntity groupUserJoinEntity = groupUserJoinRepository.findByGroupAndUser(groupEntity, userEntity);
+
+        groupBoardDTO.setGroupUserJoin(groupUserJoinEntity);
         GroupBoardEntity groupBoardEntity = groupBoardDTO.toEntity();
         groupBoardRepository.save(groupBoardEntity);
 
@@ -86,16 +90,22 @@ public class GroupBoardService {
             List<GenerateFileDTO> fileList = new GenerateFile(groupBoardDTO.getBoard_img()).createFile();
             List<GroupBoardFileEntity> boardFileList = new ArrayList<>();
 
+            for(GenerateFileDTO item : fileList){
+                GroupBoardFileDTO groupBoardFileDTO = new GroupBoardFileDTO();
+                groupBoardFileDTO.setName(item.getFileName());
+                groupBoardFileDTO.setBoardId(groupBoardEntity);
+                groupBoardFileDTO.setGroupId(groupBoardDTO.getGroupId());
+                groupBoardFileDTO.setPath(item.getPath());
+                boardFileList.add(groupBoardFileDTO.toEntity());
+
+                groupBoardFileRepository.saveAll(boardFileList);
+            }
 
             groupBoardDTO.setFiles(boardFileList);
             groupBoardDTO.setBoard_img(null);
         }
 
         groupBoardDTO.setBoardId(groupBoardEntity.getBoardId());
-    }
-
-    public Page<GroupBoardEntity> getBoardList(Long groupId, PageRequest request){
-        return groupBoardRepository.findAllBygroupId(groupId, request);
     }
 
 }

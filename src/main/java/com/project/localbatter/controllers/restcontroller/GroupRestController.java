@@ -102,7 +102,6 @@ public class GroupRestController {
 
     @PostMapping("/board/post")
     public ResponseEntity<GroupBoardDTO> groupPostContent(GroupBoardDTO groupBoardDTO){
-
         groupBoardService.post(groupBoardDTO);
         return new ResponseEntity<>(groupBoardDTO, HttpStatus.OK);
     }

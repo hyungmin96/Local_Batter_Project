@@ -13,6 +13,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Table(name = "tbl_user_profile")
 public class ProfileEntity implements Serializable {
 
     @Id @GeneratedValue
@@ -20,7 +21,6 @@ public class ProfileEntity implements Serializable {
     private float mannerScore;
     private int mileage;
     private String nickname;
-    private String profilePath;
     private String introduce;
     private String phoneNum;
     private String location;

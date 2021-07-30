@@ -1,10 +1,6 @@
 package com.project.localbatter.services;
 
 import com.project.localbatter.dto.GroupChatMessageDTO;
-import com.project.localbatter.dto.GroupUsersDTO;
-import com.project.localbatter.entity.GroupEntity;
-import com.project.localbatter.entity.GroupUsersEntity;
-import com.project.localbatter.entity.UserEntity;
 import com.project.localbatter.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;

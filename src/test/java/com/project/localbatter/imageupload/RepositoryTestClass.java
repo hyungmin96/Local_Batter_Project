@@ -32,7 +32,6 @@ public class RepositoryTestClass{
     @Autowired private BoardRepository boardRepository;
     @Autowired private CommentRepository commentRepository;
     @Autowired private NotificationRepository notificationRepository;
-    @Autowired private GroupUsersRepository GroupUsersRepository;
 
     @Test
     void 알림_테이블_생성(){
@@ -157,7 +156,7 @@ public class RepositoryTestClass{
 
         userRepository.deleteAll();
 
-        for(int i = 1; i < 61; i ++){
+        for(int i = 1; i < 3; i ++){
 
             NotificationEntity notificationEntity = NotificationEntity.builder()
             .chat(0)
@@ -173,7 +172,6 @@ public class RepositoryTestClass{
             .phoneNum("phoneNum")
             .nickname("nickname")
             .preferTime("preferTime")
-            .profilePath("default_profile_img.png")
             .build();
 
             UserEntity user = UserEntity.builder()
@@ -181,6 +179,7 @@ public class RepositoryTestClass{
             .password(new BCryptPasswordEncoder().encode(String.valueOf(i)))
             .profile(profile)
             .notification(notificationEntity)
+            .profilePath("default_profile_img.png")
             .Role(Role.ROLE_USER)
             .build();
 

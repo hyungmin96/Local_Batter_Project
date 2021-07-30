@@ -40,6 +40,7 @@ public class GroupService {
         GroupEntity groupEntity = groupRepository.getOne(groupPageDTO.getGroupId());
         GroupUserJoinEntity groupUserJoinEntity = GroupUserJoinEntity.builder().user(userEntity).group(groupEntity).build();
         groupUserJoinRepository.save(groupUserJoinEntity);
+        groupRepository.memberCountUp(groupEntity.getId());
         return new ResponseEntity<String>("", HttpStatus.OK);
     }
 
@@ -47,6 +48,7 @@ public class GroupService {
         UserEntity userEntity = userRepository.getOne(groupPageDTO.getUserId());
         GroupEntity groupEntity = groupRepository.getOne(groupPageDTO.getGroupId());
         groupUserJoinRepository.deleteByGroup(userEntity, groupEntity);
+        groupRepository.memberCountDown(groupEntity.getId());
         return new ResponseEntity<String>("", HttpStatus.OK);
     }
 

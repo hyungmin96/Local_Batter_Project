@@ -2,7 +2,10 @@ package com.project.localbatter.dto;
 
 import com.project.localbatter.entity.GroupBoardEntity;
 import com.project.localbatter.entity.GroupBoardFileEntity;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter @Setter
 public class GroupBoardFileDTO {
 
     private String name;

@@ -2,7 +2,8 @@ package com.project.localbatter.dto;
 
 import com.project.localbatter.entity.GroupBoardEntity;
 import com.project.localbatter.entity.GroupCommentEntity;
-import com.project.localbatter.entity.GroupUsersEntity;
+import com.project.localbatter.entity.GroupEntity;
+import com.project.localbatter.entity.GroupUserJoinEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,17 +14,15 @@ public class GroupCommentDTO {
     private Long userId;
     private Long groupId;
     private String regDate;
-    private GroupUsersEntity writer;
     private String comment;
-    private GroupBoardEntity groupBoard;
     private String result;
 
-    public GroupCommentEntity toEntity(){
+    public GroupCommentEntity toEntity(GroupBoardEntity groupBoard, GroupUserJoinEntity groupUser){
         return GroupCommentEntity.builder()
                 .comment(comment)
-                .writer(writer)
                 .groupId(groupId)
                 .groupBoard(groupBoard)
+                .groupUserJoinEntity(groupUser)
                 .build();
     }
 

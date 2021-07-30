@@ -9,17 +9,22 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
+@Table(name = "tbl_group_comment")
 public class GroupCommentEntity extends BaseTimeEntity{
 
     @Id @GeneratedValue
+    @Column(name = "comment_id")
     private Long commentId;
 
+    @Column(name = "comment_groupid")
     private Long groupId;
+
+    @Column(name = "comment_content")
     private String comment;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "writer")
-    private GroupUsersEntity writer;
+    @ManyToOne
+    @JoinColumn(name = "comment_writer")
+    private GroupUserJoinEntity groupUserJoinEntity;
 
     @ManyToOne
     @JoinColumn(name = "boardId")

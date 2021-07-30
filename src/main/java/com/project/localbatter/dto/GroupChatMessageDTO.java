@@ -1,7 +1,6 @@
 package com.project.localbatter.dto;
 
 import com.project.localbatter.entity.GroupChatEntity;
-import com.project.localbatter.entity.GroupUsersEntity;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,7 +14,6 @@ public class GroupChatMessageDTO implements Serializable {
 
     private Long groupId;
     private Long userId;
-    private GroupUsersEntity groupUsersEntity;
     private String message;
     private String username;
     private String type;
@@ -27,8 +25,6 @@ public class GroupChatMessageDTO implements Serializable {
         return GroupChatEntity.builder()
                 .message(message)
                 .type(type)
-                .groupUsersEntity(groupUsersEntity)
-                .groupEntity(groupUsersEntity.getGroupEntity())
                 .build();
     }
 }

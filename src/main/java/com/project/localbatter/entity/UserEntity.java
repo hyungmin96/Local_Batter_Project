@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name = "tbl_user")
 public class UserEntity implements UserDetails {
     
     @Id
@@ -27,6 +28,8 @@ public class UserEntity implements UserDetails {
 
     @Column(unique = true)
     private String username;
+
+    private String profilePath;
 
     @Column
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

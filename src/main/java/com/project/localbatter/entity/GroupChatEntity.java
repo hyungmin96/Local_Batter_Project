@@ -11,16 +11,17 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
+@Table(name = "tbl_group_chat")
 public class GroupChatEntity extends BaseTimeEntity{
 
     @Id @GeneratedValue
+    @Column(name = "chat_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user")
-    private GroupUsersEntity groupUsersEntity;
-
+    @Column(name = "chat_message")
     private String message;
+
+    @Column(name = "chat_type")
     private String type;
 
     @ManyToOne(fetch = FetchType.LAZY)

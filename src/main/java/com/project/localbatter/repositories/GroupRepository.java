@@ -16,4 +16,9 @@ public interface GroupRepository extends JpaRepository<GroupEntity, Long>{
     @Query(value = "update GroupEntity set memberCount = memberCount + 1 where id = :groupId")
     void memberCountUp(Long groupId);
 
+    @Transactional
+    @Modifying
+    @Query(value = "update GroupEntity set memberCount = memberCount - 1 where id = :groupId")
+    void memberCountDown(Long groupId);
+
 }

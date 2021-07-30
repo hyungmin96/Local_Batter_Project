@@ -12,7 +12,8 @@ function enterGroup(){
         data: data,
         contentType: 'application/x-www-form-urlencoded',
         success: function(response){
-
+            alert('그룹에 가입하였습니다.')
+            window.location.reload();
         }
     })
 }
@@ -30,7 +31,8 @@ function exitGroup(){
         data: data,
         contentType: 'application/x-www-form-urlencoded',
         success: function(response){
-
+            alert('그룹에서 나갔습니다.')
+            window.location.reload();
         }
     })
 }
@@ -222,6 +224,7 @@ function postContent() {
         const groupId = $('.groupId').val();
         const formData = new FormData();
 
+        formData.append('userId', $('.g_user_id').val());
         formData.append('groupId', groupId);
         formData.append('writer', $('.user').val());
         formData.append('content', $('#board_content_box').val());

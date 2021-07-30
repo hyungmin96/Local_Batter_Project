@@ -40,20 +40,9 @@ public class UserService implements UserDetailsService{
 
     public UserEntity userUpdate(Principal user, MultipartFile[] file, ProfileEntity profile) throws IOException{
 
-        UserEntity userEntity = userRepository.findByUsername(user.getName()).get();
 
-        String saveFilePath;
 
-        if(file != null){
-            saveFilePath = new GenerateFile(file).createFile().get(0).getFileName();
-            new DeleteFile(new String[]{userEntity.getProfile().getProfilePath()}).deleteFile();
-        } else saveFilePath = userEntity.getProfile().getProfilePath();
-
-        profile.setId(userEntity.getProfile().getId());
-        profile.setProfilePath(saveFilePath);
-        profileRepository.save(profile);
-
-        return userEntity;
+        return null;
     }
 
     public void userSave(UserDTO vo){
@@ -67,7 +56,6 @@ public class UserService implements UserDetailsService{
         .phoneNum(vo.getPhone())
         .mannerScore(0)
         .mileage(0)
-        .profilePath("/images/default_profile_img.png")
         .build();
 
         profileRepository.save(profile);

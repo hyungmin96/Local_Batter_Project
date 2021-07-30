@@ -2,35 +2,30 @@ package com.project.localbatter.dto;
 
 import com.project.localbatter.entity.GroupBoardEntity;
 import com.project.localbatter.entity.GroupBoardFileEntity;
-import com.project.localbatter.entity.GroupUsersEntity;
+import com.project.localbatter.entity.GroupUserJoinEntity;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Getter @Setter
 public class GroupBoardDTO implements Serializable {
 
-    private Long groupId;
-    private Long boardId;
-
     private int page;
     private int display;
+
+    private Long groupId;
+    private Long boardId;
     private String type = "general";
+    private Long userId;
     private String username;
     private String content;
-    private int boardLike = 0;
-    private GroupUsersEntity user;
     private String result;
-
-    private Timestamp regTime = new Timestamp(new Date().getTime());
     private MultipartFile[] board_img;
     private List<GroupBoardFileEntity> files = new ArrayList<>();
-    private GroupCommentDTO[] comments = new GroupCommentDTO[0];
+    private GroupUserJoinEntity groupUserJoinEntity;
 
     public GroupBoardEntity.BoardType getType(){
         if(this.type.equals("notice"))
@@ -41,10 +36,15 @@ public class GroupBoardDTO implements Serializable {
             return GroupBoardEntity.BoardType.general;
     }
 
+    public void setGroupUserJoin(GroupUserJoinEntity groupUserJoinEntity){
+        this.groupUserJoinEntity = groupUserJoinEntity;
+    }
+
     public GroupBoardEntity toEntity(){
         return GroupBoardEntity.builder()
                 .groupId(groupId)
                 .content(content)
+                .groupUserJoinEntity(groupUserJoinEntity)
                 .boardLike(0)
                 .type(getType())
                 .files(files)

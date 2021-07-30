@@ -34,14 +34,10 @@ public class GroupEntity {
     private roomEnumType type;
 
     @OneToMany(mappedBy = "group", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @BatchSize(size = 100)
     private List<GroupFileEntity> files;
 
     @OneToMany(mappedBy = "group", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<GroupUserJoinEntity> UserGroupJoin;
-
-    @OneToMany(mappedBy = "group", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<GroupBoardEntity> boards;
 
     public enum roomEnumType{
         공개, 일부공개, 비공개

@@ -13,11 +13,17 @@ import java.io.Serializable;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
+@Table(name = "tbl_group_file")
 public class GroupFileEntity extends BaseTimeEntity implements Serializable{
 
     @Id @GeneratedValue
+    @Column(name = "file_id")
     private Long id;
+
+    @Column(name = "group_path")
     private String path;
+
+    @Column(name = "file_name")
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
