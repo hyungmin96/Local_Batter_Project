@@ -1,4 +1,4 @@
-package com.project.localbatter.controllers.sitecontroller;
+package com.project.localbatter.controllers;
 
 import com.project.localbatter.entity.GroupEntity;
 import com.project.localbatter.repositories.GroupRepository;

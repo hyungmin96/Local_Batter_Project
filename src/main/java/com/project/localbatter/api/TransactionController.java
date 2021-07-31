@@ -1,4 +1,4 @@
-package com.project.localbatter.controllers.restcontroller;
+package com.project.localbatter.api;
 import com.project.localbatter.dto.SubmitTransactionDTO;
 import com.project.localbatter.entity.TransactionEntity;
 import com.project.localbatter.enumtype.TransactionEnumType;

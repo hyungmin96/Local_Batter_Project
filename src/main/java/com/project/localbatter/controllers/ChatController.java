@@ -1,4 +1,4 @@
-package com.project.localbatter.controllers.chatcontroller;
+package com.project.localbatter.controllers;
 
 import java.security.Principal;
 import javax.servlet.http.HttpSession;

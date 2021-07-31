@@ -1,4 +1,4 @@
-package com.project.localbatter.controllers.restcontroller;
+package com.project.localbatter.api;
 
 import java.security.Principal;
 import java.time.LocalDateTime;

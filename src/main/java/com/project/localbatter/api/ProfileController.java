@@ -1,4 +1,4 @@
-package com.project.localbatter.controllers.restcontroller;
+package com.project.localbatter.api;
 
 import java.io.IOException;
 import java.security.Principal;

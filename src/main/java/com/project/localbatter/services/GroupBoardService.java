@@ -2,11 +2,14 @@ package com.project.localbatter.services;
 
 import com.project.localbatter.components.DeleteFile;
 import com.project.localbatter.components.GenerateFile;
+import com.project.localbatter.components.PagingUtil;
 import com.project.localbatter.dto.GenerateFileDTO;
 import com.project.localbatter.dto.GroupBoardDTO;
 import com.project.localbatter.dto.GroupBoardFileDTO;
 import com.project.localbatter.entity.*;
 import com.project.localbatter.repositories.*;
+import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,9 +19,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.project.localbatter.entity.QGroupBoardEntity.groupBoardEntity;
+import static com.project.localbatter.entity.QGroupUserJoinEntity.groupUserJoinEntity;
+import static com.project.localbatter.entity.QUserEntity.userEntity;
 
 @Service
 @RequiredArgsConstructor
@@ -31,10 +37,23 @@ public class GroupBoardService {
     private final GroupCommentRepository groupCommentRepository;
     private final GroupBoardFileRepository groupBoardFileRepository;
     private final GroupUserJoinRepository groupUserJoinRepository;
+    private final GroupUserJoinQuseryRepository groupUserJoinQuseryRepository;
+    private final GenerateFile generateFile;
+    private final JPAQueryFactory queryFactory;
+    private final PagingUtil pagingUtil;
 
     @Transactional(readOnly = true)
     public Page<GroupBoardEntity> getBoardList(Long groupId, PageRequest request){
-        return groupBoardRepository.findAllBygroupId(groupId, request);
+        JPAQuery<GroupBoardEntity> query = queryFactory
+                .selectDistinct(groupBoardEntity)
+                .from(groupBoardEntity)
+                .leftJoin(groupBoardEntity.groupUserJoinEntity, groupUserJoinEntity)
+                .fetchJoin()
+                .leftJoin(groupUserJoinEntity.user, userEntity)
+                .fetchJoin()
+                .where(groupUserJoinEntity.group.id.eq(groupId));
+
+        return pagingUtil.getPageImpl(request, query, GroupBoardEntity.class);
     }
 
     public Page<GroupCommentEntity> getLatestComments(GroupBoardDTO groupBoardDTO){
@@ -75,37 +94,23 @@ public class GroupBoardService {
         groupBoardRepository.deleteById(groupBoardDTO.getBoardId());
     }
 
-    public void post(GroupBoardDTO groupBoardDTO){
+    public GroupBoardEntity post(GroupBoardDTO groupBoardDTO){
 
-        GroupEntity groupEntity = groupRepository.getOne(groupBoardDTO.getGroupId());
-        UserEntity userEntity = userRepository.getOne(groupBoardDTO.getUserId());
-
-        GroupUserJoinEntity groupUserJoinEntity = groupUserJoinRepository.findByGroupAndUser(groupEntity, userEntity);
+        GroupUserJoinEntity groupUserJoinEntity = groupUserJoinQuseryRepository.findGroupUserJoinEntity(groupBoardDTO.getUserId(), groupBoardDTO.getGroupId());
 
         groupBoardDTO.setGroupUserJoin(groupUserJoinEntity);
         GroupBoardEntity groupBoardEntity = groupBoardDTO.toEntity();
         groupBoardRepository.save(groupBoardEntity);
 
-        if(groupBoardDTO.getBoard_img() != null){
-            List<GenerateFileDTO> fileList = new GenerateFile(groupBoardDTO.getBoard_img()).createFile();
-            List<GroupBoardFileEntity> boardFileList = new ArrayList<>();
+        List<GenerateFileDTO> groupBoardFiles = generateFile.createFile(groupBoardDTO.getBoard_img());
 
-            for(GenerateFileDTO item : fileList){
-                GroupBoardFileDTO groupBoardFileDTO = new GroupBoardFileDTO();
-                groupBoardFileDTO.setName(item.getFileName());
-                groupBoardFileDTO.setBoardId(groupBoardEntity);
-                groupBoardFileDTO.setGroupId(groupBoardDTO.getGroupId());
-                groupBoardFileDTO.setPath(item.getPath());
-                boardFileList.add(groupBoardFileDTO.toEntity());
+        groupBoardFiles.stream().map(GroupBoardFileDTO::new).collect(Collectors.toList())
+                .forEach(item -> {
+                    GroupBoardFileEntity file = item.toEntity(groupBoardEntity);
+                    groupBoardDTO.addFile(file);
+                    groupBoardFileRepository.save(file);
+                });
 
-                groupBoardFileRepository.saveAll(boardFileList);
-            }
-
-            groupBoardDTO.setFiles(boardFileList);
-            groupBoardDTO.setBoard_img(null);
-        }
-
-        groupBoardDTO.setBoardId(groupBoardEntity.getBoardId());
+        return groupBoardEntity;
     }
-
 }

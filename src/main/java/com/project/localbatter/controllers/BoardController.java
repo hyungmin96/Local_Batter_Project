@@ -1,24 +1,24 @@
-package com.project.localbatter.controllers.sitecontroller;
+package com.project.localbatter.controllers;
 
-import java.io.IOException;
-import java.security.Principal;
-import java.text.ParseException;
-import java.util.List;
-import java.util.stream.IntStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import com.project.localbatter.components.createTime;
+import com.project.localbatter.entity.BoardEntity;
 import com.project.localbatter.entity.NotificationEntity;
 import com.project.localbatter.entity.UserEntity;
-import com.project.localbatter.entity.BoardEntity;
 import com.project.localbatter.repositories.UserRepository;
 import com.project.localbatter.services.BoardService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import lombok.RequiredArgsConstructor;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.security.Principal;
+import java.text.ParseException;
+import java.util.List;
+import java.util.stream.IntStream;
 
 @Controller
 @RequiredArgsConstructor

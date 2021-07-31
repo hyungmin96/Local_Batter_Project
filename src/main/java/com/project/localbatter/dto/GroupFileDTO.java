@@ -18,9 +18,9 @@ public class GroupFileDTO {
     private Long group;
     private List<String> img;
 
-    public GroupFileDTO(GroupFileEntity groupFileEntity) {
-        this.path = groupFileEntity.getPath();
-        this.name = groupFileEntity.getName();
+    public GroupFileDTO(GenerateFileDTO generateFileDTO) {
+        this.name = generateFileDTO.getName();
+        this.path = generateFileDTO.getPath();
     }
 
     public GroupFileEntity toEntity(GroupEntity groupEntity){

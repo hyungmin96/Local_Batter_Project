@@ -15,5 +15,6 @@ public interface GroupUserJoinRepository extends JpaRepository<GroupUserJoinEnti
     @Query("delete from GroupUserJoinEntity g where g.group = :group and g.user = :user")
     void deleteByGroup(UserEntity user, GroupEntity group);
 
-    GroupUserJoinEntity findByGroupAndUser(GroupEntity group, UserEntity user);
+//    GroupUserJoinEntity findByGroupAndUser(GroupEntity group, UserEntity user);
 }
+

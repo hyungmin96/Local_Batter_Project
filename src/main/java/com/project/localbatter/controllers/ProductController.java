@@ -1,4 +1,4 @@
-package com.project.localbatter.controllers.sitecontroller;
+package com.project.localbatter.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

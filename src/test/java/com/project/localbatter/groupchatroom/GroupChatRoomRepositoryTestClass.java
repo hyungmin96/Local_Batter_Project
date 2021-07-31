@@ -1,5 +1,6 @@
 package com.project.localbatter.groupchatroom;
-import com.project.localbatter.dto.*;
+import com.project.localbatter.dto.GroupBoardDTO;
+import com.project.localbatter.dto.GroupCommentDTO;
 import com.project.localbatter.entity.*;
 import com.project.localbatter.repositories.*;
 import com.project.localbatter.services.GroupBoardService;
@@ -14,15 +15,12 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
 import static com.project.localbatter.entity.QGroupBoardEntity.groupBoardEntity;
-import static com.project.localbatter.entity.QGroupCommentEntity.groupCommentEntity;
 import static com.project.localbatter.entity.QGroupUserJoinEntity.groupUserJoinEntity;
-import static com.project.localbatter.entity.QProfileEntity.profileEntity;
 import static com.project.localbatter.entity.QUserEntity.userEntity;
-import static com.querydsl.core.types.dsl.Expressions.list;
 
 @SpringBootTest
 @TestPropertySource("classpath:application.yml")
@@ -32,6 +30,7 @@ public class GroupChatRoomRepositoryTestClass {
     @Autowired private GroupFileRepository groupFileRepository;
     @Autowired private GroupUserJoinRepository groupUserJoinRepository;
     @Autowired private GroupChatRepository groupChatRepository;
+    @Autowired private GroupUserJoinQuseryRepository groupUserJoinQuseryRepository;
     @Autowired private GroupCommentRepository groupCommentRepository;
     @Autowired private GroupBoardRepository groupBoardRepository;
     @Autowired private UserRepository userRepository;
@@ -55,7 +54,7 @@ public class GroupChatRoomRepositoryTestClass {
         UserEntity userEntity = userRepository.getOne(1L);
         GroupEntity groupEntity = groupRepository.getOne(1L);
 
-        GroupUserJoinEntity groupUserJoinEntity = groupUserJoinRepository.findByGroupAndUser(groupEntity, userEntity);
+        GroupUserJoinEntity groupUserJoinEntity = groupUserJoinQuseryRepository.findGroupUserJoinEntity(groupEntity.getId(), userEntity.getId());
 
         for(int i = 1; i < 9756; i++){
             List<GroupBoardFileEntity> GroupBoardFiles = new ArrayList<>();
@@ -68,14 +67,6 @@ public class GroupChatRoomRepositoryTestClass {
             GroupBoardEntity groupBoardEntity = groupBoardDTO.toEntity();
             groupBoardRepository.save(groupBoardEntity);
 
-            GroupBoardFileDTO groupBoardFileDTO = new GroupBoardFileDTO();
-            groupBoardFileDTO.setPath(root + "6d2cb620-6add-4fb1-8efa-771458093a6b.jpg");
-            groupBoardFileDTO.setName("6d2cb620-6add-4fb1-8efa-771458093a6b.jpg");
-            groupBoardFileDTO.setBoardId(groupBoardEntity);
-
-            GroupBoardFileEntity groupBoardFileEntity = groupBoardFileDTO.toEntity();
-            GroupBoardFiles.add(groupBoardFileEntity);
-
             groupBoardFileRepository.saveAll(GroupBoardFiles);
         }
     }
@@ -83,11 +74,11 @@ public class GroupChatRoomRepositoryTestClass {
     @Test
     void 게시글_덧글작성(){
         UserEntity userEntity = userRepository.getOne(1L);
-        GroupEntity groupEntity = groupRepository.getOne(61L);
+        GroupEntity groupEntity = groupRepository.getOne(1L);
 
-        GroupUserJoinEntity groupUserJoinEntity = groupUserJoinRepository.findByGroupAndUser(groupEntity, userEntity);
+        GroupUserJoinEntity groupUserJoinEntity = groupUserJoinQuseryRepository.findGroupUserJoinEntity(groupEntity.getId(), userEntity.getId());
 
-        GroupBoardEntity groupBoardEntity = groupBoardRepository.getOne(13L);
+        GroupBoardEntity groupBoardEntity = groupBoardRepository.getOne(3L);
 
         for(int i = 1; i < 5; i ++){
 
@@ -134,8 +125,19 @@ public class GroupChatRoomRepositoryTestClass {
 
         log.info("test start : " + start);
         log.info("test end : " + new SimpleDateFormat("mm:ss").format(System.currentTimeMillis()));
-
     }
+
+    @Test
+    void innerJoin_Test(){
+        GroupUserJoinEntity groupUserJoinEntity = queryFactory
+                .selectFrom(QGroupUserJoinEntity.groupUserJoinEntity)
+                .where(QGroupUserJoinEntity.groupUserJoinEntity.user.id.eq(1L)
+                .and(QGroupUserJoinEntity.groupUserJoinEntity.group.id.eq(1L)))
+                .fetchOne();
+
+        log.info("value : " + groupUserJoinEntity.getId());
+    }
+
 }
 
 

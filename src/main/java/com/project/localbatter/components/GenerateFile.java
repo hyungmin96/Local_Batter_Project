@@ -1,31 +1,29 @@
 package com.project.localbatter.components;
 
+import com.project.localbatter.dto.GenerateFileDTO;
+import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import com.project.localbatter.dto.GenerateFileDTO;
-import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
 
+@Component
 public class GenerateFile {
-
-    private final MultipartFile[] files;
 
     private FileOutputStream fos;
     private final String root = "D:\\Spring projects\\SpringBoot LocalBatter\\src\\main\\downloads\\";
     private String tempName = "";
     private String extention;
 
-    public GenerateFile(MultipartFile[] files) {
-        this.files = files;
-    }
-
-    public List<GenerateFileDTO> createFile() {
+    public List<GenerateFileDTO> createFile(MultipartFile[] files) {
 
         List<GenerateFileDTO> fileList = new ArrayList<>();
+
+        if(files != null && files.length > 0) {
 
             for (MultipartFile file : files) {
 
@@ -46,7 +44,7 @@ public class GenerateFile {
                     GenerateFileDTO generateFileDTO = new GenerateFileDTO();
                     generateFileDTO.setFileSize(bytes.length);
                     generateFileDTO.setExtention(extention);
-                    generateFileDTO.setFileName(tempName + extention);
+                    generateFileDTO.setName(tempName + extention);
                     generateFileDTO.setPath(filePath);
 
                     fileList.add(generateFileDTO);
@@ -58,6 +56,7 @@ public class GenerateFile {
                 }
             }
 
-             return fileList;
+        }
+            return fileList;
     }
 }

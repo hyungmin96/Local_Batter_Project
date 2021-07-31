@@ -16,9 +16,7 @@ public class DeleteFile {
         for(String file : files){
             if(!file.contains("default")){
                 File f = new File(root + file);
-
-                if(f.exists())
-                    f.delete();
+                if(f.exists()) f.delete();
             }
         }
     }

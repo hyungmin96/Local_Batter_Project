@@ -1,4 +1,4 @@
-package com.project.localbatter.controllers.sitecontroller;
+package com.project.localbatter.controllers;
 
 import com.project.localbatter.entity.UserEntity;
 import com.project.localbatter.services.UserService;

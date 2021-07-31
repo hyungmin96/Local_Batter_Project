@@ -1,28 +1,22 @@
-package com.project.localbatter.controllers.restcontroller;
+package com.project.localbatter.api;
 
-import java.text.ParseException;
-import java.util.Map;
-
-import javax.servlet.http.HttpSession;
-
-import com.project.localbatter.dto.PageDTO;
-import com.project.localbatter.entity.UserEntity;
-import com.project.localbatter.entity.BoardEntity;
 import com.project.localbatter.components.createTime;
+import com.project.localbatter.dto.PageDTO;
+import com.project.localbatter.entity.BoardEntity;
+import com.project.localbatter.entity.UserEntity;
 import com.project.localbatter.services.BoardService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import java.io.IOException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor

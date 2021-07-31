@@ -1,12 +1,11 @@
 package com.project.localbatter.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
 import java.util.List;
 
-import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
@@ -37,6 +36,7 @@ public class GroupBoardEntity extends BaseTimeEntity {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "board_writer")
+    @JsonIgnore
     private GroupUserJoinEntity groupUserJoinEntity;
 
     @OneToMany(mappedBy = "groupBoard", fetch = LAZY, cascade=  CascadeType.ALL)

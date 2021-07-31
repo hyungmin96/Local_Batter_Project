@@ -1,4 +1,4 @@
-package com.project.localbatter.controllers.restcontroller;
+package com.project.localbatter.api;
 
 import com.project.localbatter.dto.GroupChatMessageDTO;
 import com.project.localbatter.dto.GroupJoinRequestDTO;

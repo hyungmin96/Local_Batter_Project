@@ -185,7 +185,7 @@ function imgShow(id, fileArray) {
 
             imgContainer += "<li style=display:" + displayBoolean + " data-viewname=\"DPhotoCollageImageItemView\" class=\"collageItem\">" +
                 "<button type=\"button\" class=\"collageImage _imageButton\">" +
-                "<img src=/upload/" + fileArray[i].name + " alt='' class='_image'>" +
+                "<img src=/upload/" + fileArray[i] + " alt='' class='_image'>" +
                 "</button>" +
                 moreButton +
                 "</li>"

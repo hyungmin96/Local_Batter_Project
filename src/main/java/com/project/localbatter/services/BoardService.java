@@ -1,23 +1,21 @@
 package com.project.localbatter.services;
 
-import java.io.File;
-import java.text.ParseException;
-import java.util.List;
-import javax.transaction.Transactional;
-import com.project.localbatter.components.GenerateFile;
 import com.project.localbatter.components.createTime;
-import com.project.localbatter.dto.GenerateFileDTO;
 import com.project.localbatter.dto.PageDTO;
 import com.project.localbatter.entity.BoardEntity;
-import com.project.localbatter.entity.FileEntity;
 import com.project.localbatter.repositories.BoardRepository;
 import com.project.localbatter.repositories.FileRepository;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.text.ParseException;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -30,34 +28,34 @@ public class BoardService {
         return boardRep.viewRandomBoardList();
     }
 
-    @org.springframework.transaction.annotation.Transactional
+    @Transactional
     public void updateViewCount(Long id){
         boardRep.updateView(id);
     }
 
-    @org.springframework.transaction.annotation.Transactional
+    @Transactional
     public void updateCartCount(Long id){
         boardRep.updateCart(id);
     }
 
     public void boardWrite(BoardEntity vo, MultipartFile[] uploadFiles) {
         boardRep.save(vo);
-        if (uploadFiles != null && uploadFiles.length > 0) {
-
-            List<GenerateFileDTO> files = new GenerateFile(uploadFiles).createFile();
-
-            for(GenerateFileDTO file : files){
-                FileEntity fileEntity = FileEntity.builder()
-                        .fileSize(file.getFileSize())
-                        .filePath(file.getPath())
-                        .tempName(file.getFileName())
-                        .originName(file.getFileName())
-                        .board(vo)
-                        .build();
-
-                fileRep.save(fileEntity);
-            }
-        }
+//        if (uploadFiles != null && uploadFiles.length > 0) {
+//
+//            List<GenerateFileDTO> files = new GenerateFile(uploadFiles).createFile();
+//
+//            for(GenerateFileDTO file : files){
+//                FileEntity fileEntity = FileEntity.builder()
+//                        .fileSize(file.getFileSize())
+//                        .filePath(file.getPath())
+//                        .tempName(file.getFileName())
+//                        .originName(file.getFileName())
+//                        .board(vo)
+//                        .build();
+//
+//                fileRep.save(fileEntity);
+//            }
+//        }
     }
 
     @Transactional
@@ -76,20 +74,20 @@ public class BoardService {
         }
 
         if(inputVo != null){
-            if (uploadFiles != null && uploadFiles.length > 0) {
-                List<GenerateFileDTO> files = new GenerateFile(uploadFiles).createFile();
-
-                for(GenerateFileDTO file : files){
-                    FileEntity fileEntity = FileEntity.builder()
-                            .fileSize(file.getFileSize())
-                            .filePath(file.getPath())
-                            .originName(file.getFileName())
-                            .board(vo)
-                            .build();
-
-                    fileRep.save(fileEntity);
-                }
-            }
+//            if (uploadFiles != null && uploadFiles.length > 0) {
+//                List<GenerateFileDTO> files = new GenerateFile(uploadFiles).createFile();
+//
+//                for(GenerateFileDTO file : files){
+//                    FileEntity fileEntity = FileEntity.builder()
+//                            .fileSize(file.getFileSize())
+//                            .filePath(file.getPath())
+//                            .originName(file.getFileName())
+//                            .board(vo)
+//                            .build();
+//
+//                    fileRep.save(fileEntity);
+//                }
+//            }
 
             vo.setCreateTime(inputVo.getCreateTime());
             boardRep.save(vo);

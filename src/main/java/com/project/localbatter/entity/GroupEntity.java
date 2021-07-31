@@ -1,8 +1,9 @@
 package com.project.localbatter.entity;
 
 import lombok.*;
-import org.hibernate.annotations.BatchSize;
+
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -34,7 +35,7 @@ public class GroupEntity {
     private roomEnumType type;
 
     @OneToMany(mappedBy = "group", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<GroupFileEntity> files;
+    private List<GroupFileEntity> files = new ArrayList<>();
 
     @OneToMany(mappedBy = "group", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<GroupUserJoinEntity> UserGroupJoin;

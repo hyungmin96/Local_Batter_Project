@@ -1,28 +1,33 @@
 package com.project.localbatter.services;
 
 import com.project.localbatter.components.GenerateFile;
-import com.project.localbatter.dto.*;
-import com.project.localbatter.entity.*;
-import com.project.localbatter.repositories.*;
-import com.querydsl.core.types.Projections;
-import com.querydsl.jpa.impl.JPAQuery;
+import com.project.localbatter.dto.GenerateFileDTO;
+import com.project.localbatter.dto.GroupCreateDTO;
+import com.project.localbatter.dto.GroupFileDTO;
+import com.project.localbatter.dto.GroupPageDTO;
+import com.project.localbatter.entity.GroupEntity;
+import com.project.localbatter.entity.GroupUserJoinEntity;
+import com.project.localbatter.entity.UserEntity;
+import com.project.localbatter.repositories.GroupFileRepository;
+import com.project.localbatter.repositories.GroupRepository;
+import com.project.localbatter.repositories.GroupUserJoinRepository;
+import com.project.localbatter.repositories.UserRepository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import lombok.RequiredArgsConstructor;
-import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.project.localbatter.entity.QGroupEntity.groupEntity;
 import static com.project.localbatter.entity.QGroupUserJoinEntity.groupUserJoinEntity;
-import static com.project.localbatter.entity.QUserEntity.userEntity;
 
 @Service
 @RequiredArgsConstructor
@@ -33,6 +38,7 @@ public class GroupService {
     private final GroupRepository groupRepository;
     private final GroupUserJoinRepository groupUserJoinRepository;
     private final JPAQueryFactory queryFactory;
+    private final GenerateFile generateFile;
     private static Logger log = LogManager.getLogger();
 
     public ResponseEntity<String> enterGroup(GroupPageDTO groupPageDTO){
@@ -66,6 +72,7 @@ public class GroupService {
     }
 
     public ResponseEntity<GroupCreateDTO> createGroupRoom(GroupCreateDTO groupCreateDTO){
+
         UserEntity userEntity = userRepository.getOne(groupCreateDTO.getUserId());
         GroupEntity groupEntity = groupCreateDTO.toEntity();
         groupRepository.save(groupEntity);
@@ -77,17 +84,13 @@ public class GroupService {
         groupUserJoinRepository.save(groupUserJoinEntity);
         groupRepository.memberCountUp(groupEntity.getId());
 
-        if(groupCreateDTO.getFiles() != null && groupCreateDTO.getFiles().length > 0){
-            GenerateFile generateGroupFiles = new GenerateFile(groupCreateDTO.getFiles());
-            List<GenerateFileDTO> files = generateGroupFiles.createFile();
-            for(GenerateFileDTO file : files){
-                GroupFileDTO groupFileDTO = new GroupFileDTO();
-                groupFileDTO.setName(file.getFileName());
-                groupFileDTO.setPath(file.getPath());
-                groupFileRepository.save(groupFileDTO.toEntity(groupEntity));
-            }
+            List<GenerateFileDTO> generateGroupFiles = generateFile.createFile(groupCreateDTO.getFiles());
+
+            generateGroupFiles.stream().map(GroupFileDTO::new).collect(Collectors.toList())
+                    .forEach(item -> groupFileRepository.save(item.toEntity(groupEntity)));
+
             groupCreateDTO.setFiles(null);
-        }
+
         return new ResponseEntity<>(groupCreateDTO, HttpStatus.OK);
     }
 

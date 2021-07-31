@@ -109,7 +109,7 @@ function loadLatestImages() {
     }
 
     $.ajax({
-        url: '/api/group/board/get_latest_images',
+        url: '/api/v2/group/board/get_latest_images',
         type: 'GET',
         data: data,
         success: function (response) {
@@ -133,7 +133,7 @@ function loadNotices() {
     }
 
     $.ajax({
-        url: '/api/group/board/get_notice_list',
+        url: '/api/v2/group/board/get_notice_list',
         type: 'GET',
         data: data,
         success: function (response) {
@@ -182,7 +182,7 @@ function updateNotice(e, noticeRegistered) {
     }
 
     $.ajax({
-        url: '/api/group/board/update/notice',
+        url: '/api/v2/group/board/update/notice',
         type: 'POST',
         data: data,
         contentType: 'application/x-www-form-urlencoded',
@@ -205,7 +205,7 @@ function deletePost(e) {
     }
 
     $.ajax({
-        url: '/api/group/board/delete',
+        url: '/api/v2/group/board/delete',
         type: 'POST',
         data: data,
         contentType: 'application/x-www-form-urlencoded',
@@ -235,19 +235,21 @@ function postContent() {
 
         $.ajax({
 
-            url: '/api/group/board/post',
+            url: '/api/v2/group/board/post',
             type: 'POST',
             data: formData,
             contentType: false,
             processData: false,
             success: function (response) {
+                console.log(response)
                 $('.contentContainer').prepend(
                     inputPostBox(response)
                 )
                 $('._imgPreviewSlider').empty();
                 infoImgs = [];
                 document.getElementById('board_content_box').value = '';
-                document.getElementsByClassName('contentEmptyContiner')[0].style.display = 'none';
+                if (document.getElementsByClassName('contentEmptyContiner')[0] != null)
+                    document.getElementsByClassName('contentEmptyContiner')[0].style.display = 'none';
             }
         })
     } else alert('작성할 내용을 입력해주세요.');
@@ -264,15 +266,15 @@ function getBoardList() {
     if (!lastPage) {
 
         $.ajax({
-            url: '/api/group/get_board_list',
+            url: '/api/v2/group/board/get_board_list',
             type: 'GET',
             data: data,
             success: function (response) {
                 if (response.last == true) lastPage = true;
                 if (response.content.length > 0) {
+                    console.log(response.content)
                     $('.contentEmptyContiner').remove();
                     document.getElementsByClassName('_contentListWrapper')[0].setAttribute("style", "hieght:500px");
-
                     $.each(response.content, function (key, value) {
                         $('.contentContainer').append(
                             inputPostBox(value)
@@ -292,11 +294,11 @@ function inputPostBox(value) {
         "<input type='hidden' class='boardId' value=" + value.boardId + ">" +
         "<div class='contentItemBox'>" +
         "<div class='contentAuthorBox'>" +
-        "<div><img class='board _userProfileImg' src=/upload/" + value.user.user.profile.profilePath + "></div>" +
+        "<div><img class='board _userProfileImg' src=/upload/" + value.profilePath + "></div>" +
         "<div class='contentInfoBox'>" +
         "<div style='width: 100%; display: inline-flex; justify-content: space-between;'>" +
         "<div>" +
-        "<div class='board _username'>" + value.user.user.username + "</div>" +
+        "<div class='board _username'>" + value.username + "</div>" +
         "<div class='boardMoreInfoBox' style='display: inline-flex'>" +
         boardType +
         "<div class='board _regDate'>" + new Date(value.regTime).toLocaleString([], {
@@ -315,7 +317,7 @@ function inputPostBox(value) {
         "</div>" +
         "</div>" +
         "<div class='board _content' style='padding: 10px 10px 0 10px;'>" + value.content + "</div>" +
-        imgShow(value.boardId, value.files) +
+        imgShow(value.boardId, value.boardFiles) +
         "<div style='display: inline-flex; margin-top: 15px;'>" +
         "<div style='display: inline-flex;' class='boardInfo _likeButton'>" +
         "<div class='commentLikeBox'><img src=/images/group/heart_22px.png></div>" +
@@ -433,11 +435,11 @@ function commentBox(comments) {
             result +=
                 "<div id=commentId_" + comments[i].commentId + " class='commentList _commentBox'>" +
                 "<div class='commentProfileBox'>" +
-                "<img src=/upload/" + comments[i].writer.user.profile.profilePath + ">" +
+                "<img src=/upload/" + comments[i].profilePath + ">" +
                 "</div>" +
                 "<div class='userInfoComment'>" +
                 "<div class='commentUsername'>" +
-                    comments[i].writer.user.username +
+                    comments[i].username +
                 "</div>" +
                 "<div class='commentContentBox'>" +
                     comments[i].comment +

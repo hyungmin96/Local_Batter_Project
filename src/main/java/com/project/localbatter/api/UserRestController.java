@@ -1,4 +1,4 @@
-package com.project.localbatter.controllers.restcontroller;
+package com.project.localbatter.api;
 
 import com.project.localbatter.services.UserService;
 import com.project.localbatter.dto.UserDTO;

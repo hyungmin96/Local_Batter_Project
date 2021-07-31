@@ -2,7 +2,6 @@ package com.project.localbatter.dto;
 
 import com.project.localbatter.entity.GroupBoardEntity;
 import com.project.localbatter.entity.GroupCommentEntity;
-import com.project.localbatter.entity.GroupEntity;
 import com.project.localbatter.entity.GroupUserJoinEntity;
 import lombok.Getter;
 import lombok.Setter;

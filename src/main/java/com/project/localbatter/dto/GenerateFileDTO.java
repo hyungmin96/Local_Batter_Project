@@ -11,6 +11,5 @@ public class GenerateFileDTO {
     private String path;
     private String extention;
     private int fileSize;
-    private String fileName;
 
 }

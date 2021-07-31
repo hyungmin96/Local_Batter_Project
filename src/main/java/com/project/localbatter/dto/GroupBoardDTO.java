@@ -11,7 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter @Setter
-public class GroupBoardDTO implements Serializable {
+public class
+GroupBoardDTO implements Serializable {
 
     private int page;
     private int display;
@@ -34,6 +35,10 @@ public class GroupBoardDTO implements Serializable {
             return GroupBoardEntity.BoardType.fix;
         else
             return GroupBoardEntity.BoardType.general;
+    }
+
+    public void addFile(GroupBoardFileEntity file){
+        files.add(file);
     }
 
     public void setGroupUserJoin(GroupUserJoinEntity groupUserJoinEntity){
