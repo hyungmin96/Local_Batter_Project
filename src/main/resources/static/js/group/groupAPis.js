@@ -1,4 +1,45 @@
 
+let memberPage = 0;
+function getMemberList(){
+
+    const data = {
+        page: memberPage,
+        display: 50,
+        groupId: $('.groupId').val()
+    }
+
+    $.ajax({
+        url: '/api/group/get_member_list',
+        type: 'GET',
+        data: data,
+        success: function (response){
+            $.each(response.content, function(key, value){
+                console.log(value)
+                $('.memberList').append(
+                    "<div class='userList _userItemBox' style='cursor: pointer;'>" +
+                        "<div class='userProfileBox'>" +
+                            "<img src=/upload/" + value.profile + ">" +
+                        "</div>" +
+                        "<div class='userName' style='margin: auto 0 auto 8px;'>" +
+                            value.username +
+                        "</div>" +
+                    "</div>"
+
+                    // '<div class="userList _userItemBox" style="cursor: pointer;">' +
+                    //     '<div class="userProfileBox">' +
+                    //         '<img src=/upload/' + value.profile + '>' +
+                    //     '</div>' +
+                    //     '<div class="userName" style="margin: auto 0 auto 8px;">' +
+                    //         value.username +
+                    //     '</div>' +
+                    // '</div>'
+                )
+            })
+        }
+    })
+    page++;
+}
+
 function enterGroup(){
 
     const data = {
@@ -67,59 +108,13 @@ function deleteComment(e, commentId){
     }
 
     $.ajax({
-        url: '/api/group/comment/delete',
+        url: '/api/v2/group/comment/delete',
         type: 'POST',
         data: data,
         contentType: 'application/x-www-form-urlencoded',
         success: function(response){
             $('#commentId_' + commentId).remove();
             e.innerHTML = (e.innerHTML * 1) - 1;
-        }
-    })
-}
-
-function loadLatestComments() {
-    const data = {
-        groupId: $('.groupId').val(),
-        page: 0,
-        display: 5
-    }
-
-    $.ajax({
-        url: '/api/group/comment/get_latest_comments',
-        type: 'GET',
-        data: data,
-        success: function (response) {
-            $.each(response.content, function (key, value) {
-                $('._latestCommentContainer').append(
-                    "<div class='latest _latestCommentBox'>" +
-                        "<span class='latest _commentContent'>" + value.comment + "</span>" +
-                    "</div>"
-                )
-            })
-        }
-    })
-}
-
-function loadLatestImages() {
-    const data = {
-        groupId: $('.groupId').val(),
-        page: 0,
-        display: 9
-    }
-
-    $.ajax({
-        url: '/api/v2/group/board/get_latest_images',
-        type: 'GET',
-        data: data,
-        success: function (response) {
-            $.each(response.content, function (key, value) {
-                $('._latestImageContainer').append(
-                    "<div>" +
-                    "<img src=/upload/" + value.name + ">" +
-                    "</div>"
-                )
-            })
         }
     })
 }
@@ -171,11 +166,13 @@ function updateNotice(e, noticeRegistered) {
 
     //type : general, fix, notice
     const boardId = $(e)[0].path[7].children[0].value
+    const userId = $('.g_user_id').val();
     const groupId = $('.groupId').val();
     const username = $('.user').val();
 
     const data = {
         groupId: groupId,
+        userId: userId,
         boardId: boardId,
         type: noticeRegistered,
         username: username
@@ -241,10 +238,7 @@ function postContent() {
             contentType: false,
             processData: false,
             success: function (response) {
-                console.log(response)
-                $('.contentContainer').prepend(
-                    inputPostBox(response)
-                )
+                $('.contentContainer').prepend(inputPostBox(response))
                 $('._imgPreviewSlider').empty();
                 infoImgs = [];
                 document.getElementById('board_content_box').value = '';
@@ -256,10 +250,9 @@ function postContent() {
 
 }
 
-let page = 0;
 let display = 6;
 let lastPage = false;
-
+let page = 0;
 function getBoardList() {
     const data = {groupId: $('.groupId').val(), display: display, page: page}
 
@@ -385,7 +378,7 @@ function updateCommentText(commentBox, boardId, commentId, comment){
         }
 
         $.ajax({
-            url: '/api/group/comment/update',
+            url: '/api/v2/group/comment/update',
             type: 'POST',
             data: data,
             contentType: 'application/x-www-form-urlencoded',
@@ -462,24 +455,24 @@ $(document).on('click', '.commentSendBtn', function (e) {
     const commentInfoArray = [];
     const boardId = $(this).closest('.boardItemBox').find('.boardId')[0].value;
     const commentListView = $(this).closest('.boardItemBox').find('.commentListView')[0]
-    const userId = $(document)[0].all[57].value;
     const commentValue = $(this).closest('.boardItemBox').find('.commentInputText')[0]
     const commentCount = $(this).closest('.boardItemBox').find(".commentCountBox")[0]
 
     const data = {
         groupId: $('.groupId').val(),
         boardId: boardId,
-        userId: userId,
+        userId: $('.g_user_id').val(),
         comment: commentValue.value,
     };
 
     $.ajax({
-        url: '/api/group/board/comment/write',
+        url: '/api/v2/group/comment/write',
         type: 'POST',
         contentType: 'application/x-www-form-urlencoded',
         data: data,
         dataType: 'JSON',
         success: function (response) {
+            console.log(response)
             commentInfoArray.push(response)
             commentListView.style.display = 'block';
 

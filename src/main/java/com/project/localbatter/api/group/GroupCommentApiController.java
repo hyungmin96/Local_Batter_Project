@@ -1,16 +1,16 @@
 package com.project.localbatter.api.group;
 
+import com.project.localbatter.dto.GroupCommentDTO;
 import com.project.localbatter.entity.GroupCommentEntity;
 import com.project.localbatter.services.GroupBoardService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
-import com.project.localbatter.dto.*;
 import com.project.localbatter.services.GroupCommentService;
-import org.springframework.http.HttpStatus;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,25 +20,41 @@ public class GroupCommentApiController {
     private final GroupBoardService groupBoardService;
     private final GroupCommentService groupCommentService;
 
-    @PostMapping("/board/comment/write")
-    public ResponseEntity<GroupCommentDTO> commentWrite(GroupCommentDTO groupCommentDTO){
-        groupCommentService.commentWrite(groupCommentDTO);
-        return new ResponseEntity<>(groupCommentDTO, HttpStatus.OK);
+    @PostMapping("/write")
+    public ResponseCommentDTO commentWrite(GroupCommentDTO groupCommentDTO){
+        GroupCommentEntity groupCommentEntity = groupCommentService.commentWrite(groupCommentDTO);
+        return new ResponseCommentDTO(groupCommentEntity);
     }
 
-    @PostMapping("/comment/update")
+    @PostMapping("/update")
     public ResponseEntity<GroupCommentDTO> updateComment(GroupCommentDTO groupCommentDTO){
         return groupCommentService.updateComment(groupCommentDTO);
     }
 
-    @PostMapping("/comment/delete")
+    @PostMapping("/delete")
     public ResponseEntity<GroupCommentDTO> deleteComment(GroupCommentDTO groupCommentDTO){
         return groupCommentService.deleteComment(groupCommentDTO);
     }
 
-    @GetMapping("/comment/get_latest_comments")
-    public Page<GroupCommentEntity> getLatestComments(GroupBoardDTO groupBoardDTO){
-        return groupBoardService.getLatestComments(groupBoardDTO);
+    @Getter @Setter
+    static class ResponseCommentDTO{
+
+        private Long groupId;
+        private Long boardId;
+        private Long commentId;
+        private String username;
+        private String profilePath;
+        private String comment;
+
+        public ResponseCommentDTO(GroupCommentEntity entity){
+            this.groupId = entity.getGroupId();
+            this.boardId = entity.getGroupBoard().getBoardId();
+            this.commentId = entity.getCommentId();
+            this.username = entity.getGroupUserJoinEntity().getUser().getUsername();
+            this.profilePath = entity.getGroupUserJoinEntity().getUser().getProfilePath();
+            this.comment = entity.getComment();
+        }
+
     }
 
 }

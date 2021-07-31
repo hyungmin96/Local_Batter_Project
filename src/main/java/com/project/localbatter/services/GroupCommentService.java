@@ -3,8 +3,10 @@ package com.project.localbatter.services;
 import com.project.localbatter.dto.GroupCommentDTO;
 import com.project.localbatter.entity.GroupBoardEntity;
 import com.project.localbatter.entity.GroupCommentEntity;
+import com.project.localbatter.entity.GroupUserJoinEntity;
 import com.project.localbatter.repositories.GroupBoardRepository;
 import com.project.localbatter.repositories.GroupCommentRepository;
+import com.project.localbatter.repositories.GroupUserJoinQueryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +18,9 @@ public class GroupCommentService {
 
     private final GroupCommentRepository groupCommentRepository;
     private final GroupBoardRepository groupBoardRepository;
+    private final GroupUserJoinQueryRepository groupUserJoinQuseryRepository;
 
     public ResponseEntity<GroupCommentDTO> updateComment(GroupCommentDTO groupCommentDTO){
-
         GroupCommentEntity groupCommentEntity = groupCommentRepository.getOne(groupCommentDTO.getCommentId());
         groupCommentEntity.update(groupCommentDTO.getComment());
         groupCommentDTO.setResult("Success");
@@ -31,11 +33,15 @@ public class GroupCommentService {
         return new ResponseEntity<>(groupCommentDTO, HttpStatus.OK);
     }
 
-    public void commentWrite(GroupCommentDTO groupCommentDTO){
-//        GroupBoardEntity groupBoardEntity = groupBoardRepository.getOne(groupCommentDTO.getBoardId());
-//        groupCommentDTO.setGroupId(groupCommentDTO.getGroupId());
-//        GroupCommentEntity groupCommentEntity = groupCommentDTO.toEntity();
-//        groupCommentRepository.save(groupCommentEntity);
-//        groupCommentDTO.setCommentId(groupCommentEntity.getCommentId());
+    public GroupCommentEntity commentWrite(GroupCommentDTO groupCommentDTO){
+
+        GroupUserJoinEntity groupUserJoinEntity = groupUserJoinQuseryRepository
+                .findGroupUserJoinEntity(groupCommentDTO.getUserId(), groupCommentDTO.getGroupId());
+        GroupBoardEntity groupBoardEntity = groupBoardRepository.getOne(groupCommentDTO.getBoardId());
+
+        groupCommentDTO.setGroupId(groupCommentDTO.getGroupId());
+        GroupCommentEntity groupCommentEntity = groupCommentDTO.toEntity(groupBoardEntity, groupUserJoinEntity);
+        groupCommentRepository.save(groupCommentEntity);
+        return groupCommentEntity;
     }
 }

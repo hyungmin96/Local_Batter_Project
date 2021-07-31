@@ -224,10 +224,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
     if (scrollpos) {
         window.scrollTo(0, 0);
         isMember();
+        loadNotices();
         getBoardList();
-        // loadNotices();
-        // loadLatestImages();
-        // loadLatestComments();
+        getMemberList();
     }
 });
 

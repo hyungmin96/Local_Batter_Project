@@ -1,5 +1,6 @@
 package com.project.localbatter.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import javax.persistence.*;
 
@@ -29,6 +30,7 @@ public class GroupBoardFileEntity extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "BoardId")
+    @JsonIgnore
     private GroupBoardEntity groupBoard;
 
 }

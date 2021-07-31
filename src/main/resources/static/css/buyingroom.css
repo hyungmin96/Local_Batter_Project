@@ -1,3 +1,10 @@
+@font-face {
+    font-family: 'NEXON_Lv1_Gothic_OTF';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/NEXON Lv1 Gothic OTF.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
 #contentWrapper{
     min-height: 900px;
     width: 600px;
@@ -212,8 +219,9 @@
 }
 
 .commentContentBox{
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 15px;
+    font-family: NEXON_Lv1_Gothic_OTF;
+    font-size: 12px;
+    letter-spacing: 1.2px;
 }
 
 .commentRegTime{

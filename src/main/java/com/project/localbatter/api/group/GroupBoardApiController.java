@@ -31,14 +31,9 @@ public class GroupBoardApiController {
 
     private final GroupBoardService groupBoardService;
 
-    @GetMapping("/get_latest_images")
-    public Page<GroupBoardFileEntity> getLatestImages(GroupBoardDTO groupBoardDTO){
-        return groupBoardService.getLatestImages(groupBoardDTO);
-    }
-
     @PostMapping("/update/notice")
-    public ResponseEntity<GroupBoardDTO> updateNotice(GroupBoardDTO groupBoardDTO){
-        return groupBoardService.updateNotice(groupBoardDTO);
+    public ResponseBoardDTO updateNotice(GroupBoardDTO groupBoardDTO){
+        return new ResponseBoardDTO(groupBoardService.updateNotice(groupBoardDTO));
     }
 
     @GetMapping("/get_notice_list")
@@ -54,8 +49,10 @@ public class GroupBoardApiController {
 
     @PostMapping("/post")
     public ResponseBoardDTO groupPostContent(GroupBoardDTO groupBoardDTO){
-        GroupBoardEntity boardItem = groupBoardService.post(groupBoardDTO);
-        return new ResponseBoardDTO(boardItem);
+        if(groupBoardService.post(groupBoardDTO).isPresent()){
+            GroupBoardEntity boardItem = groupBoardService.post(groupBoardDTO).get();
+            return new ResponseBoardDTO(boardItem);
+        }else return new ResponseBoardDTO("게시글 작성 권한이 없습니다.");
     }
 
     @GetMapping("/get_board_list")
@@ -68,14 +65,19 @@ public class GroupBoardApiController {
 
     @Getter @Setter
     static class ResponseBoardDTO{
+        private String result;
         private Long userId;
         private String username;
         private String profilePath;
         private LocalDateTime regTime;
         private Long boardId;
+        private int boardLike;
         private String content;
+        private GroupBoardEntity.BoardType type; // 그룹 공지, 일반 글
         private List<String> boardFiles;
         private List<ResponseCommentDTO> comments;
+
+        public ResponseBoardDTO(String result){this.result = result;}
 
         public ResponseBoardDTO(GroupBoardEntity entity){
             this.userId = entity.getGroupUserJoinEntity().getUser().getId();
@@ -83,6 +85,8 @@ public class GroupBoardApiController {
             this.profilePath = entity.getGroupUserJoinEntity().getUser().getProfilePath();
             this.regTime = entity.getRegTime();
             this.boardId = entity.getBoardId();
+            this.boardLike = entity.getBoardLike();
+            this.type = entity.getType();
             this.content = entity.getContent();
             this.boardFiles = entity.getFiles().stream().map(GroupBoardFileEntity::getName).collect(Collectors.toList());
             this.comments = (entity.getComments() != null) ? entity.getComments().stream().map(ResponseCommentDTO::new).collect(Collectors.toList()) : new ArrayList<>();
@@ -107,6 +111,7 @@ public class GroupBoardApiController {
             this.profilePath = entity.getGroupUserJoinEntity().getUser().getProfilePath();
         }
     }
+
 }
 
 

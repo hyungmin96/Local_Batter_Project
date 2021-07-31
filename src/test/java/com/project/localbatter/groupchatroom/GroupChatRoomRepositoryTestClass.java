@@ -10,7 +10,6 @@ import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,7 +29,7 @@ public class GroupChatRoomRepositoryTestClass {
     @Autowired private GroupFileRepository groupFileRepository;
     @Autowired private GroupUserJoinRepository groupUserJoinRepository;
     @Autowired private GroupChatRepository groupChatRepository;
-    @Autowired private GroupUserJoinQuseryRepository groupUserJoinQuseryRepository;
+    @Autowired private GroupUserJoinQueryRepository groupUserJoinQuseryRepository;
     @Autowired private GroupCommentRepository groupCommentRepository;
     @Autowired private GroupBoardRepository groupBoardRepository;
     @Autowired private UserRepository userRepository;
@@ -40,13 +39,6 @@ public class GroupChatRoomRepositoryTestClass {
     private final Logger log = LogManager.getLogger();
     private final String root = "D:\\Spring projects\\SpringBoot LocalBatter\\src\\main\\downloads\\";
 
-    @Test
-    void 최신_게시글_사진가져오기(){
-        GroupBoardDTO groupBoardDTO = new GroupBoardDTO();
-        groupBoardDTO.setGroupId(16L);
-        Page<GroupBoardFileEntity> test = groupBoardService.getLatestImages(groupBoardDTO);
-        log.info("test");
-    }
 
     @Test
     void 그룹_게시글_작성(){
@@ -61,10 +53,9 @@ public class GroupChatRoomRepositoryTestClass {
 
             GroupBoardDTO groupBoardDTO = new GroupBoardDTO();
             groupBoardDTO.setGroupId(1L);
-            groupBoardDTO.setGroupUserJoinEntity(groupUserJoinEntity);
             groupBoardDTO.setContent("test content");
 
-            GroupBoardEntity groupBoardEntity = groupBoardDTO.toEntity();
+            GroupBoardEntity groupBoardEntity = groupBoardDTO.toEntity(groupUserJoinEntity);
             groupBoardRepository.save(groupBoardEntity);
 
             groupBoardFileRepository.saveAll(GroupBoardFiles);

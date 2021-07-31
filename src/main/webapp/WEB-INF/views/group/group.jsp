@@ -128,22 +128,12 @@
                     <div>멤버 목록</div>
                     <div class="usersOptionContainer">
                         <button class="chattingButton">채팅하기</button>
-                        <button class="moreUsersMenu">더 보기</button>
                     </div>
                 </div>
             </div>
             <div class="card-body" style="flex-wrap: wrap; overflow: scroll; padding: 0">
-                <div class="userList" style="display: flex; flex-direction: column;">
-                    <c:forEach var="item" items="${group_users_entity}" varStatus="status">
-                        <div class="userList _userItemBox" style="cursor: pointer;">
-                            <div class="userProfileBox">
-                                <img src="/upload/${item.user.profile.profilePath}">
-                            </div>
-                            <div class="userName" style="margin: auto 0 auto 8px;">
-                                ${item.user.username}
-                            </div>
-                        </div>
-                    </c:forEach>
+                <div class="memberList" style="display: flex; flex-direction: column;">
+
                 </div>
             </div>
         </div>
@@ -154,7 +144,11 @@
                     최근 게시물 사진
                 </div>
                 <div class="card-body _latestImageContainer" style="flex-wrap: wrap;display: inline-flex; padding: 10px 1px 1px 10px;">
-
+                    <c:forEach var="item" items="${group_files}" varStatus="i">
+                        <div>
+                            <img src=/upload/${item.name}>
+                        </div>
+                    </c:forEach>
                 </div>
             </div>
         </section>
@@ -164,7 +158,11 @@
                 최근 등록된 덧글
             </div>
             <div class="card-body _latestCommentContainer">
-
+                <c:forEach var="item" items="${group_comments}" varStatus="i">
+                    <div class='latest _latestCommentBox'>
+                        <span class='latest _commentContent'>${item.comment}</span>
+                    </div>
+                </c:forEach>
             </div>
         </div>
     </section>

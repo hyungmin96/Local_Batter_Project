@@ -1,8 +1,8 @@
 package com.project.localbatter.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -13,7 +13,7 @@ import static javax.persistence.FetchType.LAZY;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-@Table(name = "tbl_user_group_join")
+@Table(name = "tbl_group_user_join")
 public class GroupUserJoinEntity extends BaseTimeEntity {
 
     @Id @GeneratedValue
@@ -21,8 +21,8 @@ public class GroupUserJoinEntity extends BaseTimeEntity {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "member_authority")
-    private memberAuthority type;
+    @Column(name = "user_authority")
+    private userAuthority type;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "user_table")
@@ -38,7 +38,7 @@ public class GroupUserJoinEntity extends BaseTimeEntity {
     @OneToMany(mappedBy = "groupUserJoinEntity", fetch = LAZY, cascade = CascadeType.ALL)
     private List<GroupCommentEntity> comment;
 
-    public enum memberAuthority{
+    public enum userAuthority{
         manager, staff, member, ban
     }
 

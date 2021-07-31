@@ -24,9 +24,9 @@ GroupBoardDTO implements Serializable {
     private String username;
     private String content;
     private String result;
+    private int boardLike = 0;
     private MultipartFile[] board_img;
     private List<GroupBoardFileEntity> files = new ArrayList<>();
-    private GroupUserJoinEntity groupUserJoinEntity;
 
     public GroupBoardEntity.BoardType getType(){
         if(this.type.equals("notice"))
@@ -41,11 +41,7 @@ GroupBoardDTO implements Serializable {
         files.add(file);
     }
 
-    public void setGroupUserJoin(GroupUserJoinEntity groupUserJoinEntity){
-        this.groupUserJoinEntity = groupUserJoinEntity;
-    }
-
-    public GroupBoardEntity toEntity(){
+    public GroupBoardEntity toEntity(GroupUserJoinEntity groupUserJoinEntity){
         return GroupBoardEntity.builder()
                 .groupId(groupId)
                 .content(content)

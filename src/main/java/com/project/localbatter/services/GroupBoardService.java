@@ -6,20 +6,23 @@ import com.project.localbatter.components.PagingUtil;
 import com.project.localbatter.dto.GenerateFileDTO;
 import com.project.localbatter.dto.GroupBoardDTO;
 import com.project.localbatter.dto.GroupBoardFileDTO;
-import com.project.localbatter.entity.*;
-import com.project.localbatter.repositories.*;
+import com.project.localbatter.entity.GroupBoardEntity;
+import com.project.localbatter.entity.GroupBoardFileEntity;
+import com.project.localbatter.entity.GroupUserJoinEntity;
+import com.project.localbatter.repositories.GroupBoardFileRepository;
+import com.project.localbatter.repositories.GroupBoardRepository;
+import com.project.localbatter.repositories.GroupUserJoinQueryRepository;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.project.localbatter.entity.QGroupBoardEntity.groupBoardEntity;
@@ -31,13 +34,9 @@ import static com.project.localbatter.entity.QUserEntity.userEntity;
 @Transactional
 public class GroupBoardService {
 
-    private final GroupRepository groupRepository;
-    private final UserRepository userRepository;
     private final GroupBoardRepository groupBoardRepository;
-    private final GroupCommentRepository groupCommentRepository;
     private final GroupBoardFileRepository groupBoardFileRepository;
-    private final GroupUserJoinRepository groupUserJoinRepository;
-    private final GroupUserJoinQuseryRepository groupUserJoinQuseryRepository;
+    private final GroupUserJoinQueryRepository groupUserJoinQuseryRepository;
     private final GenerateFile generateFile;
     private final JPAQueryFactory queryFactory;
     private final PagingUtil pagingUtil;
@@ -56,30 +55,21 @@ public class GroupBoardService {
         return pagingUtil.getPageImpl(request, query, GroupBoardEntity.class);
     }
 
-    public Page<GroupCommentEntity> getLatestComments(GroupBoardDTO groupBoardDTO){
-        PageRequest request = PageRequest.of(groupBoardDTO.getPage(), groupBoardDTO.getDisplay(), Sort.Direction.DESC, "commentId");
-        return groupCommentRepository.findTop5ByGroupId(groupBoardDTO.getGroupId(), request);
-    }
-
-    public Page<GroupBoardFileEntity> getLatestImages(GroupBoardDTO groupBoardDTO){
-        PageRequest request = PageRequest.of(groupBoardDTO.getPage(), groupBoardDTO.getDisplay(), Sort.Direction.DESC, "id");
-        return groupBoardFileRepository.findTop9BygroupId(groupBoardDTO.getGroupId(), request);
-    }
-
-    public ResponseEntity<GroupBoardDTO> updateNotice(GroupBoardDTO groupBoardDTO){
+    public GroupBoardEntity updateNotice(GroupBoardDTO groupBoardDTO){
         // Check Authorization to enter user
+        GroupUserJoinEntity groupUserJoinEntity = groupUserJoinQuseryRepository
+                            .findGroupUserJoinEntity(groupBoardDTO.getUserId(), groupBoardDTO.getGroupId());
 
-//        if(isUserHasAuthority){
-//            GroupBoardEntity groupBoardEntity = groupBoardRepository.getOne(groupBoardDTO.getBoardId());
-//            groupBoardDTO.setBoardId(groupBoardEntity.getBoardId());
-//            groupBoardEntity.updateNotice(groupBoardDTO.getType());
-//            groupBoardRepository.save(groupBoardEntity);
-//            groupBoardDTO.setResult("Success");
-//
-//            return new ResponseEntity<>(groupBoardDTO, HttpStatus.OK);
-//        }
+        GroupBoardEntity groupBoardEntity = groupBoardRepository.getOne(groupBoardDTO.getBoardId());
+        if(!groupUserJoinEntity.getType().equals(GroupUserJoinEntity.userAuthority.member)){
+            groupBoardEntity.updateNotice(groupBoardDTO.getType());
+            groupBoardRepository.save(groupBoardEntity);
+
+            return groupBoardDTO.toEntity(groupUserJoinEntity);
+        }
+
         groupBoardDTO.setResult("Failed - No request authority");
-        return new ResponseEntity<>(groupBoardDTO, HttpStatus.BAD_REQUEST);
+        return groupBoardEntity;
     }
 
     public Page<GroupBoardEntity> getNoticeList(GroupBoardDTO groupBoardDTO){
@@ -94,23 +84,21 @@ public class GroupBoardService {
         groupBoardRepository.deleteById(groupBoardDTO.getBoardId());
     }
 
-    public GroupBoardEntity post(GroupBoardDTO groupBoardDTO){
-
+    public Optional<GroupBoardEntity> post(GroupBoardDTO groupBoardDTO){
         GroupUserJoinEntity groupUserJoinEntity = groupUserJoinQuseryRepository.findGroupUserJoinEntity(groupBoardDTO.getUserId(), groupBoardDTO.getGroupId());
 
-        groupBoardDTO.setGroupUserJoin(groupUserJoinEntity);
-        GroupBoardEntity groupBoardEntity = groupBoardDTO.toEntity();
-        groupBoardRepository.save(groupBoardEntity);
-
-        List<GenerateFileDTO> groupBoardFiles = generateFile.createFile(groupBoardDTO.getBoard_img());
-
-        groupBoardFiles.stream().map(GroupBoardFileDTO::new).collect(Collectors.toList())
-                .forEach(item -> {
-                    GroupBoardFileEntity file = item.toEntity(groupBoardEntity);
-                    groupBoardDTO.addFile(file);
-                    groupBoardFileRepository.save(file);
-                });
-
-        return groupBoardEntity;
+        if(groupUserJoinEntity != null){
+            GroupBoardEntity groupBoardEntity = groupBoardDTO.toEntity(groupUserJoinEntity);
+            groupBoardRepository.save(groupBoardEntity);
+            List<GenerateFileDTO> groupBoardFiles = generateFile.createFile(groupBoardDTO.getBoard_img());
+            groupBoardFiles.stream().map(GroupBoardFileDTO::new).collect(Collectors.toList())
+                    .forEach(item -> {
+                        GroupBoardFileEntity file = item.toEntity(groupBoardEntity);
+                        groupBoardDTO.addFile(file);
+                        groupBoardFileRepository.save(file);
+                    });
+            return Optional.of(groupBoardEntity);
+        }
+        return Optional.empty();
     }
 }
