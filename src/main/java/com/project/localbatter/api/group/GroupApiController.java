@@ -3,12 +3,14 @@ package com.project.localbatter.api.group;
 import com.project.localbatter.dto.GroupCreateDTO;
 import com.project.localbatter.dto.GroupMemberDTO;
 import com.project.localbatter.dto.GroupPageDTO;
+import com.project.localbatter.entity.GroupEntity;
 import com.project.localbatter.services.group.GroupService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -17,6 +19,18 @@ import java.util.List;
 public class GroupApiController {
 
     private final GroupService groupService;
+
+    @PostMapping("/update")
+    public ResponseUpdateDTO updateGroup(GroupCreateDTO groupCreateDTO){
+        GroupEntity groupEntity = groupService.updateGroup(groupCreateDTO);
+        return new ResponseUpdateDTO(groupEntity);
+    }
+
+    @PostMapping("/delete")
+    public ResponseDeleteDTO deleteGroup(GroupPageDTO groupPageDTO){
+        GroupEntity groupEntity = groupService.deleteGroup(groupPageDTO);
+        return new ResponseDeleteDTO(groupEntity);
+    }
 
     @GetMapping("/get_member_list")
     public Page<GroupMemberDTO> getMemberList(GroupPageDTO groupPageDTO){
@@ -48,5 +62,24 @@ public class GroupApiController {
         return groupService.createGroupRoom(groupCreateDTO);
     }
 
+    @Getter @Setter
+    static class ResponseUpdateDTO{
+        private String result;
+        private Long groupId;
+        public ResponseUpdateDTO(GroupEntity entity){
+            this.result = "그룹 정보를 수정 하였습니다.";
+            this.groupId = entity.getId();
+        }
+    }
+
+    @Getter @Setter
+    static class ResponseDeleteDTO{
+        private String result;
+        private Long groupId;
+        public ResponseDeleteDTO(GroupEntity entity){
+            this.result = "그룹을 삭제하였습니다.";
+            this.groupId = entity.getId();
+        }
+    }
 
 }

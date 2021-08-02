@@ -14,6 +14,7 @@ $(document).ready(function(){
 });
 
 $(function(){
+
     $('#enter__btn').click(function(){
         enterRoom();
     })
@@ -31,8 +32,6 @@ $(function(){
 $(document).on('click', '.group_item_box', function(){
     const groupId = $(this)[0].getAttribute('id').split('box__')[1]
     window.location.href = '/group/' + groupId
-
-
 })
 
 
@@ -53,7 +52,8 @@ function loadGroupChatRoomList(e, page = 0){
 
             $.each(response, function(key, value){
 
-                const files = (value.img_name.length > 0) ? value.img_name[0] : '';
+                console.log(value)
+                const files = (value.filePath != null) ? value.filePath : '';
 
                 $('.Group__room__list').append(
                     "<div id='item__box__" + value.groupId + "' class='group_item_box'>" +
@@ -85,6 +85,7 @@ function createGroup(){
     formData.append('title', $('#Group__title').val());
     formData.append('description', $('#Group__desciption').val());
     formData.append('owner', $('.g_user_name').val());
+    formData.append('tag', $('#tags').val());
     formData.append('chk_1', $('#' + checkboxArary[0].children[0].id).val());
     formData.append('chk_2', $('#' + checkboxArary[1].children[0].id).val());
     formData.append('chk_3', $('#' + checkboxArary[2].children[0].id).val());
@@ -127,7 +128,7 @@ function GroupPreview(e){
                 "id=\"img_id_" + index + "\"><img style='object-fit: cover; display: inline-flex; padding: 10px;' src=\"" + e.target.result +
                 "\"boarder='10' height='150px' width='180px' data-file='" + f.name + "'" +
                 "' class='selProductFile' title='사진 삭제'></a>";
-
+            $('#preview__img__container').empty()
             $("#preview__img__container").append(html);
             index++;
         }

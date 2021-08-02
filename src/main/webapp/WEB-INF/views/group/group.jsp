@@ -10,16 +10,21 @@
 
     <div>
         <section id="RoomInnerInfo" style="width: 300px; margin-left: 160px; text-align: right;">
-                <c:if test="${groupObject.files[0].name ne null }">
+                <c:if test="${groupObject.filePath ne null }">
                     <div class="product_img_thumbnail" style="margin: 0 0 15px auto; width: 300px; height: 250px; object-fit: cover;">
-                        <img id="thumbnail" src="/upload/${groupObject.files[0].name}" style="width: 100%; height: 100%; object-fit: cover;">
+                        <img id="thumbnail" src="/upload/${groupObject.filePath}" style="width: 100%; height: 100%; object-fit: cover;">
                     </div>
                 </c:if>
 
                 <div class="groupAside room_inner_info">
-                    <div class="Group_product">
-                        그룹정보
+                    <div style="display: inline-flex; width: 100%; justify-content: space-between;">
+                        <div class="Group_product">그룹정보</div>
+                        <div data-bs-toggle="modal" data-bs-target="#exampleModal" style="cursor: pointer;">
+                                설정
+                            <img style="width: 16px; height: 16px;" src="/images/settings_20px.png">
+                        </div>
                     </div>
+
                     <hr />
 
                     <div class="Group_product _room_title">
@@ -169,7 +174,40 @@
 </div>
 </div>
 
-<!-- modal -->
+<!-- group setting modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="margin-top: 150px; width: 800px; height: 700px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="exampleModalLabel">그룹 설정</div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="text-align: center">
+                <div style="padding: 10px; margin-top: 10px;">
+                    <div>
+                        <img id="img__upload" src="/images/upload.png" style="border: 1px solid #f5f5f5; width: 198px; height: 198px; object-fit: cover; border-radius: 50%">
+                        <input id="input__Group__img" type="file" accept="image/jpg, image/jpeg, image/png" class="custom-file-input" name="upload_file" style="display: none">
+                        <div id="preview__img__container"></div>
+                    </div>
+                </div>
+
+                <div class="article__item__box">
+                    <input type="text" name="title" id="Group__title" class="inputbox" placeholder="그룹 이름을 설정해주세요."/>
+                </div>
+
+                <div class="article__item__box">
+                    <textarea class="inputbox" id="Group__desciption" placeholder="그룹에 대한 설명을 입력해주세요." style="resize: none;" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger groupDeleteButton">삭제</button>
+                <button type="button" class="btn btn-primary groupUpdateButton">저장</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- image view modal -->
 <div id="imgModal" style="padding: 20px; display: none; width: 1300px; height: 820px;">
     <div class = "modal_close_btn"><img src="/images/delete_35px.png" style="width: 30px; height: 30px;float: right; cursor: pointer;"></div>
 

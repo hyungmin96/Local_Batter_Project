@@ -4,8 +4,6 @@ import com.project.localbatter.entity.GroupEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter @Setter
 @NoArgsConstructor
@@ -18,9 +16,10 @@ public class GroupPageDTO {
     private String groupTitle;
     private String description;
     private String owner;
+    private String filePath;
     private int memberCount;
     private String result;
-    private List<String> img_name = new ArrayList<>();
+
 
     public GroupPageDTO(GroupEntity groupEntity) {
         this.groupId = groupEntity.getId();
@@ -28,7 +27,7 @@ public class GroupPageDTO {
         this.description = groupEntity.getDescription();
         this.owner = groupEntity.getOwner();
         this.memberCount = groupEntity.getMemberCount();
-        groupEntity.getFiles().forEach(item ->img_name.add(item.getName()));
+        this.filePath = groupEntity.getFilePath();
     }
 
 }

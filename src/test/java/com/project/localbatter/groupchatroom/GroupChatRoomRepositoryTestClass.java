@@ -28,15 +28,11 @@ import static com.project.localbatter.entity.QUserEntity.userEntity;
 public class GroupChatRoomRepositoryTestClass {
 
     @Autowired private GroupRepository groupRepository;
-    @Autowired private GroupFileRepository groupFileRepository;
-    @Autowired private GroupUserJoinRepository groupUserJoinRepository;
-    @Autowired private GroupChatRepository groupChatRepository;
     @Autowired private GroupUserJoinQueryRepository groupUserJoinQuseryRepository;
     @Autowired private GroupCommentRepository groupCommentRepository;
     @Autowired private GroupBoardRepository groupBoardRepository;
     @Autowired private UserRepository userRepository;
     @Autowired private GroupBoardFileRepository groupBoardFileRepository;
-    @Autowired private GroupBoardService groupBoardService;
     @Autowired private JPAQueryFactory queryFactory;
     private final Logger log = LogManager.getLogger();
     private final String root = "D:\\Spring projects\\SpringBoot LocalBatter\\src\\main\\downloads\\";

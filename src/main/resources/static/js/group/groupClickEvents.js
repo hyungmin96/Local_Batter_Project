@@ -10,6 +10,15 @@ $(document).on('click', '._groupExitButton', function(){
 })
 
 $(function () {
+    $('.groupUpdateButton').click(function (){
+        updateGroup();
+    })
+    $('.groupDeleteButton').click(function (){
+        deleteGroup();
+    })
+    $('#img__upload').click(function(){
+        $('#input__Group__img').click();
+    })
     $('._imgUploadDialog').click(function () {
         $('#uploadFile').click();
     })
@@ -91,6 +100,28 @@ function generateMenuBox(e) {
     }
 }
 
+// group profile image upload and update function
+let groupProfileImg = [];
+$('#input__Group__img').change(function (e) {
+
+    const fileArray = Array.prototype.slice.call(e.target.files);
+
+    fileArray.forEach(function (f) {
+        if (!f.type.match("image.*")) {
+            alert("이미지파일만 업로드가 가능합니다.");
+            return;
+        }
+        console.log(f)
+        groupProfileImg.push(f);
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            $('#img__upload').attr('src', e.target.result)
+        }
+        reader.readAsDataURL(f);
+    });
+})
+
+// group board file upload function
 let infoImgs = [];
 $('#uploadFile').change(function (e) {
     const fileArray = Array.prototype.slice.call(e.target.files);

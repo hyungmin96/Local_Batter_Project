@@ -22,7 +22,7 @@
                         <div id="step-1">
                             <div style="display: flex; flex-direction: row;">
                                 <img id="img__upload" src="/images/upload.png">
-                                <input id="input__Group__img" type="file" accept="image/jpg, image/jpeg, image/png" class="custom-file-input" name="upload_file" multiple style="display: none">
+                                <input id="input__Group__img" type="file" accept="image/jpg, image/jpeg, image/png" class="custom-file-input" name="upload_file" style="display: none">
                                 <div id="preview__img__container"></div>
                             </div>
                         </div>
@@ -30,7 +30,7 @@
 
                 <div class="article__item__box">
                     <label class="item__value">그룹 이름</label>
-                    <input type="text" name="title" id="Group__title" class="inputbox" placeholder="상품의 이름을 입력해주세요."/>
+                    <input type="text" name="title" id="Group__title" class="inputbox" placeholder="그룹 이름을 설정해주세요."/>
                 </div>
 
                 <div class="article__item__box">

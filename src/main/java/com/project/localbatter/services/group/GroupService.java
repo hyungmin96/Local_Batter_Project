@@ -28,13 +28,27 @@ import static com.project.localbatter.entity.QGroupUserJoinEntity.groupUserJoinE
 public class GroupService {
 
     private final UserRepository userRepository;
-    private final GroupFileRepository groupFileRepository;
     private final GroupRepository groupRepository;
     private final GroupUserJoinRepository groupUserJoinRepository;
     private final GroupUserJoinQueryRepository groupUserJoinQueryRepository;
     private final JPAQueryFactory queryFactory;
     private final PagingUtil pagingUtil;
     private final GenerateFile generateFile;
+
+    public GroupEntity updateGroup(GroupCreateDTO groupCreateDTO){
+        GroupEntity groupEntity = groupRepository.getOne(groupCreateDTO.getGroupId());
+        List<GenerateFileDTO> files = generateFile.createFile(groupCreateDTO.getFiles());
+        groupCreateDTO.setFilePath(files.get(0).getName());
+        groupEntity.updateInfo(groupCreateDTO.getTitle(), groupCreateDTO.getDescription(), groupCreateDTO.getFilePath());
+        groupRepository.save(groupEntity);
+        return groupEntity;
+    }
+
+    public GroupEntity deleteGroup(GroupPageDTO groupPageDTO){
+        GroupEntity groupEntity = groupRepository.getOne(groupPageDTO.getGroupId());
+        groupRepository.delete(groupEntity);
+        return groupEntity;
+    }
 
     public Page<GroupMemberDTO> getMemberList(GroupPageDTO groupPageDTO){
 
@@ -82,21 +96,15 @@ public class GroupService {
     }
 
     public ResponseEntity<GroupCreateDTO> createGroupRoom(GroupCreateDTO groupCreateDTO) {
-
         UserEntity userEntity = userRepository.getOne(groupCreateDTO.getUserId());
+        List<GenerateFileDTO> generateGroupFiles = generateFile.createFile(groupCreateDTO.getFiles());
+        groupCreateDTO.setFiles(null);
+        groupCreateDTO.setFilePath(generateGroupFiles.get(0).getName());
         GroupEntity groupEntity = groupCreateDTO.toEntity();
         groupRepository.save(groupEntity);
         GroupUserJoinEntity groupUserJoinEntity = GroupUserJoinEntity.builder().user(userEntity).group(groupEntity).type(GroupUserJoinEntity.userAuthority.manager).build();
-
         groupUserJoinRepository.save(groupUserJoinEntity);
         groupRepository.memberCountUp(groupEntity.getId());
-
-        List<GenerateFileDTO> generateGroupFiles = generateFile.createFile(groupCreateDTO.getFiles());
-
-        generateGroupFiles.stream().map(GroupFileDTO::new).collect(Collectors.toList())
-                .forEach(item -> groupFileRepository.save(item.toEntity(groupEntity)));
-
-        groupCreateDTO.setFiles(null);
 
         return new ResponseEntity<>(groupCreateDTO, HttpStatus.OK);
     }

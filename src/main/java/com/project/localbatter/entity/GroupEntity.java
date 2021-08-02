@@ -3,7 +3,6 @@ package com.project.localbatter.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -30,18 +29,30 @@ public class GroupEntity {
     @Column(name = "group_members")
     private int memberCount;
 
+    @Column(name = "group_tag")
+    private String tag;
+
     @Column(name = "group_type")
     @Enumerated(EnumType.STRING)
     private roomEnumType type;
 
-    @OneToMany(mappedBy = "group", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<GroupFileEntity> files = new ArrayList<>();
+    @Column(name = "group_file_path")
+    private String filePath;
 
     @OneToMany(mappedBy = "group", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<GroupUserJoinEntity> UserGroupJoin;
 
+    @OneToMany(mappedBy = "groupEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<GroupChatEntity> chats;
+
     public enum roomEnumType{
         공개, 일부공개, 비공개
+    }
+
+    public void updateInfo(String groupTitle, String description, String filePath){
+        this.groupTitle = groupTitle;
+        this.description = description;
+        this.filePath = (filePath != null) ? filePath : this.filePath;
     }
 
 }

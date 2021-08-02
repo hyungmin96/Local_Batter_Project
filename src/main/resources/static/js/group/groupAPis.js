@@ -1,3 +1,50 @@
+const userInfo = {
+    userId: $('.g_user_id').val(),
+    groupId: $('.groupId').val(),
+    username: '',
+    userProfile: ''
+}
+
+function updateGroup(){
+
+    let formData = new FormData();
+
+    formData.append('groupId', userInfo.groupId)
+    formData.append('userId', userInfo.userId)
+    formData.append('title', $('#Group__title').val())
+    formData.append('description', $('#Group__desciption').val())
+    if(groupProfileImg.length > 0)
+        formData.append('files', groupProfileImg[0])
+
+    $.ajax({
+        url: '/api/group/update',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function(){
+            alert('그룹정보를 수정 하였습니다.')
+            window.location.reload();
+        }
+    })
+}
+
+function deleteGroup(){
+    const data = {
+        groupId: userInfo.groupId,
+        userId: userInfo.userId
+    }
+
+    $.ajax({
+        url: '/api/group/delete',
+        type: 'POST',
+        data: data,
+        success: function(){
+            alert('그룹을 삭제하였습니다.')
+            window.location.reload();
+        }
+    })
+}
 
 let memberPage = 0;
 function getMemberList(){
@@ -24,15 +71,6 @@ function getMemberList(){
                             value.username +
                         "</div>" +
                     "</div>"
-
-                    // '<div class="userList _userItemBox" style="cursor: pointer;">' +
-                    //     '<div class="userProfileBox">' +
-                    //         '<img src=/upload/' + value.profile + '>' +
-                    //     '</div>' +
-                    //     '<div class="userName" style="margin: auto 0 auto 8px;">' +
-                    //         value.username +
-                    //     '</div>' +
-                    // '</div>'
                 )
             })
         }
@@ -342,25 +380,27 @@ $(document).on('click', '._commentUpdateButton', function(){
 
     var index = $('._commentUpdateButton').index(this)
 
-    const boardId = $(this).closest('.boardItemBox').find('.boardId')[0].value;
-    const commentId = $(this).closest('._commentBox')[0].id.split('_')[1];
+        const boardId = $(this).closest('.boardItemBox').find('.boardId')[0].value;
+        const commentId = $(this).closest('._commentBox')[0].id.split('_')[1];
 
-    var commentBox = $(this).closest('.boardItemBox').find(".commentContentBox")[index]
-    var previousCommentText = commentBox.innerHTML
-    commentBox.innerHTML = ''
+        var commentBox = $(this).closest('.boardItemBox').find(".commentContentBox")[index]
+        var previousCommentText = commentBox.innerText
+        commentBox.innerHTML = ''
 
-    const commentTextbox = document.createElement('input');
-    commentTextbox.setAttribute('class', 'commentInputbox _commentUpdateText');
-    commentTextbox.setAttribute('type', 'text');
-    commentTextbox.setAttribute('placeholder', previousCommentText);
-    commentTextbox.addEventListener('keyup', (e) => {
-        if(e.key === 'Enter'){
-            updateCommentText(commentBox, boardId, commentId, commentTextbox.value);
-        }
-    })
-    commentBox.append(
-        commentTextbox
-    )
+        const commentTextbox = document.createElement('input');
+        commentTextbox.setAttribute('class', 'commentInputbox _commentUpdateText');
+        commentTextbox.setAttribute('type', 'text');
+        commentTextbox.setAttribute('placeholder', previousCommentText);
+
+        commentTextbox.addEventListener('keyup', (e) => {
+            if(e.key === 'Enter')
+                updateCommentText(commentBox, boardId, commentId, commentTextbox.value);
+            else if(e.key === 'Escape')
+                commentBox.innerHTML = previousCommentText
+        })
+        commentBox.append(commentTextbox)
+        commentTextbox.focus()
+
 })
 
 function updateCommentText(commentBox, boardId, commentId, comment){

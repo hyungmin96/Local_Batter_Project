@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Getter @Setter
 public class GroupCreateDTO {
 
+    private Long groupId;
     private Long userId;
     private String title;
     private String description;
@@ -15,8 +16,10 @@ public class GroupCreateDTO {
     private String chk_1; // 전체공개
     private String chk_2; // 일부공개
     private String chk_3; // 비공개
+    private String tags;
     private GroupEntity.roomEnumType type;
     private MultipartFile[] files;
+    private String filePath;
 
     public GroupEntity.roomEnumType getType(){
         if(chk_1.equals("1")) return GroupEntity.roomEnumType.공개;
@@ -29,6 +32,7 @@ public class GroupCreateDTO {
                 .groupTitle(title)
                 .description(description)
                 .owner(owner)
+                .filePath(filePath)
                 .type(getType())
                 .build();
     }
