@@ -1,10 +1,8 @@
 package com.project.localbatter.entity;
 
-import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import lombok.*;
+
+import javax.persistence.*;
 
 @Entity
 @Getter @Setter
@@ -15,18 +13,20 @@ import lombok.*;
 public class GroupChatEntity extends BaseTimeEntity{
 
     @Id @GeneratedValue
-    @Column(name = "chat_id")
+    @Column(name = "gchat_id")
     private Long id;
 
-    @Column(name = "chat_message")
+    @Column(name = "gchat_user_id")
+    private Long user;
+
+    @Column(name = "gchat_message")
     private String message;
 
-    @Column(name = "chat_type")
+    @Column(name = "gchat_type")
     private String type;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "roomId")
-    @JsonIgnore
+    @JoinColumn(name = "gchat_group_id")
     private GroupEntity groupEntity;
 
 }

@@ -2,8 +2,8 @@ package com.project.localbatter.api.group;
 
 import com.project.localbatter.dto.GroupCommentDTO;
 import com.project.localbatter.entity.GroupCommentEntity;
-import com.project.localbatter.services.GroupBoardService;
-import com.project.localbatter.services.GroupCommentService;
+import com.project.localbatter.services.group.GroupBoardService;
+import com.project.localbatter.services.group.GroupCommentService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;

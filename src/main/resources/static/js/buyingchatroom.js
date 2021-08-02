@@ -1,11 +1,74 @@
 
-let stompClient = null;
-let groupId;
+const userInfo = {
+    userId: $('.login_user_id').val(),
+    groupId: $('.groupId').val(),
+    username: '',
+    userProfile: ''
+}
+
+let loadChatList = false
+$('.group_chat_box').scroll(function(){
+    if(loadChatList && $('.group_chat_box').scrollTop() < 1){
+        loadChatList = false
+        getChatList()
+    }
+});
 
 $(document).ready(function (){
-    connect();
-    loadGroupRoomData();
+    connect()
+    loadGroupRoomData()
+    getChatList()
 })
+
+$(function (){
+    $('#img_upload').click(function(){
+        $('#upload_dialog').click()
+    })
+
+    $('#upload_dialog').change(function(e){
+        GroupRoomImageUpload(e)
+    })
+})
+
+var chatPage = 0
+let lastPage = false;
+function getChatList(){
+
+    let currentScrollPosition = $('.group_chat_box')[0].scrollHeight;
+
+    const data = {
+        page: chatPage,
+        display: 10,
+        groupId: userInfo.groupId
+    }
+
+    if(!lastPage){
+        $.ajax({
+            url: '/api/v2/group/chat/get_chat_list',
+            type: 'GET',
+            data: data,
+            success: function(response){
+
+                $.each(response.content, function(key, value){
+                    $('.Groupchatroom__chat__list').prepend(showContent(value))
+                })
+                if(chatPage == 0)
+                    $('.group_chat_box')[0].scrollTop = $('.group_chat_box')[0].scrollHeight;
+                else
+                    $('.group_chat_box')[0].scrollTop = $('.group_chat_box')[0].scrollHeight - currentScrollPosition
+
+                if(response.last == true) {
+                    lastPage = true;
+                    showDate(response.content[response.content.length-1], true)
+                }
+
+                chatPage++
+            }
+
+        })
+        loadChatList = true;
+    }
+}
 
 $('#chatroom_comment_box').on('keyup', function (event){
     const textBoxMessage = $('#chatroom_comment_box').val();
@@ -21,18 +84,6 @@ $('#chatroom_comment_box').on('keyup', function (event){
         }
 })
 
-$(function (){
-
-    $('#img_upload').click(function(){
-        $('#upload_dialog').click();
-    })
-
-    $('#upload_dialog').change(function(e){
-        GroupRoomImageUpload(e);
-    })
-})
-
-
 function GroupRoomImageUpload(e){
 
     const files = e.target.files;
@@ -41,8 +92,6 @@ function GroupRoomImageUpload(e){
 
     formData.append('groupId', globalThis.groupId);
     formData.append('userId', $('.login_user_id').val());
-    formData.append('profilePath', 'profileId');
-    formData.append('sender', $('.Group_login_user').val());
     formData.append('message', null);
     formData.append('type', 'image');
     formData.append('localDate', new Date().toISOString());
@@ -52,11 +101,14 @@ function GroupRoomImageUpload(e){
     })
 
     $.ajax({
-        url: '/api/group/upload/',
+        url: '/api/v2/group/chat/upload',
         type: 'POST',
         data: formData,
         contentType: false,
-        processData: false
+        processData: false,
+        success: function(response){
+            console.log(response)
+        }
     })
 }
 
@@ -65,7 +117,7 @@ function connect(){
     stompClient = Stomp.over(socket);
     stompClient.debug = null
     stompClient.connect({}, function(){
-        stompClient.subscribe('/chat/group/' + globalThis.groupId, function(message){
+        stompClient.subscribe('/group/chat/' + globalThis.groupId, function(message){
             var value = JSON.parse(message.body);
             showMessage(value);
         })
@@ -75,49 +127,34 @@ function connect(){
 function sendMessage(message, type = 'chat'){
     const data = {
         groupId: globalThis.groupId,
-        userId: $('.login_user_id').val(),
-        type: type,
-        message: message,
+        userId: userInfo.userId,
+        username: userInfo.username,
+        profile: userInfo.userProfile,
+        message: message
     };
-    stompClient.send('/app/send/chat/group/' + globalThis.groupId, {}, JSON.stringify(data));
-    $('.Groupchatroom__chat__list')[0].scrollTop = $('.Groupchatroom__chat__list')[0].scrollHeight;
+    stompClient.send('/app/send/group/chat/' + globalThis.groupId, {}, JSON.stringify(data));
 }
 
-var preDate = null;
-function showDate(message){
-    if(globalThis.preDate == null || globalThis.preDate !== new Date(message.regTime).toLocaleDateString()){
-        $('.Groupchatroom__chat__list').append(
+var preDate = new Date().toLocaleDateString();
+function showDate(message, last = false){
+
+    if(last || preDate != new Date(message.regTime).toLocaleDateString()){
+        $('.Groupchatroom__chat__list').prepend(
             "<div class='message_box_event'>" +
-            "<div class='message_noti'>" + new Date(message.regTime).toLocaleDateString() + "</div>" +
+            "<div class='message_noti'>" + preDate + "</div>" +
             "</div>"
         );
-        globalThis.preDate = new Date(message.regTime).toLocaleDateString();
+        preDate = new Date(message.regTime).toLocaleDateString();
     }
-}
-
-function showGreeting(message){
-    $('.Groupchatroom__chat__list').append(
-        "<div class='message_box_event'>" +
-            "<div class='message_noti'>" + message.message + "</div>" +
-        "</div>"
-    );
-}
-
-function showExit(message){
-    $('.Groupchatroom__chat__list').append(
-        "<div class='message_box_event'>" +
-            "<div class='message_noti'>" + message.message + "</div>" +
-        "</div>"
-    );
 }
 
 function showContent(message){
 
-    let userProfile = (message.grouUserEntity != null) ? message.groupUsersEntity.user.profile.profilePath : null
-    let username = (message.grouUserEntity != null) ? message.groupUsersEntity.user.username : '알수없음'
+    let userProfile = (message.profile != null) ? message.profile : null
+    let username = (message.username != null) ? message.username : '알수없음'
     let content;
 
-    if(message.type === 'image')
+    if(message.type == 'image')
         content = "<img style='width: 260px; height: 200px; object-fit: cover;' src=/upload/" + message.message + ">";
     else
         content = message.message;
@@ -126,94 +163,73 @@ function showContent(message){
 
     const myMessage = "<div class='message_box'>" +
         "<div class='me_message_box'>" +
-        "<div class='me_message_content'>" + content + "</div>" +
-        "<div class='aside'>" +
-        "<span id = message_" + message.id + " onclick='chatButton(this);'><img class='message_menu' src='/images/menu_14px.png'></span>" +
-        "<span class='message_date'>" + chatTime + "</span>" +
-        "</div>" +
-        "</div>" +
+            "<div class='me_message_content'>" + content + "</div>" +
+                "<div class='aside'>" +
+                    "<span class='message_date'>" + chatTime + "</span>" +
+                "</div>" +
+            "</div>" +
         "</div>";
 
     const targetMessage = "<div class='message_box'>" +
         "<div class='target_message_box'>" +
-        "<div><img class='target_profile_img' src=/upload/" + userProfile + "></div>" +
-        "<div style='margin-left: 10px;'>" +
-        "<div class='message_sender'>" + username + "</div>" +
-        "<div class='message_content'>" + content + "</div>" +
-        "<div style='display: flex; flex-direction: row'>" +
-        "<div class='message_date'>" + chatTime + "</div>" +
-        "<span id = message_" + message.id + " onclick='chatButton(this);'><img class='message_menu' src='/images/menu_14px.png'></span>" +
-        "</div>" +
-        "</div>" +
-        "</div>" +
+            "<div><img class='target_profile_img' src=/upload/" + userProfile + "></div>" +
+                "<div style='margin-left: 10px;'>" +
+                    "<div class='message_sender'>" + username + "</div>" +
+                        "<div class='message_content'>" + content + "</div>" +
+                            "<div style='display: flex; flex-direction: row'>" +
+                            "<div class='message_date'>" + chatTime + "</div>" +
+                    "</div>" +
+                "</div>" +
+            "</div>" +
         "</div>";
 
-        if(message.groupUsersEntity != null && $('.login_user_id').val() == message.groupUsersEntity.user.id)
-            $('.Groupchatroom__chat__list').append(myMessage);
-        else
-            $('.Groupchatroom__chat__list').append(targetMessage);
-}
+        showDate(message)
 
-function chatButton(e){
-
-    if (document.querySelector('.message_menu_list') == null){
-        let menu =  "<div class='message_menu_list'>" +
-                    "<ul class='lyMenu message_menu_list'>" +
-                    "<li><button data-uiselector='menuButton' type='button' class='reg_notice'>공지로 등록</button><hr/></li>" +
-                    "<li><button data-uiselector='menuButton' type='button' class='message_delete'>삭제하기</button><hr/></li>" +
-                    "<li><button data-uiselector='menuButton' type='button' class='menu_close'>닫기</button><hr/></li>" +
-                    "</ul>" +
-                    "</div>"
-
-        $('#' + e.id).append(menu);
-    } else $('.message_menu_list').remove();
-
+        return (message.userId != null && $('.login_user_id').val() == message.userId) ? myMessage : targetMessage
 }
 
 function showMessage(message){
-
-    showDate(message);
-
-    if(message.type === 'greeting')
-        showGreeting(message);
-    else if(message.type === 'exit')
-        showExit(message);
-    else
-        showContent(message)
-
-    $('.Groupchatroom__chat__list')[0].scrollTop = $('.Groupchatroom__chat__list')[0].scrollHeight;
+    $('.Groupchatroom__chat__list').append(showContent(message))
+    $('.group_chat_box')[0].scrollTop = $('.group_chat_box')[0].scrollHeight;
 }
 
+var memberPage = 0
 function loadGroupRoomData(){
     globalThis.groupId = $('.groupId').val();
     const data = {
-        groupId: globalThis.groupId
-    };
+        page: memberPage,
+        display: 50,
+        groupId: $('.groupId').val()
+    }
 
     $.ajax({
-        url: '/api/group/getRoomInfo',
+        url: '/api/group/get_member_list',
         type: 'GET',
         data: data,
         success: function(response){
+            document.getElementById('offcanvasRightLabel').innerHTML = '대화멤버 목록[' + response.content.length + '명]';
 
-            document.getElementsByClassName('chatroom__title')[0].innerHTML = response.title + ' 채팅방';
-            document.getElementById('offcanvasRightLabel').innerHTML = '대화멤버 목록[' + response.users.length + '명]';
+            $.each(response.content, function(key, value){
+                let thisUserisMe = ''
 
-            $.each(response.users, function(key, value){
+                if(value.userId == userInfo.userId){
+                    userInfo.username = value.username
+                    userInfo.userProfile = value.profile
+                    thisUserisMe = '나'
+                }
+
                 $('.offcanvas-body').append(
                     "<div class=userbox_" + key + ">" +
                     "<div class='room_user_box'>" +
-                    "<img class='room_user_profile' src=/upload/" + value.user.profile.profilePath + ">" +
-                    "<div class='room_user_name'>" + value.user.username + "</div>" +
+                    "<img class='room_user_profile' src=/upload/" + value.profile + ">" +
+                    "<div class='room_user_name'>" + value.username + "</div>" +
+                    thisUserisMe +
                     "<div>" +
                     "<div>"
                 );
             })
-
-            $.each(response.chats, function(key, message){
-                showMessage(message);
-            });
         }
     })
+    memberPage++
 }
 

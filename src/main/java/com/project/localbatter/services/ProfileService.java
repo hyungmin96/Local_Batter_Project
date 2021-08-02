@@ -17,13 +17,9 @@ public class ProfileService {
     private final CommentRepository commentRepository;
 
     public Page<CommentEntity> getAllCommentEntities(int page, int display){
-
         UserDetails user = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
         PageRequest request = PageRequest.of(page, display, Sort.Direction.DESC, "id");
-
         return commentRepository.findAllBytarget(user.getUsername(), request);
-
     }
 
 }

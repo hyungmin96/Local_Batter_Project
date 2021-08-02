@@ -5,6 +5,7 @@ var page = 0;
 
 $(window).scroll(function(){
     if($(window).scrollTop() + 150 >= $(document).height() - $(window).height()){
+        console.log('test')
         if(!flag){
             flag = true;
             loadData();

@@ -4,7 +4,7 @@ import com.project.localbatter.dto.GroupBoardDTO;
 import com.project.localbatter.entity.GroupBoardEntity;
 import com.project.localbatter.entity.GroupBoardFileEntity;
 import com.project.localbatter.entity.GroupCommentEntity;
-import com.project.localbatter.services.GroupBoardService;
+import com.project.localbatter.services.group.GroupBoardService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -49,10 +49,8 @@ public class GroupBoardApiController {
 
     @PostMapping("/post")
     public ResponseBoardDTO groupPostContent(GroupBoardDTO groupBoardDTO){
-        if(groupBoardService.post(groupBoardDTO).isPresent()){
-            GroupBoardEntity boardItem = groupBoardService.post(groupBoardDTO).get();
+            GroupBoardEntity boardItem = groupBoardService.post(groupBoardDTO);
             return new ResponseBoardDTO(boardItem);
-        }else return new ResponseBoardDTO("게시글 작성 권한이 없습니다.");
     }
 
     @GetMapping("/get_board_list")

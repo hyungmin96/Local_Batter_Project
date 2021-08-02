@@ -238,6 +238,7 @@ function postContent() {
             contentType: false,
             processData: false,
             success: function (response) {
+                console.log(response)
                 $('.contentContainer').prepend(inputPostBox(response))
                 $('._imgPreviewSlider').empty();
                 infoImgs = [];

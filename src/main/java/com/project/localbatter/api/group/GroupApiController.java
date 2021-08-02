@@ -3,7 +3,7 @@ package com.project.localbatter.api.group;
 import com.project.localbatter.dto.GroupCreateDTO;
 import com.project.localbatter.dto.GroupMemberDTO;
 import com.project.localbatter.dto.GroupPageDTO;
-import com.project.localbatter.services.GroupService;
+import com.project.localbatter.services.group.GroupService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -38,12 +38,7 @@ public class GroupApiController {
         return groupService.isMember(userId, groupId);
     }
 
-    @GetMapping("/getInfo/{id}")
-    public GroupPageDTO getGroupInfo(GroupPageDTO groupPageDTO){
-        return groupService.getGroupInfo(groupPageDTO);
-    }
-
-    @GetMapping("/getlist")
+    @GetMapping("/get_group_list")
     public List<GroupPageDTO> getGroupList(GroupPageDTO groupPageDTO){
         return groupService.getGroupList(groupPageDTO);
     }
@@ -52,5 +47,6 @@ public class GroupApiController {
     public ResponseEntity<GroupCreateDTO> createGroup(GroupCreateDTO groupCreateDTO){
         return groupService.createGroupRoom(groupCreateDTO);
     }
+
 
 }

@@ -1,16 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<input type="hidden" class="groupId" value="${roomId}">
-<input type="hidden" class="login_user_id" value="${user_id.id}">
+<input type="hidden" class="groupId" value="${group_Id}">
+<input type="hidden" class="login_user_id" value="${g_user.id}">
+<input type="hidden" class="group_title" value="${group_title.groupTitle}">
 
         <div class="title__container">
-                <div class="chatroom__title">ChatRoom Title</div>
+                <div class="chatroom__title">${group_title.groupTitle} 채팅방</div>
                 <div class="menu__option">
                         <img src="/images/menu24.png" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                 </div>
         </div>
-        <div class="Groupchatroom__chat__list" style="height: 469px;">
+        <div id="group_box" class="group_chat_box">
+                <div class="Groupchatroom__chat__list" style="height: 469px;">
+        </div>
 </div>
 
 <div class="chatroom__file__container">
@@ -42,9 +45,7 @@
         </div>
 
 </div>
-
 <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-<script type="text/javascript" src="/js/buyingchatroom.js"></script>
 <script src="/webjars/sockjs-client/sockjs.min.js"></script>
 <script src="/webjars/stomp-websocket/stomp.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -52,4 +53,4 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 <link rel="stylesheet" href="/css/buyingchatroom.css">
-<script src="/js/buyingchatroom.js"></script>
+<script type="text/javascript" src="/js/buyingchatroom.js"></script>

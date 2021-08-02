@@ -3,15 +3,17 @@ import com.project.localbatter.dto.GroupBoardDTO;
 import com.project.localbatter.dto.GroupCommentDTO;
 import com.project.localbatter.entity.*;
 import com.project.localbatter.repositories.*;
-import com.project.localbatter.services.GroupBoardService;
+import com.project.localbatter.services.group.GroupBoardService;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -81,7 +83,7 @@ public class GroupChatRoomRepositoryTestClass {
     }
 
     @Test
-    @Transactional(readOnly = true)
+//    @Transactional(readOnly = true)
     void 게시글_정보_조회(){
 
         String start = new SimpleDateFormat("mm:ss").format(System.currentTimeMillis());
@@ -93,11 +95,11 @@ public class GroupChatRoomRepositoryTestClass {
                 .fetchJoin()
                 .leftJoin(groupUserJoinEntity.user, userEntity)
                 .fetchJoin()
-                .where(groupUserJoinEntity.user.id.eq(1L))
-                .limit(5)
                 .fetch();
 
-        for(GroupBoardEntity item : test){
+        Page<GroupBoardEntity> test2 = new PageImpl<>(test, PageRequest.of(0, 5), 15);
+
+        for(GroupBoardEntity item : test2){
             log.info(
                     "\nvalue : " +
                         "\n게시글 수 : " + test.size() +

@@ -1,29 +1,34 @@
 package com.project.localbatter.dto;
 
 import com.project.localbatter.entity.GroupChatEntity;
-import lombok.*;
+import com.project.localbatter.entity.GroupEntity;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Getter @Setter
 public class GroupChatMessageDTO implements Serializable {
+
+    private int page;
+    private int display;
 
     private Long groupId;
     private Long userId;
     private String message;
     private String username;
+    private String profile;
     private String type;
     private MultipartFile[] img;
-    private List<String> imgPath;
-    private Timestamp regTime = new Timestamp(new Date().getTime());
+    private LocalDateTime regTime = LocalDateTime.now();
 
-    public GroupChatEntity toEntity(){
+    public GroupChatEntity toEntity(GroupEntity groupEntity){
         return GroupChatEntity.builder()
+                .user(userId)
                 .message(message)
+                .groupEntity(groupEntity)
                 .type(type)
                 .build();
     }

@@ -1,4 +1,4 @@
-package com.project.localbatter.services;
+package com.project.localbatter.services.group;
 
 import com.project.localbatter.dto.GroupCommentDTO;
 import com.project.localbatter.entity.GroupBoardEntity;

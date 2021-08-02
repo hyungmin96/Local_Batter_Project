@@ -1,32 +1,25 @@
 package com.project.localbatter.controllers;
 
-import java.security.Principal;
-import javax.servlet.http.HttpSession;
-import com.project.localbatter.dto.GroupChatMessageDTO;
 import com.project.localbatter.dto.MessageDTO;
 import com.project.localbatter.dto.NotificationDTO;
 import com.project.localbatter.services.ChatService;
-import com.project.localbatter.services.GroupChatService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import lombok.RequiredArgsConstructor;
+
+import javax.servlet.http.HttpSession;
+import java.security.Principal;
 
 @Controller
 @RequiredArgsConstructor
 public class ChatController {
     
     private final ChatService chatService;
-    private final GroupChatService groupChatService;
-    private final HttpSession session;
 
-    @MessageMapping("/send/chat/group/{id}")
-    public void GroupRoomChat(GroupChatMessageDTO messageDTO){
-        groupChatService.sendGroupRoomToChat(messageDTO);
-    }
 
     @MessageMapping("/send/notification/{id}")
     public void getConnectionMessage(HttpSession session,@Payload NotificationDTO message){

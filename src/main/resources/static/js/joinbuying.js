@@ -41,7 +41,7 @@ function loadGroupChatRoomList(e, page = 0){
     const data = {page: page, display: 30};
 
     $.ajax({
-        url: '/api/group/getlist',
+        url: '/api/group/get_group_list',
         type: 'GET',
         data: data,
         success: function(response){
@@ -52,7 +52,7 @@ function loadGroupChatRoomList(e, page = 0){
             $('.Group__room__list').empty();
 
             $.each(response, function(key, value){
-console.log(value)
+
                 const files = (value.img_name.length > 0) ? value.img_name[0] : '';
 
                 $('.Group__room__list').append(

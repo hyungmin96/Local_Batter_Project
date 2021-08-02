@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
-public class UserSiteController {
+public class UserController {
 
     final private UserService userService;
 

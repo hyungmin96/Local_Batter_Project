@@ -28,4 +28,8 @@ public class PagingUtil {
         List<T> results = getQuerydsl(clazz).applyPagination(pageable, query).fetch();
         return new PageImpl<>(results, pageable, totalCount);
     }
+
+    public <T> Page<T> getPageImplList(Pageable pageable, List<T> items, Class clazz) {
+        return new PageImpl<>(items, pageable, items.size());
+    }
 }

@@ -1,4 +1,4 @@
-package com.project.localbatter.services;
+package com.project.localbatter.services.group;
 
 import com.project.localbatter.components.GenerateFile;
 import com.project.localbatter.components.PagingUtil;
@@ -6,16 +6,11 @@ import com.project.localbatter.dto.*;
 import com.project.localbatter.entity.GroupEntity;
 import com.project.localbatter.entity.GroupUserJoinEntity;
 import com.project.localbatter.entity.UserEntity;
-import com.project.localbatter.repositories.GroupFileRepository;
-import com.project.localbatter.repositories.GroupRepository;
-import com.project.localbatter.repositories.GroupUserJoinRepository;
-import com.project.localbatter.repositories.UserRepository;
+import com.project.localbatter.repositories.*;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -23,10 +18,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.stream.Collectors;
-
 import static com.project.localbatter.entity.QGroupEntity.groupEntity;
 import static com.project.localbatter.entity.QGroupUserJoinEntity.groupUserJoinEntity;
 
@@ -38,10 +31,10 @@ public class GroupService {
     private final GroupFileRepository groupFileRepository;
     private final GroupRepository groupRepository;
     private final GroupUserJoinRepository groupUserJoinRepository;
+    private final GroupUserJoinQueryRepository groupUserJoinQueryRepository;
     private final JPAQueryFactory queryFactory;
     private final PagingUtil pagingUtil;
     private final GenerateFile generateFile;
-    private static Logger log = LogManager.getLogger();
 
     public Page<GroupMemberDTO> getMemberList(GroupPageDTO groupPageDTO){
 
@@ -49,9 +42,11 @@ public class GroupService {
 
         JPAQuery<GroupMemberDTO> query = queryFactory
                 .select(Projections.fields(GroupMemberDTO.class,
-                                groupUserJoinEntity.user.profilePath.as("profile"),
-                                groupUserJoinEntity.user.username.as("username")))
-                .from(groupUserJoinEntity);
+                    groupUserJoinEntity.user.id.as("userId"),
+                    groupUserJoinEntity.user.profilePath.as("profile"),
+                    groupUserJoinEntity.user.username.as("username")))
+                .from(groupUserJoinEntity)
+                .where(groupUserJoinEntity.group.id.eq(groupPageDTO.getGroupId()));
 
         return pagingUtil.getPageImpl(pageRequest, query, GroupUserJoinEntity.class);
 
@@ -67,10 +62,9 @@ public class GroupService {
     }
 
     public ResponseEntity<String> exitGroup(GroupPageDTO groupPageDTO) {
-        UserEntity userEntity = userRepository.getOne(groupPageDTO.getUserId());
-        GroupEntity groupEntity = groupRepository.getOne(groupPageDTO.getGroupId());
-        groupUserJoinRepository.deleteByGroup(userEntity, groupEntity);
-        groupRepository.memberCountDown(groupEntity.getId());
+        GroupUserJoinEntity groupUserJoinEntity = groupUserJoinQueryRepository.findGroupUserJoinEntity(groupPageDTO.getUserId(), groupPageDTO.getGroupId());
+        groupUserJoinRepository.delete(groupUserJoinEntity);
+        groupRepository.memberCountDown(groupPageDTO.getGroupId());
         return new ResponseEntity<String>("", HttpStatus.OK);
     }
 
@@ -107,18 +101,12 @@ public class GroupService {
         return new ResponseEntity<>(groupCreateDTO, HttpStatus.OK);
     }
 
-    @Transactional(readOnly = true)
-    public GroupPageDTO getGroupInfo(GroupPageDTO groupPageDTO) {
-        GroupEntity groupEntity = groupRepository.findById(groupPageDTO.getUserId()).get();
-        return new GroupPageDTO(groupEntity);
-    }
-
     public ResponseEntity<String> isMember(Long userId, Long groupId) {
         Long isMemberCheck = queryFactory
                 .select(groupUserJoinEntity.id)
                 .from(groupUserJoinEntity)
                 .where(groupUserJoinEntity.user.id.eq(userId)
-                        .and(groupUserJoinEntity.group.id.eq(groupId)))
+                .and(groupUserJoinEntity.group.id.eq(groupId)))
                 .fetchOne();
 
         if (isMemberCheck == null)

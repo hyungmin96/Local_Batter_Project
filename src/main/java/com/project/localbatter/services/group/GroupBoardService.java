@@ -1,4 +1,4 @@
-package com.project.localbatter.services;
+package com.project.localbatter.services.group;
 
 import com.project.localbatter.components.DeleteFile;
 import com.project.localbatter.components.GenerateFile;
@@ -22,7 +22,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.project.localbatter.entity.QGroupBoardEntity.groupBoardEntity;
@@ -42,7 +41,7 @@ public class GroupBoardService {
     private final PagingUtil pagingUtil;
 
     @Transactional(readOnly = true)
-    public Page<GroupBoardEntity> getBoardList(Long groupId, PageRequest request){
+    public Page<GroupBoardEntity> getBoardList(Long groupId, PageRequest request) {
         JPAQuery<GroupBoardEntity> query = queryFactory
                 .selectDistinct(groupBoardEntity)
                 .from(groupBoardEntity)
@@ -84,11 +83,11 @@ public class GroupBoardService {
         groupBoardRepository.deleteById(groupBoardDTO.getBoardId());
     }
 
-    public Optional<GroupBoardEntity> post(GroupBoardDTO groupBoardDTO){
+    public GroupBoardEntity post(GroupBoardDTO groupBoardDTO){
         GroupUserJoinEntity groupUserJoinEntity = groupUserJoinQuseryRepository.findGroupUserJoinEntity(groupBoardDTO.getUserId(), groupBoardDTO.getGroupId());
+        GroupBoardEntity groupBoardEntity = groupBoardDTO.toEntity(groupUserJoinEntity);
 
         if(groupUserJoinEntity != null){
-            GroupBoardEntity groupBoardEntity = groupBoardDTO.toEntity(groupUserJoinEntity);
             groupBoardRepository.save(groupBoardEntity);
             List<GenerateFileDTO> groupBoardFiles = generateFile.createFile(groupBoardDTO.getBoard_img());
             groupBoardFiles.stream().map(GroupBoardFileDTO::new).collect(Collectors.toList())
@@ -97,8 +96,7 @@ public class GroupBoardService {
                         groupBoardDTO.addFile(file);
                         groupBoardFileRepository.save(file);
                     });
-            return Optional.of(groupBoardEntity);
         }
-        return Optional.empty();
+        return groupBoardEntity;
     }
 }
