@@ -13,12 +13,10 @@ function modal(id, userId, sellerId, boardId, writer) {
         width: '100%',
         height: '100%',
         overflow: 'auto',
-        // 레이어 색갈은 여기서 바꾸면 됨
         backgroundColor: 'rgba(0,0,0,0.4)'
     });
     document.body.append(bg);
 
-    // 닫기 버튼 처리, 시꺼먼 레이어와 모달 div 지우기
     modal.querySelector('.modal_close_btn').addEventListener('click', function() {
         bg.remove();
         modal.style.display = 'none';
@@ -43,7 +41,6 @@ function modal(id, userId, sellerId, boardId, writer) {
 
 }
 
-// Element 에 style 한번에 오브젝트로 설정하는 함수 추가
 Element.prototype.setStyle = function(styles) {
     for (var k in styles) this.style[k] = styles[k];
     return this;

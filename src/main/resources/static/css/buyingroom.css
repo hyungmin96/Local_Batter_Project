@@ -31,6 +31,11 @@
     border-bottom: 1px solid #4c4b4b;
 }
 
+_content img{
+    width: 410px;
+    height: 540px;
+}
+
 ._contentUploadBox{
     font-family: 'Noto Sans KR', sans-serif;
     font-size: 13px;
@@ -45,11 +50,25 @@
     background-color: #FAF7FAFF;
 }
 
+.card-header{
+    background-color: #f8f9fa;
+    border: none;
+}
+
+[contentEditable=true]:empty:not(:focus):before{
+    content:attr(data-text);
+    color: #a4a2a2;
+}
+
+.uploadBtn button{
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px;
+}
+
 .articleWordsBox{
     margin: auto;
     text-align: end;
     width: 100%;
-    padding: 10px;
 }
 
 .contentItemBox ._content{
@@ -128,7 +147,8 @@
     display: inline-flex;
     justify-content: space-between;
     width: 100%;
-    padding: 8px 23px 11px 20px;
+    height: 45px;
+    padding: 12px 23px 11px 20px;
     border-bottom: 1px solid whitesmoke;
 }
 
@@ -141,6 +161,7 @@
     -o-text-overflow: ellipsis;
     text-overflow: ellipsis;
     color: #333;
+    max-width: 430px;
 }
 
 ._noticeContent:hover{
@@ -292,13 +313,22 @@
     display: inline-flex;
 }
 
-.imgBox:hover{
-    transform: scale(1.2);
+#board_content_box{
+    height: 400px;
+    position: relative;
+    overflow-y: scroll;
 }
 
 ._imgPreviewSlider img{
     width: 180px;
     height: 140px;
+    object-fit: cover;
+    border: 1px solid #f7f7f7;
+}
+
+#board_content_box img{
+    width: 510px;
+    height: 270px;
     object-fit: cover;
     border: 1px solid #f7f7f7;
 }
@@ -390,7 +420,7 @@
     border: 1px solid #efe9e9;
     width: 35px;
     height: 35px;
-    border-radius: 50%;
+    border-radius: 40%;
     object-fit: cover;
 }
 
@@ -442,7 +472,16 @@
     transform: scale(1.2);
 }
 
-#board_content_box{
+._boardIdInfo{
+    cursor: pointer;
+}
+
+#groupBoardModal{
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 15px;
+}
+
+.commentWrite{
     border: none;
     resize: none;
     width: 100%;
@@ -451,7 +490,7 @@
     font-size: 13px;
 }
 
-#board_content_box:focus{
+.commentWrite:focus{
     outline: none;
     border: none;
     resize: none;

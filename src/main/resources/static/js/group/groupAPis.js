@@ -5,6 +5,25 @@ const userInfo = {
     userProfile: ''
 }
 
+function getBoardInfo(boardId){
+
+    const data = {
+        groupId: $('.groupId').val(),
+        boardId: boardId
+    }
+
+    $.ajax({
+        url: '/api/v2/group/board/getInfo',
+        type: 'POST',
+        data: data,
+        contentType: 'application/x-www-form-urlencoded',
+        success: function (response){
+            $('.boardModal').empty()
+            $('.boardModal').append(showBoardInfo(response))
+        }
+    })
+}
+
 function updateGroup(){
 
     let formData = new FormData();
@@ -41,7 +60,7 @@ function deleteGroup(){
         data: data,
         success: function(){
             alert('그룹을 삭제하였습니다.')
-            window.location.reload();
+            window.location.href = 'http://localhost:8000/product/group'
         }
     })
 }
@@ -61,7 +80,6 @@ function getMemberList(){
         data: data,
         success: function (response){
             $.each(response.content, function(key, value){
-                console.log(value)
                 $('.memberList').append(
                     "<div class='userList _userItemBox' style='cursor: pointer;'>" +
                         "<div class='userProfileBox'>" +
@@ -170,16 +188,19 @@ function loadNotices() {
         type: 'GET',
         data: data,
         success: function (response) {
+            if (response.length > 0) {
 
-            if (response.numberOfElements > 0) {
+                $.each(response, function(key, value){
+                console.log(value)
                 document.getElementsByClassName('_notice')[0].style.display = 'block'
-                $.each(response.content, function (key, value) {
-                    var content = (value.content == '') ? '사진을 등록하였습니다.' : value.content
+                    var content = (value.content == '<br>' || value.content == '') ? '사진을 등록하였습니다.' : value.content
                     $('.noticeContainer').append(
+                        "<div class='showBoard _boardIdInfo'>" +
+                        "<input type='hidden' name='boardId' class='boardId_" + value.boardId + "'>" +
                         "<a href='#' class='_noticeContentBox'>" +
                         "<div class='notice _noticeContent'>" +
                         "<span class='notice _noticeEmphasis'>[공지]</span>" +
-                        content +
+                            content +
                         "</div>" +
                         "<div style='margin-top: 3px;' class='notice _noticeDate'>" +
                         new Date(value.regTime).toLocaleString([], {
@@ -189,6 +210,7 @@ function loadNotices() {
                             hour: '2-digit',
                             minute: '2-digit'
                         }) +
+                        "</div>" +
                         "</div>" +
                         "</a>"
                     )
@@ -253,16 +275,20 @@ function deletePost(e) {
 
 function postContent() {
 
-    if ($('#board_content_box').val().length > 301)  alert('300자 이하로 작성 가능합니다.')
+    const postBox = document.getElementById('board_content_box')
 
-    else if (infoImgs.length > 0 || $('#board_content_box').val().length > 0) {
+    console.log($('#board_content_box').not('#board_content_box.imgBox').val())
+
+    if (postBox.innerText.length > 301)  alert('300자 이하로 작성 가능합니다.')
+
+    else if (infoImgs.length > 0 || postBox.innerText.length > 0) {
         const groupId = $('.groupId').val();
         const formData = new FormData();
 
         formData.append('userId', $('.g_user_id').val());
         formData.append('groupId', groupId);
         formData.append('writer', $('.user').val());
-        formData.append('content', $('#board_content_box').val());
+        formData.append('content', postBox.innerHTML.split('<div class=\"imgBox\"')[0]);
 
         for (let i = 0; i < infoImgs.length; i++)
             if (infoImgs[i] != null)
@@ -276,7 +302,6 @@ function postContent() {
             contentType: false,
             processData: false,
             success: function (response) {
-                console.log(response)
                 $('.contentContainer').prepend(inputPostBox(response))
                 $('._imgPreviewSlider').empty();
                 infoImgs = [];
@@ -304,7 +329,6 @@ function getBoardList() {
             success: function (response) {
                 if (response.last == true) lastPage = true;
                 if (response.content.length > 0) {
-                    console.log(response.content)
                     $('.contentEmptyContiner').remove();
                     document.getElementsByClassName('_contentListWrapper')[0].setAttribute("style", "hieght:500px");
                     $.each(response.content, function (key, value) {
@@ -317,6 +341,39 @@ function getBoardList() {
         })
         page++;
     }
+}
+
+function showBoardInfo(value){
+    const boardType = (value.type !== 'general') ? "<span class='notice _noticeText'>공지</span>" : '';
+    return "<input type='hidden' value=" + value.boardId + ">" +
+        "<div class='boardItemBox' style='animation: fadein 1.5s; margin-bottom: 20px;>" +
+        "<input type='hidden' class='boardId' value=" + value.boardId + ">" +
+        "<div class='contentItemBox'>" +
+        "<div class='contentAuthorBox'>" +
+        "<div><img class='board _userProfileImg' src=/upload/" + value.profilePath + "></div>" +
+        "<div class='contentInfoBox'>" +
+        "<div style='width: 100%; display: inline-flex; justify-content: space-between;'>" +
+        "<div>" +
+        "<div class='board _username'>" + value.username + "</div>" +
+        "<div class='boardMoreInfoBox' style='display: inline-flex'>" +
+        boardType +
+        "<div class='board _regDate'>" + new Date(value.regTime).toLocaleString([], {
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        }) + "</div>" +
+        "</div>" +
+        "</div>" +
+        "<div style='position: relative; height: 0;' class='menuOptionBox'>" +
+        "<div class='boardMenuButton'><img style='float: right; cursor: pointer; object-fit: cover;' src='/images/menu_14px.png'></div>" +
+        "</div>" +
+        "</div>" +
+        "</div>" +
+        "</div>" +
+        "<div class='board _content' style='padding: 10px 10px 0 10px;'>" + value.content + "</div>" +
+        imgShow(value.boardId, value.boardFiles)
 }
 
 function inputPostBox(value) {

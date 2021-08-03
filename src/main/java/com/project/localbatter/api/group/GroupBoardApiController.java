@@ -14,10 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -31,13 +28,19 @@ public class GroupBoardApiController {
 
     private final GroupBoardService groupBoardService;
 
+    @PostMapping("/getInfo")
+    public ResponseBoardDTO getBoardInfo(GroupBoardDTO groupBoardDTO){
+        GroupBoardEntity grouBoardEntity = groupBoardService.getBoardInfo(groupBoardDTO).get(0);
+        return new ResponseBoardDTO(grouBoardEntity);
+    }
+
     @PostMapping("/update/notice")
     public ResponseBoardDTO updateNotice(GroupBoardDTO groupBoardDTO){
         return new ResponseBoardDTO(groupBoardService.updateNotice(groupBoardDTO));
     }
 
     @GetMapping("/get_notice_list")
-    public Page<GroupBoardEntity> getNoticeList(GroupBoardDTO groupBoardDTO){
+    public List<GroupBoardDTO> getNoticeList(GroupBoardDTO groupBoardDTO){
         return groupBoardService.getNoticeList(groupBoardDTO);
     }
 
@@ -60,6 +63,7 @@ public class GroupBoardApiController {
         List<ResponseBoardDTO> response = items.stream().map(ResponseBoardDTO::new).collect(Collectors.toList());
         return new PageImpl<>(response, request, items.getTotalElements());
     }
+
 
     @Getter @Setter
     static class ResponseBoardDTO{

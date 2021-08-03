@@ -24,6 +24,7 @@ $(function () {
     })
     $('.uploadBtn').click(function () {
         postContent();
+        $('.btn-close').click();
     })
     $('.carousel-control-prev').click(function () {
         const currentPage = document.getElementsByClassName('_currentPageNumber')[0];
@@ -47,6 +48,20 @@ $(function () {
 
     document.body.addEventListener('click', removeMenuBox, true);
 })
+
+$(document).on('click', '._boardIdInfo', function (){
+    const index = $('._boardIdInfo').index(this)
+    const boardId = $('._boardIdInfo')[index].closest('._boardIdInfo').children[0].className.split('_')[1]
+
+    getBoardInfo(boardId)
+
+    $('#groupBoardViewModal').modal('toggle');
+
+})
+
+function createBoardViewModal(response){
+
+}
 
 function removeMenuBox() {
     if (document.getElementsByClassName('boardMenuBox').length != 0)
@@ -135,7 +150,8 @@ $('#uploadFile').change(function (e) {
         infoImgs.push(f);
         const reader = new FileReader();
         reader.onload = function (e) {
-            $('._imgPreviewSlider').prepend(
+            $('#board_content_box').append(
+                "<br />" +
                 "<div class='imgBox' '>" +
                 "<img id=img_" + imgIndex + " onclick='previewImgDelete(this);' src=" + e.target.result + ">" +
                 "</div>"
@@ -244,13 +260,13 @@ $('#board_content_box').keyup(function (){
     const article = $('#board_content_box')
     const currentWords = document.getElementsByClassName('currentWords')[0];
 
-    if(article.val().length < 301)
-        currentWords.innerHTML = article.val().length
+    if(document.getElementById('board_content_box').innerText.length < 301)
+        currentWords.innerHTML = document.getElementById('board_content_box').innerText.length
     else
-        article.val(article.val().substring(0, 300))
+        article.val(document.getElementById('board_content_box').substring(0, 300))
 })
 
-document.addEventListener("DOMContentLoaded", function (event) {
+document.addEventListener("DOMContentLoaded", function () {
     const scrollpos = localStorage.getItem('scrollpos');
     if (scrollpos) {
         window.scrollTo(0, 0);

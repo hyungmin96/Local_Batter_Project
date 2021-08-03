@@ -16,7 +16,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import static com.project.localbatter.entity.QGroupChatEntity.groupChatEntity;
 import static com.project.localbatter.entity.QUserEntity.userEntity;
 

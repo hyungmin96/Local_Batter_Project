@@ -12,19 +12,18 @@ import com.project.localbatter.entity.GroupUserJoinEntity;
 import com.project.localbatter.repositories.GroupBoardFileRepository;
 import com.project.localbatter.repositories.GroupBoardRepository;
 import com.project.localbatter.repositories.GroupUserJoinQueryRepository;
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.stream.Collectors;
-
 import static com.project.localbatter.entity.QGroupBoardEntity.groupBoardEntity;
+import static com.project.localbatter.entity.QGroupBoardFileEntity.groupBoardFileEntity;
 import static com.project.localbatter.entity.QGroupUserJoinEntity.groupUserJoinEntity;
 import static com.project.localbatter.entity.QUserEntity.userEntity;
 
@@ -39,6 +38,18 @@ public class GroupBoardService {
     private final GenerateFile generateFile;
     private final JPAQueryFactory queryFactory;
     private final PagingUtil pagingUtil;
+
+    @Transactional(readOnly = true)
+    public List<GroupBoardEntity> getBoardInfo(GroupBoardDTO groupBoardDTO){
+        return queryFactory
+                .selectDistinct(groupBoardEntity)
+                .from(groupBoardEntity)
+                .where(groupBoardEntity.boardId.eq(groupBoardDTO.getBoardId())
+                .and(groupBoardEntity.groupId.eq(groupBoardDTO.getGroupId())))
+                .leftJoin(groupBoardEntity.files, groupBoardFileEntity)
+                .fetchJoin()
+                .fetch();
+    }
 
     @Transactional(readOnly = true)
     public Page<GroupBoardEntity> getBoardList(Long groupId, PageRequest request) {
@@ -71,9 +82,18 @@ public class GroupBoardService {
         return groupBoardEntity;
     }
 
-    public Page<GroupBoardEntity> getNoticeList(GroupBoardDTO groupBoardDTO){
-        PageRequest request = PageRequest.of(groupBoardDTO.getPage(), groupBoardDTO.getDisplay(), Sort.Direction.DESC, "boardId");
-        return groupBoardRepository.findAllBygroupIdAndType(groupBoardDTO.getGroupId(), GroupBoardEntity.BoardType.notice, request);
+    public List<GroupBoardDTO> getNoticeList(GroupBoardDTO groupBoardDTO){
+        return queryFactory
+                .select(Projections.fields(GroupBoardDTO.class,
+                        groupBoardEntity.boardId.as("boardId"),
+                        groupBoardEntity.content.as("content"),
+                        groupBoardEntity.regTime.as("regTime")))
+                .from(groupBoardEntity)
+                .where(groupBoardEntity.groupId.eq(groupBoardDTO.getGroupId())
+                .and(groupBoardEntity.type.eq(GroupBoardEntity.BoardType.notice)))
+                .offset(0)
+                .limit(5)
+                .fetch();
     }
 
     public void delete(GroupBoardDTO groupBoardDTO){

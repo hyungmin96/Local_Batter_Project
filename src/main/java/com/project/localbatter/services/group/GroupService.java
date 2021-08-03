@@ -37,8 +37,10 @@ public class GroupService {
 
     public GroupEntity updateGroup(GroupCreateDTO groupCreateDTO){
         GroupEntity groupEntity = groupRepository.getOne(groupCreateDTO.getGroupId());
-        List<GenerateFileDTO> files = generateFile.createFile(groupCreateDTO.getFiles());
-        groupCreateDTO.setFilePath(files.get(0).getName());
+        if(groupCreateDTO.getFiles() != null){
+            List<GenerateFileDTO> files = generateFile.createFile(groupCreateDTO.getFiles());
+            groupCreateDTO.setFilePath(files.get(0).getName());
+        }
         groupEntity.updateInfo(groupCreateDTO.getTitle(), groupCreateDTO.getDescription(), groupCreateDTO.getFilePath());
         groupRepository.save(groupEntity);
         return groupEntity;

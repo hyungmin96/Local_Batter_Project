@@ -1,7 +1,8 @@
 package com.project.localbatter.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+
 import javax.persistence.*;
 
 @Entity
@@ -28,7 +29,6 @@ public class GroupCommentEntity extends BaseTimeEntity{
 
     @ManyToOne
     @JoinColumn(name = "boardId")
-    @JsonIgnoreProperties({"comments", "files", "groupId"})
     private GroupBoardEntity groupBoard;
 
     public void update(String comment){

@@ -19,7 +19,7 @@
                 <div class="groupAside room_inner_info">
                     <div style="display: inline-flex; width: 100%; justify-content: space-between;">
                         <div class="Group_product">그룹정보</div>
-                        <div data-bs-toggle="modal" data-bs-target="#exampleModal" style="cursor: pointer;">
+                        <div data-bs-toggle="modal" data-bs-target="#groupSettingModal" style="cursor: pointer;">
                                 설정
                             <img style="width: 16px; height: 16px;" src="/images/settings_20px.png">
                         </div>
@@ -76,20 +76,7 @@
 
                     <div class="main _contentWriteBox">
                         <div style="padding: 10px 18px 10px 18px;">
-                            <textarea cols="20" rows="2" class="commentWrite _use_keyup_event" id="board_content_box" placeholder="다른 멤버들과 소통해보세요." value=""></textarea>
-                        </div>
-                        <div class="upload _contentUploadBox" style="display: inline-flex; width: 100%">
-                            <input type="file" id="uploadFile" multiple="multiple" style="display: none;">
-                            <div class="fileArea _imgUploadDialog" style="cursor: pointer; padding: 16px 15px 10px 18px;">
-                                <button><img src="/images/group/image_gallery_23px.png"></button>
-                            </div>
-                            <div class="articleWordsBox">
-                                <span class="currentWords">0</span> /
-                                <span class="limitWords">300</span>
-                            </div>
-                            <div class="uploadBtn" style="margin-left: auto; align-items: flex-end; padding: 10px 10px 10px 5px;">
-                                <button style="height: 35px; width: 70px; padding: 3px 10px 3px 10px; color: white; background-color: rgb(56, 62, 76);">글 작성</button>
-                            </div>
+                            <div data-bs-toggle="modal" data-bs-target="#groupBoardWriteModal" style="color: #b2afaf; cursor: pointer;" class="commentWrite" value="">다른 멤버들과 소통해보세요.</div>
                         </div>
                     </div>
                     <div class="preview _imgPreviewSlider" style="height: 100%; background-color: white; ">
@@ -98,17 +85,18 @@
                 </div>
             </div>
 
-            <div style="display: none" class="main _notice">
-                <div class="card-header" style="background-color: white">
-                    공지사항
-                </div>
-                <div class="noticeContainer">
+                <div style="display: none" class="main _notice">
+                    <div class="card-header">
+                        공지사항
+                    </div>
+                    <div class="noticeContainer">
 
-                </div>
+                    </div>
             </div>
 
+
             <div class="main _contentListWrapper" style="height: 100%; background-color: white">
-                <div class="card-header" style="background-color: white;">
+                <div class="card-header">
                     게시글 목록
                 </div>
                 <div class="contentContainer">
@@ -128,7 +116,7 @@
 
     <section class="aside _activitySection">
         <div class="card _memberList" style="height: 330px; padding: 0">
-            <div class="card-header" style="background-color: white">
+            <div class="card-header">
                 <div style = 'display: flex; justify-content: space-between; margin-right: 5px;'>
                     <div>멤버 목록</div>
                     <div class="usersOptionContainer">
@@ -145,13 +133,16 @@
 
         <section class="aside _currentImages">
             <div class="card _articleCurrentList" style="height: 297px; padding: 0">
-                <div class="card-header" style="background-color: white">
+                <div class="card-header">
                     최근 게시물 사진
                 </div>
                 <div class="card-body _latestImageContainer" style="flex-wrap: wrap;display: inline-flex; padding: 10px 1px 1px 10px;">
                     <c:forEach var="item" items="${group_files}" varStatus="i">
                         <div>
-                            <img src=/upload/${item.name}>
+                            <div class='showBoard _boardIdInfo'>
+                                <input type='hidden' name="boardId" class='boardId_${item.groupBoard.boardId}'>
+                                <img src=/upload/${item.name}>
+                            </div>
                         </div>
                     </c:forEach>
                 </div>
@@ -159,13 +150,16 @@
         </section>
 
         <div class="card _commentCurrentList" style="max-height: 240px">
-            <div class="card-header" style="background-color: white">
+            <div class="card-header">
                 최근 등록된 덧글
             </div>
             <div class="card-body _latestCommentContainer">
                 <c:forEach var="item" items="${group_comments}" varStatus="i">
-                    <div class='latest _latestCommentBox'>
-                        <span class='latest _commentContent'>${item.comment}</span>
+                    <div class='showBoard _boardIdInfo'>
+                        <div class='latest _latestCommentBox'>
+                            <input type='hidden' name="boardId" class='boardId_${item.groupId}'>
+                            <span class='latest _commentContent'>${item.comment}</span>
+                        </div>
                     </div>
                 </c:forEach>
             </div>
@@ -174,8 +168,53 @@
 </div>
 </div>
 
+
+<!--group board view modal -->
+<div class="modal fade" id="groupBoardViewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="margin-top: 150px; width: 800px; height: 700px;">
+        <div class="modal-content" style="width: 600px; border-radius: 0;">
+            <div class="boardModal" style="padding: 0.5rem;">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- group board wirte modal -->
+<div class="modal fade" id="groupBoardWriteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="margin-top: 150px; width: 800px; height: 700px;">
+        <div class="modal-content" style="width: 600px;">
+            <div class="modal-header" style="border: none;">
+                <div class="modal-title" id="groupBoardModal" style="margin: 0 0 0 auto">그룹 게시글 작성</div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="padding: 0.5rem">
+                <div style="padding: 10px; margin-top: 10px;">
+
+                    <div id="board_content_box" class="commentWrite _use_keyup_event" contentEditable="true" data-text="그룹에 새로운 게시글을 작성해보세요" tabindex="0" spellcheck="true" role="textbox"></div>
+                    <div class="upload _contentUploadBox" style="display: inline-flex; width: 100%">
+                        <input type="file" id="uploadFile" multiple="multiple" style="display: none;">
+                        <div class="fileArea _imgUploadDialog" style="cursor: pointer;">
+                            <button><img src="/images/picture_26px.png"></button>
+                        </div>
+                        <div class="articleWordsBox">
+                            <span class="currentWords">0</span> /
+                            <span class="limitWords">300</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="uploadBtn" style="margin-left: auto; align-items: flex-end;">
+                    <button style="height: 35px; width: 70px; padding: 3px 10px 3px 10px; color: white; background-color: rgb(56, 62, 76);">글 작성</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- group setting modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="groupSettingModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" style="margin-top: 150px; width: 800px; height: 700px;">
         <div class="modal-content">
             <div class="modal-header">
@@ -242,6 +281,7 @@
         $(window).scrollTop(0);
     });
 </script>
+
 <script type="text/javascript" src="/js/group/groupClickEvents.js"></script>
 <script type="text/javascript" src="/js/group/groupAPis.js"></script>
 <script type="text/javascript" src="/js/imgModal.js"></script>
