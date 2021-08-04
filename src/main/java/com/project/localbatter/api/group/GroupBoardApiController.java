@@ -28,6 +28,12 @@ public class GroupBoardApiController {
 
     private final GroupBoardService groupBoardService;
 
+    @PostMapping("/update")
+    public ResponseBoardDTO updateGroupBoard(GroupBoardDTO groupBoardDTO){
+          GroupBoardEntity groupBoardEntity = groupBoardService.update(groupBoardDTO);
+          return new ResponseBoardDTO(groupBoardEntity);
+    }
+
     @PostMapping("/getInfo")
     public ResponseBoardDTO getBoardInfo(GroupBoardDTO groupBoardDTO){
         GroupBoardEntity grouBoardEntity = groupBoardService.getBoardInfo(groupBoardDTO).get(0);
@@ -51,7 +57,7 @@ public class GroupBoardApiController {
     }
 
     @PostMapping("/post")
-    public ResponseBoardDTO groupPostContent(GroupBoardDTO groupBoardDTO){
+    public ResponseBoardDTO postGroupBoard(GroupBoardDTO groupBoardDTO){
             GroupBoardEntity boardItem = groupBoardService.post(groupBoardDTO);
             return new ResponseBoardDTO(boardItem);
     }

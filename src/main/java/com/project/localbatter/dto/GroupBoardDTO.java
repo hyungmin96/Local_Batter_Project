@@ -25,6 +25,7 @@ GroupBoardDTO implements Serializable {
     private String username;
     private String content;
     private String result;
+    private int[] deleteImageIndex;
     private LocalDateTime regTime;
     private int boardLike = 0;
     private MultipartFile[] board_img;

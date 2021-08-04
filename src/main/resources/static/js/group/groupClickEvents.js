@@ -48,20 +48,14 @@ $(function () {
 
     document.body.addEventListener('click', removeMenuBox, true);
 })
-
+    
+// 게시글 정보 보기
 $(document).on('click', '._boardIdInfo', function (){
     const index = $('._boardIdInfo').index(this)
     const boardId = $('._boardIdInfo')[index].closest('._boardIdInfo').children[0].className.split('_')[1]
-
-    getBoardInfo(boardId)
-
     $('#groupBoardViewModal').modal('toggle');
-
+    getBoardInfo(boardId)
 })
-
-function createBoardViewModal(response){
-
-}
 
 function removeMenuBox() {
     if (document.getElementsByClassName('boardMenuBox').length != 0)
@@ -97,7 +91,7 @@ function generateMenuBox(e) {
         updateButton.setAttribute('class', 'boardmenu _boardUpdate')
         updateButton.innerText = '수정'
         updateButton.addEventListener('click', function (e) {
-            update(e)
+            updateGroupBoardModal(e)
         })
         boardMenuBox.append(updateButton)
         boardMenuBox.append(line2)
@@ -126,7 +120,6 @@ $('#input__Group__img').change(function (e) {
             alert("이미지파일만 업로드가 가능합니다.");
             return;
         }
-        console.log(f)
         groupProfileImg.push(f);
         const reader = new FileReader();
         reader.onload = function (e) {
@@ -162,10 +155,46 @@ $('#uploadFile').change(function (e) {
     });
 })
 
+
+var srcArray = []
+var deleteImageIndex = []
+var updateBoardId
+function updateGroupBoardModal(event){
+    const content = $(event)[0].path[6].children[1].innerHTML
+    updateBoardId = $(event)[0].path[7].children[0].value
+    const img = $(event)[0].path[6].children[2].firstChild.children
+
+    for(let i = 1; i <= img.length && img[0].className == 'collageItem'; i++){
+        let src = document.querySelector('#board_' + updateBoardId + ' > li:nth-child(' + i +') > button > img').getAttribute('src')
+        srcArray.push(src)
+    }
+
+    $('#board_content_box').html(content)
+    for(let i = 0; i < srcArray.length; i++) {
+        $('#board_content_box').append(
+            "<div class='imgBox'>" +
+                "<img id=img_" + i + " onclick=previewImgDelete(this); src=" + srcArray[i] + ">" +
+            "</div>"
+        )
+    }
+    srcArray = []
+    deleteImageIndex = []
+
+    $('.updateBtn').show()
+    $('.uploadBtn').hide()
+    $('#groupBoardWriteModal').modal('show')
+
+}
+
+$(document).on('click', '.updateBtn', function () {
+    updateGroupBoard(updateBoardId);
+});
+
 function previewImgDelete(e) {
     const index = e.id.split('_')[1];
     infoImgs[index] = null;
     $('#' + e.id).parent().remove();
+    deleteImageIndex.push(index)
 }
 
 // 덧글입력 element 생성

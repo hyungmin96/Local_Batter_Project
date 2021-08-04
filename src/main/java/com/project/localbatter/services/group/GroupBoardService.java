@@ -9,6 +9,7 @@ import com.project.localbatter.dto.GroupBoardFileDTO;
 import com.project.localbatter.entity.GroupBoardEntity;
 import com.project.localbatter.entity.GroupBoardFileEntity;
 import com.project.localbatter.entity.GroupUserJoinEntity;
+import com.project.localbatter.entity.QGroupBoardEntity;
 import com.project.localbatter.repositories.GroupBoardFileRepository;
 import com.project.localbatter.repositories.GroupBoardRepository;
 import com.project.localbatter.repositories.GroupUserJoinQueryRepository;
@@ -16,12 +17,17 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import static com.project.localbatter.entity.QGroupBoardEntity.groupBoardEntity;
 import static com.project.localbatter.entity.QGroupBoardFileEntity.groupBoardFileEntity;
 import static com.project.localbatter.entity.QGroupUserJoinEntity.groupUserJoinEntity;
@@ -29,7 +35,6 @@ import static com.project.localbatter.entity.QUserEntity.userEntity;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class GroupBoardService {
 
     private final GroupBoardRepository groupBoardRepository;
@@ -38,6 +43,39 @@ public class GroupBoardService {
     private final GenerateFile generateFile;
     private final JPAQueryFactory queryFactory;
     private final PagingUtil pagingUtil;
+    private final Logger log = LogManager.getLogger();
+
+    public GroupBoardEntity update(GroupBoardDTO groupBoardDTO){
+
+        GroupBoardEntity groupBoardEntity = queryFactory
+                .selectFrom(QGroupBoardEntity.groupBoardEntity)
+                .join(QGroupBoardEntity.groupBoardEntity.files)
+                .fetchJoin()
+                .fetchOne();
+
+        List<GenerateFileDTO> files = generateFile.createFile(groupBoardDTO.getBoard_img());
+        List<GroupBoardFileEntity> boardFiles = groupBoardEntity.getFiles();
+
+        if(groupBoardDTO.getDeleteImageIndex() != null){
+            Arrays.stream(groupBoardDTO.getDeleteImageIndex()).forEach(boardFiles::remove);
+        }
+
+        if(groupBoardDTO.getDeleteImageIndex() != null){
+            Arrays.stream(groupBoardDTO.getDeleteImageIndex()).forEach(item -> {
+                Long id = boardFiles.get(item).getId();
+                groupBoardFileRepository.deleteItem(id);
+            });
+        }
+
+        files.forEach(item -> {
+            boardFiles.add(new GroupBoardFileDTO(item).toEntity(groupBoardEntity));
+        });
+
+        groupBoardEntity.update(groupBoardDTO.getContent(), boardFiles);
+        groupBoardRepository.save(groupBoardEntity);
+
+        return groupBoardEntity;
+    }
 
     @Transactional(readOnly = true)
     public List<GroupBoardEntity> getBoardInfo(GroupBoardDTO groupBoardDTO){

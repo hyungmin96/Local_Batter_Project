@@ -49,6 +49,11 @@ public class GroupBoardEntity extends BaseTimeEntity {
         general, notice, fix
     }
 
+    public void update(String content, List<GroupBoardFileEntity> files){
+        this.content = content;
+        if(files != null && files.size() > 0) this.files = files;
+    }
+
     public void updateNotice(BoardType type){
         this.type = type;
     }

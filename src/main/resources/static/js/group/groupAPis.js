@@ -5,23 +5,77 @@ const userInfo = {
     userProfile: ''
 }
 
-function getBoardInfo(boardId){
 
-    const data = {
-        groupId: $('.groupId').val(),
-        boardId: boardId
-    }
+function updateGroupBoard(boardId){
 
-    $.ajax({
-        url: '/api/v2/group/board/getInfo',
-        type: 'POST',
-        data: data,
-        contentType: 'application/x-www-form-urlencoded',
-        success: function (response){
-            $('.boardModal').empty()
-            $('.boardModal').append(showBoardInfo(response))
-        }
-    })
+    const postBox = document.getElementById('board_content_box')
+
+    if (postBox.innerText.length > 301)  alert('300자 이하로 작성 가능합니다.')
+
+    else if (infoImgs.length > 0 || postBox.innerText.length > 0) {
+        var boardId = boardId;
+        var formData = new FormData();
+
+        formData.append('content', postBox.innerHTML.split('<div class=\"imgBox\"')[0]);
+        formData.append('boardId', boardId);
+
+        for (let i = 0; i < infoImgs.length; i++)
+            if (infoImgs[i] != null)
+                formData.append('board_img', infoImgs[i]);
+
+        for (let i = 0; i < deleteImageIndex.length; i++)
+                formData.append('deleteImageIndex', deleteImageIndex[i]);
+
+        $.ajax({
+            url: '/api/v2/group/board/update',
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function () {
+                alert('게시글을 수정하였습니다.')
+                $('#groupBoardWriteModal').modal('hide')
+            }
+        })
+    } else alert('작성할 내용을 입력해주세요.');
+}
+
+function postContent() {
+
+    const postBox = document.getElementById('board_content_box')
+    if (postBox.innerText.length > 301)  alert('300자 이하로 작성 가능합니다.')
+
+    else if (infoImgs.length > 0 || postBox.innerText.length > 0) {
+        const groupId = $('.groupId').val();
+        const formData = new FormData();
+
+        formData.append('userId', $('.g_user_id').val());
+        formData.append('groupId', groupId);
+        formData.append('writer', $('.user').val());
+        formData.append('content', postBox.innerHTML.split('<div class=\"imgBox\"')[0]);
+
+        for (let i = 0; i < infoImgs.length; i++)
+            if (infoImgs[i] != null)
+                formData.append('board_img', infoImgs[i]);
+
+        $.ajax({
+            url: '/api/v2/group/board/post',
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                $('.contentContainer').prepend(inputPostBox(response))
+                $('._imgPreviewSlider').empty();
+                infoImgs = [];
+                document.getElementById('board_content_box').value = '';
+                if (document.getElementsByClassName('contentEmptyContiner')[0] != null)
+                    document.getElementsByClassName('contentEmptyContiner')[0].style.display = 'none';
+                $('#groupBoardWriteModal').modal('hide')
+            }
+        })
+    } else alert('작성할 내용을 입력해주세요.');
+
 }
 
 function updateGroup(){
@@ -44,6 +98,25 @@ function updateGroup(){
         success: function(){
             alert('그룹정보를 수정 하였습니다.')
             window.location.reload();
+        }
+    })
+}
+
+function getBoardInfo(boardId){
+
+    const data = {
+        groupId: $('.groupId').val(),
+        boardId: boardId
+    }
+
+    $.ajax({
+        url: '/api/v2/group/board/getInfo',
+        type: 'POST',
+        data: data,
+        contentType: 'application/x-www-form-urlencoded',
+        success: function (response){
+            $('.boardModal').empty()
+            $('.boardModal').append(showBoardInfo(response))
         }
     })
 }
@@ -93,7 +166,7 @@ function getMemberList(){
             })
         }
     })
-    page++;
+    memberPage++;
 }
 
 function enterGroup(){
@@ -191,7 +264,6 @@ function loadNotices() {
             if (response.length > 0) {
 
                 $.each(response, function(key, value){
-                console.log(value)
                 document.getElementsByClassName('_notice')[0].style.display = 'block'
                     var content = (value.content == '<br>' || value.content == '') ? '사진을 등록하였습니다.' : value.content
                     $('.noticeContainer').append(
@@ -248,7 +320,6 @@ function updateNotice(e, noticeRegistered) {
                 alert('해당 게시글 공지를 내렸습니다.')
             else
                 alert('해당 게시글을 공지로 등록하였습니다.')
-            window.location.reload();
         }
     })
 }
@@ -273,52 +344,11 @@ function deletePost(e) {
     })
 }
 
-function postContent() {
-
-    const postBox = document.getElementById('board_content_box')
-
-    console.log($('#board_content_box').not('#board_content_box.imgBox').val())
-
-    if (postBox.innerText.length > 301)  alert('300자 이하로 작성 가능합니다.')
-
-    else if (infoImgs.length > 0 || postBox.innerText.length > 0) {
-        const groupId = $('.groupId').val();
-        const formData = new FormData();
-
-        formData.append('userId', $('.g_user_id').val());
-        formData.append('groupId', groupId);
-        formData.append('writer', $('.user').val());
-        formData.append('content', postBox.innerHTML.split('<div class=\"imgBox\"')[0]);
-
-        for (let i = 0; i < infoImgs.length; i++)
-            if (infoImgs[i] != null)
-                formData.append('board_img', infoImgs[i]);
-
-        $.ajax({
-
-            url: '/api/v2/group/board/post',
-            type: 'POST',
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function (response) {
-                $('.contentContainer').prepend(inputPostBox(response))
-                $('._imgPreviewSlider').empty();
-                infoImgs = [];
-                document.getElementById('board_content_box').value = '';
-                if (document.getElementsByClassName('contentEmptyContiner')[0] != null)
-                    document.getElementsByClassName('contentEmptyContiner')[0].style.display = 'none';
-            }
-        })
-    } else alert('작성할 내용을 입력해주세요.');
-
-}
-
 let display = 6;
 let lastPage = false;
-let page = 0;
+let boardPage = 0;
 function getBoardList() {
-    const data = {groupId: $('.groupId').val(), display: display, page: page}
+    const data = {groupId: $('.groupId').val(), display: display, page: boardPage}
 
     if (!lastPage) {
 
@@ -339,7 +369,7 @@ function getBoardList() {
                 } else document.getElementsByClassName('contentEmptyContiner')[0].style.display = 'block';
             }
         })
-        page++;
+        boardPage++;
     }
 }
 
@@ -378,8 +408,7 @@ function showBoardInfo(value){
 
 function inputPostBox(value) {
     const boardType = (value.type !== 'general') ? "<span class='notice _noticeText'>공지</span>" : '';
-    return "<input type='hidden' value=" + value.boardId + ">" +
-        "<div class='boardItemBox' style='animation: fadein 1.5s; margin-bottom: 20px; box-shadow: 0 2px 3px 0 rgba(161, 161, 161, 0.12);'>" +
+    return "<div class='boardItemBox' style='animation: fadein 1.5s; margin-bottom: 20px; box-shadow: 0 2px 3px 0 rgba(161, 161, 161, 0.12);'>" +
         "<input type='hidden' class='boardId' value=" + value.boardId + ">" +
         "<div class='contentItemBox'>" +
         "<div class='contentAuthorBox'>" +

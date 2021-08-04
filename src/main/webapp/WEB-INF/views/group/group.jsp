@@ -168,7 +168,6 @@
 </div>
 </div>
 
-
 <!--group board view modal -->
 <div class="modal fade" id="groupBoardViewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" style="margin-top: 150px; width: 800px; height: 700px;">
@@ -188,9 +187,8 @@
                 <div class="modal-title" id="groupBoardModal" style="margin: 0 0 0 auto">그룹 게시글 작성</div>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body" style="padding: 0.5rem">
+            <div class="modal-body" style="padding: 0.5rem 0.5rem 0 0.5rem">
                 <div style="padding: 10px; margin-top: 10px;">
-
                     <div id="board_content_box" class="commentWrite _use_keyup_event" contentEditable="true" data-text="그룹에 새로운 게시글을 작성해보세요" tabindex="0" spellcheck="true" role="textbox"></div>
                     <div class="upload _contentUploadBox" style="display: inline-flex; width: 100%">
                         <input type="file" id="uploadFile" multiple="multiple" style="display: none;">
@@ -207,6 +205,9 @@
             <div class="modal-footer">
                 <div class="uploadBtn" style="margin-left: auto; align-items: flex-end;">
                     <button style="height: 35px; width: 70px; padding: 3px 10px 3px 10px; color: white; background-color: rgb(56, 62, 76);">글 작성</button>
+                </div>
+                <div class="updateBtn" style="display: none; margin-left: auto; align-items: flex-end;">
+                    <button style="height: 35px; width: 70px; padding: 3px 10px 3px 10px; color: white; background-color: rgb(56, 62, 76);">글 수정</button>
                 </div>
             </div>
         </div>

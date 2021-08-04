@@ -39,6 +39,7 @@ _content img{
 ._contentUploadBox{
     font-family: 'Noto Sans KR', sans-serif;
     font-size: 13px;
+    padding: 15px 10px 0 10px;
 }
 
 ._groupExitButton{
@@ -60,7 +61,7 @@ _content img{
     color: #a4a2a2;
 }
 
-.uploadBtn button{
+.modal-footer button{
     font-family: 'Noto Sans KR', sans-serif;
     font-size: 14px;
 }
@@ -317,6 +318,7 @@ _content img{
     height: 400px;
     position: relative;
     overflow-y: scroll;
+    background-color: rgb(253 253 253);
 }
 
 ._imgPreviewSlider img{
@@ -348,7 +350,7 @@ _content img{
     justify-content: space-between;
     padding: 0;
     width: 100%;
-    background-color: rgb(252, 252, 252);
+    background-color: rgb(254, 254, 254);
     height: 40px;
     border-top: 1px solid #ebebeb;
 }
@@ -487,7 +489,8 @@ _content img{
     width: 100%;
     height: 90px;
     padding: 10px;
-    font-size: 13px;
+    font-size: 15px;
+    color: #252525;
 }
 
 .commentWrite:focus{

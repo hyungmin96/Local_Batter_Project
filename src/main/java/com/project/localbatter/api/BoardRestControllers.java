@@ -57,7 +57,7 @@ public class BoardRestControllers {
     @PostMapping("/upload")
     public String uploadFiles(HttpSession session, BoardEntity board, MultipartFile[] uploadFiles) throws IOException {
 
-        UserEntity userEntity = (UserEntity) session.getAttribute("userId");
+        UserEntity userEntity = (UserEntity) session.getAttribute("g_user");
 
         if (userEntity != null) {
             board.setWriter(userEntity.getUsername());
@@ -71,7 +71,7 @@ public class BoardRestControllers {
     @PostMapping("/board/delete")
     public ResponseEntity<String> deletePost(HttpSession session, @RequestBody Map<String, String> param) {
 
-        UserEntity userEntity = (UserEntity) session.getAttribute("userId");
+        UserEntity userEntity = (UserEntity) session.getAttribute("g_user");
 
         if (userEntity != null && (param.get("writerId").equals(userEntity.getUsername()))) {
             Long boardId = Long.parseLong(param.get("boardId"));
@@ -84,7 +84,7 @@ public class BoardRestControllers {
     @PostMapping("/update")
     public String updatePost(HttpSession session, BoardEntity vo, MultipartFile[] uploadFiles, @RequestParam Integer[] deleteIndex) {
 
-        UserEntity userEntity = (UserEntity) session.getAttribute("userId");
+        UserEntity userEntity = (UserEntity) session.getAttribute("g_user");
 
         if (userEntity != null && (vo.getWriter().equals(userEntity.getUsername()))) {
             boardService.boardUpdate(vo, uploadFiles, deleteIndex);
