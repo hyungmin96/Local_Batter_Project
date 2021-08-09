@@ -1,6 +1,7 @@
 package com.project.localbatter.services;
 
 import com.project.localbatter.api.GroupExchangeApiController;
+import com.project.localbatter.api.GroupExchangeApiController.ResponseExchagneInfo;
 import com.project.localbatter.api.group.GroupBoardApiController.ResponseBoardDTO;
 import com.project.localbatter.components.GenerateFile;
 import com.project.localbatter.dto.GenerateFileDTO;
@@ -9,7 +10,6 @@ import com.project.localbatter.dto.exchangeDTO.ClientExchangeDTO;
 import com.project.localbatter.dto.exchangeDTO.ExchagneFileDTO;
 import com.project.localbatter.dto.exchangeDTO.WrtierClientJoinDTO;
 import com.project.localbatter.entity.Exchange.*;
-import com.project.localbatter.entity.GroupBoardEntity;
 import com.project.localbatter.repositories.Exchange.ClientExchangeFileRepository;
 import com.project.localbatter.repositories.Exchange.ClientExchangeRepository;
 import com.project.localbatter.repositories.Exchange.WriterClientJoinRepository;
@@ -29,6 +29,7 @@ import java.util.stream.Collectors;
 
 import static com.project.localbatter.entity.Exchange.QWriterClientJoinEntity.writerClientJoinEntity;
 import static com.project.localbatter.entity.QGroupBoardEntity.groupBoardEntity;
+import static com.project.localbatter.entity.QGroupUserJoinEntity.groupUserJoinEntity;
 
 @Service
 @RequiredArgsConstructor
@@ -114,13 +115,20 @@ public class ExchangeService {
         return clientExchangeEntity;
     }
 
-    public GroupBoardEntity getExchangeInfo(GroupBoardDTO groupBoardDTO){
+    public ResponseExchagneInfo getExchangeInfo(GroupBoardDTO groupBoardDTO){
         return queryFactory
-                .selectFrom(groupBoardEntity)
+                .selectDistinct(Projections.fields(ResponseExchagneInfo.class, groupBoardEntity))
+                .from(groupBoardEntity)
+                .innerJoin(groupBoardEntity.groupUserJoinEntity, groupUserJoinEntity)
+                .fetchJoin()
+                .innerJoin(groupUserJoinEntity.user)
+                .fetchJoin()
                 .innerJoin(groupBoardEntity.writerExchangeEntity)
                 .fetchJoin()
+                .innerJoin(groupBoardEntity.files)
+                .fetchJoin()
                 .where(groupBoardEntity.boardId.eq(groupBoardDTO.getBoardId()))
-                .fetchOne();
+                .fetchFirst();
     }
 
     public JPAQuery<ResponseBoardDTO> getBoardList(GroupBoardDTO groupBoardDTO, Pageable page){

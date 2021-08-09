@@ -79,8 +79,8 @@
 
                 console.log(response)
 
-                $('.writerUsername').html('response.username')
-                $('.writerProfile').html('response.profilePath')
+                $('.writerUsername').html(response.username)
+                $('.writerProfile').html(response.profilePath)
 
                 $(document.body).append(
                     '<input type="hidden" class="writerlongitude" value=' + response.longitude + '>' +

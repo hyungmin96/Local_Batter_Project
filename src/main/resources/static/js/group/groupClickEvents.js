@@ -71,6 +71,7 @@ function generateMenuBox(e) {
 
     let categoryStatus = $(e).closest('.boardItemBox').find('.boardMoreInfoBox').find('.boardCategory')[0]
     if(typeof categoryStatus == 'undefined') categoryStatus = ''
+    let currentBoardId = $(e).closest('.boardItemBox').find('.boardId')[0].value
 
     if (document.getElementsByClassName('boardMenuBox').length != 0)
         $('.boardMenuBox').remove();
@@ -99,7 +100,7 @@ function generateMenuBox(e) {
             const exchageButton = document.createElement('div')
             exchageButton.setAttribute('class', 'boardmenu _boardExchange')
             exchageButton.addEventListener('click', function (e) {
-                updateNotice(e, noticeRegistered)
+                window.open('/request/exchange/' + currentBoardId, '_blank');
             })
             exchageButton.innerText = '교환요청'
             boardMenuBox.append(exchageButton)

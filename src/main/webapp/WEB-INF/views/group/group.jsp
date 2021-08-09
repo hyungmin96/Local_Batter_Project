@@ -367,7 +367,6 @@
             $('.setExchangeContainer').show()
         else
             $('.setExchangeContainer').hide()
-
     })
     var openWin;
     function openSerachContent(url, title) {
