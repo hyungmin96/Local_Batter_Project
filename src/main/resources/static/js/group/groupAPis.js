@@ -6,12 +6,10 @@ const userInfo = {
 }
 
 
+
 function updateGroupBoard(boardId){
-
     const postBox = document.getElementById('board_content_box')
-
     if (postBox.innerText.length > 301)  alert('300자 이하로 작성 가능합니다.')
-
     else if (infoImgs.length > 0 || postBox.innerText.length > 0) {
         var boardId = boardId;
         var formData = new FormData();
@@ -24,7 +22,7 @@ function updateGroupBoard(boardId){
                 formData.append('board_img', infoImgs[i]);
 
         for (let i = 0; i < deleteImageIndex.length; i++)
-                formData.append('deleteImageIndex', deleteImageIndex[i]);
+            formData.append('deleteImageIndex', deleteImageIndex[i]);
 
         $.ajax({
             url: '/api/v2/group/board/update',
@@ -43,16 +41,26 @@ function updateGroupBoard(boardId){
 function postContent() {
 
     const postBox = document.getElementById('board_content_box')
-    if (postBox.innerText.length > 301)  alert('300자 이하로 작성 가능합니다.')
+
+    let category = ($('.boardDropDownButton')[0].innerHTML === '교환 글') ? 'exchange' : 'article'
+    if (postBox.innerText.length > 301) alert('300자 이하로 작성 가능합니다.')
 
     else if (infoImgs.length > 0 || postBox.innerText.length > 0) {
         const groupId = $('.groupId').val();
         const formData = new FormData();
-
+        formData.append('locationDetail', $('.locationDetailTinfo')[0].value)
+        formData.append('residence', $('#address').val())
+        formData.append('buildingcode', $('#buildingcode').val())
+        formData.append('detailAddr', $('.detailAddr')[0].value)
+        formData.append('longitude', $('.longitudeValue')[0].value)
+        formData.append('latitude', $('.latitudeValue')[0].value)
+        formData.append('location', $('#exchange_address').val())
         formData.append('userId', $('.g_user_id').val());
         formData.append('groupId', groupId);
-        formData.append('writer', $('.user').val());
+        formData.append('writer', $('.g_user_id').val());
         formData.append('content', postBox.innerHTML.split('<div class=\"imgBox\"')[0]);
+        formData.append('preferTime', $('#exchange_time').val())
+        formData.append('category', category)
 
         for (let i = 0; i < infoImgs.length; i++)
             if (infoImgs[i] != null)
@@ -75,8 +83,28 @@ function postContent() {
             }
         })
     } else alert('작성할 내용을 입력해주세요.');
-
 }
+
+
+function exchangeInfoShow(value){
+    let result = ''
+    if(value.boardCategory == 'exchange'){
+        result = "" +
+            "<div class='locationInfoBox'>" +
+            "<div style='display: inline-flex;' class='exchangeInfoContainer'>" +
+            "<div>" +
+            "<img src='/images/boardDetail/google_maps_old_98px.png'>" +
+            "</div>" +
+            "<div class='locationTextInfoBox'>" +
+            "<div>" + value.location + "</div>" +
+            "<div>" + value.locationDetail + "</div>" +
+            "</div>" +
+            "</div>" +
+            "</div>"
+    }
+    return result
+}
+
 
 function updateGroup(){
 
@@ -220,7 +248,7 @@ function isMember(){
         data: data,
         contentType: 'application/x-www-form-urlencoded',
         success: function(response){
-            if(response.includes('isMember'))
+            if(response != '')
                 $('._groupExitButton').show()
             else
                 $('._groupEnterButton').show()
@@ -407,7 +435,11 @@ function showBoardInfo(value){
 }
 
 function inputPostBox(value) {
+    console.log(value)
+
     const boardType = (value.type !== 'general') ? "<span class='notice _noticeText'>공지</span>" : '';
+    const boardCategory = (value.boardCategory == 'exchange') ? "<span class='boardCategory'>교환 게시글</span>" : '';
+
     return "<div class='boardItemBox' style='animation: fadein 1.5s; margin-bottom: 20px; box-shadow: 0 2px 3px 0 rgba(161, 161, 161, 0.12);'>" +
         "<input type='hidden' class='boardId' value=" + value.boardId + ">" +
         "<div class='contentItemBox'>" +
@@ -419,6 +451,7 @@ function inputPostBox(value) {
         "<div class='board _username'>" + value.username + "</div>" +
         "<div class='boardMoreInfoBox' style='display: inline-flex'>" +
         boardType +
+        boardCategory +
         "<div class='board _regDate'>" + new Date(value.regTime).toLocaleString([], {
             year: 'numeric',
             month: 'numeric',
@@ -436,6 +469,7 @@ function inputPostBox(value) {
         "</div>" +
         "<div class='board _content' style='padding: 10px 10px 0 10px;'>" + value.content + "</div>" +
         imgShow(value.boardId, value.boardFiles) +
+        exchangeInfoShow(value) +
         "<div style='display: inline-flex; margin-top: 15px;'>" +
         "<div style='display: inline-flex;' class='boardInfo _likeButton'>" +
         "<div class='commentLikeBox'><img src=/images/group/heart_22px.png></div>" +
@@ -456,7 +490,6 @@ function inputPostBox(value) {
             commentBox(value.comments) +
         "</div>" +
         "<div class='commentInputBox'>" +
-
         "</div>" +
         "</div>"
 }
@@ -599,7 +632,6 @@ $(document).on('click', '.commentSendBtn', function (e) {
         data: data,
         dataType: 'JSON',
         success: function (response) {
-            console.log(response)
             commentInfoArray.push(response)
             commentListView.style.display = 'block';
 

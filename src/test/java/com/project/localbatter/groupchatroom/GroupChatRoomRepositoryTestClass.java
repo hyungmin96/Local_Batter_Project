@@ -1,9 +1,8 @@
 package com.project.localbatter.groupchatroom;
-import com.project.localbatter.dto.GroupBoardDTO;
-import com.project.localbatter.dto.GroupCommentDTO;
+import com.project.localbatter.dto.Group.GroupBoardDTO;
+import com.project.localbatter.dto.Group.GroupCommentDTO;
 import com.project.localbatter.entity.*;
 import com.project.localbatter.repositories.*;
-import com.project.localbatter.services.group.GroupBoardService;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

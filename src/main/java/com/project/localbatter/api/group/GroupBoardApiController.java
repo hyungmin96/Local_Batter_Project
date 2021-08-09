@@ -1,6 +1,6 @@
 package com.project.localbatter.api.group;
 
-import com.project.localbatter.dto.GroupBoardDTO;
+import com.project.localbatter.dto.Group.GroupBoardDTO;
 import com.project.localbatter.entity.GroupBoardEntity;
 import com.project.localbatter.entity.GroupBoardFileEntity;
 import com.project.localbatter.entity.GroupCommentEntity;
@@ -14,7 +14,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -71,8 +74,9 @@ public class GroupBoardApiController {
     }
 
 
-    @Getter @Setter
-    static class ResponseBoardDTO{
+    @Setter @Getter
+    public static class ResponseBoardDTO {
+        // 게시글 DTO
         private String result;
         private Long userId;
         private String username;
@@ -80,24 +84,44 @@ public class GroupBoardApiController {
         private LocalDateTime regTime;
         private Long boardId;
         private int boardLike;
+        private GroupBoardEntity.BoardCategory BoardCategory;
         private String content;
         private GroupBoardEntity.BoardType type; // 그룹 공지, 일반 글
         private List<String> boardFiles;
         private List<ResponseCommentDTO> comments;
 
-        public ResponseBoardDTO(String result){this.result = result;}
+        // 게시글 거래위치 DTO
+        private String residence;
+        private String detailAddr;
+        private String buildingcode;
+        private String location;
+        private String locationDetail;
+        private String longitude;
+        private String latitude;
+        private String preferTime;
 
-        public ResponseBoardDTO(GroupBoardEntity entity){
+        public ResponseBoardDTO(GroupBoardEntity entity) {
             this.userId = entity.getGroupUserJoinEntity().getUser().getId();
             this.username = entity.getGroupUserJoinEntity().getUser().getUsername();
             this.profilePath = entity.getGroupUserJoinEntity().getUser().getProfilePath();
             this.regTime = entity.getRegTime();
             this.boardId = entity.getBoardId();
             this.boardLike = entity.getBoardLike();
+            this.BoardCategory = entity.getBoardCategory();
             this.type = entity.getType();
             this.content = entity.getContent();
             this.boardFiles = entity.getFiles().stream().map(GroupBoardFileEntity::getName).collect(Collectors.toList());
             this.comments = (entity.getComments() != null) ? entity.getComments().stream().map(ResponseCommentDTO::new).collect(Collectors.toList()) : new ArrayList<>();
+            if (entity.getWriterExchangeEntity() != null) {
+                this.residence = entity.getWriterExchangeEntity().getResidence();
+                this.detailAddr = entity.getWriterExchangeEntity().getDetailAddr();
+                this.buildingcode = entity.getWriterExchangeEntity().getBuildingcode();
+                this.longitude = entity.getWriterExchangeEntity().getLongitude();
+                this.latitude = entity.getWriterExchangeEntity().getLatitude();
+                this.location = entity.getWriterExchangeEntity().getLocation();
+                this.locationDetail = entity.getWriterExchangeEntity().getLocationDetail();
+                this.preferTime = entity.getWriterExchangeEntity().getExchangeTime();
+            }
         }
     }
 

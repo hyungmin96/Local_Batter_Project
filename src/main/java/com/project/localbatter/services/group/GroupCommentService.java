@@ -1,6 +1,6 @@
 package com.project.localbatter.services.group;
 
-import com.project.localbatter.dto.GroupCommentDTO;
+import com.project.localbatter.dto.Group.GroupCommentDTO;
 import com.project.localbatter.entity.GroupBoardEntity;
 import com.project.localbatter.entity.GroupCommentEntity;
 import com.project.localbatter.entity.GroupUserJoinEntity;
@@ -38,10 +38,13 @@ public class GroupCommentService {
         GroupUserJoinEntity groupUserJoinEntity = groupUserJoinQuseryRepository
                 .findGroupUserJoinEntity(groupCommentDTO.getUserId(), groupCommentDTO.getGroupId());
         GroupBoardEntity groupBoardEntity = groupBoardRepository.getOne(groupCommentDTO.getBoardId());
-
-        groupCommentDTO.setGroupId(groupCommentDTO.getGroupId());
-        GroupCommentEntity groupCommentEntity = groupCommentDTO.toEntity(groupBoardEntity, groupUserJoinEntity);
-        groupCommentRepository.save(groupCommentEntity);
-        return groupCommentEntity;
+        if(groupUserJoinEntity != null){
+            groupCommentDTO.setGroupId(groupCommentDTO.getGroupId());
+            GroupCommentEntity groupCommentEntity = groupCommentDTO.toEntity(groupBoardEntity, groupUserJoinEntity);
+            groupCommentRepository.save(groupCommentEntity);
+            return groupCommentEntity;
+        }
+        groupCommentDTO.setResult("권한이 없습니다.");
+        return groupCommentDTO.toEntity(groupBoardEntity, groupUserJoinEntity);
     }
 }

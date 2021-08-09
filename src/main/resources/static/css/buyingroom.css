@@ -39,7 +39,6 @@ _content img{
 ._contentUploadBox{
     font-family: 'Noto Sans KR', sans-serif;
     font-size: 13px;
-    padding: 15px 10px 0 10px;
 }
 
 ._groupExitButton{
@@ -49,6 +48,10 @@ _content img{
 ._groupExitButton:hover{
     cursor: pointer;
     background-color: #FAF7FAFF;
+}
+
+.fileArea img{
+    background-color: #f8f9fa;
 }
 
 .card-header{
@@ -63,13 +66,19 @@ _content img{
 
 .modal-footer button{
     font-family: 'Noto Sans KR', sans-serif;
-    font-size: 14px;
+    font-size: 13px;
+}
+
+.modal-dialog {
+    max-width: 600px;
+    margin: 1.75rem auto;
 }
 
 .articleWordsBox{
     margin: auto;
     text-align: end;
     width: 100%;
+    font-size: 14px;
 }
 
 .contentItemBox ._content{
@@ -241,9 +250,8 @@ _content img{
 }
 
 .commentContentBox{
-    font-family: NEXON_Lv1_Gothic_OTF;
-    font-size: 12px;
-    letter-spacing: 1.2px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 13px;
 }
 
 .commentRegTime{
@@ -314,11 +322,63 @@ _content img{
     display: inline-flex;
 }
 
+.exchangeContainer{
+    margin: 5px 0 5px 0;
+    border-top: 1px solid #ebebeb;
+}
+
+.addressInputBox{
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 13px;
+    outline: none;
+}
+
+.addressInputBox{
+    margin: 2px 0 2px 0;
+}
+
+.exchangeContainerHeader{
+    background-color: #ffffff;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 17px;
+    padding: 10px 10px 0 0;
+    margin: 0;
+}
+
+.serachButton{
+    margin: 10px 0;
+    background-color: white;
+    border: 1px solid rgb(215, 215, 215);
+    padding: 7px;
+    font-family: Noto Sans KR;
+    font-size: 13px;
+}
+
 #board_content_box{
-    height: 400px;
+    height: 300px;
     position: relative;
     overflow-y: scroll;
-    background-color: rgb(253 253 253);
+    background-color: white;
+}
+
+.locationInfoBox{
+    background-color: #fbfbfb;
+    padding: 5px;
+    margin-top: 15px;
+    cursor: pointer;
+}
+
+.locationTextInfoBox{
+    padding: 10px;
+    font-size: 14px;
+    margin: 7px 0 0 0;
+}
+
+.boardCategory{
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 12px;
+    color: #b98f18;
+    margin-right: 10px;
 }
 
 ._imgPreviewSlider img{
@@ -468,6 +528,16 @@ _content img{
     background-color: white;
 }
 
+.fileArea{
+    margin: 0 7px 0 7px;
+}
+
+.boardDropDownButton{
+    background-color: #3b6ae4;
+    border: none;
+    text-decoration: none;
+}
+
 .fileArea button:hover{
     outline: none;
     object-fit: cover;
@@ -575,6 +645,5 @@ _content img{
 }
 
 ::-webkit-scrollbar-thumb{
-    border-radius: 3px;
-    background-color: rgb(124, 124, 124);
+    background-color: rgb(109 108 108);
 }

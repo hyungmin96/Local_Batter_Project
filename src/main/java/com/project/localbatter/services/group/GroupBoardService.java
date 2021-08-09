@@ -4,8 +4,9 @@ import com.project.localbatter.components.DeleteFile;
 import com.project.localbatter.components.GenerateFile;
 import com.project.localbatter.components.PagingUtil;
 import com.project.localbatter.dto.GenerateFileDTO;
-import com.project.localbatter.dto.GroupBoardDTO;
-import com.project.localbatter.dto.GroupBoardFileDTO;
+import com.project.localbatter.dto.Group.GroupBoardDTO;
+import com.project.localbatter.dto.Group.GroupBoardFileDTO;
+import com.project.localbatter.entity.Exchange.WriterExchangeEntity;
 import com.project.localbatter.entity.GroupBoardEntity;
 import com.project.localbatter.entity.GroupBoardFileEntity;
 import com.project.localbatter.entity.GroupUserJoinEntity;
@@ -46,34 +47,26 @@ public class GroupBoardService {
     private final Logger log = LogManager.getLogger();
 
     public GroupBoardEntity update(GroupBoardDTO groupBoardDTO){
-
         GroupBoardEntity groupBoardEntity = queryFactory
-                .selectFrom(QGroupBoardEntity.groupBoardEntity)
+                .selectDistinct(QGroupBoardEntity.groupBoardEntity)
+                .from(QGroupBoardEntity.groupBoardEntity)
                 .join(QGroupBoardEntity.groupBoardEntity.files)
                 .fetchJoin()
+                .where(QGroupBoardEntity.groupBoardEntity.boardId.eq(groupBoardDTO.getBoardId()))
                 .fetchOne();
-
         List<GenerateFileDTO> files = generateFile.createFile(groupBoardDTO.getBoard_img());
         List<GroupBoardFileEntity> boardFiles = groupBoardEntity.getFiles();
-
-        if(groupBoardDTO.getDeleteImageIndex() != null){
-            Arrays.stream(groupBoardDTO.getDeleteImageIndex()).forEach(boardFiles::remove);
-        }
-
+        files.forEach(item -> boardFiles.add(new GroupBoardFileDTO(item).toEntity(groupBoardEntity)));
         if(groupBoardDTO.getDeleteImageIndex() != null){
             Arrays.stream(groupBoardDTO.getDeleteImageIndex()).forEach(item -> {
                 Long id = boardFiles.get(item).getId();
                 groupBoardFileRepository.deleteItem(id);
             });
         }
-
-        files.forEach(item -> {
-            boardFiles.add(new GroupBoardFileDTO(item).toEntity(groupBoardEntity));
-        });
-
+        if(groupBoardDTO.getDeleteImageIndex() != null)
+            Arrays.stream(groupBoardDTO.getDeleteImageIndex()).forEach(boardFiles::remove);
         groupBoardEntity.update(groupBoardDTO.getContent(), boardFiles);
         groupBoardRepository.save(groupBoardEntity);
-
         return groupBoardEntity;
     }
 
@@ -99,7 +92,6 @@ public class GroupBoardService {
                 .leftJoin(groupUserJoinEntity.user, userEntity)
                 .fetchJoin()
                 .where(groupUserJoinEntity.group.id.eq(groupId));
-
         return pagingUtil.getPageImpl(request, query, GroupBoardEntity.class);
     }
 
@@ -107,15 +99,12 @@ public class GroupBoardService {
         // Check Authorization to enter user
         GroupUserJoinEntity groupUserJoinEntity = groupUserJoinQuseryRepository
                             .findGroupUserJoinEntity(groupBoardDTO.getUserId(), groupBoardDTO.getGroupId());
-
         GroupBoardEntity groupBoardEntity = groupBoardRepository.getOne(groupBoardDTO.getBoardId());
         if(!groupUserJoinEntity.getType().equals(GroupUserJoinEntity.userAuthority.member)){
             groupBoardEntity.updateNotice(groupBoardDTO.getType());
             groupBoardRepository.save(groupBoardEntity);
-
             return groupBoardDTO.toEntity(groupUserJoinEntity);
         }
-
         groupBoardDTO.setResult("Failed - No request authority");
         return groupBoardEntity;
     }
@@ -142,9 +131,9 @@ public class GroupBoardService {
     }
 
     public GroupBoardEntity post(GroupBoardDTO groupBoardDTO){
+        WriterExchangeEntity writerExchangeEntity = groupBoardDTO.getWriterExchangeEntity();
         GroupUserJoinEntity groupUserJoinEntity = groupUserJoinQuseryRepository.findGroupUserJoinEntity(groupBoardDTO.getUserId(), groupBoardDTO.getGroupId());
-        GroupBoardEntity groupBoardEntity = groupBoardDTO.toEntity(groupUserJoinEntity);
-
+        GroupBoardEntity groupBoardEntity = groupBoardDTO.toEntity(groupUserJoinEntity, writerExchangeEntity);
         if(groupUserJoinEntity != null){
             groupBoardRepository.save(groupBoardEntity);
             List<GenerateFileDTO> groupBoardFiles = generateFile.createFile(groupBoardDTO.getBoard_img());

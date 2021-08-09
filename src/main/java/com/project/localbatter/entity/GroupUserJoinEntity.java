@@ -39,7 +39,7 @@ public class GroupUserJoinEntity extends BaseTimeEntity {
     private List<GroupCommentEntity> comment;
 
     public enum userAuthority{
-        manager, staff, member, ban
+        manager, staff, member, ban, none
     }
 
 }

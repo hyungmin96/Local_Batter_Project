@@ -1,5 +1,6 @@
-package com.project.localbatter.dto;
+package com.project.localbatter.dto.Group;
 
+import com.project.localbatter.dto.GenerateFileDTO;
 import com.project.localbatter.entity.GroupBoardEntity;
 import com.project.localbatter.entity.GroupBoardFileEntity;
 import lombok.Getter;

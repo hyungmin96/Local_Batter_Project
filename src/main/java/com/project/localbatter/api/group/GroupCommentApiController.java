@@ -1,6 +1,6 @@
 package com.project.localbatter.api.group;
 
-import com.project.localbatter.dto.GroupCommentDTO;
+import com.project.localbatter.dto.Group.GroupCommentDTO;
 import com.project.localbatter.entity.GroupCommentEntity;
 import com.project.localbatter.services.group.GroupBoardService;
 import com.project.localbatter.services.group.GroupCommentService;

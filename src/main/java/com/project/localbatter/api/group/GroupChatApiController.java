@@ -1,7 +1,7 @@
 package com.project.localbatter.api.group;
 
-import com.project.localbatter.dto.GroupChatMessageDTO;
-import com.project.localbatter.dto.GroupJoinRequestDTO;
+import com.project.localbatter.dto.Group.GroupChatMessageDTO;
+import com.project.localbatter.dto.Group.GroupJoinRequestDTO;
 import com.project.localbatter.services.group.GroupChatService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

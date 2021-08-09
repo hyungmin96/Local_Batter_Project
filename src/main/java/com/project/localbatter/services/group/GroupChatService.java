@@ -3,7 +3,7 @@ package com.project.localbatter.services.group;
 import com.project.localbatter.components.GenerateFile;
 import com.project.localbatter.components.PagingUtil;
 import com.project.localbatter.dto.GenerateFileDTO;
-import com.project.localbatter.dto.GroupChatMessageDTO;
+import com.project.localbatter.dto.Group.GroupChatMessageDTO;
 import com.project.localbatter.entity.GroupEntity;
 import com.project.localbatter.repositories.GroupChatRepository;
 import com.project.localbatter.repositories.GroupRepository;

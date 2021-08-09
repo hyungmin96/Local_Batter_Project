@@ -1,6 +1,6 @@
 package com.project.localbatter.controllers;
 
-import com.project.localbatter.dto.GroupChatMessageDTO;
+import com.project.localbatter.dto.Group.GroupChatMessageDTO;
 import com.project.localbatter.entity.GroupBoardFileEntity;
 import com.project.localbatter.entity.GroupCommentEntity;
 import com.project.localbatter.entity.GroupEntity;

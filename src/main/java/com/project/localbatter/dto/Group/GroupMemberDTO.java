@@ -1,4 +1,4 @@
-package com.project.localbatter.dto;
+package com.project.localbatter.dto.Group;
 
 import lombok.Getter;
 import lombok.Setter;

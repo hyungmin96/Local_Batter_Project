@@ -13,6 +13,11 @@ $(function () {
     $('.groupUpdateButton').click(function (){
         updateGroup();
     })
+    $('.commentWriteBoard').click(function(){
+        infoImgs = []
+        $('.groupContentWriteBox').empty()
+        $('#groupBoardWriteModal').modal('show')
+    })
     $('.groupDeleteButton').click(function (){
         deleteGroup();
     })
@@ -64,6 +69,9 @@ function removeMenuBox() {
 
 function generateMenuBox(e) {
 
+    let categoryStatus = $(e).closest('.boardItemBox').find('.boardMoreInfoBox').find('.boardCategory')[0]
+    if(typeof categoryStatus == 'undefined') categoryStatus = ''
+
     if (document.getElementsByClassName('boardMenuBox').length != 0)
         $('.boardMenuBox').remove();
 
@@ -78,14 +86,25 @@ function generateMenuBox(e) {
         const boardMenuBox = document.createElement('div');
         boardMenuBox.setAttribute('class', 'boardMenuBox')
 
-        const noticeButton = document.createElement('div')
-        noticeButton.setAttribute('class', 'boardmenu _boardNotice')
-        noticeButton.addEventListener('click', function (e) {
-            updateNotice(e, noticeRegistered)
-        })
-        noticeButton.innerText = noticeText
-        boardMenuBox.append(noticeButton)
-        boardMenuBox.append(line)
+        if(categoryStatus.innerText != '교환 게시글'){
+            const noticeButton = document.createElement('div')
+            noticeButton.setAttribute('class', 'boardmenu _boardNotice')
+            noticeButton.addEventListener('click', function (e) {
+                updateNotice(e, noticeRegistered)
+            })
+            noticeButton.innerText = noticeText
+            boardMenuBox.append(noticeButton)
+            boardMenuBox.append(line)
+        }else{
+            const exchageButton = document.createElement('div')
+            exchageButton.setAttribute('class', 'boardmenu _boardExchange')
+            exchageButton.addEventListener('click', function (e) {
+                updateNotice(e, noticeRegistered)
+            })
+            exchageButton.innerText = '교환요청'
+            boardMenuBox.append(exchageButton)
+            boardMenuBox.append(line)
+        }
 
         const updateButton = document.createElement('div')
         updateButton.setAttribute('class', 'boardmenu _boardUpdate')

@@ -3,6 +3,20 @@
 <%@ include file="../common/header.jsp"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
+<script>
+    const memberInfo = {
+        userId: $('.g_user_id').val(),
+        groupId: $('.groupId').val(),
+        username: '',
+        userProfile: '',
+        authority: ''
+    }
+    history.scrollRestoration = "manual"
+    $(window).on('unload', function() {
+        $(window).scrollTop(0);
+    });
+</script>
+
 <div class="wrapper" style='margin: 80px 0 80px 0; display: flex; flex-direction: row; align-items: flex-start; position: relative; justify-content: center; padding: 30px; width: 90%'>
 <div style="display: inline-flex">
 
@@ -76,7 +90,7 @@
 
                     <div class="main _contentWriteBox">
                         <div style="padding: 10px 18px 10px 18px;">
-                            <div data-bs-toggle="modal" data-bs-target="#groupBoardWriteModal" style="color: #b2afaf; cursor: pointer;" class="commentWrite" value="">다른 멤버들과 소통해보세요.</div>
+                            <div style="color: #b2afaf; font-size: 14px; height: 80px; cursor: pointer;" class="commentWriteBoard" value="">다른 멤버들과 소통해보세요.</div>
                         </div>
                     </div>
                     <div class="preview _imgPreviewSlider" style="height: 100%; background-color: white; ">
@@ -170,7 +184,7 @@
 
 <!--group board view modal -->
 <div class="modal fade" id="groupBoardViewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" style="margin-top: 150px; width: 800px; height: 700px;">
+    <div class="modal-dialog" style="margin-top: 100px; width: 800px; height: 700px;">
         <div class="modal-content" style="width: 600px; border-radius: 0;">
             <div class="boardModal" style="padding: 0.5rem;">
 
@@ -181,7 +195,7 @@
 
 <!-- group board wirte modal -->
 <div class="modal fade" id="groupBoardWriteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" style="margin-top: 150px; width: 800px; height: 700px;">
+    <div class="modal-dialog" style="margin: 100px auto 460px auto; width: 800px; height: 100%;">
         <div class="modal-content" style="width: 600px;">
             <div class="modal-header" style="border: none;">
                 <div class="modal-title" id="groupBoardModal" style="margin: 0 0 0 auto">그룹 게시글 작성</div>
@@ -189,25 +203,84 @@
             </div>
             <div class="modal-body" style="padding: 0.5rem 0.5rem 0 0.5rem">
                 <div style="padding: 10px; margin-top: 10px;">
-                    <div id="board_content_box" class="commentWrite _use_keyup_event" contentEditable="true" data-text="그룹에 새로운 게시글을 작성해보세요" tabindex="0" spellcheck="true" role="textbox"></div>
-                    <div class="upload _contentUploadBox" style="display: inline-flex; width: 100%">
-                        <input type="file" id="uploadFile" multiple="multiple" style="display: none;">
-                        <div class="fileArea _imgUploadDialog" style="cursor: pointer;">
-                            <button><img src="/images/picture_26px.png"></button>
+                    <div style="padding: 5px; background-color: #f8f9fa;">
+                        <div class="upload _contentUploadBox" style="display: inline-flex; width: 100%">
+                            <input type="file" id="uploadFile" multiple="multiple" style="display: none;">
+                            <div class="fileArea _imgUploadDialog" style="cursor: pointer;">
+                                <button><img src="/images/group/image_25px.png"></button>
+                            </div>
+                            <div class="fileArea _calendarDialog" style="cursor: pointer;">
+                                <button><img src="/images/group/calendar_25px.png"></button>
+                            </div>
+                            <div class="fileArea _locationDialog" style="cursor: pointer;">
+                                <button><img src="/images/group/place_marker_25px.png"></button>
+                            </div>
                         </div>
-                        <div class="articleWordsBox">
+                    </div>
+                    <div id="board_content_box" class="commentWrite groupContentWriteBox" contentEditable="true" data-text="그룹에 새로운 게시글을 작성해보세요" tabindex="0" spellcheck="true" role="textbox"></div>
+                        <div class="articleWordsBox" style="margin-bottom: 15px;">
                             <span class="currentWords">0</span> /
                             <span class="limitWords">300</span>
                         </div>
+
+                    <div class="setExchangeContainer" style="display: none;">
+                        <div class="exchangeContainer residenceContainer">
+                            <div class="residenceContainerTitle">
+                                <h5 class="exchangeContainerHeader">거주지역 설정</h5>
+                            </div>
+                            <div style="padding: 5px;">
+                            <input type="text" class="inputbox addressInputBox" id="zonecode" disabled = "true" placeholder="우편번호" style="width: 200px;">
+                            <input type="text" class="inputbox addressInputBox" id="address" disabled = "true" placeholder="도로명" style="width: 340px;">
+                            <input type="text" class="inputbox addressInputBox" id="buildingcode" disabled = "true" placeholder="건물 이름" style="width: 270px;">
+                            <input type="text" class="inputbox addressInputBox detailAddr" enabled = "true" placeholder="세부주소" style="width: 190px;">
+                            <input type="button" class="serachButton addrSerachButton" onclick="sample5_execDaumPostcode()" value="주소 검색">
+                            <div id="map" style="width:300px;height:300px;margin-top:10px;display:none"></div>
+                            </div>
+                        </div>
+
+                        <div class="exchangeContainer LocationContainer">
+                            <div class="LocationContainerTitle">
+                                <h5 class="exchangeContainerHeader">거래지역 설정</h5>
+                            </div>
+                            <div style="padding: 5px;">
+                                <input type="text" class="inputbox addressInputBox" id="exchange_address" disabled = "true" placeholder="주소" style="width: 500px;">
+                                <button class="serachButton exchangeLocationSearch" onclick="openSerachContent('/writer/map', ''); getAddress();">검색</button>
+                                <input type="text" class="inputbox addressInputBox locationDetailTinfo" enabled = "true" placeholder="세부내용" style="width: 190px;">
+                                <div>
+                                    <input type="hidden" class="longitudeValue" value="">
+                                    <input type="hidden" class="latitudeValue" value="">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="exchangeContainer exchangeTimeContainer">
+                            <div class="exchangeTimeContainerTitle">
+                                <h5 class="exchangeContainerHeader">거래 선호시간 설정</h5>
+                            </div>
+                            <div style="padding: 5px;">
+                                <input type="text" class="inputbox addressInputBox" id="exchange_time" enabled = "true" placeholder="선호 시간대를 입력해주세요">
+                            </div>
+                        </div>
                     </div>
+
                 </div>
             </div>
             <div class="modal-footer">
+                <div class="dropdown">
+                    <button type="button" class="boardDropDownButton btn btn-primary dropdown-toggle" data-toggle="dropdown" style="font-size: 12px;">
+                        카테고리 선택
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="boardCategoryItem dropdown-item" href="#">일반 글</a>
+                        <a class="boardCategoryItem dropdown-item" href="#">교환 글</a>
+                    </div>
+                </div>
+
                 <div class="uploadBtn" style="margin-left: auto; align-items: flex-end;">
-                    <button style="height: 35px; width: 70px; padding: 3px 10px 3px 10px; color: white; background-color: rgb(56, 62, 76);">글 작성</button>
+                    <button style="height: 35px; width: 100%; padding: 3px 10px 3px 10px; color: white; background-color: rgb(56, 62, 76);">게시글 작성</button>
                 </div>
                 <div class="updateBtn" style="display: none; margin-left: auto; align-items: flex-end;">
-                    <button style="height: 35px; width: 70px; padding: 3px 10px 3px 10px; color: white; background-color: rgb(56, 62, 76);">글 수정</button>
+                    <button style="height: 35px; width: 100%; padding: 3px 10px 3px 10px; color: white; background-color: rgb(56, 62, 76);">게시글 수정</button>
                 </div>
             </div>
         </div>
@@ -216,7 +289,7 @@
 
 <!-- group setting modal -->
 <div class="modal fade" id="groupSettingModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" style="margin-top: 150px; width: 800px; height: 700px;">
+    <div class="modal-dialog" style="margin-top: 100px; width: 800px; height: 700px;">
         <div class="modal-content">
             <div class="modal-header">
                 <div class="modal-title" id="exampleModalLabel">그룹 설정</div>
@@ -276,17 +349,36 @@
 
 </div>
 <!-- modal -->
-<script>
-    history.scrollRestoration = "manual"
-    $(window).on('unload', function() {
-        $(window).scrollTop(0);
-    });
-</script>
-
 <script type="text/javascript" src="/js/group/groupClickEvents.js"></script>
 <script type="text/javascript" src="/js/group/groupAPis.js"></script>
 <script type="text/javascript" src="/js/imgModal.js"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2f665d933d93346898df736499236f77&libraries=services"></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script type="text/javascript" src="/js/exchange/residenceMap.js"></script>
 <link rel="stylesheet" href="/css/buyingroom.css">
 <link rel="stylesheet" href="/css/imgModal.css">
 <link rel="stylesheet" href="/css/imgGridGallery.css">
 <%@ include file="../common/footer.jsp"%>
+<script>
+    $(document).on('click', '.boardCategoryItem', function(){
+        let item = $(this)[0].innerHTML
+        $('.boardDropDownButton')[0].innerHTML = item
+        if(item == '교환 글')
+            $('.setExchangeContainer').show()
+        else
+            $('.setExchangeContainer').hide()
+
+    })
+    var openWin;
+    function openSerachContent(url, title) {
+        openWin = window.open(url, title, "width=850, height=750, resizable = no, scrollbars = no");
+    }
+
+    function getAddress(data){
+        if(data != null){
+            document.getElementById('exchange_address').value = data.location;
+            $('.longitudeValue')[0].value = data.longitude;
+            $('.latitudeValue')[0].value = data.latitude;
+        }
+    }
+</script>

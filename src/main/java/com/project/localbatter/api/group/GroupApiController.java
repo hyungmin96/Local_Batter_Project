@@ -1,11 +1,13 @@
 package com.project.localbatter.api.group;
 
-import com.project.localbatter.dto.GroupCreateDTO;
-import com.project.localbatter.dto.GroupMemberDTO;
-import com.project.localbatter.dto.GroupPageDTO;
+import com.project.localbatter.dto.Group.GroupCreateDTO;
+import com.project.localbatter.dto.Group.GroupMemberDTO;
+import com.project.localbatter.dto.Group.GroupPageDTO;
 import com.project.localbatter.entity.GroupEntity;
+import com.project.localbatter.entity.GroupUserJoinEntity;
 import com.project.localbatter.services.group.GroupService;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.domain.Page;
@@ -48,7 +50,7 @@ public class GroupApiController {
     }
 
     @GetMapping("/check/isMember")
-    public ResponseEntity<String> checkMember(@RequestParam Long userId, @RequestParam Long groupId){
+    public ResponseMemberCheckDTO checkMember(@RequestParam Long userId, @RequestParam Long groupId){
         return groupService.isMember(userId, groupId);
     }
 
@@ -70,6 +72,17 @@ public class GroupApiController {
             this.result = "그룹 정보를 수정 하였습니다.";
             this.groupId = entity.getId();
         }
+    }
+
+    @Getter @Setter
+    @NoArgsConstructor
+    public static class ResponseMemberCheckDTO{
+
+        private Long userId;
+        private Long groupId;
+        private String username;
+        private String profilePath;
+        private GroupUserJoinEntity.userAuthority type = GroupUserJoinEntity.userAuthority.none;
     }
 
     @Getter @Setter
