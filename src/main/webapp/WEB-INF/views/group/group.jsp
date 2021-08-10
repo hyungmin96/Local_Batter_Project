@@ -242,7 +242,7 @@
                             <div class="LocationContainerTitle">
                                 <h5 class="exchangeContainerHeader">거래지역 설정</h5>
                             </div>
-                            <div style="padding: 5px;">
+                            <div style="padding: 0 5px 5px 5px;">
                                 <input type="text" class="inputbox addressInputBox" id="exchange_address" disabled = "true" placeholder="주소" style="width: 500px;">
                                 <button class="serachButton exchangeLocationSearch" onclick="openSerachContent('/writer/map', ''); getAddress();">검색</button>
                                 <input type="text" class="inputbox addressInputBox locationDetailTinfo" enabled = "true" placeholder="세부내용" style="width: 190px;">

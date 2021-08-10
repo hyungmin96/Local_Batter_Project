@@ -1,0 +1,110 @@
+@font-face {
+    font-family: 'InfinitySans-RegularA1';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/InfinitySans-RegularA1.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'S-CoreDream-6Bold';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-6Bold.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.writerProductContent{
+    font-family: 'S-CoreDream-6Bold', sans-serif;
+    font-size: 19px;
+    padding: 0 5px 5px 0;
+    height: 150px;
+}
+
+.writerProductLocation{
+    font-family: 'InfinitySans-RegularA1', sans-serif;
+    font-size: 14px;
+    padding: 0 5px 5px 0;
+}
+
+.writerBoardContentContainer hr{
+    border: none;
+    background-color: #a4a3a3;
+    margin: 15px 5px 15px 0;
+    height: 1px;
+}
+
+.writerProfile{
+    width: 40px;
+    height: 40px;
+}
+
+.exchangeHeader{
+    font-family: 'S-CoreDream-6Bold', sans-serif;
+    font-size: 23px;
+    margin-bottom: 15px;
+}
+
+.clientCategoryBox{
+    display: flex;
+    flex-direction: row;
+    margin: 35px 15px;
+}
+
+.clientExchangeInfoBox{
+    outline: none;
+    resize: none;
+    border: 1px solid rgb(215, 215, 215);
+    padding: 7px;
+    font-family: Noto Sans KR;
+    width: 100%;
+}
+
+.clientExchangeInfoBox:focus, .clientExchangeInfoBox:focus{
+    outline: #ccc;
+    border: 1px solid rgb(215, 215, 215);
+}
+
+.writerUsername{
+    margin: auto 0 auto 10px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 15px;
+}
+
+.carousel-inner img {
+    object-fit: cover;
+    height: 550px;
+    margin: auto;
+}
+
+.clientExchangeImageSlider{
+    width: 1600px;
+    height: 550px;
+    background-color: white;
+    text-align: center;
+}
+
+.clientExchangeButton{
+    margin: 10px 0;
+    background-color: white;
+    border: 1px solid rgb(215, 215, 215);
+    padding: 8px;
+    font-family: Noto Sans KR;
+    font-size: 14px;
+}
+
+.exchangeButtonContainer{
+    width: 100%;
+    bottom: 0;
+    position: fixed;
+    z-index: 1002;
+    background: #ffffff;
+    height: 60px;
+}
+
+.firstImageSlider, .carouselButton{
+    filter: invert(100%);
+}
+
+.carousel-inner .carousel-item {
+    height: 550px;
+    transition: transform 0.3s ease, -webkit-transform 0.3s ease;
+}

@@ -1,7 +1,6 @@
 package com.project.localbatter.services;
 
 import com.project.localbatter.api.GroupExchangeApiController;
-import com.project.localbatter.api.GroupExchangeApiController.ResponseExchagneInfo;
 import com.project.localbatter.api.group.GroupBoardApiController.ResponseBoardDTO;
 import com.project.localbatter.components.GenerateFile;
 import com.project.localbatter.dto.GenerateFileDTO;
@@ -10,6 +9,7 @@ import com.project.localbatter.dto.exchangeDTO.ClientExchangeDTO;
 import com.project.localbatter.dto.exchangeDTO.ExchagneFileDTO;
 import com.project.localbatter.dto.exchangeDTO.WrtierClientJoinDTO;
 import com.project.localbatter.entity.Exchange.*;
+import com.project.localbatter.entity.GroupBoardEntity;
 import com.project.localbatter.repositories.Exchange.ClientExchangeFileRepository;
 import com.project.localbatter.repositories.Exchange.ClientExchangeRepository;
 import com.project.localbatter.repositories.Exchange.WriterClientJoinRepository;
@@ -28,8 +28,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.project.localbatter.entity.Exchange.QWriterClientJoinEntity.writerClientJoinEntity;
+import static com.project.localbatter.entity.Exchange.QWriterExchangeEntity.writerExchangeEntity;
 import static com.project.localbatter.entity.QGroupBoardEntity.groupBoardEntity;
+import static com.project.localbatter.entity.QGroupBoardFileEntity.groupBoardFileEntity;
 import static com.project.localbatter.entity.QGroupUserJoinEntity.groupUserJoinEntity;
+import static com.project.localbatter.entity.QUserEntity.userEntity;
 
 @Service
 @RequiredArgsConstructor
@@ -115,17 +118,16 @@ public class ExchangeService {
         return clientExchangeEntity;
     }
 
-    public ResponseExchagneInfo getExchangeInfo(GroupBoardDTO groupBoardDTO){
+    public GroupBoardEntity getExchangeInfo(GroupBoardDTO groupBoardDTO){
         return queryFactory
-                .selectDistinct(Projections.fields(ResponseExchagneInfo.class, groupBoardEntity))
-                .from(groupBoardEntity)
+                .selectFrom(groupBoardEntity)
                 .innerJoin(groupBoardEntity.groupUserJoinEntity, groupUserJoinEntity)
                 .fetchJoin()
-                .innerJoin(groupUserJoinEntity.user)
+                .innerJoin(groupUserJoinEntity.user, userEntity)
                 .fetchJoin()
-                .innerJoin(groupBoardEntity.writerExchangeEntity)
+                .innerJoin(groupBoardEntity.writerExchangeEntity, writerExchangeEntity)
                 .fetchJoin()
-                .innerJoin(groupBoardEntity.files)
+                .innerJoin(groupBoardEntity.files, groupBoardFileEntity)
                 .fetchJoin()
                 .where(groupBoardEntity.boardId.eq(groupBoardDTO.getBoardId()))
                 .fetchFirst();

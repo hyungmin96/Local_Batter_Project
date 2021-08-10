@@ -55,7 +55,7 @@ public class GroupExchangeApiController {
 
     @GetMapping("/view/board")
     public ResponseExchagneInfo getExchangeInfo(GroupBoardDTO groupBoardDTO){
-        return groupExchangeService.getExchangeInfo(groupBoardDTO);
+        return new ResponseExchagneInfo(groupExchangeService.getExchangeInfo(groupBoardDTO));
     }
 
     @GetMapping("/get_board_list")
@@ -66,7 +66,6 @@ public class GroupExchangeApiController {
     }
 
     @Setter @Getter
-    @NoArgsConstructor
     public static class ResponseExchagneInfo{
         private Long id;
         private String username;
@@ -105,6 +104,7 @@ public class GroupExchangeApiController {
                 this.preferTime = entity.getWriterExchangeEntity().getExchangeTime();
             }
         }
+
     }
 
     @Setter @Getter
