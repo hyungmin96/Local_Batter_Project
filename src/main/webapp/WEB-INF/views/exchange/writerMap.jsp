@@ -12,17 +12,17 @@
 </head>
 
 <body>
-<div id="longitude"></div>
-<div id="latitudeValue"></div>
-<div id="currentAddr"></div>
+<div style="display: none" id="longitude"></div>
+<div style="display: none" id="latitudeValue"></div>
 <div class="serachAddr">
-    <input type="text" id="serachAddrText" class="inputbox" placeholder="그룹 이름을 설정해주세요."/>
-    <button class="searchButton"></button>
+    <input style="width: 400px;" type="text" id="serachAddrText" class="clientExchangeInfoBox inputbox" placeholder="검색할 지역의 주소를 입력해주세요"/>
+    <button class="clientExchangeButton searchButton">검색</button>
 </div>
+<div id="currentAddr">지역을 선택하면 해당 위치가 표기됩니다.</div>
 <div id="map" style="width:800px;height:600px;"></div>
 <div>
-    <button onclick="getValue();">확인</button>
-    <button onclick="window.close();">닫기</button>
+    <button class="clientExchangeButton" onclick="getValue();">확인</button>
+    <button class="clientExchangeButton" onclick="window.close();">닫기</button>
 </div>
 <script>
     // 값 전달
@@ -39,5 +39,6 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2f665d933d93346898df736499236f77&libraries=services"></script>
 <script type="text/javascript" src="/js/exchange/registMapAddress.js"></script>
+<link rel="stylesheet" type="text/css" href="/css/clientExchange.css">
 </body>
 </html>

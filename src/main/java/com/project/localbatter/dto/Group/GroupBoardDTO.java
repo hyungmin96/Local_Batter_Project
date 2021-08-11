@@ -22,6 +22,7 @@ GroupBoardDTO implements Serializable {
 
     private Long groupId;
     private Long boardId;
+    private String title;
     private String type = "general";
     private String category = "article";
     private Long userId;
@@ -47,6 +48,7 @@ GroupBoardDTO implements Serializable {
     public GroupBoardEntity toEntity(GroupUserJoinEntity groupUserJoinEntity, WriterExchangeEntity writerExchangeEntity){
         return GroupBoardEntity.builder()
                 .groupId(groupId)
+                .title(title)
                 .content(content)
                 .boardLike(0)
                 .groupUserJoinEntity(groupUserJoinEntity)

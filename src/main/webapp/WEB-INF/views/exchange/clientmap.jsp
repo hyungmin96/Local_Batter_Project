@@ -45,54 +45,69 @@
         <div class="container">
             <div class="exchangeHeader">교환할 물품 정보</div>
             <div style="padding: 10px;">
-                    <img src="/images/upload.png" id="file_add" />
-                    <input id="input_imgs" type="file" accept="image/jpg, image/jpeg, image/png"
+                <input id="clientImagePreview" type="file" accept="image/jpg, image/jpeg, image/png"
                        class="clientImgUpload" name="upload_file" multiple style="display: none">
-                    <div id="clientBoardImageContinaer"></div>
+
+                <div class="clientCategoryBox">
+                    <label class="item__value"><strong>제품 이미지</strong></label>
+                    <div class="col-sm-10" style="display: inline-flex;">
+                        <div id="clientBoardImageContinaer">
+                            <img src="/images/upload.png" class="clientImageUploadButton"/>
+                        </div>
+                    </div>
+                </div>
+
+                <hr style="border: none; height: 1px; background: #a9a9a9; margin: 3px 0 3px 0;" />
 
                 <div class="clientCategoryBox">
                     <label class="item__value"><strong>제품 및 추가금액</strong></label>
                     <div class="col-sm-10">
                         <input type="text" name="title" class="clientExchangeInfoBox clientAddPriceBox" value=""
-                               placeholder="물품에 대한 판매가격을 입력해주세요">
+                               placeholder="교환없이 금액으로 교환할 경우 입력해주세요">
                     </div>
                 </div>
+
+                <hr style="border: none; height: 1px; background: #a9a9a9; margin: 3px 0 3px 0;" />
 
                 <div class="clientCategoryBox">
                     <label class="item__value"><strong>제품 설명</strong></label>
                     <div class="col-sm-10">
-                        <input type="text" name="title" class="inputbox" value=""
-                               placeholder="물품에 대한 판매가격을 입력해주세요">
+                        <textarea name="title" class="clientExchangeInfoBox clientDescriptionBox" value="" row="10"
+                                  placeholder="물품에 대한 설명을 입력해주세요"></textarea>
                     </div>
                 </div>
 
-                <div class="clientCategoryBox">
-                    <label class="item__value"><strong>제품 및 추가금액</strong></label>
-                    <div class="col-sm-10">
-                        <input type="text" name="title" class="clientExchangeInfoBox clientContentBox" value=""
-                               placeholder="물품에 대한 판매가격을 입력해주세요">
-                    </div>
-                </div>
+                <hr style="border: none; height: 1px; background: #a9a9a9; margin: 3px 0 3px 0;" />
 
                 <div class="clientCategoryBox">
                     <label class="item__value"><strong>기타 문의사항</strong></label>
                     <div class="col-sm-10">
-                        <input type="text" name="title" class="clientExchangeInfoBox clientRequestBox" value=""
-                               placeholder="물품에 대한 판매가격을 입력해주세요">
+                        <textarea name="title" class="clientExchangeInfoBox clientRequestBox" value=""
+                                  placeholder="교환할 물품에 대해 궁금한 사항을 입력해주세요"></textarea>
                     </div>
                 </div>
+
+                <hr style="border: none; height: 1px; background: #a9a9a9; margin: 3px 0 3px 0;" />
 
                 <div class="clientCategoryBox">
                     <label class="item__value"><strong>교환지역 설정</strong></label>
                     <div class="col-sm-10">
                         <div class="serachAddr">
-                            <input type="text" name="title" id="serachAddrText" class="inputbox" placeholder="검색할 주소를 입력해주세요."/>
-                            <button class="searchButton">검색</button>
+                            <input style="width: 94%;" type="text" name="title" id="serachAddrText" class="inputbox" placeholder="교환을 원하는 장소를 검색합니다."  />
+                            <button class="clientExchangeButton searchButton">검색</button>
                         </div>
+
+                        <div class="exchangeAddr" style="display: inline-flex; width: 100%;">
+                            <input style="width: 500px; margin-right: 5px;" type="text" id="clientExchangeAddr" class="inputbox" disabled="true" placeholder="주소"  />
+                            <input style="width: 300px;" type="text" id="clientExchangeAddrDetail" class="inputbox" placeholder="세부주소"  />
+                        </div>
+
+                        <input type="hidden" id="clientLongtitude" value=""/>
+                        <input type="hidden" id="clientLatitude" value=""/>
+
                     </div>
                 </div>
-                <div id="map" style="width:600px;height:500px;"></div>
-
+                <div id="map" style="width:100%; height:500px;"></div>
             </div>
         </div>
     </div>
@@ -104,77 +119,12 @@
         </div>
     </div>
 
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2f665d933d93346898df736499236f77&libraries=services"></script>
 <script type="text/javascript" src="/js/exchange/clientMapAddress.js"></script>
-<script type="text/javascript" src="/js/exchange/mapAPI.js"></script>
-<script type="text/javascript" src="/js/exchange/lineTheMap.js"></script>
 <link rel="stylesheet" type="text/css" href="/css/clientExchange.css">
-
-<script>
-    $(document).ready(function(){
-        const data = {
-            boardId: $('.boardId').val()
-        }
-
-        $.ajax({
-            url: '/api/exchange/view/board',
-            type: 'GET',
-            data: data,
-            contentType: 'application/x-www-form-urlencoded',
-            success: function (response){
-
-                console.log(response)
-
-                $('.writerUsername').html(response.username)
-                $('.writerProfile')[0].src = '/upload/' + response.profilePath
-
-                $(document.body).append(
-                    '<input type="hidden" class="writerlongitude" value=' + response.longitude + '>' +
-                    '<input type="hidden" class="writerlatitude" value=' + response.latitude + '>'
-                )
-
-                $.each(response.boardFiles, function(key, value){
-                    $('.carousel-indicators').append(
-                        '<li data-target="#carouselExampleIndicators" class="firstImageSlider" data-slide-to="' + key + '"></li>'
-                    )
-                        $('.carousel-inner').append(
-                        '<div class="carousel-item" data-bs-interval="3000">' +
-                            '<img class="d-block w-100" src="/upload/' + value + '">'+
-                        '</div>'
-                    )
-                })
-                document.getElementsByClassName('firstImageSlider')[0].setAttribute('class', 'firstImageSlider', 'active')
-                document.getElementsByClassName('carousel-item')[0].setAttribute('class', 'carousel-item active')
-
-                $('.writerBoardContentContainer').append(
-                    "<hr />" +
-                    "<div class='writerProductContent'>" +
-                        response.content +
-                    "</div>" +
-                    "<hr />" +
-                    "<div class='writerProductLocation'>" +
-                        response.location +
-                    "</div>" +
-                    "<div id='writerLocationMap' style='width:100%; height:270px; border: 1px solid #9d9d9d'>" +
-
-                    "</div>"
-            )
-
-                var writerMapContainer = document.getElementById('map') // 지도를 표시할 div
-                var clientMapContainer = document.getElementById('writerLocationMap'), // 지도를 표시할 div
-                    mapOption = {
-                        center: new kakao.maps.LatLng(response.longitude, response.latitude), // 지도의 중심좌표
-                        level: 6 // 지도의 확대 레벨
-                    };
-                var writerMap = new kakao.maps.Map(writerMapContainer, mapOption);
-                var clientMap = new kakao.maps.Map(clientMapContainer, mapOption);
-
-                setMaker(writerMap, response.residence, response.longitude, response.latitude)
-                // display marker to client's map
-                setMaker(clientMap, response.residence, response.longitude, response.latitude)
-                // move to specific cordinate in the map
-                panTo(response.longitude, response.latitude)
-            }
-        })
-    })
-</script>
+<script type="text/javascript" src="/js/exchange/clientMap.js"></script>
+<script type="text/javascript" src="/js/exchange/lineTheMap.js"></script>
+<script type="text/javascript" src="/js/exchange/mapAPI.js"></script>

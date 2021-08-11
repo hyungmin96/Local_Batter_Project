@@ -22,11 +22,11 @@ public class WriterClientJoinEntity {
     @Column(name = "client_id")
     private Long clientId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "writer_exchange_id")
     private WriterExchangeEntity writerExchangeEntity;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "client_exchange_id")
     private ClientExchangeEntity clientExchangeEntity;
 

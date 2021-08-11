@@ -32,6 +32,15 @@ public class ClientExchangeEntity extends BaseTimeEntity {
     @Column(name = "client_request")
     private String request;
 
+    @Column(name = "client_addr")
+    private String address;
+
+    @Column(name = "client_longtitude")
+    private String longtitude;
+
+    @Column(name = "client_latitude")
+    private String latitude;
+
     @Column(name = "board_Id")
     private Long boardId;
 

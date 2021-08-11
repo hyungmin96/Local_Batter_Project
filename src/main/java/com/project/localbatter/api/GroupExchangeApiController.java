@@ -104,7 +104,6 @@ public class GroupExchangeApiController {
                 this.preferTime = entity.getWriterExchangeEntity().getExchangeTime();
             }
         }
-
     }
 
     @Setter @Getter

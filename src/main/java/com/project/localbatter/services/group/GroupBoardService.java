@@ -50,7 +50,7 @@ public class GroupBoardService {
         GroupBoardEntity groupBoardEntity = queryFactory
                 .selectDistinct(QGroupBoardEntity.groupBoardEntity)
                 .from(QGroupBoardEntity.groupBoardEntity)
-                .join(QGroupBoardEntity.groupBoardEntity.files)
+                .leftJoin(QGroupBoardEntity.groupBoardEntity.files)
                 .fetchJoin()
                 .where(QGroupBoardEntity.groupBoardEntity.boardId.eq(groupBoardDTO.getBoardId()))
                 .fetchOne();
@@ -65,7 +65,7 @@ public class GroupBoardService {
         }
         if(groupBoardDTO.getDeleteImageIndex() != null)
             Arrays.stream(groupBoardDTO.getDeleteImageIndex()).forEach(boardFiles::remove);
-        groupBoardEntity.update(groupBoardDTO.getContent(), boardFiles);
+        groupBoardEntity.update(groupBoardDTO.getTitle(), groupBoardDTO.getContent(), boardFiles);
         groupBoardRepository.save(groupBoardEntity);
         return groupBoardEntity;
     }

@@ -6,20 +6,23 @@ var dots = {}; // 선이 그려지고 있을때 클릭할 때마다 클릭 지�
 
 // 지도에 클릭 이벤트를 등록합니다
 // 지도를 클릭하면 선 그리기가 시작됩니다 그려진 선이 있으면 지우고 다시 그립니다
-kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
+kakao.maps.event.addListener(clientMap, 'click', function(mouseEvent) {
 
     // 마우스로 클릭한 위치입니다
     var clickPosition = mouseEvent.latLng;
 
     // 지도 클릭이벤트가 발생했는데 선을 그리고있는 상태가 아니면
     if (!drawingFlag) {
-
         // 상태를 true로, 선이 그리고있는 상태로 변경합니다
         drawingFlag = true;
 
         if(drawingFlag){
-            marker.setPosition(clickPosition);
-            marker.setMap(map);
+            searchDetailAddrFromCoords(mouseEvent.latLng, function(result, status) {
+                document.getElementById('clientExchangeAddr').value = result[0].address.address_name;
+                // 마커를 클릭한 위치에 표시합니다
+                marker.setPosition(mouseEvent.latLng);
+                marker.setMap(clientMap);
+            });
         }
 
         // 지도 위에 선이 표시되고 있다면 지도에서 제거합니다
@@ -33,7 +36,7 @@ kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
 
         // 클릭한 위치를 기준으로 선을 생성하고 지도위에 표시합니다
         clickLine = new kakao.maps.Polyline({
-            map: map, // 선을 표시할 지도입니다
+            map: clientMap, // 선을 표시할 지도입니다
             path: [clickPosition], // 선을 구성하는 좌표 배열입니다 클릭한 위치를 넣어줍니다
             strokeWeight: 3, // 선의 두께입니다
             strokeColor: '#db4040', // 선의 색깔입니다
@@ -54,13 +57,10 @@ kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
 
 
     } else { // 선이 그려지고 있는 상태이면
-
         // 그려지고 있는 선의 좌표 배열을 얻어옵니다
         var path = clickLine.getPath();
-
         // 좌표 배열에 클릭한 위치를 추가합니다
         path.push(clickPosition);
-
         // 다시 선에 좌표 배열을 설정하여 클릭 위치까지 선을 그리도록 설정합니다
         clickLine.setPath(path);
 
@@ -71,7 +71,7 @@ kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
 
 // 지도에 마우스무브 이벤트를 등록합니다
 // 선을 그리고있는 상태에서 마우스무브 이벤트가 발생하면 그려질 선의 위치를 동적으로 보여주도록 합니다
-kakao.maps.event.addListener(map, 'mousemove', function (mouseEvent) {
+kakao.maps.event.addListener(clientMap, 'mousemove', function (mouseEvent) {
 
     // 지도 마우스무브 이벤트가 발생했는데 선을 그리고있는 상태이면
     if (drawingFlag){
@@ -85,7 +85,7 @@ kakao.maps.event.addListener(map, 'mousemove', function (mouseEvent) {
         // 마우스 클릭으로 그려진 마지막 좌표와 마우스 커서 위치의 좌표로 선을 표시합니다
         var movepath = [path[path.length-1], mousePosition];
         moveLine.setPath(movepath);
-        moveLine.setMap(map);
+        moveLine.setMap(clientMap);
 
         var distance = Math.round(clickLine.getLength() + moveLine.getLength()), // 선의 총 거리를 계산합니다
             content = '<div class="dotOverlay distanceInfo">총거리 <span class="number">' + distance + '</span>m</div>'; // 커스텀오버레이에 추가될 내용입니다
@@ -97,7 +97,7 @@ kakao.maps.event.addListener(map, 'mousemove', function (mouseEvent) {
 
 // 지도에 마우스 오른쪽 클릭 이벤트를 등록합니다
 // 선을 그리고있는 상태에서 마우스 오른쪽 클릭 이벤트가 발생하면 선 그리기를 종료합니다
-kakao.maps.event.addListener(map, 'rightclick', function (mouseEvent) {
+kakao.maps.event.addListener(clientMap, 'rightclick', function (mouseEvent) {
 
     // 지도 오른쪽 클릭 이벤트가 발생했는데 선을 그리고있는 상태이면
     if (drawingFlag) {
@@ -136,8 +136,26 @@ kakao.maps.event.addListener(map, 'rightclick', function (mouseEvent) {
 
         // 상태를 false로, 그리지 않고 있는 상태로 변경합니다
         drawingFlag = false;
+    } else{
+        deleteClickLine();
+        deleteDistnce();
+        deleteCircleDot();
+
+        // 선을 그리지 않고 교환할 위치를 설정합니다.
+        searchDetailAddrFromCoords(mouseEvent.latLng, function(result, status) {
+            document.getElementById('clientExchangeAddr').value = result[0].address.address_name;
+            // 마커를 클릭한 위치에 표시합니다
+            marker.setPosition(mouseEvent.latLng);
+            marker.setMap(clientMap);
+            document.getElementById('clientLongtitude').value = mouseEvent.latLng.Ma
+            document.getElementById('clientLatitude').value = mouseEvent.latLng.La
+        });
     }
 });
+
+function searchDetailAddrFromCoords(coords, callback) {
+    geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
+}
 
 // 클릭으로 그려진 선을 지도에서 제거하는 함수입니다
 function deleteClickLine() {
@@ -161,7 +179,7 @@ function showDistance(content, position) {
 
         // 커스텀 오버레이를 생성하고 지도에 표시합니다
         distanceOverlay = new kakao.maps.CustomOverlay({
-            map: map, // 커스텀오버레이를 표시할 지도입니다
+            map: clientMap, // 커스텀오버레이를 표시할 지도입니다
             content: content,  // 커스텀오버레이에 표시할 내용입니다
             position: position, // 커스텀오버레이를 표시할 위치입니다.
             xAnchor: 0,
@@ -192,7 +210,7 @@ function displayCircleDot(position, distance) {
     });
 
     // 지도에 표시합니다
-    circleOverlay.setMap(map);
+    circleOverlay.setMap(clientMap);
 
     if (distance > 0) {
         // 클릭한 지점까지의 그려진 선의 총 거리를 표시할 커스텀 오버레이를 생성합니다
@@ -204,7 +222,7 @@ function displayCircleDot(position, distance) {
         });
 
         // 지도에 표시합니다
-        distanceOverlay.setMap(map);
+        distanceOverlay.setMap(clientMap);
     }
 
     // 배열에 추가합니다
@@ -265,19 +283,21 @@ function getTimeHTML(distance) {
 
     // 거리와 도보 시간, 자전거 시간을 가지고 HTML Content를 만들어 리턴합니다
     var content = '<ul class="dotOverlay distanceInfo">';
+    content += '    <div class="distanceInfoBox">';
     content += '    <li>';
-    content += '        <span class="label">총거리</span><span class="number">' + distance + '</span>m';
+    content += '        <span class="label">총거리 : </span><span class="number">' + distance + '</span>m';
     content += '    </li>';
     content += '    <li>';
-    content += '        <span class="label">도보</span>' + walkHour + walkMin;
+    content += '        <img src="/images/exchange/walking_20px.png"/>' + walkHour + walkMin;
     content += '    </li>';
     content += '    <li>';
-    content += '        <span class="label">자전거</span>' + bycicleHour + bycicleMin;
+    content += '        <img src="/images/exchange/bike_path_20px.png"/>' + bycicleHour + bycicleMin;
     content += '    </li>';
     content += '    <li>';
-    content += '        <span class="label">자가용</span>' + vehicleHour + vehicleMin;
+    content += '        <img src="/images/exchange/car_20px.png"/>' + vehicleHour + vehicleMin;
     content += '    </li>';
     content += '</ul>'
+    content += '</div>'
 
     return content;
 }

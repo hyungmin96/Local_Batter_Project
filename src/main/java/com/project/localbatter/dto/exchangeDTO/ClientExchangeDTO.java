@@ -20,6 +20,9 @@ public class ClientExchangeDTO implements Serializable {
     private String content;
     private String price;
     private String request;
+    private String address;
+    private String longtitude;
+    private String latitude;
     private MultipartFile[] images;
     private List<ExchangeFileEntity> files = new ArrayList<>();
 
@@ -33,6 +36,9 @@ public class ClientExchangeDTO implements Serializable {
                     .content(content)
                     .boardId(boardId)
                     .request(request)
+                    .address(address)
+                    .longtitude(longtitude)
+                    .latitude(latitude)
                     .price(price)
                     .userId(userId)
                     .build();

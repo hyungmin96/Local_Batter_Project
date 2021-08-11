@@ -25,14 +25,39 @@ function setMaker(map, residence, long, lat){
         position: markerPosition
     });
     setMarker.setMap(map);
-    var iwContent = '<div style="padding:5px;">' + residence + '<br>' +
+    var iwContent = '<div class="windowInfoMarker" style="padding:5px;">' + residence + '<br>' +
             '<a href="https://map.kakao.com/link/to/' + residence + ',' + long + ',' + lat + '" style="color:blue" target="_blank">길찾기</a></div>',// 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
         iwPosition = new kakao.maps.LatLng(long, lat); //인포윈도우 표시 위치입니다
 
     // 인포윈도우를 생성합니다
     var infowindow = new kakao.maps.InfoWindow({
         position : iwPosition,
-        content : iwContent
+        content : iwContent,
+    });
+    infowindow.open(map, setMarker);
+}
+
+function setOtherMaker(map, residence, long, lat){
+    var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
+    // 마커 이미지의 이미지 크기 입니다
+    var imageSize = new kakao.maps.Size(24, 35);
+    // 마커 이미지를 생성합니다
+    var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+
+    let markerPosition  = new kakao.maps.LatLng(long, lat);
+    let setMarker = new kakao.maps.Marker({
+        position: markerPosition,
+        image : markerImage // 마커 이미지
+    });
+    setMarker.setMap(map);
+    var iwContent = '<div class="windowInfoMarker" style="padding:5px;">' + residence + '<br>' +
+            '<a href="https://map.kakao.com/link/to/' + residence + ',' + long + ',' + lat + '" style="color:blue" target="_blank">길찾기</a></div>',// 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+        iwPosition = new kakao.maps.LatLng(long, lat); //인포윈도우 표시 위치입니다
+
+    // 인포윈도우를 생성합니다
+    var infowindow = new kakao.maps.InfoWindow({
+        position : iwPosition,
+        content : iwContent,
     });
     infowindow.open(map, setMarker);
 }
@@ -42,8 +67,8 @@ document.getElementsByClassName('searchButton')[0].addEventListener('click', fun
     geocoder.addressSearch($('#serachAddrText').val(), function (result, status) {
         if (status === kakao.maps.services.Status.OK) {
             var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-            infowindow.open(map, marker);
-            map.setCenter(coords);
+            infowindow.open(clientMap, marker);
+            clientMap.setCenter(coords);
         }
     });
 })

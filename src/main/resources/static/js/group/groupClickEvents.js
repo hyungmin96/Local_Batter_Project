@@ -180,15 +180,17 @@ var srcArray = []
 var deleteImageIndex = []
 var updateBoardId
 function updateGroupBoardModal(event){
-    const content = $(event)[0].path[6].children[1].innerHTML
+    const title = $(event)[0].path[6].children[1].children[0].innerText
+    const content = $(event)[0].path[6].children[2].innerHTML
     updateBoardId = $(event)[0].path[7].children[0].value
-    const img = $(event)[0].path[6].children[2].firstChild.children
+    const img = $(event)[0].path[6].children[3].children[0].children
 
-    for(let i = 1; i <= img.length && img[0].className == 'collageItem'; i++){
+    for(let i = 1; img != null && i <= img.length && img[0].className == 'collageItem'; i++){
         let src = document.querySelector('#board_' + updateBoardId + ' > li:nth-child(' + i +') > button > img').getAttribute('src')
         srcArray.push(src)
     }
 
+    $('.groupTitleInputBox')[0].value = title
     $('#board_content_box').html(content)
     for(let i = 0; i < srcArray.length; i++) {
         $('#board_content_box').append(
@@ -207,7 +209,8 @@ function updateGroupBoardModal(event){
 }
 
 $(document).on('click', '.updateBtn', function () {
-    updateGroupBoard(updateBoardId);
+    var index = $('.updateBtn').index(this)
+    updateGroupBoard(index, updateBoardId);
 });
 
 function previewImgDelete(e) {

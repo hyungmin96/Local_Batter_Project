@@ -202,6 +202,9 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" style="padding: 0.5rem 0.5rem 0 0.5rem">
+                <div class="groupTitleBox" style="padding: 10px 10px 0 10px;">
+                    <input style="background: #fdfdfd" type="text" class="groupTitleInputBox" value="" placeholder="게시글의 제목을 입력해주세요">
+                </div>
                 <div style="padding: 10px; margin-top: 10px;">
                     <div style="padding: 5px; background-color: #f8f9fa;">
                         <div class="upload _contentUploadBox" style="display: inline-flex; width: 100%">

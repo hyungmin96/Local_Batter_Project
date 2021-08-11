@@ -11,7 +11,7 @@ public class GroupExchangeController {
 
     @GetMapping("/writer/map")
     public String getHome(){
-        return "/exchange/wrtiermap";
+        return "/exchange/writerMap";
     }
 
     // 게시글 작성 controller

@@ -532,6 +532,14 @@ _content img{
     margin: 0 7px 0 7px;
 }
 
+.groupTitleInputBox{
+    outline: none;
+    border: none;
+    padding: 7px;
+    font-family: Noto Sans KR;
+    width: 100%;
+}
+
 .boardDropDownButton{
     background-color: #3b6ae4;
     border: none;
@@ -567,6 +575,11 @@ _content img{
     outline: none;
     border: none;
     resize: none;
+}
+
+.groupBoardTitle{
+    font-family: 'Noto Sans KR', sans-serif ;
+    font-size: 20px;
 }
 
 .search_bar{

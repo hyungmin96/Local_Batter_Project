@@ -7,13 +7,17 @@ const userInfo = {
 
 
 
-function updateGroupBoard(boardId){
+function updateGroupBoard(index, boardId){
+
     const postBox = document.getElementById('board_content_box')
+    const title = document.getElementsByClassName('groupTitleInputBox')[index].value
+
     if (postBox.innerText.length > 301)  alert('300자 이하로 작성 가능합니다.')
     else if (infoImgs.length > 0 || postBox.innerText.length > 0) {
         var boardId = boardId;
         var formData = new FormData();
 
+        formData.append('title', title);
         formData.append('content', postBox.innerHTML.split('<div class=\"imgBox\"')[0]);
         formData.append('boardId', boardId);
 
@@ -49,6 +53,7 @@ function postContent() {
         const groupId = $('.groupId').val();
         const formData = new FormData();
         formData.append('locationDetail', $('.locationDetailTinfo')[0].value)
+        formData.append('title', $('.groupTitleInputBox').val())
         formData.append('residence', $('#address').val())
         formData.append('buildingcode', $('#buildingcode').val())
         formData.append('detailAddr', $('.detailAddr')[0].value)
@@ -435,8 +440,6 @@ function showBoardInfo(value){
 }
 
 function inputPostBox(value) {
-    console.log(value)
-
     const boardType = (value.type !== 'general') ? "<span class='notice _noticeText'>공지</span>" : '';
     const boardCategory = (value.boardCategory == 'exchange') ? "<span class='boardCategory'>교환 게시글</span>" : '';
 
@@ -467,7 +470,11 @@ function inputPostBox(value) {
         "</div>" +
         "</div>" +
         "</div>" +
-        "<div class='board _content' style='padding: 10px 10px 0 10px;'>" + value.content + "</div>" +
+        "<div class='groupBoardTitleBox' style='padding: 10px;'>" +
+        "<div id='groupBoardTitleInputBox' class='groupBoardTitle'>" + value.title + "</div>" +
+        "<hr style='border: none; height: 1px; background-color: #cccccc; margin-top: 10px' />" +
+        "</div>" +
+        "<div class='board _content' style='padding: 5px 10px 0 10px;'>" + value.content + "</div>" +
         imgShow(value.boardId, value.boardFiles) +
         exchangeInfoShow(value) +
         "<div style='display: inline-flex; margin-top: 15px;'>" +

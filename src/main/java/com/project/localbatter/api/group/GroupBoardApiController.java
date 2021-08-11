@@ -85,6 +85,7 @@ public class GroupBoardApiController {
         private Long boardId;
         private int boardLike;
         private GroupBoardEntity.BoardCategory BoardCategory;
+        private String title;
         private String content;
         private GroupBoardEntity.BoardType type; // 그룹 공지, 일반 글
         private List<String> boardFiles;
@@ -109,6 +110,7 @@ public class GroupBoardApiController {
             this.boardLike = entity.getBoardLike();
             this.BoardCategory = entity.getBoardCategory();
             this.type = entity.getType();
+            this.title = entity.getTitle();
             this.content = entity.getContent();
             this.boardFiles = entity.getFiles().stream().map(GroupBoardFileEntity::getName).collect(Collectors.toList());
             this.comments = (entity.getComments() != null) ? entity.getComments().stream().map(ResponseCommentDTO::new).collect(Collectors.toList()) : new ArrayList<>();

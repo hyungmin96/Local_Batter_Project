@@ -1,6 +1,5 @@
 package com.project.localbatter.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.localbatter.entity.Exchange.WriterExchangeEntity;
 import lombok.*;
 
@@ -24,6 +23,9 @@ public class GroupBoardEntity extends BaseTimeEntity {
     @Column(name = "group_id")
     private Long groupId;
 
+    @Column(name = "board_title")
+    private String title;
+
     @Lob
     @Column(name = "board_content")
     private String content;
@@ -45,7 +47,6 @@ public class GroupBoardEntity extends BaseTimeEntity {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "board_writer")
-    @JsonIgnore
     private GroupUserJoinEntity groupUserJoinEntity;
 
     @OneToMany(mappedBy = "groupBoard", fetch = LAZY, cascade=  CascadeType.ALL)
@@ -54,7 +55,8 @@ public class GroupBoardEntity extends BaseTimeEntity {
     @OneToMany(mappedBy = "groupBoard", fetch = LAZY, cascade = CascadeType.ALL)
     private List<GroupBoardFileEntity> files;
 
-    public void update(String content, List<GroupBoardFileEntity> files){
+    public void update(String title, String content, List<GroupBoardFileEntity> files){
+        this.title = title;
         this.content = content;
         if(files != null && files.size() > 0) this.files = files;
     }

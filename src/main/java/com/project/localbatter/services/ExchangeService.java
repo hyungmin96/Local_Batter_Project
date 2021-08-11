@@ -127,7 +127,7 @@ public class ExchangeService {
                 .fetchJoin()
                 .innerJoin(groupBoardEntity.writerExchangeEntity, writerExchangeEntity)
                 .fetchJoin()
-                .innerJoin(groupBoardEntity.files, groupBoardFileEntity)
+                .leftJoin(groupBoardEntity.files, groupBoardFileEntity)
                 .fetchJoin()
                 .where(groupBoardEntity.boardId.eq(groupBoardDTO.getBoardId()))
                 .fetchFirst();
