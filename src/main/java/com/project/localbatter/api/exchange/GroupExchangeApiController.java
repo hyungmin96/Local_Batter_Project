@@ -1,6 +1,5 @@
-package com.project.localbatter.api;
+package com.project.localbatter.api.exchange;
 
-import com.project.localbatter.api.group.GroupBoardApiController.ResponseBoardDTO;
 import com.project.localbatter.dto.Group.GroupBoardDTO;
 import com.project.localbatter.dto.exchangeDTO.ClientExchangeDTO;
 import com.project.localbatter.entity.Exchange.ClientExchangeEntity;
@@ -58,13 +57,6 @@ public class GroupExchangeApiController {
         return new ResponseExchagneInfo(groupExchangeService.getExchangeInfo(groupBoardDTO));
     }
 
-    @GetMapping("/get_board_list")
-    public Page<ResponseBoardDTO> getBoardList(GroupBoardDTO groupBoardDTO){
-        Pageable page = PageRequest.of(groupBoardDTO.getPage(), groupBoardDTO.getDisplay(), Sort.Direction.ASC, "id");
-        JPAQuery<ResponseBoardDTO> query = groupExchangeService.getBoardList(groupBoardDTO, page);
-        return new PageImpl<>(query.fetch(), page, query.fetchCount());
-    }
-
     @Setter @Getter
     public static class ResponseExchagneInfo{
         private Long id;
@@ -72,6 +64,7 @@ public class GroupExchangeApiController {
         private String profilePath;
         private LocalDateTime regTime;
         private Long boardId;
+        private String title;
         private String content;
         private List<String> boardFiles;
 
@@ -91,6 +84,7 @@ public class GroupExchangeApiController {
             this.profilePath = entity.getGroupUserJoinEntity().getUser().getProfilePath();
             this.regTime = entity.getRegTime();
             this.boardId = entity.getBoardId();
+            this.title = entity.getTitle();
             this.content = entity.getContent();
             this.boardFiles = entity.getFiles().stream().map(GroupBoardFileEntity::getName).collect(Collectors.toList());
             if (entity.getWriterExchangeEntity() != null) {
@@ -131,12 +125,13 @@ public class GroupExchangeApiController {
     public static class ResponseClientDTO{
         private Long clientId;
         private Long userId;
-        private Long writerId;
-        private String username;
-        private String userProfile;
-        private String content; // client's product description
-        private String price; // add price with product or none product
-        private String request; // client's request content
+        private Long writerId;      // writer user id
+        private String username;    // writer user name
+        private String profilePath; // wrtier profile image path
+        private String title;
+        private String content;     // client's product description
+        private String price;       // add price with product or none product
+        private String request;     // client's request content
         private WriterClientJoinEntity.status status; // To check exchange was progressing
         private List<String> file;
 

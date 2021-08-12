@@ -12,10 +12,14 @@ public class WrtierClientJoinDTO {
     private WriterExchangeEntity writerExchangeEntity;
     private ClientExchangeEntity clientExchangeEntity;
     private WriterClientJoinEntity.status status = WriterClientJoinEntity.status.wait;
+    private Long writerId;
+    private Long clientId;
 
     public WrtierClientJoinDTO(WriterExchangeEntity writerExchangeEntity, ClientExchangeEntity clientExchangeEntity) {
         this.writerExchangeEntity = writerExchangeEntity;
         this.clientExchangeEntity = clientExchangeEntity;
+        this.writerId = writerExchangeEntity.getUserId();
+        this.clientId = clientExchangeEntity.getUserId();
     }
 
     public WriterClientJoinEntity toEntity(){
@@ -23,6 +27,8 @@ public class WrtierClientJoinDTO {
                 .writerExchangeEntity(writerExchangeEntity)
                 .clientExchangeEntity(clientExchangeEntity)
                 .status(status)
+                .writerId(writerId)
+                .clientId(clientId)
                 .build();
     }
 }

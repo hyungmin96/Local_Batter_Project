@@ -12,11 +12,13 @@ import java.util.List;
 @Setter @Getter
 public class ClientExchangeDTO implements Serializable {
 
-    private Long clientId;
-    private Long userId;
+    private Long clientId; // exchange entity unique id
+    private Long userId; // client user id
+    private Long writerId; // writer user id
     private String username;
     private String userProfile;
     private Long boardId; // 교환을 요청한 게시글 번호
+    private String title;
     private String content;
     private String price;
     private String request;
@@ -33,6 +35,7 @@ public class ClientExchangeDTO implements Serializable {
     public ClientExchangeEntity toEntity(){
             return ClientExchangeEntity
                     .builder()
+                    .title(title)
                     .content(content)
                     .boardId(boardId)
                     .request(request)

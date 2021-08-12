@@ -18,6 +18,12 @@
     margin: 0 5px 5px 5px;
 }
 
+.writerProductTitle{
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 21px;
+    padding: 0 5px 5px 0;
+}
+
 .writerProductContent{
     font-family: 'InfinitySans-RegularA1', sans-serif;
     font-size: 15px;
@@ -113,13 +119,13 @@
 
 .carousel-inner img {
     object-fit: cover;
-    height: 550px;
+    height: 610px;
     margin: auto;
 }
 
 .clientExchangeImageSlider{
     width: 1600px;
-    height: 550px;
+    height: 610px;
     background-color: rgb(238, 240, 243);
     text-align: center;
 }

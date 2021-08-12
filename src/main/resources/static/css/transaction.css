@@ -1,64 +1,77 @@
-@import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
-    .notosanskr * { 
-    font-family: 'Noto Sans KR', sans-serif;
-}
-
 @font-face {
-    font-family: 'ChosunBg';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@1.0/ChosunBg.woff') format('woff');
-    font-weight: normal;
+    font-family: 'Pretendard-SemiBold';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-SemiBold.woff') format('woff');
+    font-weight: 600;
     font-style: normal;
 }
 
-#manner__box{
-    margin-left: 10px;
-    height: 30px;
-    background-color: rgb(231, 231, 231);
-    border: 1px solid rgb(230, 230, 230);
-    border-radius: 3px;
-    font-family: ChosunBg;
-    font-size: 13px;
-    color: rgb(109, 109, 109);
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
 }
 
-.container__product__box{
-    display: flex;
-    flex-direction: row;
+.actionButton{
+    margin: 10px 3px 0 3px;
     background-color: white;
-    margin: 5px 0px;
-}
-
-.container__product__box div{
-    font-size: 14px;
+    border: 1px solid rgb(215, 215, 215);
+    padding: 8px;
     font-family: Noto Sans KR;
-    margin: auto auto;
-    justify-content: center;
-    align-content: center;
+    font-size: 13px;
+    cursor: pointer;
 }
 
-.thumbnail__img{
+input[type=checkbox]{
+    width: 20px;
+    height: 20px;
+}
+
+.itemHeader{
+    font-family: 'Pretendard-SemiBold', sans-serif;
+    font-size: 19px;
+}
+
+.textItem{
+    font-family: 'Pretendard-Regular', sans-serif;
+    font-size: 29px;
+    color: #252525;
+}
+
+.requestItemBox{
+    margin: auto auto;
+    font-family: 'Pretendard-Regular', sans-serif;
+    font-size: 14px;
+}
+
+.requestTitle{
+    font-family: 'Pretendard-SemiBold', sans-serif;
+    font-size: 17px;
+}
+
+.requestContent{
+    font-family: 'Pretendard-Regular', sans-serif;
+    font-size: 14px;
+    max-height: 70px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    word-wrap: break-word;
+    line-height: 1.2em;
+    height: 3.6em;
+}
+
+.requestItemBox img{
     width: 100px;
     height: 100px;
+    object-fit: cover;
+    border-radius: 10%;
 }
 
-.transaction__button{
-    text-align: right;
-}
-
-#transaction__btn{
-    font-size: 14px;
-    font-family: Noto Sans KR;
-}
-
-.transaction__button button{
-    font-size: 14px;
-}
-
-.product__items__container a{
-    text-decoration: none;
-    color: black;
-}
-
-.transaction__status__container div{
-    font-size: 12px;
+.requestUserProfile img{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
 }

@@ -1,5 +1,6 @@
 package com.project.localbatter.entity.Exchange;
 
+import com.project.localbatter.entity.BaseTimeEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -10,7 +11,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Builder
 @Table(name = "tbl_writer_client_join")
-public class WriterClientJoinEntity {
+public class WriterClientJoinEntity extends BaseTimeEntity {
 
     @Id @GeneratedValue
     @Column(name = "id")
@@ -22,11 +23,11 @@ public class WriterClientJoinEntity {
     @Column(name = "client_id")
     private Long clientId;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "writer_exchange_id")
     private WriterExchangeEntity writerExchangeEntity;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_exchange_id")
     private ClientExchangeEntity clientExchangeEntity;
 

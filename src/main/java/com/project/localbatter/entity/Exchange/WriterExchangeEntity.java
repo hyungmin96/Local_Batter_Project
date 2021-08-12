@@ -19,6 +19,9 @@ public class WriterExchangeEntity extends BaseTimeEntity {
     @Id @GeneratedValue
     private Long id;
 
+    @Column(name = "writer_user_id")
+    private Long userId;
+
     @Column(name = "writer_location")
     private String location;
 

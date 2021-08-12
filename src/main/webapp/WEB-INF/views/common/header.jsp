@@ -111,8 +111,8 @@
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                     <li><a href="/profile/user=${principal.username}" class="dropdown-item">프로필 보기</a><hr/></li>
-                                    <li><a href="/write" class="dropdown-item">판매글 작성</a></li>
-                                    <li><a href="#" class="dropdown-item">내 상점</a><hr/></li>
+                                    <li><a href="/view/transaction/my/boards" class="dropdown-item">내가 쓴 글 보기</a></li>
+                                    <li><a href="/view/transaction/my/boards" class="dropdown-item">교환목록 보기</a><hr/></li>
                                     <li><a href="/user/logout" class="dropdown-item">로그아웃</a></li>
                                 </ul>
                             </div>

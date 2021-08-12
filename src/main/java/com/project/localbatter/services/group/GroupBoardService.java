@@ -46,6 +46,8 @@ public class GroupBoardService {
     private final PagingUtil pagingUtil;
     private final Logger log = LogManager.getLogger();
 
+    // 그룹 게시글 수정 api
+    // update groub's board title, content
     public GroupBoardEntity update(GroupBoardDTO groupBoardDTO){
         GroupBoardEntity groupBoardEntity = queryFactory
                 .selectDistinct(QGroupBoardEntity.groupBoardEntity)
@@ -56,15 +58,17 @@ public class GroupBoardService {
                 .fetchOne();
         List<GenerateFileDTO> files = generateFile.createFile(groupBoardDTO.getBoard_img());
         List<GroupBoardFileEntity> boardFiles = groupBoardEntity.getFiles();
+        // convert fileDTO to FileEntity
         files.forEach(item -> boardFiles.add(new GroupBoardFileDTO(item).toEntity(groupBoardEntity)));
-        if(groupBoardDTO.getDeleteImageIndex() != null){
-            Arrays.stream(groupBoardDTO.getDeleteImageIndex()).forEach(item -> {
-                Long id = boardFiles.get(item).getId();
-                groupBoardFileRepository.deleteItem(id);
-            });
-        }
-        if(groupBoardDTO.getDeleteImageIndex() != null)
-            Arrays.stream(groupBoardDTO.getDeleteImageIndex()).forEach(boardFiles::remove);
+        try{
+            if(groupBoardDTO.getDeleteImageIndex() != null && boardFiles.size() > 0){
+                Arrays.stream(groupBoardDTO.getDeleteImageIndex()).forEach(item -> {
+                    Long id = boardFiles.get(item).getId();
+                    groupBoardFileRepository.deleteItem(id);
+                });
+                Arrays.stream(groupBoardDTO.getDeleteImageIndex()).forEach(boardFiles::remove);
+            }
+        }catch(Exception ignored){}
         groupBoardEntity.update(groupBoardDTO.getTitle(), groupBoardDTO.getContent(), boardFiles);
         groupBoardRepository.save(groupBoardEntity);
         return groupBoardEntity;

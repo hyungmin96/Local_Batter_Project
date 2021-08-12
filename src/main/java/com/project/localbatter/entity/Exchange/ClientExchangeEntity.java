@@ -23,6 +23,9 @@ public class ClientExchangeEntity extends BaseTimeEntity {
     @Column(name = "client_user_id")
     private Long userId;
 
+    @Column(name = "client_title")
+    private String title;
+
     @Column(name = "client_cotent")
     private String content;
 

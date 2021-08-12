@@ -25,7 +25,7 @@ GroupBoardDTO implements Serializable {
     private String title;
     private String type = "general";
     private String category = "article";
-    private Long userId;
+    private Long userId; // writer user id
     private String username;
     private String content;
     private String result;
@@ -66,6 +66,8 @@ GroupBoardDTO implements Serializable {
                     .longitude(longitude)
                     .location(location)
                     .detailAddr(detailAddr)
+                    .detailAddr(detailAddr)
+                    .userId(userId)
                     .buildingcode(buildingcode)
                     .locationDetail(locationDetail)
                     .latitude(latitude)

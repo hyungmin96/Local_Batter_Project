@@ -5,6 +5,7 @@
 <div class="writerInfo"style="padding: 15px; background-color: rgb(238, 240, 243);">
     <div class="container">
         <input type="hidden" class="boardId" value="${board}">
+        <input type="hidden" class="writerId" value="${writerId}">
             <div class="writerBoardInfo" style="margin-top: 70px;">
                 <div class="exchangeHeader">등록된 물품 정보</div>
                 <div>
@@ -60,20 +61,29 @@
                 <hr style="border: none; height: 1px; background: #a9a9a9; margin: 3px 0 3px 0;" />
 
                 <div class="clientCategoryBox">
-                    <label class="item__value"><strong>제품 및 추가금액</strong></label>
+                    <label class="item__value"><strong>물품 이름</strong></label>
                     <div class="col-sm-10">
-                        <input type="text" name="title" class="clientExchangeInfoBox clientAddPriceBox" value=""
-                               placeholder="교환없이 금액으로 교환할 경우 입력해주세요">
+                        <input type="text" name="title" class="clientExchangeInfoBox clientTitleBox" value="" placeholder="물품 이름을 입력해주세요" />
                     </div>
                 </div>
 
                 <hr style="border: none; height: 1px; background: #a9a9a9; margin: 3px 0 3px 0;" />
 
                 <div class="clientCategoryBox">
-                    <label class="item__value"><strong>제품 설명</strong></label>
+                    <label class="item__value"><strong>물품 설명</strong></label>
                     <div class="col-sm-10">
                         <textarea name="title" class="clientExchangeInfoBox clientDescriptionBox" value="" row="10"
                                   placeholder="물품에 대한 설명을 입력해주세요"></textarea>
+                    </div>
+                </div>
+
+                <hr style="border: none; height: 1px; background: #a9a9a9; margin: 3px 0 3px 0;" />
+
+                <div class="clientCategoryBox">
+                    <label class="item__value"><strong>물품 및 추가금액</strong></label>
+                    <div class="col-sm-10">
+                        <input type="text" name="title" class="clientExchangeInfoBox clientAddPriceBox" value=""
+                               placeholder="교환없이 금액으로 교환할 경우 입력해주세요">
                     </div>
                 </div>
 

@@ -1,4 +1,4 @@
-package com.project.localbatter.controllers;
+package com.project.localbatter.controllers.exchange;
 
 import com.project.localbatter.dto.Group.GroupBoardDTO;
 import org.springframework.stereotype.Controller;
@@ -18,11 +18,6 @@ public class GroupExchangeController {
     @GetMapping("/post/board")
     public String getRegistInfo(){
         return "/exchange/exchangeinfo";
-    }
-
-    @GetMapping("/view/exchange/list")
-    public String getExchanges(){
-        return "/exchange/exchangeview";
     }
 
     @GetMapping("/request/exchange/{boardId}")

@@ -1,9 +1,14 @@
 package com.project.localbatter.dto;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Setter @Getter
 public class TransactionDTO {
-    private String seller;
-    private String boardId;
+
+    private int pageNum;
+    private int pageSize;
+    private Long userId; // user id
+
+
 }

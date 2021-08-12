@@ -17,8 +17,11 @@ $(document).on('click', '.clientUploadButton', function (){
 function uploadClientExchange(files){
 
     var formData = new FormData()
+    // client user id that request exchange to writer
     formData.append('userId', $('.g_user_id').val())
+    formData.append('writerId', $('.writerId').val())
     formData.append('boardId', $('.boardId')[0].value)
+    formData.append('title', $('.clientTitleBox')[0].value)
     formData.append('content', $('.clientDescriptionBox')[0].value)
     formData.append('price', $('.clientAddPriceBox')[0].value)
     formData.append('request', $('.clientRequestBox')[0].value)
@@ -69,6 +72,7 @@ $(document).ready(function(){
 
             console.log(response)
             $('.writerUsername').html(response.username)
+            $('.writerId')[0].value = response.id // writer Id
             $('.writerProfile')[0].src = '/upload/' + response.profilePath
 
             $(document.body).append(
@@ -92,6 +96,10 @@ $(document).ready(function(){
             }
 
             $('.writerBoardContentContainer').append(
+                "<hr />" +
+                "<div class='writerProductTitle'>" +
+                response.title +
+                "</div>" +
                 "<hr />" +
                 "<div class='writerProductContent'>" +
                 response.content +

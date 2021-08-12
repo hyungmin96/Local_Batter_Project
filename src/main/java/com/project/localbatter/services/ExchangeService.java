@@ -1,7 +1,6 @@
 package com.project.localbatter.services;
 
-import com.project.localbatter.api.GroupExchangeApiController;
-import com.project.localbatter.api.group.GroupBoardApiController.ResponseBoardDTO;
+import com.project.localbatter.api.exchange.GroupExchangeApiController;
 import com.project.localbatter.components.GenerateFile;
 import com.project.localbatter.dto.GenerateFileDTO;
 import com.project.localbatter.dto.Group.GroupBoardDTO;
@@ -27,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.project.localbatter.api.exchange.GroupExchangeApiController.ResponseRequestExchangeDTO;
 import static com.project.localbatter.entity.Exchange.QWriterClientJoinEntity.writerClientJoinEntity;
 import static com.project.localbatter.entity.Exchange.QWriterExchangeEntity.writerExchangeEntity;
 import static com.project.localbatter.entity.QGroupBoardEntity.groupBoardEntity;
@@ -50,7 +50,7 @@ public class ExchangeService {
     // * writer와 client의 교환이 진행중이지 않다면 교환요청
     // * request to exchange user from client api
     @Transactional
-    public GroupExchangeApiController.ResponseRequestExchangeDTO selectRequest(ClientExchangeDTO clientExchangeDTO){
+    public ResponseRequestExchangeDTO selectRequest(ClientExchangeDTO clientExchangeDTO){
         // search to check if an exchange with another entity is already in progress
         Integer isProgressEntity = queryFactory
                 .selectOne()
@@ -81,14 +81,21 @@ public class ExchangeService {
     public JPAQuery<GroupExchangeApiController.ResponseClientDTO> getClientRequestList(GroupBoardDTO groupBoardDTO, Pageable page){
         return queryFactory
                 .select(Projections.fields(GroupExchangeApiController.ResponseClientDTO.class,
+                        writerClientJoinEntity.clientExchangeEntity.title.as("title"),
                         writerClientJoinEntity.clientExchangeEntity.id.as("clientId"),
                         writerClientJoinEntity.clientExchangeEntity.content.as("content"),
                         writerClientJoinEntity.clientExchangeEntity.price.as("price"),
                         writerClientJoinEntity.clientExchangeEntity.request.as("request"),
                         writerClientJoinEntity.status.as("status"),
-                        writerClientJoinEntity.clientExchangeEntity.userId.as("userId")))
+                        writerClientJoinEntity.clientExchangeEntity.userId.as("userId"),
+                        userEntity.username.as("username"),
+                        userEntity.profilePath.as("profilePath")
+                        ))
                 .from(writerClientJoinEntity)
                 .where(writerClientJoinEntity.clientExchangeEntity.boardId.eq(groupBoardDTO.getBoardId()))
+                .leftJoin(userEntity)
+                .on(userEntity.id.eq(writerClientJoinEntity.clientExchangeEntity.userId))
+                .fetchJoin()
                 .offset(page.getPageNumber())
                 .limit(page.getPageSize());
     }
@@ -131,17 +138,6 @@ public class ExchangeService {
                 .fetchJoin()
                 .where(groupBoardEntity.boardId.eq(groupBoardDTO.getBoardId()))
                 .fetchFirst();
-    }
-
-    public JPAQuery<ResponseBoardDTO> getBoardList(GroupBoardDTO groupBoardDTO, Pageable page){
-        return queryFactory
-                .select(Projections.constructor(ResponseBoardDTO.class, groupBoardEntity))
-                .from(groupBoardEntity)
-                .leftJoin(groupBoardEntity.writerExchangeEntity)
-                .fetchJoin()
-                .offset(page.getPageNumber())
-                .limit(page.getPageSize())
-                .where(groupBoardEntity.groupId.eq(groupBoardDTO.getGroupId()));
     }
 
 }
