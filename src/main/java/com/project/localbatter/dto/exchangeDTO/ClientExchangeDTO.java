@@ -13,6 +13,7 @@ import java.util.List;
 public class ClientExchangeDTO implements Serializable {
 
     private Long clientId; // exchange entity unique id
+    private Long clientExchangeId;
     private Long userId; // client user id
     private Long writerId; // writer user id
     private String username;

@@ -1,9 +1,12 @@
 package com.project.localbatter.services;
 
 import com.project.localbatter.api.exchange.GroupExchangeApiController;
+import com.project.localbatter.api.exchange.GroupExchangeApiController.ResponseRequestListDTO;
+import com.project.localbatter.api.exchange.GroupExchangeApiController.ResponseWrtierExchangeDTO;
 import com.project.localbatter.components.GenerateFile;
 import com.project.localbatter.dto.GenerateFileDTO;
 import com.project.localbatter.dto.Group.GroupBoardDTO;
+import com.project.localbatter.dto.TransactionDTO;
 import com.project.localbatter.dto.exchangeDTO.ClientExchangeDTO;
 import com.project.localbatter.dto.exchangeDTO.ExchagneFileDTO;
 import com.project.localbatter.dto.exchangeDTO.WrtierClientJoinDTO;
@@ -13,12 +16,12 @@ import com.project.localbatter.repositories.Exchange.ClientExchangeFileRepositor
 import com.project.localbatter.repositories.Exchange.ClientExchangeRepository;
 import com.project.localbatter.repositories.Exchange.WriterClientJoinRepository;
 import com.project.localbatter.repositories.Exchange.WriterExchangeRepository;
-import com.project.localbatter.repositories.GroupBoardFileRepository;
-import com.project.localbatter.repositories.GroupBoardRepository;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,14 +41,48 @@ import static com.project.localbatter.entity.QUserEntity.userEntity;
 @RequiredArgsConstructor
 public class ExchangeService {
 
-    private final GroupBoardRepository groupBoardRepository;
-    private final GroupBoardFileRepository groupBoardFileRepository;
     private final ClientExchangeRepository clientExchangeRepository;
     private final ClientExchangeFileRepository clientExchangeFileRepository;
     private final WriterExchangeRepository writerExchangeRepository;
     private final WriterClientJoinRepository writerClientJoinRepository;
     private final JPAQueryFactory queryFactory;
     private final GenerateFile generateFile;
+
+    // view writer's board List
+    public Page<ResponseWrtierExchangeDTO> getWriterBoards(TransactionDTO transactionDTO, Pageable page){
+        JPAQuery<ResponseWrtierExchangeDTO> query = queryFactory
+                .select(Projections.constructor(ResponseWrtierExchangeDTO.class,
+                        groupBoardEntity))
+                .from(groupBoardEntity)
+                .leftJoin(groupBoardEntity.groupUserJoinEntity, groupUserJoinEntity)
+                .fetchJoin()
+                .leftJoin(groupUserJoinEntity.user, userEntity)
+                .fetchJoin()
+                .leftJoin(groupBoardEntity.writerExchangeEntity, writerExchangeEntity)
+                .fetchJoin()
+                .where(userEntity.id.eq(transactionDTO.getUserId()))
+                .offset(page.getPageNumber())
+                .limit(page.getPageSize())
+                .orderBy(groupBoardEntity.boardId.desc());
+
+        return new PageImpl<>(query.fetch(), page, query.fetchCount());
+    }
+
+    // view client's(login user) request exchange for board
+    public Page<ResponseRequestListDTO> getRequestList(TransactionDTO transactionDTO, Pageable page){
+        JPAQuery<ResponseRequestListDTO> query = queryFactory
+                .select(Projections.constructor(ResponseRequestListDTO.class,
+                        writerClientJoinEntity, groupBoardEntity, groupUserJoinEntity.user))
+                .from(writerClientJoinEntity)
+                .join(groupBoardEntity)
+                .on(groupBoardEntity.writerExchangeEntity.id.eq(writerClientJoinEntity.writerExchangeEntity.id))
+                .join(groupBoardEntity.groupUserJoinEntity, groupUserJoinEntity)
+                .where(writerClientJoinEntity.clientId.eq(transactionDTO.getUserId()))
+                .offset(page.getPageNumber())
+                .limit(page.getPageSize())
+                .orderBy(writerClientJoinEntity.id.desc());
+        return new PageImpl<>(query.fetch(), page, query.fetchCount());
+    }
 
     // * writer와 client의 교환이 진행중이지 않다면 교환요청
     // * request to exchange user from client api
@@ -76,36 +113,11 @@ public class ExchangeService {
         return null;
     }
 
-    // client가 해당 게시글에 교환 요청한 entity를 조회
-    //  To check the list of exchange reuqest entities on the client
-    public JPAQuery<GroupExchangeApiController.ResponseClientDTO> getClientRequestList(GroupBoardDTO groupBoardDTO, Pageable page){
-        return queryFactory
-                .select(Projections.fields(GroupExchangeApiController.ResponseClientDTO.class,
-                        writerClientJoinEntity.clientExchangeEntity.title.as("title"),
-                        writerClientJoinEntity.clientExchangeEntity.id.as("clientId"),
-                        writerClientJoinEntity.clientExchangeEntity.content.as("content"),
-                        writerClientJoinEntity.clientExchangeEntity.price.as("price"),
-                        writerClientJoinEntity.clientExchangeEntity.request.as("request"),
-                        writerClientJoinEntity.status.as("status"),
-                        writerClientJoinEntity.clientExchangeEntity.userId.as("userId"),
-                        userEntity.username.as("username"),
-                        userEntity.profilePath.as("profilePath")
-                        ))
-                .from(writerClientJoinEntity)
-                .where(writerClientJoinEntity.clientExchangeEntity.boardId.eq(groupBoardDTO.getBoardId()))
-                .leftJoin(userEntity)
-                .on(userEntity.id.eq(writerClientJoinEntity.clientExchangeEntity.userId))
-                .fetchJoin()
-                .offset(page.getPageNumber())
-                .limit(page.getPageSize());
-    }
-
-    // client의 요청을 거절
+    // client 요청을 취소 및 삭제
     // reject the client's exchange request
     public void cancelRequest(ClientExchangeDTO clientExchangeDTO){
-        WriterClientJoinEntity wrtierClientJoinEntity = writerClientJoinRepository.getOne(clientExchangeDTO.getClientId());
-        wrtierClientJoinEntity.updateStatus(WriterClientJoinEntity.status.reject);
-        writerClientJoinRepository.save(wrtierClientJoinEntity);
+        WriterClientJoinEntity writerClientJoinEntity = writerClientJoinRepository.findByClientExchangeEntity(clientExchangeDTO.getClientExchangeId());
+        writerClientJoinRepository.delete(writerClientJoinEntity);
     }
 
     // client가 writer 게시글에 교환을 요청

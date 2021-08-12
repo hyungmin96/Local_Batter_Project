@@ -32,9 +32,14 @@ input[type=checkbox]{
     font-size: 19px;
 }
 
+.requestDate{
+    font-size: 13px;
+    color: #545454;
+}
+
 .textItem{
     font-family: 'Pretendard-Regular', sans-serif;
-    font-size: 29px;
+    font-size: 27px;
     color: #252525;
 }
 
@@ -64,8 +69,8 @@ input[type=checkbox]{
 }
 
 .requestItemBox img{
-    width: 100px;
-    height: 100px;
+    width: 85px;
+    height: 85px;
     object-fit: cover;
     border-radius: 10%;
 }

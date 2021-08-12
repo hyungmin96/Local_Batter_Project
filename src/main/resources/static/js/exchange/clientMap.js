@@ -42,7 +42,7 @@ function uploadClientExchange(files){
         success: function (response){
             console.log(response)
             alert('물품 교환을 성공적으로 요청하였습니다.')
-            window.close()
+            // window.close()
         }
     })
 }

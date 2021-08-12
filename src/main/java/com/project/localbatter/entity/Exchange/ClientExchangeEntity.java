@@ -50,7 +50,7 @@ public class ClientExchangeEntity extends BaseTimeEntity {
     @OneToMany(mappedBy = "client", fetch = LAZY, cascade = CascadeType.ALL)
     private List<ExchangeFileEntity> files;
 
-    @OneToMany(mappedBy = "clientExchangeEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "clientExchangeEntity", fetch = FetchType.LAZY)
     private List<WriterClientJoinEntity> writerClientJoinEntity;
 
 }

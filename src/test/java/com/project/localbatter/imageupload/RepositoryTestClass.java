@@ -1,9 +1,15 @@
 package com.project.localbatter.imageupload;
 
+import com.project.localbatter.entity.NotificationEntity;
+import com.project.localbatter.entity.ProfileEntity;
+import com.project.localbatter.entity.UserEntity;
 import com.project.localbatter.repositories.NotificationRepository;
 import com.project.localbatter.repositories.UserRepository;
+import com.project.localbatter.vo.Role;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest
@@ -131,43 +137,43 @@ public class RepositoryTestClass{
 //            chatRepository.save(chat);
 //        }
 //    }
-//
-//    @Test
-//    public void 회원가입_테스트(){
-//
-//        userRepository.deleteAll();
-//
-//        for(int i = 1; i < 3; i ++){
-//
-//            NotificationEntity notificationEntity = NotificationEntity.builder()
-//            .chat(0)
-//            .notification(0)
-//            .transaction(0)
-//            .build();
-//
-//            ProfileEntity profile = ProfileEntity.builder()
-//            .location("location")
-//            .introduce("introduce")
-//            .mannerScore(0)
-//            .mileage(0)
-//            .phoneNum("phoneNum")
-//            .nickname("nickname")
-//            .preferTime("preferTime")
-//            .build();
-//
-//            UserEntity user = UserEntity.builder()
-//            .username(i + "")
-//            .password(new BCryptPasswordEncoder().encode(String.valueOf(i)))
-//            .profile(profile)
-//            .notification(notificationEntity)
-//            .profilePath("default_profile_img.png")
-//            .Role(Role.ROLE_USER)
-//            .build();
-//
-//            userRepository.save(user);
-//
-//        }
-//
-//    }
-//
+
+    @Test
+    public void 회원가입_테스트(){
+
+        userRepository.deleteAll();
+
+        for(int i = 5; i < 10; i ++){
+
+            NotificationEntity notificationEntity = NotificationEntity.builder()
+            .chat(0)
+            .notification(0)
+            .transaction(0)
+            .build();
+
+            ProfileEntity profile = ProfileEntity.builder()
+            .location("location")
+            .introduce("introduce")
+            .mannerScore(0)
+            .mileage(0)
+            .phoneNum("phoneNum")
+            .nickname("nickname")
+            .preferTime("preferTime")
+            .build();
+
+            UserEntity user = UserEntity.builder()
+            .username(i + "")
+            .password(new BCryptPasswordEncoder().encode(String.valueOf(i)))
+            .profile(profile)
+            .notification(notificationEntity)
+            .profilePath("default_profile_img.png")
+            .Role(Role.ROLE_USER)
+            .build();
+
+            userRepository.save(user);
+
+        }
+
+    }
+
 }

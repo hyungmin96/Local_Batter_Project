@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
 
 import static com.project.localbatter.entity.QGroupEntity.groupEntity;
 import static com.project.localbatter.entity.QGroupUserJoinEntity.groupUserJoinEntity;
+import static com.project.localbatter.entity.QUserEntity.userEntity;
 
 @Service
 @RequiredArgsConstructor
@@ -65,10 +66,11 @@ public class GroupService {
         PageRequest pageRequest = PageRequest.of(groupPageDTO.getPage(), groupPageDTO.getDisplay());
         JPAQuery<GroupMemberDTO> query = queryFactory
                 .select(Projections.fields(GroupMemberDTO.class,
-                    groupUserJoinEntity.user.id.as("userId"),
-                    groupUserJoinEntity.user.profilePath.as("profile"),
-                    groupUserJoinEntity.user.username.as("username")))
+                        userEntity.id.as("userId"),
+                        userEntity.profilePath.as("profile"),
+                        userEntity.username.as("username")))
                 .from(groupUserJoinEntity)
+                .join(groupUserJoinEntity.user, userEntity)
                 .where(groupUserJoinEntity.group.id.eq(groupPageDTO.getGroupId()));
 
         return pagingUtil.getPageImpl(pageRequest, query, GroupUserJoinEntity.class);
@@ -122,13 +124,14 @@ public class GroupService {
     public GroupApiController.ResponseMemberCheckDTO isMember(Long userId, Long groupId) {
         return queryFactory
                 .select(Projections.fields(GroupApiController.ResponseMemberCheckDTO.class,
-                        groupUserJoinEntity.user.id.as("userId"),
+                        userEntity.id.as("userId"),
                         groupUserJoinEntity.group.id.as("groupId"),
-                        groupUserJoinEntity.user.username.as("username"),
-                        groupUserJoinEntity.user.profilePath.as("profilePath"),
+                        userEntity.username.as("username"),
+                        userEntity.profilePath.as("profilePath"),
                         groupUserJoinEntity.type.as("type")))
                 .from(groupUserJoinEntity)
-                .where(groupUserJoinEntity.user.id.eq(userId)
+                .join(groupUserJoinEntity.user, userEntity)
+                .where(userEntity.id.eq(userId)
                 .and(groupUserJoinEntity.group.id.eq(groupId)))
                 .fetchOne();
     }

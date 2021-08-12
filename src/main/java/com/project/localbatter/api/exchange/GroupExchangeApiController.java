@@ -1,18 +1,21 @@
 package com.project.localbatter.api.exchange;
 
 import com.project.localbatter.dto.Group.GroupBoardDTO;
+import com.project.localbatter.dto.TransactionDTO;
 import com.project.localbatter.dto.exchangeDTO.ClientExchangeDTO;
 import com.project.localbatter.entity.Exchange.ClientExchangeEntity;
 import com.project.localbatter.entity.Exchange.WriterClientJoinEntity;
 import com.project.localbatter.entity.GroupBoardEntity;
 import com.project.localbatter.entity.GroupBoardFileEntity;
+import com.project.localbatter.entity.UserEntity;
 import com.project.localbatter.services.ExchangeService;
-import com.querydsl.jpa.impl.JPAQuery;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +32,12 @@ public class GroupExchangeApiController {
 
     private final ExchangeService groupExchangeService;
 
+    @GetMapping("/my/request_list")
+    public Page<ResponseRequestListDTO> getRequestList(TransactionDTO transactionDTO){
+        Pageable page = PageRequest.of(transactionDTO.getPageNum(), transactionDTO.getPageSize());
+        return groupExchangeService.getRequestList(transactionDTO, page);
+    }
+
     @PostMapping("/cancel/request")
     public void cancelRequestEntity(ClientExchangeDTO clientExchangeDTO){
         groupExchangeService.cancelRequest(clientExchangeDTO);
@@ -39,11 +48,10 @@ public class GroupExchangeApiController {
         return groupExchangeService.selectRequest(clientExchangeDTO);
     }
 
-    @GetMapping("/get_request_list")
-    public Page<ResponseClientDTO> getClientRequestList(GroupBoardDTO groupBoardDTO) {
-        Pageable page = PageRequest.of(groupBoardDTO.getPage(), groupBoardDTO.getDisplay(), Sort.Direction.ASC, "id");
-        JPAQuery<ResponseClientDTO> query = groupExchangeService.getClientRequestList(groupBoardDTO, page);
-        return new PageImpl<>(query.fetch(), page, query.fetchCount());
+    @GetMapping("/my/get_write_list")
+    public Page<ResponseWrtierExchangeDTO> getWriterBoards(TransactionDTO transactionDTO) {
+        Pageable page = PageRequest.of(transactionDTO.getPageNum(), transactionDTO.getPageSize());
+        return groupExchangeService.getWriterBoards(transactionDTO, page);
     }
 
     @PostMapping("/client/post")
@@ -55,6 +63,59 @@ public class GroupExchangeApiController {
     @GetMapping("/view/board")
     public ResponseExchagneInfo getExchangeInfo(GroupBoardDTO groupBoardDTO){
         return new ResponseExchagneInfo(groupExchangeService.getExchangeInfo(groupBoardDTO));
+    }
+
+    @Setter @Getter
+    public static class ResponseWrtierExchangeDTO{
+        private Long userId; // writer user id
+        private Long writerId; // writer user id
+        private String username;
+        private String userProfile;
+        private Long boardId;
+        private String title;
+        private String content;
+        private LocalDateTime regTime;
+        private List<String> files;
+
+        public ResponseWrtierExchangeDTO(GroupBoardEntity board){
+            this.userId = board.getGroupUserJoinEntity().getUser().getId();
+            this.username = board.getGroupUserJoinEntity().getUser().getUsername();
+            this.userProfile = board.getGroupUserJoinEntity().getUser().getProfilePath();
+            this.regTime = board.getRegTime();
+            this.writerId = board.getWriterExchangeEntity().getUserId();
+            this.title = board.getTitle();
+            this.content = board.getContent();
+            this.files = board.getFiles().stream().map(GroupBoardFileEntity::getName).collect(Collectors.toList());
+        }
+    }
+
+    @Setter @Getter
+    public static class ResponseRequestListDTO{
+        private Long clientId; // user Id
+        private Long clientExchangeId; // client's request board id
+        private String clientUsername;
+        private String clientProfile;
+        private Long writerId;
+        private Long boardId;
+        private String title;
+        private String content;
+        private WriterClientJoinEntity.status status;
+        private LocalDateTime regTime;
+        private List<String> files;
+
+        public ResponseRequestListDTO(WriterClientJoinEntity entity, GroupBoardEntity board, UserEntity user) {
+            this.clientId = entity.getClientId();
+            this.clientExchangeId = entity.getClientExchangeEntity().getId();
+            this.writerId = entity.getWriterId();
+            this.status = entity.getStatus();
+            this.boardId = board.getBoardId();
+            this.title = board.getTitle();
+            this.content = board.getContent();
+            this.clientUsername = user.getUsername();
+            this.clientProfile = user.getProfilePath();
+            this.regTime = entity.getRegTime();
+            this.files = board.getFiles().stream().map(GroupBoardFileEntity::getName).collect(Collectors.toList());
+        }
     }
 
     @Setter @Getter

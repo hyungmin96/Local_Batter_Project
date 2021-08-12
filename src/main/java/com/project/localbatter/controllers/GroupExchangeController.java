@@ -1,4 +1,4 @@
-package com.project.localbatter.controllers.exchange;
+package com.project.localbatter.controllers;
 
 import com.project.localbatter.dto.Group.GroupBoardDTO;
 import org.springframework.stereotype.Controller;
@@ -9,8 +9,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Controller
 public class GroupExchangeController {
 
-    @GetMapping("/writer/map")
+    @GetMapping("/view/transaction/my/boards")
+    public String getTransactionBoards(){
+        return "/transaction/transaction";
+    }
+
+    @GetMapping("/")
     public String getHome(){
+        return "/board/home";
+    }
+    
+    @GetMapping("/writer/map")
+    public String getWriterMap(){
         return "/exchange/writerMap";
     }
 
