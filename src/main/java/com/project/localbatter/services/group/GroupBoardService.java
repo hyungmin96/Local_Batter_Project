@@ -2,6 +2,7 @@ package com.project.localbatter.services.group;
 
 import com.project.localbatter.components.DeleteFile;
 import com.project.localbatter.components.GenerateFile;
+import com.project.localbatter.components.PagingUtil;
 import com.project.localbatter.dto.GenerateFileDTO;
 import com.project.localbatter.dto.Group.GroupBoardDTO;
 import com.project.localbatter.dto.Group.GroupBoardFileDTO;
@@ -18,13 +19,14 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import static com.project.localbatter.entity.QGroupBoardEntity.groupBoardEntity;
 import static com.project.localbatter.entity.QGroupBoardFileEntity.groupBoardFileEntity;
 import static com.project.localbatter.entity.QGroupUserJoinEntity.groupUserJoinEntity;
@@ -39,6 +41,7 @@ public class GroupBoardService {
     private final GroupUserJoinQueryRepository groupUserJoinQuseryRepository;
     private final GenerateFile generateFile;
     private final JPAQueryFactory queryFactory;
+    private final PagingUtil pagingUtil;
 
     // 그룹 게시글 수정 api
     // update groub's board title, content
@@ -91,7 +94,7 @@ public class GroupBoardService {
                 .where(groupUserJoinEntity.group.id.eq(groupId))
                 .orderBy(groupBoardEntity.boardId.desc());
 
-        return new PageImpl<>(query.fetch(), request, query.fetchCount());
+        return pagingUtil.getPageImpl(request, query, query.fetchCount(), GroupBoardEntity.class);
     }
 
     public GroupBoardEntity updateNotice(GroupBoardDTO groupBoardDTO){

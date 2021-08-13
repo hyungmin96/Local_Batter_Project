@@ -12,6 +12,16 @@
     font-style: normal;
 }
 
+::-webkit-scrollbar{
+    width: 3px;
+    background-color: #ffffff;
+}
+
+::-webkit-scrollbar-thumb{
+    border-radius: 3px;
+    background-color: rgb(124, 124, 124);
+}
+
 .modal-header{
     font-family: 'Pretendard-SemiBold', sans-serif;
     font-size: 19px;

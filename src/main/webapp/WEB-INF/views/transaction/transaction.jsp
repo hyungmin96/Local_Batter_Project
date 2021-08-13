@@ -18,7 +18,7 @@
                     </div>
                 </div>
 
-                <div id="myBoardItemsContainer" style="margin-top: 5px;">
+                <div id="myBoardItemsContainer" style="overflow-y: scroll; max-height: 450px;margin-top: 5px;">
                     <hr style="width: 97%; margin: 0 25px 0 20px;" />
                 </div>
 
@@ -34,7 +34,7 @@
                 </div>
             </div>
 
-            <div id="transactionItemsContainer" style="margin-top: 5px;">
+            <div id="transactionItemsContainer" style="overflow-y: scroll; max-height: 450px;margin-top: 5px;">
                 <hr style="width: 97%; margin: 0 25px 0 20px;" />
             </div>
 
@@ -149,7 +149,6 @@
             }
             $('#' + pageStep.getAttribute('id')).append("<div class='pageValue'>" + (i + 1) + "</div>")
         }
-        console.log(clientRequestVariable.pageArray)
     }
 
     // client 게시글 목록 페이지 조회
@@ -190,10 +189,9 @@
             data: data,
             success: function(response){
                 $('.requestBoardItemContainer').empty()
-
                 $('.totalPage').attr('data-total-page', response.totalPages)
-
                 clientRequestVariable.totalPages = response.totalPages
+                console.log(response)
 
                 $.each(response.content, function(key, value){
                     $('.requestBoardItemContainer').append(
@@ -212,12 +210,12 @@
                         "<div style='margin: auto 10px auto; width: 310px;' class='clientRequestTitleField'>" +
                         value.clientExchange.title +
                         "</div>" +
-                        "<div style='margin: auto 10px auto; width: 180px;' class='clientRequestLocationField'>" +
+                        "<div style='margin: auto 10px auto; width: 240px;' class='clientRequestLocationField'>" +
                         value.clientExchange.address +
                         "</div>" +
-                        "<div style='margin: auto 10px auto -10px; width: 210px;' class='clientRequestField'>" +
+                        "<div style='margin: auto 10px auto -10px; width: 156px;' class='clientRequestField'>" +
                         "<button class='actionButton showRequestDetailButton'>보기</button>" +
-                        "<button class='actionButton rejectRequestButton'>삭제</button>" +
+                        "<button id='clientExchangeId_" + value.clientExchange.id + "' class='actionButton rejectRequestButton'>삭제</button>" +
                         "</div>" +
                         "</div>" +
                         "</div>" +
@@ -243,7 +241,6 @@
             data: data,
             success: function(response){
                 $.each(response.content, function(key, value){
-                    console.log(value)
                     $('#myBoardItemsContainer').append(
                         "<div class='requestItemBox'>" +
                         "<div id='requestBox_" + key + "' style='padding: 15px 25px 15px 25px;'>" +
@@ -291,7 +288,6 @@
             data: data,
             success: function(response){
                 $.each(response.content, function(key, value){
-                    console.log(value)
                     $('#transactionItemsContainer').append(
                         "<div class='requestItemBox'>" +
                         "<div id='requestBox_" + key + "' style='padding: 15px 25px 15px 25px;'>" +
@@ -325,7 +321,8 @@
     }
 
     // 교환요청 글 삭제
-    $(document).on('click', '.requestCancelButton', function () {
+    $(document).on('click', '.requestCancelButton, .rejectRequestButton', function () {
+        console.log('run')
         const data = {
             // clientId: clientData.clientId,
             clientExchangeId: $(this).attr('id').split('_')[1]
@@ -337,7 +334,7 @@
             contentType: 'application/x-www-form-urlencoded',
             success: function(response){
                 alert('교환요청을 삭제하였습니다.')
-                window.location.reload()
+                $(this).remove()
             }
         })
     })

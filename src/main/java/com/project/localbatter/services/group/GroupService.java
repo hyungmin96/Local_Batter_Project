@@ -73,7 +73,7 @@ public class GroupService {
                 .join(groupUserJoinEntity.user, userEntity)
                 .where(groupUserJoinEntity.group.id.eq(groupPageDTO.getGroupId()));
 
-        return pagingUtil.getPageImpl(pageRequest, query, GroupUserJoinEntity.class);
+        return pagingUtil.getPageImpl(pageRequest, query, query.fetchCount(),GroupUserJoinEntity.class);
     }
 
     public ResponseEntity<String> enterGroup(GroupPageDTO groupPageDTO) {

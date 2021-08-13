@@ -13,7 +13,9 @@ server:
       charset: UTF-8
       enabled: true
       force: true
-    
+    session:
+      timeout: 600000
+
 spring:
   mvc:
     view:

@@ -5,6 +5,7 @@ import com.project.localbatter.api.exchange.GroupExchangeApiController.ResponseC
 import com.project.localbatter.api.exchange.GroupExchangeApiController.ResponseRequestListDTO;
 import com.project.localbatter.api.exchange.GroupExchangeApiController.ResponseWrtierExchangeDTO;
 import com.project.localbatter.components.GenerateFile;
+import com.project.localbatter.components.PagingUtil;
 import com.project.localbatter.dto.GenerateFileDTO;
 import com.project.localbatter.dto.Group.GroupBoardDTO;
 import com.project.localbatter.dto.TransactionDTO;
@@ -13,7 +14,6 @@ import com.project.localbatter.dto.exchangeDTO.ExchagneFileDTO;
 import com.project.localbatter.dto.exchangeDTO.WriterClientJoinDTO;
 import com.project.localbatter.entity.Exchange.*;
 import com.project.localbatter.entity.GroupBoardEntity;
-import com.project.localbatter.entity.UserEntity;
 import com.project.localbatter.repositories.Exchange.ClientExchangeFileRepository;
 import com.project.localbatter.repositories.Exchange.ClientExchangeRepository;
 import com.project.localbatter.repositories.Exchange.WriterClientJoinRepository;
@@ -25,7 +25,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -50,12 +49,12 @@ public class ExchangeService {
     private final WriterClientJoinRepository writerClientJoinRepository;
     private final JPAQueryFactory queryFactory;
     private final GenerateFile generateFile;
+    private final PagingUtil pagingUtil;
 
     // View the list of clients requested for exchange to Writer's aritcle
     // 해당 게시글에 교환요청한 client 요청 게시글 조회
     @Transactional(readOnly = true)
     public Page<ResponseClientRequestDTO> getBoardClientRequestList(ClientExchangeDTO clientExchangeDTO,Pageable page){
-        Object loginUserId = ((UserEntity) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
 
         Long queryCount = queryFactory
                 .select(writerClientJoinEntity.id)
@@ -79,7 +78,8 @@ public class ExchangeService {
                     .offset(page.getPageNumber())
                     .limit(page.getPageSize())
                     .orderBy(writerClientJoinEntity.id.desc());
-            return new PageImpl<>(query.fetch(), page, queryCount);
+
+            return pagingUtil.getPageImpl(page, query, queryCount, WriterClientJoinEntity.class);
         }
         return null;
     }

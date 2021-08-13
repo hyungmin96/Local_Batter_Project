@@ -46,7 +46,7 @@ public class GroupChatService {
                 .orderBy(groupChatEntity.id.desc())
                 .where(groupChatEntity.groupEntity.id.eq(messageDTO.getGroupId()));
 
-        return pagingUtil.getPageImpl(page, query, GroupChatMessageDTO.class);
+        return pagingUtil.getPageImpl(page, query, query.fetchCount(),GroupChatMessageDTO.class);
     }
 
     public void sendGroupRoomToChat(GroupChatMessageDTO messageDTO){

@@ -23,13 +23,8 @@ public class PagingUtil {
         return new Querydsl(entityManager, builder);
     }
 
-    public <T> Page<T> getPageImpl(Pageable pageable, JPQLQuery<T> query, Class clazz) {
-        long totalCount = query.fetchCount();
+    public <T> Page<T> getPageImpl(Pageable pageable, JPQLQuery<T> query, Long queryCount, Class clazz) {
         List<T> results = getQuerydsl(clazz).applyPagination(pageable, query).fetch();
-        return new PageImpl<>(results, pageable, totalCount);
-    }
-
-    public <T> Page<T> getPageImplList(Pageable pageable, List<T> items, Class clazz) {
-        return new PageImpl<>(items, pageable, items.size());
+        return new PageImpl<>(results, pageable, queryCount);
     }
 }
