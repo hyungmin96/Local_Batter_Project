@@ -49,7 +49,7 @@ public class WriterExchangeEntity extends BaseTimeEntity {
     @Column(name = "request_count")
     private int requestCount = 0;
 
-    @OneToOne(mappedBy = "writerExchangeEntity", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "writerExchangeEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private GroupBoardEntity board;
 
     @OneToMany(mappedBy = "writerExchangeEntity", fetch = FetchType.LAZY)

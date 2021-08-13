@@ -141,7 +141,7 @@ public class ExchangeService {
                             groupBoardEntity.title,
                             groupBoardEntity.content,
                             writerClientJoinEntity.status.as("status"),
-                            groupBoardEntity.regTime.as("regTime"),
+                            writerClientJoinEntity.regTime.as("regTime"),
                             groupBoardFileEntity.name.as("files")
                             ))
                     .from(writerClientJoinEntity)

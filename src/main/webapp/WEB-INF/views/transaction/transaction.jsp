@@ -51,7 +51,7 @@
                 <div class="modal-title" id="groupBoardModal" style="margin: 0 0 0 auto">교환요청 목록</div>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="width: 20px; height: 20px;"></button>
             </div>
-            <div class="boardModal" style="width: 1100px; height: 700px; padding: 0.5rem;">
+            <div class="boardModal clientRequestModal" style="width: 1100px; height: 586px; padding: 0.5rem;">
 
                 <div class="modalColumn" style="display: inline-flex">
                     <div style="width: 160px">작성자</div>
@@ -65,6 +65,20 @@
 
                 </div>
 
+                <div id="pageContainer" style="margin-top: 7px;">
+                    <input type="hidden" class="totalPage" data-total-page="">
+                    <input type="hidden" class="currentPage" data-current-page="1">
+
+                    <div class="requestModalPageBox">
+                        <button class="pageMoveButton previusPageButton"><img src="/images/exchange/left.png"></button>
+                        <div class="pagenumberList">
+
+                        </div>
+                        <button class="pageMoveButton nextPageButton"><img src="/images/exchange/right.png"></button>
+                    </div>
+
+                </div>
+
             </div>
         </div>
     </div>
@@ -74,66 +88,6 @@
 
 <link rel="stylesheet" text="javascript/css" href="/css/transaction.css">
 <script>
-
-    const clientData = {
-        clientId: '', // user id
-        boardId: '',
-        writerId: '', // writer id
-        clientExchangeId: ''
-    }
-
-    $(document).on('click', '.showClientRequestList', function (){
-        $('#requestListModal').modal('show')
-
-        const data = {
-            page: 0,
-            display: 10,
-            userId: $('.g_user_id').val(),
-            boardId: $(this).attr('id').split('_')[1]
-        }
-
-        $.ajax({
-            url: '/api/exchange/view/board/client_reqeust_list',
-            type:'GET',
-            data: data,
-            success: function(response){
-                $('.requestBoardItemContainer').empty()
-
-                $.each(response.content, function(key, value){
-                    console.log(value)
-                    $('.requestBoardItemContainer').append(
-                        "<div style='width: 97%'>" +
-                            "<div class='clientRequestItemBox'>" +
-                                "<div class='clientUserField' style='justify-content: center; margin: auto; width: 160px; display: inline-flex'" +
-                                    "<div>" +
-                                        "<div style='display: inherit'><img style='margin: auto 10px auto; border-radius: 50%; width: 40px; height: 40px;' src='/upload/" + value.userProfile + "' </div>" +
-                                        "<div style='margin: auto auto;'>" + value.username + "</div>" +
-                                    "</div>" +
-                                "</div>" +
-                                "<div style='width: 160px;' class='clientRequestImageField'>" +
-                                    "<div><img style='border-radius: 10px; border: 1px solid #f5f4f4; width: 60px; height: 60px;' src='/upload/" + value.filename + "' </div>" +
-                                "</div>" +
-                                "</div>" +
-                                "<div style='margin: auto 10px auto; width: 310px;' class='clientRequestTitleField'>" +
-                                    value.clientExchange.title +
-                                "</div>" +
-                                "<div style='margin: auto 10px auto; width: 180px;' class='clientRequestLocationField'>" +
-                                    value.clientExchange.address +
-                                "</div>" +
-                                "<div style='margin: auto 10px auto -10px; width: 210px;' class='clientRequestField'>" +
-                                    "<button class='actionButton showRequestDetailButton'>보기</button>" +
-                                    "<button class='actionButton rejectRequestButton'>삭제</button>" +
-                                "</div>" +
-                            "</div>" +
-                        "</div>" +
-                        "<hr style='border:none; background: #cccccc; height: 1px; margin: 0 30px 0 30px;' />"
-                    )
-                })
-
-            }
-        })
-    })
-
     $(document).ready(function (){
         setTimeout(function(){
             getWriterBoardList();
@@ -141,25 +95,140 @@
         getRequestList();
     })
 
-    // 교환요청 글 삭제
-    $(document).on('click', '.requestCancelButton', function () {
+    // global varialbes
+    const clientRequestVariable = {
+        requestClientToBoardId: '', // 교환요청을 받은 특정게시글 id
+        totalPages: '',
+        pageArray: []
+    }
 
-        const data = {
-            clientId: clientData.clientId,
-            clientExchangeId: clientData.clientExchangeId
+
+    $('.nextPageButton').click(function () {
+        if (Number($('.currentPage').attr('data-current-page')) < clientRequestVariable.pageArray.length){
+            var currentPage = Number($('.currentPage').attr('data-current-page'))
+            clientRequestVariable.pageArray.forEach(function (item) {
+                if (item == clientRequestVariable.pageArray[currentPage])
+                    item.style.display = 'inline-flex'
+                else
+                    item.style.display = 'none'
+            })
+            $('.currentPage')[0].setAttribute('data-current-page', currentPage + 1)
         }
-        $.ajax({
-            url: '/api/exchange/cancel/request',
-            type: 'POST',
-            data: data,
-            contentType: 'application/x-www-form-urlencoded',
-            success: function(response){
-                alert('교환요청을 삭제하였습니다.')
-                window.location.reload()
+    })
+
+    $('.previusPageButton').click(function () {
+        if (Number($('.currentPage').attr('data-current-page')) > 1){
+            var currentPage = Number($('.currentPage').attr('data-current-page'))
+            clientRequestVariable.pageArray.forEach(function (item) {
+                if (item == clientRequestVariable.pageArray[currentPage - 2])
+                    item.style.display = 'inline-flex'
+                else
+                    item.style.display = 'none'
+            })
+            $('.currentPage')[0].setAttribute('data-current-page', currentPage - 1)
+        }
+    })
+
+    function pageArrayGenerater(inputPageContainer, totalPages){
+        clientRequestVariable.pageArray = []
+        for(let i = 0; i < totalPages; i++){
+            var pageStep
+            if(i % 5 == 0) {
+                pageStep = document.createElement('div')
+                pageStep.setAttribute('id', 'page_' + i)
+                pageStep.setAttribute('class', 'pageStep')
+                pageStep.style.width = '100%'
+                pageStep.style.alignItems = 'center'
+                if(i == 0)
+                    pageStep.style.display = 'inline-flex'
+                else
+                    pageStep.style.display = 'none'
+
+                $('.' + inputPageContainer).append(pageStep)
+                clientRequestVariable.pageArray.push(pageStep)
             }
+            $('#' + pageStep.getAttribute('id')).append("<div class='pageValue'>" + (i + 1) + "</div>")
+        }
+        console.log(clientRequestVariable.pageArray)
+    }
+
+    // client 게시글 목록 페이지 조회
+    $(document).on('click', '.pageValue', function(){
+        var pageValue = ($(this)[0].innerHTML * 1) - 1 // page는 0부터 시작하므로 -1
+        getBoardClientRequest(pageValue)
+        $.each($('.pageValue'), function(item){
+            if(pageValue == item)
+                $('.pageValue')[item].style.background = '#ececec'
+            else
+                $('.pageValue')[item].style.background = ''
         })
     })
 
+    // 특정 게시글에 교환요청한 client 게시글 목록 조회
+    $(document).on('click', '.showClientRequestList', function (){
+        $('#requestListModal').modal('show')
+        clientRequestVariable.requestClientToBoardId = $(this).attr('id').split('_')[1]
+        $('.pagenumberList').empty()
+        getBoardClientRequest()
+        pageArrayGenerater('pagenumberList', clientRequestVariable.totalPages)
+    })
+
+    // 특정 게시글에 교환요청한 client 게시글 목록 조회
+    var clientRequestPage = 0
+    function getBoardClientRequest(clientRequestPage = 0){
+        const data = {
+            page: clientRequestPage,
+            display: 5,
+            userId: $('.g_user_id').val(),
+            boardId: clientRequestVariable.requestClientToBoardId
+        }
+
+        $.ajax({
+            url: '/api/exchange/view/board/client_reqeust_list',
+            type:'GET',
+            async: false,
+            data: data,
+            success: function(response){
+                $('.requestBoardItemContainer').empty()
+
+                $('.totalPage').attr('data-total-page', response.totalPages)
+
+                clientRequestVariable.totalPages = response.totalPages
+
+                $.each(response.content, function(key, value){
+                    $('.requestBoardItemContainer').append(
+                        "<div style='width: 97%'>" +
+                        "<div class='clientRequestItemBox'>" +
+                        "<div class='clientUserField' style='justify-content: center; margin: auto; width: 160px; display: inline-flex'" +
+                        "<div>" +
+                        "<div style='display: inherit'><img style='margin: auto 10px auto; border-radius: 50%; width: 40px; height: 40px;' src='/upload/" + value.userProfile + "' </div>" +
+                        "<div style='margin: auto auto;'>" + value.username + "</div>" +
+                        "</div>" +
+                        "</div>" +
+                        "<div style='width: 160px;' class='clientRequestImageField'>" +
+                        "<div><img style='border-radius: 10px; border: 1px solid #f5f4f4; width: 60px; height: 60px;' src='/upload/" + value.filename + "' </div>" +
+                        "</div>" +
+                        "</div>" +
+                        "<div style='margin: auto 10px auto; width: 310px;' class='clientRequestTitleField'>" +
+                        value.clientExchange.title +
+                        "</div>" +
+                        "<div style='margin: auto 10px auto; width: 180px;' class='clientRequestLocationField'>" +
+                        value.clientExchange.address +
+                        "</div>" +
+                        "<div style='margin: auto 10px auto -10px; width: 210px;' class='clientRequestField'>" +
+                        "<button class='actionButton showRequestDetailButton'>보기</button>" +
+                        "<button class='actionButton rejectRequestButton'>삭제</button>" +
+                        "</div>" +
+                        "</div>" +
+                        "</div>" +
+                        "<hr style='border:none; background: #cccccc; height: 1px; margin: 0 30px 0 30px;' />"
+                    )
+                })
+            }
+        })
+    }
+
+    // writer 작성글 목록 조회
     function getWriterBoardList(){
 
         const data = {
@@ -174,6 +243,7 @@
             data: data,
             success: function(response){
                 $.each(response.content, function(key, value){
+                    console.log(value)
                     $('#myBoardItemsContainer').append(
                         "<div class='requestItemBox'>" +
                         "<div id='requestBox_" + key + "' style='padding: 15px 25px 15px 25px;'>" +
@@ -189,7 +259,12 @@
                         "<div class='item requestContent' style='height: 65px'>" + value.content + "</div>" +
                         "</div>" +
                         "<div class='item _requestStatus' style='width: 15%; margin: auto 0 auto 0;'>" +
-                        "<button id='writerExchangeId_" + value.writerExchangeId + "' class='actionButton showClientRequestList'>요청목록</button>" +
+                        '<button id="writerExchangeId_' + value.writerExchangeId + '" type="button" class="actionButton showClientRequestList position-relative">요청목록' +
+                        '<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">' +
+                            value.reqeustCount +
+                        '<span class="visually-hidden">unread messages</span>' +
+                        "</span>" +
+                        '</button>' +
                         "<button class='actionButton stopRequest'>교환마감</button>" +
                         "</div>" +
                         "</div>" +
@@ -216,10 +291,6 @@
             data: data,
             success: function(response){
                 $.each(response.content, function(key, value){
-                    clientData.writerId = value.writerId;
-                    clientData.boardId = value.boardId;
-                    clientData.clientId = value.clientId;
-                    clientData.clientExchangeId = value.clientExchangeId;
                     console.log(value)
                     $('#transactionItemsContainer').append(
                         "<div class='requestItemBox'>" +
@@ -240,8 +311,8 @@
                         value.clientUsername +
                         "</div>" +
                         "<div class='item _requestStatus' style='width: 15%; margin: auto 0 auto 0;'>" +
-                        "<button class='actionButton showMyRequestBoard'>내용보기</button>" +
-                        "<button class='actionButton requestCancelButton'>교환취소</button>" +
+                        "<button id='clientShowExhchangeId_" + value.clientExchangeId + "' class='actionButton showMyRequestBoard'>내용보기</button>" +
+                        "<button id='clientCancelExhchangeId_" + value.clientExchangeId + "' class='actionButton requestCancelButton'>교환취소</button>" +
                         "</div>" +
                         "</div>" +
                         "</div>" +
@@ -252,6 +323,24 @@
             }
         })
     }
+
+    // 교환요청 글 삭제
+    $(document).on('click', '.requestCancelButton', function () {
+        const data = {
+            // clientId: clientData.clientId,
+            clientExchangeId: $(this).attr('id').split('_')[1]
+        }
+        $.ajax({
+            url: '/api/exchange/cancel/request',
+            type: 'POST',
+            data: data,
+            contentType: 'application/x-www-form-urlencoded',
+            success: function(response){
+                alert('교환요청을 삭제하였습니다.')
+                window.location.reload()
+            }
+        })
+    })
 
     $(document).on('click', '#upDownButton', function(){
         var upDownButton = document.getElementById('upDownButton')

@@ -27,7 +27,7 @@ public class ExchangeFileEntity extends BaseTimeEntity implements Serializable {
     @Column(name = "file_size")
     private int size;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "client_id")
     private ClientExchangeEntity client;
 

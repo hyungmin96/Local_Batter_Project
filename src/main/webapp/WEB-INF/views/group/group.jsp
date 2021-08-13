@@ -195,7 +195,7 @@
 
 <!-- group board wirte modal -->
 <div class="modal fade" id="groupBoardWriteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" style="margin: 100px auto 460px auto; width: 800px; height: 100%;">
+    <div class="modal-dialog" style="margin: 100px auto 20px auto; width: 800px;">
         <div class="modal-content" style="width: 600px;">
             <div class="modal-header" style="border: none;">
                 <div class="modal-title" id="groupBoardModal" style="margin: 0 0 0 auto">그룹 게시글 작성</div>

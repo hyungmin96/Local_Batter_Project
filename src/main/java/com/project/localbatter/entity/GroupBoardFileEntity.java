@@ -29,7 +29,7 @@ public class GroupBoardFileEntity extends BaseTimeEntity {
     @Column(name = "group_id")
     private Long groupId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "BoardId")
     @JsonIgnore
     private GroupBoardEntity groupBoard;
