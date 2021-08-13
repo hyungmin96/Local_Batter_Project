@@ -4,6 +4,7 @@ import com.project.localbatter.entity.BaseTimeEntity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Getter
@@ -11,7 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @Table(name = "tbl_exchange_file")
-public class ExchangeFileEntity extends BaseTimeEntity {
+public class ExchangeFileEntity extends BaseTimeEntity implements Serializable {
 
     @Column(name = "file_id")
     @Id @GeneratedValue

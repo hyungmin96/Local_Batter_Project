@@ -12,6 +12,9 @@ import java.util.List;
 @Setter @Getter
 public class ClientExchangeDTO implements Serializable {
 
+    private int page;
+    private int display;
+
     private Long clientId; // exchange entity unique id
     private Long clientExchangeId;
     private Long userId; // client user id

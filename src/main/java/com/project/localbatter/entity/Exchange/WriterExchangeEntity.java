@@ -46,10 +46,17 @@ public class WriterExchangeEntity extends BaseTimeEntity {
     @Column(name = "writer_buildingcode")
     private String buildingcode;
 
+    @Column(name = "request_count")
+    private int requestCount = 0;
+
     @OneToOne(mappedBy = "writerExchangeEntity", fetch = FetchType.LAZY)
     private GroupBoardEntity board;
 
     @OneToMany(mappedBy = "writerExchangeEntity", fetch = FetchType.LAZY)
     private List<WriterClientJoinEntity> writerClientJoinEntity;
+
+    public void updateCount(int value){
+        this.requestCount += value;
+    }
 
 }

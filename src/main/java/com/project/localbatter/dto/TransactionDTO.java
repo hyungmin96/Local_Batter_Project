@@ -6,8 +6,8 @@ import lombok.Setter;
 @Setter @Getter
 public class TransactionDTO {
 
-    private int pageNum;
-    private int pageSize;
+    private int page;
+    private int display;
     private Long userId; // user id
 
 

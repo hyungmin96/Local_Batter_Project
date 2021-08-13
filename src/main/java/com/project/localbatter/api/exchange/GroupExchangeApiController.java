@@ -7,7 +7,6 @@ import com.project.localbatter.entity.Exchange.ClientExchangeEntity;
 import com.project.localbatter.entity.Exchange.WriterClientJoinEntity;
 import com.project.localbatter.entity.GroupBoardEntity;
 import com.project.localbatter.entity.GroupBoardFileEntity;
-import com.project.localbatter.entity.UserEntity;
 import com.project.localbatter.services.ExchangeService;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,11 +19,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/exchange")
@@ -32,9 +29,15 @@ public class GroupExchangeApiController {
 
     private final ExchangeService groupExchangeService;
 
+    @GetMapping("/view/board/client_reqeust_list")
+    public Page<ResponseClientRequestDTO> getBoardClientReqeust(ClientExchangeDTO clientExchangeDTO){
+        PageRequest page = PageRequest.of(clientExchangeDTO.getPage(), clientExchangeDTO.getDisplay());
+        return groupExchangeService.getBoardClientRequestList(clientExchangeDTO, page);
+    }
+
     @GetMapping("/my/request_list")
     public Page<ResponseRequestListDTO> getRequestList(TransactionDTO transactionDTO){
-        Pageable page = PageRequest.of(transactionDTO.getPageNum(), transactionDTO.getPageSize());
+        Pageable page = PageRequest.of(transactionDTO.getPage(), transactionDTO.getDisplay());
         return groupExchangeService.getRequestList(transactionDTO, page);
     }
 
@@ -50,7 +53,7 @@ public class GroupExchangeApiController {
 
     @GetMapping("/my/get_write_list")
     public Page<ResponseWrtierExchangeDTO> getWriterBoards(TransactionDTO transactionDTO) {
-        Pageable page = PageRequest.of(transactionDTO.getPageNum(), transactionDTO.getPageSize());
+        Pageable page = PageRequest.of(transactionDTO.getPage(), transactionDTO.getDisplay());
         return groupExchangeService.getWriterBoards(transactionDTO, page);
     }
 
@@ -66,26 +69,43 @@ public class GroupExchangeApiController {
     }
 
     @Setter @Getter
-    public static class ResponseWrtierExchangeDTO{
-        private Long userId; // writer user id
-        private Long writerId; // writer user id
+    public static class ResponseClientRequestDTO{
+
+        private Long userId;
         private String username;
         private String userProfile;
+        private String filename;
+        private ClientExchangeEntity clientExchange;
+
+        public ResponseClientRequestDTO(Long clientId, String username, String userProfile, String filename, ClientExchangeEntity clientExchange) {
+            this.userId = clientId;
+            this.username = username;
+            this.userProfile = userProfile;
+            this.filename = filename;
+            this.clientExchange = clientExchange;
+        }
+    }
+
+    @Setter @Getter
+    public static class ResponseWrtierExchangeDTO{
+        private Long writerId; // writer user id
+        private Long writerExchangeId; // writerExchange Entity id
         private Long boardId;
+        private int reqeustCount;
         private String title;
         private String content;
         private LocalDateTime regTime;
-        private List<String> files;
+        private String files;
 
-        public ResponseWrtierExchangeDTO(GroupBoardEntity board){
-            this.userId = board.getGroupUserJoinEntity().getUser().getId();
-            this.username = board.getGroupUserJoinEntity().getUser().getUsername();
-            this.userProfile = board.getGroupUserJoinEntity().getUser().getProfilePath();
-            this.regTime = board.getRegTime();
-            this.writerId = board.getWriterExchangeEntity().getUserId();
-            this.title = board.getTitle();
-            this.content = board.getContent();
-            this.files = board.getFiles().stream().map(GroupBoardFileEntity::getName).collect(Collectors.toList());
+        public ResponseWrtierExchangeDTO(Long writerId, Long writerExchangeId, Long boardId, int reqeustCount, String title, String content, LocalDateTime regTime, String files) {
+            this.writerId = writerId;
+            this.writerExchangeId = writerExchangeId;
+            this.boardId = boardId;
+            this.reqeustCount = reqeustCount;
+            this.title = title;
+            this.content = content;
+            this.regTime = regTime;
+            this.files = files;
         }
     }
 
@@ -101,20 +121,20 @@ public class GroupExchangeApiController {
         private String content;
         private WriterClientJoinEntity.status status;
         private LocalDateTime regTime;
-        private List<String> files;
+        private String files;
 
-        public ResponseRequestListDTO(WriterClientJoinEntity entity, GroupBoardEntity board, UserEntity user) {
-            this.clientId = entity.getClientId();
-            this.clientExchangeId = entity.getClientExchangeEntity().getId();
-            this.writerId = entity.getWriterId();
-            this.status = entity.getStatus();
-            this.boardId = board.getBoardId();
-            this.title = board.getTitle();
-            this.content = board.getContent();
-            this.clientUsername = user.getUsername();
-            this.clientProfile = user.getProfilePath();
-            this.regTime = entity.getRegTime();
-            this.files = board.getFiles().stream().map(GroupBoardFileEntity::getName).collect(Collectors.toList());
+        public ResponseRequestListDTO(Long clientId, Long clientExchangeId, String clientUsername, String clientProfile, Long writerId, Long boardId, String title, String content, WriterClientJoinEntity.status status, LocalDateTime regTime, String files) {
+            this.clientId = clientId;
+            this.clientExchangeId = clientExchangeId;
+            this.clientUsername = clientUsername;
+            this.clientProfile = clientProfile;
+            this.writerId = writerId;
+            this.boardId = boardId;
+            this.title = title;
+            this.content = content;
+            this.status = status;
+            this.regTime = regTime;
+            this.files = files;
         }
     }
 

@@ -1,9 +1,11 @@
 package com.project.localbatter.entity.Exchange;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.localbatter.entity.BaseTimeEntity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 import static javax.persistence.FetchType.LAZY;
@@ -14,7 +16,7 @@ import static javax.persistence.FetchType.LAZY;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @Table(name = "tbl_client_exchange")
-public class ClientExchangeEntity extends BaseTimeEntity {
+public class ClientExchangeEntity extends BaseTimeEntity implements Serializable {
 
     @Column(name = "client_id")
     @Id @GeneratedValue
@@ -48,9 +50,11 @@ public class ClientExchangeEntity extends BaseTimeEntity {
     private Long boardId;
 
     @OneToMany(mappedBy = "client", fetch = LAZY, cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<ExchangeFileEntity> files;
 
     @OneToMany(mappedBy = "clientExchangeEntity", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<WriterClientJoinEntity> writerClientJoinEntity;
 
 }

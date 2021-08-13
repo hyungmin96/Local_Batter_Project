@@ -1,5 +1,6 @@
 package com.project.localbatter.entity.Exchange;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.localbatter.entity.BaseTimeEntity;
 import lombok.*;
 
@@ -25,10 +26,12 @@ public class WriterClientJoinEntity extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "writer_exchange_id")
+    @JsonIgnore
     private WriterExchangeEntity writerExchangeEntity;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "client_exchange_id")
+    @JsonIgnore
     private ClientExchangeEntity clientExchangeEntity;
 
     @Enumerated(EnumType.STRING)

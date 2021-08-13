@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Setter @Getter
-public class WrtierClientJoinDTO {
+public class WriterClientJoinDTO {
 
     private WriterExchangeEntity writerExchangeEntity;
     private ClientExchangeEntity clientExchangeEntity;
@@ -15,7 +15,7 @@ public class WrtierClientJoinDTO {
     private Long writerId;
     private Long clientId;
 
-    public WrtierClientJoinDTO(WriterExchangeEntity writerExchangeEntity, ClientExchangeEntity clientExchangeEntity) {
+    public WriterClientJoinDTO(WriterExchangeEntity writerExchangeEntity, ClientExchangeEntity clientExchangeEntity) {
         this.writerExchangeEntity = writerExchangeEntity;
         this.clientExchangeEntity = clientExchangeEntity;
         this.writerId = writerExchangeEntity.getUserId();

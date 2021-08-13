@@ -7,9 +7,9 @@
 
     <div class="container" style="margin-top: 100px;">
 
-        <div id="transactionListContainer" style="max-height: 1600px; min-height: 801px;">
-            <div class="textItem _listHeader">내가 작성한 교환 글</div>
-            <div class="itemWrapper" style="box-shadow: 1px 1px 17px 2px rgba(0, 0, 0, 0.12); background: white; margin: 10px 15px 5px 15px;">
+        <div id="transactionListContainer" style="max-height: 1600px; min-height: 801px">
+            <div class="textItem _listHeader">작성한 교환 게시글</div>
+            <div class="itemWrapper" style="box-shadow: 1px 1px 17px 2px rgba(0, 0, 0, 0.12); background: white; margin: 10px 15px 25px 15px;">
 
                 <div style="display: flex; height: 55px;">
                     <div class="itemHeader" style="height: 20px; margin: 13px auto auto 15px;">
@@ -24,8 +24,8 @@
 
             </div>
 
-        <div class="textItem _listHeader" style="margin-top: 20px">내가 요청한 교환 글</div>
-        <div class="itemWrapper" style="box-shadow: 1px 1px 17px 2px rgba(0, 0, 0, 0.12); background: white; margin: 10px 15px 5px 15px;">
+        <div class="textItem _listHeader" style="margin-top: 20px">요청한 교환 게시글</div>
+        <div class="itemWrapper" style="box-shadow: 1px 1px 17px 2px rgba(0, 0, 0, 0.12); background: white; margin: 10px 15px 45px 15px;">
 
             <div style="display: flex; height: 55px;">
                 <div class="itemHeader" style="height: 20px; margin: 13px auto auto 15px;">
@@ -43,11 +43,36 @@
     </div>
 </div>
 
+<!--group board view modal -->
+<div class="modal fade" id="requestListModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="margin-top: 100px; margin-left: 20%;">
+        <div class="modal-content" style="width: 1100px; border-radius: 0;">
+            <div class="modal-header" style="border: none;">
+                <div class="modal-title" id="groupBoardModal" style="margin: 0 0 0 auto">교환요청 목록</div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="width: 20px; height: 20px;"></button>
+            </div>
+            <div class="boardModal" style="width: 1100px; height: 700px; padding: 0.5rem;">
+
+                <div class="modalColumn" style="display: inline-flex">
+                    <div style="width: 160px">작성자</div>
+                    <div style="width: 160px">물품 이미지</div>
+                    <div style="width: 310px">물품 이름</div>
+                    <div style="width: 210px">문의사항</div>
+                    <div style="width: 180px"></div>
+                </div>
+
+                <div class="requestBoardItemContainer">
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
 
 <%@ include file="../common/footer.jsp" %>
 
 <link rel="stylesheet" text="javascript/css" href="/css/transaction.css">
-<script src="/js/modal.js"></script>
 <script>
 
     const clientData = {
@@ -56,6 +81,65 @@
         writerId: '', // writer id
         clientExchangeId: ''
     }
+
+    $(document).on('click', '.showClientRequestList', function (){
+        $('#requestListModal').modal('show')
+
+        const data = {
+            page: 0,
+            display: 10,
+            userId: $('.g_user_id').val(),
+            boardId: $(this).attr('id').split('_')[1]
+        }
+
+        $.ajax({
+            url: '/api/exchange/view/board/client_reqeust_list',
+            type:'GET',
+            data: data,
+            success: function(response){
+                $('.requestBoardItemContainer').empty()
+
+                $.each(response.content, function(key, value){
+                    console.log(value)
+                    $('.requestBoardItemContainer').append(
+                        "<div style='width: 97%'>" +
+                            "<div class='clientRequestItemBox'>" +
+                                "<div class='clientUserField' style='justify-content: center; margin: auto; width: 160px; display: inline-flex'" +
+                                    "<div>" +
+                                        "<div style='display: inherit'><img style='margin: auto 10px auto; border-radius: 50%; width: 40px; height: 40px;' src='/upload/" + value.userProfile + "' </div>" +
+                                        "<div style='margin: auto auto;'>" + value.username + "</div>" +
+                                    "</div>" +
+                                "</div>" +
+                                "<div style='width: 160px;' class='clientRequestImageField'>" +
+                                    "<div><img style='border-radius: 10px; border: 1px solid #f5f4f4; width: 60px; height: 60px;' src='/upload/" + value.filename + "' </div>" +
+                                "</div>" +
+                                "</div>" +
+                                "<div style='margin: auto 10px auto; width: 310px;' class='clientRequestTitleField'>" +
+                                    value.clientExchange.title +
+                                "</div>" +
+                                "<div style='margin: auto 10px auto; width: 180px;' class='clientRequestLocationField'>" +
+                                    value.clientExchange.address +
+                                "</div>" +
+                                "<div style='margin: auto 10px auto -10px; width: 210px;' class='clientRequestField'>" +
+                                    "<button class='actionButton showRequestDetailButton'>보기</button>" +
+                                    "<button class='actionButton rejectRequestButton'>삭제</button>" +
+                                "</div>" +
+                            "</div>" +
+                        "</div>" +
+                        "<hr style='border:none; background: #cccccc; height: 1px; margin: 0 30px 0 30px;' />"
+                    )
+                })
+
+            }
+        })
+    })
+
+    $(document).ready(function (){
+        setTimeout(function(){
+            getWriterBoardList();
+        }, 100);
+        getRequestList();
+    })
 
     // 교환요청 글 삭제
     $(document).on('click', '.requestCancelButton', function () {
@@ -76,11 +160,11 @@
         })
     })
 
-    $(document).ready(function(){
+    function getWriterBoardList(){
 
         const data = {
-            pageNum: 0,
-            pageSize: 10,
+            page: 0,
+            display: 10,
             userId: $('.g_user_id').val()
         }
 
@@ -89,10 +173,7 @@
             type: 'GET',
             data: data,
             success: function(response){
-                console.log(response)
-
                 $.each(response.content, function(key, value){
-
                     $('#myBoardItemsContainer').append(
                         "<div class='requestItemBox'>" +
                         "<div id='requestBox_" + key + "' style='padding: 15px 25px 15px 25px;'>" +
@@ -102,18 +183,14 @@
                             [], {'year':'2-digit', 'month': '2-digit', 'day':'2-digit', 'hour': '2-digit', 'minute' : '2-digit'}
                         ) +
                         "</div>" +
-                        "<div class='item requestThumbnail' style='text-align: center; width: 10%;'><img src=/upload/" + value.files[0] + "></div>" +
-                        "<div style='width: 40%; padding: 5px 20px 10px 15px;'>" +
+                        "<div class='item requestThumbnail' style='text-align: center; width: 10%;'><img src=/upload/" + value.files + "></div>" +
+                        "<div style='width: 60%; padding: 5px 20px 10px 15px;'>" +
                         "<div class='item requestTitle' >" + value.title + "</div>" +
                         "<div class='item requestContent' style='height: 65px'>" + value.content + "</div>" +
                         "</div>" +
-                        "<div class='item requestUserProfile' style='margin: auto 0 auto 0; width: 20%'>" +
-                        "<img style='margin-right: 10px;' src=/upload/" + value.userProfile + ">" +
-                        value.username +
-                        "</div>" +
                         "<div class='item _requestStatus' style='width: 15%; margin: auto 0 auto 0;'>" +
-                        "<button class='actionButton showClientRequestList'>요청보기</button>" +
-                        "<button class='actionButton stopRequest'>마감하기</button>" +
+                        "<button id='writerExchangeId_" + value.writerExchangeId + "' class='actionButton showClientRequestList'>요청목록</button>" +
+                        "<button class='actionButton stopRequest'>교환마감</button>" +
                         "</div>" +
                         "</div>" +
                         "</div>" +
@@ -123,14 +200,13 @@
                 })
             }
         })
+    }
 
-    })
-
-    $(document).ready(function(){
+    function getRequestList(){
 
         const data = {
-            pageNum: 0,
-            pageSize: 10,
+            page: 0,
+            display: 10,
             userId: $('.g_user_id').val()
         }
 
@@ -144,9 +220,7 @@
                     clientData.boardId = value.boardId;
                     clientData.clientId = value.clientId;
                     clientData.clientExchangeId = value.clientExchangeId;
-
-                    var statsButton = (value.status === 'process') ? "<button class='actionButton requestShowButton'>보기</button>" : ''
-
+                    console.log(value)
                     $('#transactionItemsContainer').append(
                         "<div class='requestItemBox'>" +
                         "<div id='requestBox_" + key + "' style='padding: 15px 25px 15px 25px;'>" +
@@ -156,7 +230,7 @@
                             [], {'year':'2-digit', 'month': '2-digit', 'day':'2-digit', 'hour': '2-digit', 'minute' : '2-digit'}
                         ) +
                         "</div>" +
-                        "<div class='item requestThumbnail' style='text-align: center; width: 10%;'><img src=/upload/" + value.files[0] + "></div>" +
+                        "<div class='item requestThumbnail' style='text-align: center; width: 10%;'><img src=/upload/" + value.files + "></div>" +
                         "<div style='width: 40%; padding: 5px 20px 10px 15px;'>" +
                         "<div class='item requestTitle' >" + value.title + "</div>" +
                         "<div class='item requestContent' style='height: 65px'>" + value.content + "</div>" +
@@ -166,7 +240,7 @@
                         value.clientUsername +
                         "</div>" +
                         "<div class='item _requestStatus' style='width: 15%; margin: auto 0 auto 0;'>" +
-                        statsButton +
+                        "<button class='actionButton showMyRequestBoard'>내용보기</button>" +
                         "<button class='actionButton requestCancelButton'>교환취소</button>" +
                         "</div>" +
                         "</div>" +
@@ -177,8 +251,7 @@
                 })
             }
         })
-
-    })
+    }
 
     $(document).on('click', '#upDownButton', function(){
         var upDownButton = document.getElementById('upDownButton')

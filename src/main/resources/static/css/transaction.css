@@ -12,14 +12,55 @@
     font-style: normal;
 }
 
+.modal-header{
+    font-family: 'Pretendard-SemiBold', sans-serif;
+    font-size: 19px;
+}
+
+.modalColumn{
+    display: inline-flex;
+    background: rgb(238, 240, 243);
+    padding: 10px;
+    width: 98%;
+    margin: 10px 10px 0 10px;
+    font-family: Pretendard-SemiBold;
+    font-size: 15px;
+    text-align: center;
+}
+
+.requestBoardItemContainer{
+    font-family: Pretendard-Regular;
+    font-size: 14px;
+    text-align: center;
+}
+
+.requestBoardItemContainer .clientRequestItemBox{
+    display: inline-flex;
+    padding: 15px;
+    width: 101%;
+    margin-left: 10px;
+}
+
+.clientRequestItemBox:hover{
+    background: #fdfdfd;
+}
+
 .actionButton{
-    margin: 10px 3px 0 3px;
+    margin: 10px 3px 10px 3px;
     background-color: white;
     border: 1px solid rgb(215, 215, 215);
     padding: 8px;
     font-family: Noto Sans KR;
     font-size: 13px;
     cursor: pointer;
+}
+
+.actionButton:hover{
+    background: #f1f1f1;
+}
+
+.actionButton:focus{
+    outline: none;
 }
 
 input[type=checkbox]{
