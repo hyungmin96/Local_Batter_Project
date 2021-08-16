@@ -22,6 +22,35 @@
     background-color: rgb(124, 124, 124);
 }
 
+.inputButton{
+    border: none;
+    width: 100%;
+    object-fit: cover;
+    background: transparent;
+}
+
+.inputButton img{
+    padding: 5px;
+}
+
+.inputButton:hover{
+    outline: none;
+}
+
+.SendChatContentBox{
+    outline: none;
+    font-family: Pretendard-Regular;
+    font-size: 14px;
+    resize: none;
+    border: 1px solid rgb(215, 215, 215);
+    padding: 4px;
+}
+
+.SendChatContentBox:focus, .SendChatContentBox:focus{
+    outline: #ccc;
+    border: 1px solid rgb(215, 215, 215);
+}
+
 .modal-header{
     font-family: 'Pretendard-SemiBold', sans-serif;
     font-size: 19px;

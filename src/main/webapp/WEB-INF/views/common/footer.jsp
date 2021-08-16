@@ -1,8 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
     <div class="footer__section">
-        <hr />
-        <div class="container">
+        <div class="container" style="padding: 20px; ">
             <div class="t1">
                 <h1>한밭대학교 컴퓨터공학과 캡스톤 디자인</h1>
             </div>

@@ -51,7 +51,6 @@ public class ExchangeService {
         if(writerClientJoinEntity != null){
             // update exchange status
             writerClientJoinEntity.setProcess();
-            writerClientJoinRepository.save(writerClientJoinEntity);
             return new GroupExchangeApiController.ResponseRequestExchangeDTO(writerClientJoinEntity);
         }
         return null;

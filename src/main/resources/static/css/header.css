@@ -81,14 +81,11 @@
     width: 100%;
     display: inline-flex;
     align-items: center;
-    margin-bottom: 15px;
-    justify-content: center;
-    padding: 25px;
 }
 
 .btn-header-btns{
     display: flex;
-    margin-left: 130px;
+    margin-left: auto;
 }
 
 .btn-header-btns .header_{

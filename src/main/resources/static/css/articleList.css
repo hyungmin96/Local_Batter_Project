@@ -6,7 +6,8 @@
 }
 
 .content-wrapper {
-    margin-top: 155px;
+    margin-top: 105px;
+    min-height: 712px;
 }
 
 a:link {

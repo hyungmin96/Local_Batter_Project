@@ -1,27 +1,18 @@
 @font-face {
-    font-family: 'NanumBarunGothic';
+    font-family: 'Pretendard-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
     font-style: normal;
-    font-weight: bold;
-    src: url('//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.eot');
-    src: url('//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.eot?#iefix') format('embedded-opentype'), url('//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.woff') format('woff'), url('//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.ttf') format('truetype');
+}
+
+.footer__section h1{
+    font-family: Pretendard-Regular;
+    font-size: 15px;
+    color: #d7d5d5;
 }
 
 .footer__section{
-    margin: auto;
-    position: relative;
-    bottom: 0px;
     height: 120px;
     width: 100%;
     background-color: rgb(64, 71, 81);
-}
-
-.footer__section .container .t1{
-    margin: 15px 15px;
-}   
-
-.footer__section h1{
-    margin: 0;
-    font-size: 15px;
-    color: rgb(240, 240, 240);
-    font-family: NanumBarunGothic;
 }

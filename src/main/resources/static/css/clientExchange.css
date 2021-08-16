@@ -20,7 +20,7 @@
 
 .writerProductTitle{
     font-family: 'Pretendard-SemiBold', sans-serif;
-    font-size: 26px;
+    font-size: 37px;
     padding: 0 5px 5px 0;
     display: inline-block;
     overflow: hidden;
@@ -34,7 +34,7 @@
 
 .writerProductContent{
     font-family: 'Pretendard-Regular', sans-serif;
-    font-size: 15px;
+    font-size: 21px;
     padding: 0 5px 5px 0;
     word-break: break-all;
     white-space: break-spaces;
@@ -44,7 +44,7 @@
 
 .writerProductPrice{
     font-family: Pretendard-SemiBold;
-    font-size: 24px;
+    font-size: 19px;
     letter-spacing: 0;
     color: red;
 }

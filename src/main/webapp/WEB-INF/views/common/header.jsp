@@ -72,7 +72,7 @@
                         </div>
 
                         <div class="header_ btn-profile">
-                            <button class="header-product-reg" onclick="location.href='/transaction/itemList'">
+                            <button class="header-product-reg" onclick="location.href='/view/exchange/chat/list'">
                                 <img src="/images/header/chat.png"/>
                             </button>
                         </div>

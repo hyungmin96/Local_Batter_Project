@@ -2,9 +2,11 @@ package com.project.localbatter.entity.Exchange;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.localbatter.entity.BaseTimeEntity;
+import com.project.localbatter.entity.ExchangeChatEntity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 import static com.project.localbatter.entity.Exchange.WriterClientJoinEntity.status.*;
 
@@ -35,6 +37,9 @@ public class WriterClientJoinEntity extends BaseTimeEntity {
     @JoinColumn(name = "client_exchange_id")
     @JsonIgnore
     private ClientExchangeEntity clientExchangeEntity;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<ExchangeChatEntity> chats;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")

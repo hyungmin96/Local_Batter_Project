@@ -1,5 +1,6 @@
 package com.project.localbatter.components;
 
+import com.project.localbatter.api.exchange.ExchangeChatApiController.ResponseChatListDTO;
 import com.project.localbatter.api.exchange.GroupExchangeApiController.ResponseClientAndWriterBoard;
 import com.project.localbatter.api.exchange.GroupExchangeApiController.ResponseClientRequestDTO;
 import com.project.localbatter.api.exchange.GroupExchangeApiController.ResponseRequestListDTO;
@@ -20,10 +21,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
+import java.util.List;
 import static com.project.localbatter.entity.Exchange.QClientExchangeEntity.clientExchangeEntity;
 import static com.project.localbatter.entity.Exchange.QWriterClientJoinEntity.writerClientJoinEntity;
 import static com.project.localbatter.entity.Exchange.QWriterExchangeEntity.writerExchangeEntity;
+import static com.project.localbatter.entity.QExchangeChatEntity.exchangeChatEntity;
 import static com.project.localbatter.entity.QGroupBoardEntity.groupBoardEntity;
 import static com.project.localbatter.entity.QGroupBoardFileEntity.groupBoardFileEntity;
 import static com.project.localbatter.entity.QGroupUserJoinEntity.groupUserJoinEntity;
@@ -36,6 +38,32 @@ public class ExchangeQueryComponent {
     private final JPAQueryFactory queryFactory;
     private final PagingUtil pagingUtil;
     private final WriterClientJoinRepository writerClientJoinRepository;
+
+    // Get List that writer accept request for exchange of client
+    // writer가 교환을 수락한 목록 조회
+    public List<ResponseChatListDTO> getChatList(Long userId){
+
+        QUserEntity writerId = new QUserEntity("writerEntity");
+        QUserEntity clientId = new QUserEntity("clientEntity");
+
+        return queryFactory
+                .select(Projections.constructor(ResponseChatListDTO.class,
+                        writerId.id.as("writerId"),
+                        writerId.username.as("writerUsername"),
+                        writerId.profilePath.as("writerProfile"),
+                        clientId.id.as("clientId"),
+                        clientId.username.as("clientUsername"),
+                        clientId.profilePath.as("clientProfile"),
+                        exchangeChatEntity.message.as("message")
+                        ))
+                .from(writerClientJoinEntity)
+                .leftJoin(writerId).on(writerClientJoinEntity.writerId.eq(writerId.id))
+                .leftJoin(clientId).on(writerClientJoinEntity.clientId.eq(clientId.id))
+                .leftJoin(writerClientJoinEntity.chats, exchangeChatEntity)
+                .where(writerClientJoinEntity.status.eq(WriterClientJoinEntity.status.process)
+                .and(writerClientJoinEntity.clientId.eq(userId).or(writerClientJoinEntity.writerId.eq(userId))))
+                .fetch();
+    }
 
     // View the client'request board and writer's board infomation
     // client와 writer 게시글 정보를 조회
