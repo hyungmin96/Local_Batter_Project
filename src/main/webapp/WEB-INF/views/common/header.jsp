@@ -39,41 +39,14 @@
 
 <body>
 
-<div class="remote__container" style="top:280px; right: 0px; position: fixed; background-color: rgb(78, 78, 78); width: 40px; height: 180px">
-    <div class="remote__list">
-        <li>
-            <div style="position: relative; cursor: pointer;" onclick="window.location.href='#';"><img src="/images/remote/bell.png">
-            <div style="position: absolute; top: -10px; right: -5px; display: none;" class="noti">${notification.notification}</div>
-            </div>
-        </li>
-
-        <li>
-            <div style="position: relative; cursor: pointer" onclick="window.location.href='/transaction/itemList';"><img src="/images/remote/cart.png">
-            <div style="position: absolute; top: -10px; right: -5px; display: none;" class="trans">${notification.transaction}</div>
-            </div>
-        </li>
-
-        <li>
-            <div style="position: relative; cursor: pointer" onclick="window.location.href='/chatlist/${principal.username}';"><img src="/images/remote/chat.png">
-            <div style="position: absolute; top: -10px; right: -5px; display: none;" class="chat">${notification.chat}</div>
-            </div>
-        </li>
-
-        <li>
-            <div style="cursor: pointer" onclick="window.scrollTo(0,0);"><img src="/images/remote/up.png">
-            </div>
-        </li>
-    </div>
-</div>
-
 <div class="header">
 
     <input type="hidden" class="g_user_id" value="${g_user.id}">
     <input type="hidden" class="g_user_name" value="${g_user.username}">
 
-    <div class="container">
-        <div class="header_box" style="margin: auto auto;">
-                <div style="margin-left: 80px; width: 120px;">
+    <div class="container" style="margin: 5px auto auto auto;">
+        <div class="header_box">
+                <div style="margin-left: 30px; width: 120px;">
                     <a href="/" class="logo__text">Local Batter</a>
                 </div>
                 <div class="wrapper">
@@ -111,8 +84,8 @@
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                     <li><a href="/profile/user=${principal.username}" class="dropdown-item">프로필 보기</a><hr/></li>
-                                    <li><a href="/view/transaction/my/boards" class="dropdown-item">내가 쓴 글 보기</a></li>
-                                    <li><a href="/view/transaction/my/boards" class="dropdown-item">교환목록 보기</a><hr/></li>
+                                    <li><a href="/product/group" class="dropdown-item">가입 그룹목록</a></li>
+                                    <li><a href="/view/transaction/my/boards" class="dropdown-item">물품 교환목록</a><hr/></li>
                                     <li><a href="/user/logout" class="dropdown-item">로그아웃</a></li>
                                 </ul>
                             </div>
@@ -130,46 +103,9 @@
         </div>
     </div>
 </div>
-
-<script>
-
-var notiElement = document.getElementsByClassName('noti')[0];
-var transElement = document.getElementsByClassName('trans')[0];
-var chatElement = document.getElementsByClassName('chat')[0];
-
-$(document).ready(function(){
-    if(parseInt(notiElement.innerHTML) > 0)
-        notiElement.style.display = 'block';
-    if(parseInt(transElement.innerHTML) > 0)
-        transElement.style.display = 'block';
-    if(parseInt(chatElement.innerHTML) > 0)
-        chatElement.style.display = 'block';
-})
-
-notiElement.addEventListener("DOMSubtreeModified", function(){
-    if(parseInt(notiElement.innerHTML) < 1)
-        notiElement.style.display = 'none';
-    else
-        notiElement.style.display = 'block';
-})
-
-transElement.addEventListener("DOMSubtreeModified", function(){
-    if(parseInt(transElement.innerHTML) < 1)
-        transElement.style.display = 'none';
-    else
-        transElement.style.display = 'block';
-})
-
-chatElement.addEventListener("DOMSubtreeModified", function(){
-    if(parseInt(chatElement.innerHTML) < 1)
-        chatElement.style.display = 'none';
-    else
-        chatElement.style.display = 'block';
-})
-</script>
-
 <style>
     body{
         background-color: rgb(238, 240, 243);
+        overflow-x: hidden;
     }
 </style>

@@ -1,5 +1,6 @@
 package com.project.localbatter.services.group;
 
+import com.project.localbatter.api.group.GroupBoardApiController.ResponseBoardViewDTO;
 import com.project.localbatter.components.DeleteFile;
 import com.project.localbatter.components.GenerateFile;
 import com.project.localbatter.components.PagingUtil;
@@ -25,12 +26,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.project.localbatter.entity.QGroupBoardEntity.groupBoardEntity;
 import static com.project.localbatter.entity.QGroupBoardFileEntity.groupBoardFileEntity;
 import static com.project.localbatter.entity.QGroupUserJoinEntity.groupUserJoinEntity;
 import static com.project.localbatter.entity.QUserEntity.userEntity;
+import static com.querydsl.core.group.GroupBy.groupBy;
+import static com.querydsl.core.group.GroupBy.list;
 
 @Service
 @RequiredArgsConstructor
@@ -45,6 +49,7 @@ public class GroupBoardService {
 
     // 그룹 게시글 수정 api
     // update groub's board title, content
+    @Transactional
     public GroupBoardEntity update(GroupBoardDTO groupBoardDTO){
         GroupBoardEntity groupBoardEntity = queryFactory
                 .selectDistinct(QGroupBoardEntity.groupBoardEntity)
@@ -62,25 +67,32 @@ public class GroupBoardService {
                 Arrays.stream(groupBoardDTO.getDeleteImageIndex()).forEach(item -> {
                     Long id = boardFiles.get(item).getId();
                     groupBoardFileRepository.deleteItem(id);
+                    boardFiles.set(item, null);
                 });
-                Arrays.stream(groupBoardDTO.getDeleteImageIndex()).forEach(boardFiles::remove);
+                for(int i = boardFiles.size() - 1; i > 0; i --)
+                    if(boardFiles.get(i) == null)  boardFiles.remove(i);
             }
         }catch(Exception ignored){}
-        groupBoardEntity.update(groupBoardDTO.getTitle(), groupBoardDTO.getContent(), boardFiles);
+        groupBoardEntity.update(groupBoardDTO, boardFiles);
         groupBoardRepository.save(groupBoardEntity);
         return groupBoardEntity;
     }
 
     @Transactional(readOnly = true)
-    public List<GroupBoardEntity> getBoardInfo(GroupBoardDTO groupBoardDTO){
-        return queryFactory
-                .selectDistinct(groupBoardEntity)
+    public List<ResponseBoardViewDTO> getBoardInfo(GroupBoardDTO groupBoardDTO){
+        Map<GroupBoardEntity, List<GroupBoardFileEntity>> map = queryFactory
                 .from(groupBoardEntity)
-                .where(groupBoardEntity.boardId.eq(groupBoardDTO.getBoardId())
-                .and(groupBoardEntity.groupId.eq(groupBoardDTO.getGroupId())))
                 .leftJoin(groupBoardEntity.files, groupBoardFileEntity)
+                .leftJoin(groupBoardEntity.groupUserJoinEntity, groupUserJoinEntity)
                 .fetchJoin()
-                .fetch();
+                .leftJoin(groupUserJoinEntity.user, userEntity)
+                .fetchJoin()
+                .where(groupBoardEntity.boardId.eq(groupBoardDTO.getBoardId()))
+                .transform(groupBy(groupBoardEntity).as(list(groupBoardFileEntity)));
+
+        return map.entrySet().stream()
+                .map(item -> new ResponseBoardViewDTO(item.getKey(), item.getValue()))
+                .collect(Collectors.toList());
     }
 
     public Page<GroupBoardEntity> getBoardList(Long groupId, PageRequest request) {
@@ -135,17 +147,19 @@ public class GroupBoardService {
     public GroupBoardEntity post(GroupBoardDTO groupBoardDTO){
         WriterExchangeEntity writerExchangeEntity = groupBoardDTO.getWriterExchangeEntity();
         GroupUserJoinEntity groupUserJoinEntity = groupUserJoinQuseryRepository.findGroupUserJoinEntity(groupBoardDTO.getUserId(), groupBoardDTO.getGroupId());
-        GroupBoardEntity groupBoardEntity = groupBoardDTO.toEntity(groupUserJoinEntity, writerExchangeEntity);
-        if(groupUserJoinEntity != null){
-            groupBoardRepository.save(groupBoardEntity);
+        if(groupUserJoinEntity != null){ // 게시글작성 사용자가 권한이 있는지 확인
             List<GenerateFileDTO> groupBoardFiles = generateFile.createFile(groupBoardDTO.getBoard_img());
+            if(groupBoardFiles.size() > 0) groupBoardDTO.setThumnbnailPath(groupBoardFiles.get(0).getName());
+            GroupBoardEntity groupBoardEntity = groupBoardDTO.toEntity(groupUserJoinEntity, writerExchangeEntity);
+            groupBoardRepository.save(groupBoardEntity);
             groupBoardFiles.stream().map(GroupBoardFileDTO::new).collect(Collectors.toList())
                     .forEach(item -> {
                         GroupBoardFileEntity file = item.toEntity(groupBoardEntity);
                         groupBoardDTO.addFile(file);
                         groupBoardFileRepository.save(file);
                     });
+            return groupBoardEntity;
         }
-        return groupBoardEntity;
+        return null;
     }
 }

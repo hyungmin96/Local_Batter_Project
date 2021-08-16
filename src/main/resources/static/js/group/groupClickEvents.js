@@ -15,7 +15,6 @@ $(function () {
     })
     $('.commentWriteBoard').click(function(){
         infoImgs = []
-        $('.groupContentWriteBox').empty()
         $('#groupBoardWriteModal').modal('show')
     })
     $('.groupDeleteButton').click(function (){
@@ -29,6 +28,11 @@ $(function () {
     })
     $('.uploadBtn').click(function () {
         postContent();
+        $('.groupTitleInputBox')[0].value = ''
+        $('.locationDetailTinfo')[0].value = ''
+        $('#exchange_address')[0].value = ''
+        $('#exchange_time')[0].value = ''
+        $('.groupContentWriteBox').empty()
         $('.btn-close').click();
     })
     $('.carousel-control-prev').click(function () {
@@ -322,21 +326,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const scrollpos = localStorage.getItem('scrollpos');
     if (scrollpos) {
         window.scrollTo(0, 0);
-        isMember();
-        loadNotices();
-        getBoardList();
-        getMemberList();
     }
 });
 
 window.onbeforeunload = function (e) {
     localStorage.setItem('scrollpos', window.scrollY);
 };
-
-$(document).scroll(function () {
-    if ($(window).scrollTop() + $(window).height() == getDocHeight())
-        getBoardList();
-});
 
 function getDocHeight() {
     const D = document;

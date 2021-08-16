@@ -52,7 +52,6 @@ function loadGroupChatRoomList(e, page = 0){
 
             $.each(response, function(key, value){
 
-                console.log(value)
                 const files = (value.filePath != null) ? value.filePath : '';
 
                 $('.Group__room__list').append(

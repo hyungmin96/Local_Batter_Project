@@ -40,7 +40,7 @@ public class GroupEntity {
     private String filePath;
 
     @OneToMany(mappedBy = "group", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<GroupUserJoinEntity> UserGroupJoin;
+    private List<GroupUserJoinEntity> groupUserJoinEntity;
 
     @OneToMany(mappedBy = "groupEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<GroupChatEntity> chats;

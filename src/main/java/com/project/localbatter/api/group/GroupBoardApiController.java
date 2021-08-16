@@ -1,6 +1,7 @@
 package com.project.localbatter.api.group;
 
 import com.project.localbatter.dto.Group.GroupBoardDTO;
+import com.project.localbatter.entity.Exchange.WriterExchangeEntity;
 import com.project.localbatter.entity.GroupBoardEntity;
 import com.project.localbatter.entity.GroupBoardFileEntity;
 import com.project.localbatter.entity.GroupCommentEntity;
@@ -38,9 +39,8 @@ public class GroupBoardApiController {
     }
 
     @PostMapping("/getInfo")
-    public ResponseBoardDTO getBoardInfo(GroupBoardDTO groupBoardDTO){
-        GroupBoardEntity grouBoardEntity = groupBoardService.getBoardInfo(groupBoardDTO).get(0);
-        return new ResponseBoardDTO(grouBoardEntity);
+    public List<ResponseBoardViewDTO> getBoardInfo(GroupBoardDTO groupBoardDTO){
+        return groupBoardService.getBoardInfo(groupBoardDTO);
     }
 
     @PostMapping("/update/notice")
@@ -73,6 +73,30 @@ public class GroupBoardApiController {
         return new PageImpl<>(response, request, items.getTotalElements());
     }
 
+    @Setter @Getter
+    public static class ResponseBoardViewDTO{
+
+        private Long userId;
+        private String username;
+        private String userProfile;
+        private Long boardId;
+        private String title;
+        private String content;
+        private LocalDateTime regTime;
+        private List<String> files;
+
+        public ResponseBoardViewDTO(GroupBoardEntity boardInfo, List<GroupBoardFileEntity> files){
+            this.userId = boardInfo.getGroupUserJoinEntity().getUser().getId();
+            this.username = boardInfo.getGroupUserJoinEntity().getUser().getUsername();
+            this.userProfile = boardInfo.getGroupUserJoinEntity().getUser().getProfilePath();
+            this.boardId = boardInfo.getBoardId();
+            this.title = boardInfo.getTitle();
+            this.content = boardInfo.getContent();
+            this.regTime = boardInfo.getRegTime();
+            this.files = files.stream().map(item -> item.getName()).collect(Collectors.toList());
+        }
+    }
+
 
     @Setter @Getter
     public static class ResponseBoardDTO {
@@ -92,9 +116,8 @@ public class GroupBoardApiController {
         private List<ResponseCommentDTO> comments;
 
         // 게시글 거래위치 DTO
-        private String residence;
-        private String detailAddr;
-        private String buildingcode;
+        private String price;
+        private WriterExchangeEntity.ExchageOnOff exchageOn;
         private String location;
         private String locationDetail;
         private String longitude;
@@ -115,14 +138,13 @@ public class GroupBoardApiController {
             this.boardFiles = entity.getFiles().stream().map(GroupBoardFileEntity::getName).collect(Collectors.toList());
             this.comments = (entity.getComments() != null) ? entity.getComments().stream().map(ResponseCommentDTO::new).collect(Collectors.toList()) : new ArrayList<>();
             if (entity.getWriterExchangeEntity() != null) {
-                this.residence = entity.getWriterExchangeEntity().getResidence();
-                this.detailAddr = entity.getWriterExchangeEntity().getDetailAddr();
-                this.buildingcode = entity.getWriterExchangeEntity().getBuildingcode();
-                this.longitude = entity.getWriterExchangeEntity().getLongitude();
-                this.latitude = entity.getWriterExchangeEntity().getLatitude();
+                this.price = entity.getWriterExchangeEntity().getPrice();
+                this.exchageOn = entity.getWriterExchangeEntity().getExchangeOn();
                 this.location = entity.getWriterExchangeEntity().getLocation();
                 this.locationDetail = entity.getWriterExchangeEntity().getLocationDetail();
-                this.preferTime = entity.getWriterExchangeEntity().getExchangeTime();
+                this.longitude = entity.getWriterExchangeEntity().getLongitude();
+                this.latitude = entity.getWriterExchangeEntity().getLatitude();
+                this.preferTime = entity.getWriterExchangeEntity().getPreferTime();
             }
         }
     }

@@ -5,6 +5,8 @@ import com.project.localbatter.dto.TransactionDTO;
 import com.project.localbatter.dto.exchangeDTO.ClientExchangeDTO;
 import com.project.localbatter.entity.Exchange.ClientExchangeEntity;
 import com.project.localbatter.entity.Exchange.WriterClientJoinEntity;
+import com.project.localbatter.entity.Exchange.WriterExchangeEntity;
+import com.project.localbatter.entity.Exchange.WriterExchangeEntity.ExchageOnOff;
 import com.project.localbatter.entity.GroupBoardEntity;
 import com.project.localbatter.entity.GroupBoardFileEntity;
 import com.project.localbatter.services.ExchangeService;
@@ -22,12 +24,18 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/exchange")
 public class GroupExchangeApiController {
 
     private final ExchangeService groupExchangeService;
+
+    @GetMapping("/view/client_writer_exchange")
+    public ResponseClientAndWriterBoard getClientWriterExchange(TransactionDTO transactionDTO){
+        return groupExchangeService.getClientAndWriterBoard(transactionDTO);
+    }
 
     @GetMapping("/view/board/client_reqeust_list")
     public Page<ResponseClientRequestDTO> getBoardClientReqeust(ClientExchangeDTO clientExchangeDTO){
@@ -38,7 +46,8 @@ public class GroupExchangeApiController {
     @GetMapping("/my/request_list")
     public Page<ResponseRequestListDTO> getRequestList(TransactionDTO transactionDTO){
         Pageable page = PageRequest.of(transactionDTO.getPage(), transactionDTO.getDisplay());
-        return groupExchangeService.getRequestList(transactionDTO, page);
+        Page<ResponseRequestListDTO> items = groupExchangeService.getRequestList(transactionDTO, page);
+        return items;
     }
 
     @PostMapping("/cancel/request")
@@ -47,14 +56,15 @@ public class GroupExchangeApiController {
     }
 
     @PostMapping("/select/request")
-    public ResponseRequestExchangeDTO selectRequestEntity(ClientExchangeDTO clientExchangeDTO){
-        return groupExchangeService.selectRequest(clientExchangeDTO);
+    public ResponseRequestExchangeDTO selectRequestEntity(TransactionDTO transactionDTO){
+        return groupExchangeService.accpetClientsRequest(transactionDTO);
     }
 
     @GetMapping("/my/get_write_list")
     public Page<ResponseWrtierExchangeDTO> getWriterBoards(TransactionDTO transactionDTO) {
         Pageable page = PageRequest.of(transactionDTO.getPage(), transactionDTO.getDisplay());
-        return groupExchangeService.getWriterBoards(transactionDTO, page);
+        Page<ResponseWrtierExchangeDTO> items = groupExchangeService.getWriterBoards(transactionDTO, page);
+        return items;
     }
 
     @PostMapping("/client/post")
@@ -69,19 +79,68 @@ public class GroupExchangeApiController {
     }
 
     @Setter @Getter
+    public static class ResponseClientAndWriterBoard{
+
+        private Long writerId;
+        private Long clientid; // client user id
+        private Long boardId; // writer's board id
+        private Long clientExchangeId; // client exchange board id
+
+        private String title; // board variable
+        private String content;
+        private String longtitude;
+        private String latitude;
+        private String price;
+        private String preferTime;
+
+        private String writerUsername;
+        private String writerProfile;
+        private String clientUsername;
+        private String clientProfile;
+
+        private WriterExchangeEntity writerExchangeEntity;
+        private ClientExchangeEntity clientExchangeEntity;
+
+        private List<String> writerImages;
+        private List<String> clientImages;
+
+        public ResponseClientAndWriterBoard(Long writerId, Long clientid, GroupBoardEntity board, Long clientExchangeId, String writerUsername, String writerProfile, String clientUsername, String clientProfile, WriterExchangeEntity writerExchangeEntity, ClientExchangeEntity clientExchangeEntity) {
+            this.writerId = writerId;
+            this.clientid = clientid;
+            this.clientExchangeId = clientExchangeId;
+            this.writerUsername = writerUsername;
+            this.writerProfile = writerProfile;
+            this.clientUsername = clientUsername;
+            this.clientProfile = clientProfile;
+            this.writerExchangeEntity = writerExchangeEntity;
+            this.clientExchangeEntity = clientExchangeEntity;
+            this.title = board.getTitle();
+            this.content = board.getContent();
+            this.longtitude = writerExchangeEntity.getLongitude();
+            this.latitude = writerExchangeEntity.getLatitude();
+            this.price = writerExchangeEntity.getPrice();
+            this.preferTime = writerExchangeEntity.getPreferTime();
+            this.writerImages = board.getFiles().stream().map(item -> item.getName()).collect(Collectors.toList());
+            this.clientImages = clientExchangeEntity.getFiles().stream().map(item -> item.getName()).collect(Collectors.toList());
+        }
+    }
+
+    @Setter @Getter
     public static class ResponseClientRequestDTO{
 
         private Long userId;
         private String username;
         private String userProfile;
         private String filename;
+        private Long exchangeId;
         private ClientExchangeEntity clientExchange;
 
-        public ResponseClientRequestDTO(Long clientId, String username, String userProfile, String filename, ClientExchangeEntity clientExchange) {
+        public ResponseClientRequestDTO(Long clientId, String username, String userProfile, String filename, Long exchangeId, ClientExchangeEntity clientExchange) {
             this.userId = clientId;
             this.username = username;
             this.userProfile = userProfile;
             this.filename = filename;
+            this.exchangeId = exchangeId;
             this.clientExchange = clientExchange;
         }
     }
@@ -95,9 +154,9 @@ public class GroupExchangeApiController {
         private String title;
         private String content;
         private LocalDateTime regTime;
-        private String files;
+        private String thumbnail;
 
-        public ResponseWrtierExchangeDTO(Long writerId, Long writerExchangeId, Long boardId, int reqeustCount, String title, String content, LocalDateTime regTime, String files) {
+        public ResponseWrtierExchangeDTO(Long writerId, Long writerExchangeId, Long boardId, int reqeustCount, String title, String content, LocalDateTime regTime, String thumbnail) {
             this.writerId = writerId;
             this.writerExchangeId = writerExchangeId;
             this.boardId = boardId;
@@ -105,7 +164,7 @@ public class GroupExchangeApiController {
             this.title = title;
             this.content = content;
             this.regTime = regTime;
-            this.files = files;
+            this.thumbnail = thumbnail;
         }
     }
 
@@ -121,9 +180,9 @@ public class GroupExchangeApiController {
         private String content;
         private WriterClientJoinEntity.status status;
         private LocalDateTime regTime;
-        private String files;
+        private String thumbnail;
 
-        public ResponseRequestListDTO(Long clientId, Long clientExchangeId, String clientUsername, String clientProfile, Long writerId, Long boardId, String title, String content, WriterClientJoinEntity.status status, LocalDateTime regTime, String files) {
+        public ResponseRequestListDTO(Long clientId, Long clientExchangeId, String clientUsername, String clientProfile, Long writerId, Long boardId, String title, String content, WriterClientJoinEntity.status status, LocalDateTime regTime, String thumbnail) {
             this.clientId = clientId;
             this.clientExchangeId = clientExchangeId;
             this.clientUsername = clientUsername;
@@ -134,7 +193,7 @@ public class GroupExchangeApiController {
             this.content = content;
             this.status = status;
             this.regTime = regTime;
-            this.files = files;
+            this.thumbnail = thumbnail;
         }
     }
 
@@ -150,9 +209,8 @@ public class GroupExchangeApiController {
         private List<String> boardFiles;
 
         // 게시글 거래위치 DTO
-        private String residence;
-        private String detailAddr;
-        private String buildingcode;
+        private String price;
+        private ExchageOnOff exchangeOn;
         private String location;
         private String locationDetail;
         private String longitude;
@@ -169,14 +227,13 @@ public class GroupExchangeApiController {
             this.content = entity.getContent();
             this.boardFiles = entity.getFiles().stream().map(GroupBoardFileEntity::getName).collect(Collectors.toList());
             if (entity.getWriterExchangeEntity() != null) {
-                this.residence = entity.getWriterExchangeEntity().getResidence();
-                this.detailAddr = entity.getWriterExchangeEntity().getDetailAddr();
-                this.buildingcode = entity.getWriterExchangeEntity().getBuildingcode();
-                this.longitude = entity.getWriterExchangeEntity().getLongitude();
-                this.latitude = entity.getWriterExchangeEntity().getLatitude();
+                this.price = entity.getWriterExchangeEntity().getPrice();
+                this.exchangeOn = entity.getWriterExchangeEntity().getExchangeOn();
                 this.location = entity.getWriterExchangeEntity().getLocation();
                 this.locationDetail = entity.getWriterExchangeEntity().getLocationDetail();
-                this.preferTime = entity.getWriterExchangeEntity().getExchangeTime();
+                this.longitude = entity.getWriterExchangeEntity().getLongitude();
+                this.latitude = entity.getWriterExchangeEntity().getLatitude();
+                this.preferTime = entity.getWriterExchangeEntity().getPreferTime();
             }
         }
     }

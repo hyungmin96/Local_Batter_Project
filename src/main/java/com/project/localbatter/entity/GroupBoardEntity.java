@@ -1,5 +1,6 @@
 package com.project.localbatter.entity;
 
+import com.project.localbatter.dto.Group.GroupBoardDTO;
 import com.project.localbatter.entity.Exchange.WriterExchangeEntity;
 import lombok.*;
 
@@ -41,6 +42,9 @@ public class GroupBoardEntity extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private BoardCategory BoardCategory;
 
+    @Column(name = "board_thumbnail")
+    private String thumnbnailPath;
+
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "exchange_id")
     private WriterExchangeEntity writerExchangeEntity;
@@ -55,10 +59,14 @@ public class GroupBoardEntity extends BaseTimeEntity {
     @OneToMany(mappedBy = "groupBoard", fetch = LAZY, cascade = CascadeType.ALL)
     private List<GroupBoardFileEntity> files;
 
-    public void update(String title, String content, List<GroupBoardFileEntity> files){
-        this.title = title;
-        this.content = content;
-        if(files != null && files.size() > 0) this.files = files;
+    public void update(GroupBoardDTO groupBoardDTO, List<GroupBoardFileEntity> files){
+        this.title = groupBoardDTO.getTitle();
+        this.content = groupBoardDTO.getContent();
+        writerExchangeEntity.update(groupBoardDTO);
+        if(files != null && files.size() > 0){
+            this.files = files;
+            this.thumnbnailPath = files.get(0).getName();
+        }
     }
 
     public void updateNotice(BoardType type){

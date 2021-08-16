@@ -7,7 +7,7 @@
         <input type="hidden" class="boardId" value="${board}">
         <input type="hidden" class="writerId" value="${writerId}">
             <div class="writerBoardInfo" style="margin-top: 70px;">
-                <div class="exchangeHeader">등록된 물품 정보</div>
+                <div class="exchangeHeader">교환물품 정보</div>
                 <div>
                     <div class="writerProductInfoBox" style="display: flex; padding: 10px;">
 
@@ -26,12 +26,12 @@
                             </a>
                         </div>
 
-                        <div class="writerContent" style="width: 100%; padding: 0 5px 5px 15px; border-left: 1px solid #efefef">
+                        <div class="writerContent" style="width: 100%; padding: 0 5px 10px 36px; border-left: 1px solid #efefef">
                             <div class="wrtierAccountInfoBox" style="display: inline-flex">
-                                <div><img class="writerProfile" src="/upload/undefined"></div>
+                                <div><img class="userProfile writerProfile" src="/upload/undefined"></div>
                                 <div style="display: flex"><h4 class="writerUsername">사용자 이름</h4></div>
                             </div>
-                            <div class="writerBoardContentContainer" style="padding: 0 15px 15px 15px;">
+                            <div class="writerBoardContentContainer" style="padding: 15px 15px 5px 10px;">
 
                             </div>
                         </div>
@@ -44,7 +44,7 @@
 
     <div class="clientExchangeContainer" style="margin-bottom: 80px; padding: 15px; background-color: #f7f8f9;">
         <div class="container">
-            <div class="exchangeHeader">교환할 물품 정보</div>
+            <div class="exchangeHeader">내 물품 정보</div>
             <div style="padding: 10px;">
                 <input id="clientImagePreview" type="file" accept="image/jpg, image/jpeg, image/png"
                        class="clientImgUpload" name="upload_file" multiple style="display: none">

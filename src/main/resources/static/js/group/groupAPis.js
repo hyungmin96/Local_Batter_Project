@@ -5,8 +5,6 @@ const userInfo = {
     userProfile: ''
 }
 
-
-
 function updateGroupBoard(index, boardId){
 
     const postBox = document.getElementById('board_content_box')
@@ -19,6 +17,12 @@ function updateGroupBoard(index, boardId){
 
         formData.append('title', title);
         formData.append('content', postBox.innerHTML.split('<div class=\"imgBox\"')[0]);
+        formData.append('price', $('#exchange_price').val().replaceAll(',',''))
+        formData.append('exchangeOn', $('#flexSwitchCheckChecked').val())
+        formData.append('location', $('#exchange_address').val())
+        formData.append('locationDetail', $('.locationDetailTinfo')[0].value)
+        formData.append('longitude', $('.longitudeValue')[0].value)
+        formData.append('latitude', $('.latitudeValue')[0].value)
         formData.append('boardId', boardId);
 
         for (let i = 0; i < infoImgs.length; i++)
@@ -52,15 +56,14 @@ function postContent() {
     else if (infoImgs.length > 0 || postBox.innerText.length > 0) {
         const groupId = $('.groupId').val();
         const formData = new FormData();
-        formData.append('locationDetail', $('.locationDetailTinfo')[0].value)
+        formData.append('userId', $('.g_user_id').val());
         formData.append('title', $('.groupTitleInputBox').val())
-        formData.append('residence', $('#address').val())
-        formData.append('buildingcode', $('#buildingcode').val())
-        formData.append('detailAddr', $('.detailAddr')[0].value)
+        formData.append('price', $('#exchange_price').val().replaceAll(',',''))
+        formData.append('exchangeOn', $('#flexSwitchCheckChecked').val())
+        formData.append('location', $('#exchange_address').val())
+        formData.append('locationDetail', $('.locationDetailTinfo')[0].value)
         formData.append('longitude', $('.longitudeValue')[0].value)
         formData.append('latitude', $('.latitudeValue')[0].value)
-        formData.append('location', $('#exchange_address').val())
-        formData.append('userId', $('.g_user_id').val());
         formData.append('groupId', groupId);
         formData.append('writer', $('.g_user_id').val());
         formData.append('content', postBox.innerHTML.split('<div class=\"imgBox\"')[0]);
@@ -90,7 +93,6 @@ function postContent() {
     } else alert('작성할 내용을 입력해주세요.');
 }
 
-
 function exchangeInfoShow(value){
     let result = ''
     if(value.boardCategory == 'exchange'){
@@ -101,8 +103,9 @@ function exchangeInfoShow(value){
             "<img src='/images/boardDetail/google_maps_old_98px.png'>" +
             "</div>" +
             "<div class='locationTextInfoBox'>" +
-            "<div>" + value.location + "</div>" +
-            "<div>" + value.locationDetail + "</div>" +
+                "<div>" + value.location + "</div>" +
+                "<div>" + value.locationDetail + "</div>" +
+                "<div class='price' style='font-size: 14px; color: #ea5757'>" + convert(value.price) + "<span>원</span></div>" +
             "</div>" +
             "</div>" +
             "</div>"
@@ -110,6 +113,19 @@ function exchangeInfoShow(value){
     return result
 }
 
+function convert(num){
+    var len, point, str;
+    num = num + "";
+    point = num.length % 3 ;
+    len = num.length;
+    str = num.substring(0, point);
+    while (point < len) {
+        if (str != "") str += ",";
+        str += num.substring(point, point + 3);
+        point += 3;
+    }
+    return str;
+}
 
 function updateGroup(){
 
@@ -149,7 +165,7 @@ function getBoardInfo(boardId){
         contentType: 'application/x-www-form-urlencoded',
         success: function (response){
             $('.boardModal').empty()
-            $('.boardModal').append(showBoardInfo(response))
+            $('.boardModal').append(showBoardInfo(response[0]))
         }
     })
 }
@@ -407,13 +423,14 @@ function getBoardList() {
 }
 
 function showBoardInfo(value){
+    console.log(value)
     const boardType = (value.type !== 'general') ? "<span class='notice _noticeText'>공지</span>" : '';
     return "<input type='hidden' value=" + value.boardId + ">" +
-        "<div class='boardItemBox' style='animation: fadein 1.5s; margin-bottom: 20px;>" +
-        "<input type='hidden' class='boardId' value=" + value.boardId + ">" +
+        "<div class='boardItemBox' style='animation: fadein 1.5s; margin-bottom: 20px;'>" +
+        "<input type='hidden' class='boardId' value=" + value.boardId + "/>" +
         "<div class='contentItemBox'>" +
         "<div class='contentAuthorBox'>" +
-        "<div><img class='board _userProfileImg' src=/upload/" + value.profilePath + "></div>" +
+        "<div><img class='board _userProfileImg' src=/upload/" + value.userProfile + "></div>" +
         "<div class='contentInfoBox'>" +
         "<div style='width: 100%; display: inline-flex; justify-content: space-between;'>" +
         "<div>" +
@@ -435,8 +452,9 @@ function showBoardInfo(value){
         "</div>" +
         "</div>" +
         "</div>" +
-        "<div class='board _content' style='padding: 10px 10px 0 10px;'>" + value.content + "</div>" +
-        imgShow(value.boardId, value.boardFiles)
+        "<div class='board _title' style='font-family: Pretendard-SemiBold; font-size: 23px; padding: 10px 10px 0 10px;'>" + value.title + "</div>" +
+        "<div class='board _content' style='font-family: Pretendard-Regular; font-size: 17px;padding: 10px 10px 0 15px;'>" + value.content + "</div>" +
+        imgShow(value.boardId, value.files)
 }
 
 function inputPostBox(value) {
@@ -470,11 +488,10 @@ function inputPostBox(value) {
         "</div>" +
         "</div>" +
         "</div>" +
-        "<div class='groupBoardTitleBox' style='padding: 10px;'>" +
+        "<div class='groupBoardTitleBox' style='padding: 10px 5px 5px 5px;'>" +
         "<div id='groupBoardTitleInputBox' class='groupBoardTitle'>" + value.title + "</div>" +
-        "<hr style='border: none; height: 1px; background-color: #cccccc; margin-top: 10px' />" +
         "</div>" +
-        "<div class='board _content' style='padding: 5px 10px 0 10px;'>" + value.content + "</div>" +
+        "<div class='groupBoardContent'>" + value.content + "</div>" +
         imgShow(value.boardId, value.boardFiles) +
         exchangeInfoShow(value) +
         "<div style='display: inline-flex; margin-top: 15px;'>" +

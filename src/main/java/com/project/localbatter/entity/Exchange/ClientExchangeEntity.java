@@ -49,11 +49,14 @@ public class ClientExchangeEntity extends BaseTimeEntity implements Serializable
     @Column(name = "board_Id")
     private Long boardId;
 
+    @Column(name = "client_thumbnail")
+    private String thumbnail;
+
     @OneToMany(mappedBy = "client", fetch = LAZY, cascade = CascadeType.ALL)
     @JsonIgnore
     private List<ExchangeFileEntity> files;
 
-    @OneToMany(mappedBy = "clientExchangeEntity", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "clientExchangeEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnore
     private List<WriterClientJoinEntity> writerClientJoinEntity;
 

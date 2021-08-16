@@ -9,9 +9,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Controller
 public class GroupExchangeController {
 
+    @GetMapping("/view/client/request/{clientId}")
+    public String getClientExchange(Model model, @PathVariable Long clientId){
+        model.addAttribute("clientId", clientId);
+        return "/exchange/clientRequestView";
+    }
+
     @GetMapping("/view/transaction/my/boards")
     public String getTransactionBoards(){
-        return "/transaction/transaction";
+        return "/exchange/exchangeList";
     }
 
     @GetMapping("/")

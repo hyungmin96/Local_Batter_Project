@@ -66,7 +66,7 @@
                 <div style="cursor: pointer; display: none; background-color:#cde4cc; text-align: center;" class="groupAside _groupEnterButton">
                     <button>그룹 가입하기</button>
                 </div>
-            <div style="cursor: pointer; display: none; background-color: rgb(220 218 218); text-align: center;" class="groupAside _groupExitButton">
+            <div style="cursor: pointer; display: none; background-color: rgb(228 228 228); text-align: center;" class="groupAside _groupExitButton">
                 <button>그룹 나가기</button>
             </div>
         </section>
@@ -227,17 +227,25 @@
                         </div>
 
                     <div class="setExchangeContainer" style="display: none;">
-                        <div class="exchangeContainer residenceContainer">
-                            <div class="residenceContainerTitle">
-                                <h5 class="exchangeContainerHeader">거주지역 설정</h5>
+
+                        <div class="exchangeContainer LocationContainer">
+                            <div class="LocationContainerTitle">
+                                <h5 class="exchangeContainerHeader">물품 교환금액</h5>
                             </div>
-                            <div style="padding: 5px;">
-                            <input type="text" class="inputbox addressInputBox" id="zonecode" disabled = "true" placeholder="우편번호" style="width: 200px;">
-                            <input type="text" class="inputbox addressInputBox" id="address" disabled = "true" placeholder="도로명" style="width: 340px;">
-                            <input type="text" class="inputbox addressInputBox" id="buildingcode" disabled = "true" placeholder="건물 이름" style="width: 270px;">
-                            <input type="text" class="inputbox addressInputBox detailAddr" enabled = "true" placeholder="세부주소" style="width: 190px;">
-                            <input type="button" class="serachButton addrSerachButton" onclick="sample5_execDaumPostcode()" value="주소 검색">
-                            <div id="map" style="width:300px;height:300px;margin-top:10px;display:none"></div>
+                            <div style="padding: 5px 5px 5px 5px;">
+                                <input type="text" onkeyup="convertM(this);" class="inputbox addressInputBox" id="exchange_price" placeholder="판매하실 금액을 입력해주세요" style="margin-top: 5px; width: 180px;">
+                            </div>
+                        </div>
+
+                        <div class="exchangeContainer LocationContainer">
+                            <div class="LocationContainerTitle">
+                                <h5 class="exchangeContainerHeader">물품 교환설정</h5>
+                            </div>
+                            <div style="padding: 5px 5px 5px 5px;">
+                                <div class="form-check form-switch" style="padding: 0;">
+                                    <label class="form-check-label" for="flexSwitchCheckChecked">물품교환</label>
+                                    <input style="width: 45px; height: 20px; margin-left: 4px" class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
+                                </div>
                             </div>
                         </div>
 
@@ -248,7 +256,7 @@
                             <div style="padding: 0 5px 5px 5px;">
                                 <input type="text" class="inputbox addressInputBox" id="exchange_address" disabled = "true" placeholder="주소" style="width: 500px;">
                                 <button class="serachButton exchangeLocationSearch" onclick="openSerachContent('/writer/map', ''); getAddress();">검색</button>
-                                <input type="text" class="inputbox addressInputBox locationDetailTinfo" enabled = "true" placeholder="세부내용" style="width: 190px;">
+                                <input type="text" class="inputbox addressInputBox locationDetailTinfo" enabled = "true" placeholder="세부내용" style="width: 340px;">
                                 <div>
                                     <input type="hidden" class="longitudeValue" value="">
                                     <input type="hidden" class="latitudeValue" value="">
@@ -357,12 +365,50 @@
 <script type="text/javascript" src="/js/imgModal.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2f665d933d93346898df736499236f77&libraries=services"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script type="text/javascript" src="/js/exchange/residenceMap.js"></script>
 <link rel="stylesheet" href="/css/buyingroom.css">
 <link rel="stylesheet" href="/css/imgModal.css">
 <link rel="stylesheet" href="/css/imgGridGallery.css">
 <%@ include file="../common/footer.jsp"%>
 <script>
+
+    $(document).scroll(function () {
+        if ($(window).scrollTop() + $(window).height() == getDocHeight())
+            getBoardList();
+    });
+
+    $(document).ready(function(){
+        isMember();
+        loadNotices();
+        getBoardList();
+        getMemberList();
+    })
+
+    var checkStatus = true
+    $('#flexSwitchCheckChecked').click(function(){
+        checkStatus = !checkStatus;
+        $(this).attr('value', checkStatus)
+    })
+
+    function convertM(object){
+        var len, point, str;
+        var num = object.value.replaceAll(',', '');
+        num = num + "";
+        point = num.length % 3 ;
+        len = num.length;
+        if(num.length < 9){
+            str = num.substring(0, point);
+            while (point < len) {
+                if (str != "") str += ",";
+                str += num.substring(point, point + 3);
+                point += 3;
+            }
+            object.value = str;
+        }else{
+            alert('최대 입력가능한 숫자를 초과하였습니다.');
+            object.value = num.substr(0, 8)
+        }
+    }
+
     $(document).on('click', '.boardCategoryItem', function(){
         let item = $(this)[0].innerHTML
         $('.boardDropDownButton')[0].innerHTML = item

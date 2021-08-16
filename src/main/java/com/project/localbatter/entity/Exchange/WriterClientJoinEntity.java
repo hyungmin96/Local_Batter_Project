@@ -6,6 +6,8 @@ import lombok.*;
 
 import javax.persistence.*;
 
+import static com.project.localbatter.entity.Exchange.WriterClientJoinEntity.status.*;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -42,8 +44,20 @@ public class WriterClientJoinEntity extends BaseTimeEntity {
         reject, wait, process, complete
     }
 
-    public void updateStatus(status status){
-        this.status = status;
+    public void setReject(){
+        this.status = reject;
+    }
+
+    public void setWait(){
+        this.status = wait;
+    }
+
+    public void setProcess(){
+        this.status = process;
+    }
+
+    public void setComplete(){
+        this.status = complete;
     }
 
 }

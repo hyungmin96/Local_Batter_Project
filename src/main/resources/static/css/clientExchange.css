@@ -1,14 +1,14 @@
 @font-face {
-    font-family: 'InfinitySans-RegularA1';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/InfinitySans-RegularA1.woff') format('woff');
-    font-weight: normal;
+    font-family: 'Pretendard-SemiBold';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-SemiBold.woff') format('woff');
+    font-weight: 600;
     font-style: normal;
 }
 
 @font-face {
-    font-family: 'S-CoreDream-6Bold';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-6Bold.woff') format('woff');
-    font-weight: normal;
+    font-family: 'Pretendard-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
     font-style: normal;
 }
 
@@ -19,16 +19,34 @@
 }
 
 .writerProductTitle{
-    font-family: 'Noto Sans KR', sans-serif;
-    font-size: 21px;
+    font-family: 'Pretendard-SemiBold', sans-serif;
+    font-size: 26px;
     padding: 0 5px 5px 0;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 520px;
+    max-height: 165px;
+    word-break: break-all;
+    white-space: break-spaces;
+    line-height: 35px;
 }
 
 .writerProductContent{
-    font-family: 'InfinitySans-RegularA1', sans-serif;
+    font-family: 'Pretendard-Regular', sans-serif;
     font-size: 15px;
     padding: 0 5px 5px 0;
-    height: 170px;
+    word-break: break-all;
+    white-space: break-spaces;
+    text-overflow: ellipsis;
+    max-height: 180px;
+}
+
+.writerProductPrice{
+    font-family: Pretendard-SemiBold;
+    font-size: 24px;
+    letter-spacing: 0;
+    color: red;
 }
 
 .clientImageUploadButton{
@@ -55,13 +73,6 @@
     border: 1px solid #827f7f;
 }
 
-.writerProductLocation{
-    list-style: none;
-    font-family: 'InfinitySans-RegularA1', sans-serif;
-    font-size: 13px;
-    padding: 0 5px 5px 0;
-}
-
 .writerBoardContentContainer hr{
     border: none;
     background-color: #a4a3a3;
@@ -69,13 +80,13 @@
     height: 1px;
 }
 
-.writerProfile{
+.userProfile{
     width: 40px;
     height: 40px;
 }
 
 .exchangeHeader{
-    font-family: 'S-CoreDream-6Bold', sans-serif;
+    font-family: 'Pretendard-SemiBold', sans-serif;
     font-size: 23px;
     margin-bottom: 15px;
 }
@@ -126,7 +137,7 @@
 .clientExchangeImageSlider{
     width: 1600px;
     height: 610px;
-    background-color: rgb(238, 240, 243);
+    background-color: transparent;
     text-align: center;
 }
 
@@ -146,6 +157,10 @@
     cursor: pointer;
 }
 
+.clientExchangeButton:hover{
+    background: #f1f1f1;
+}
+
 .exchangeButtonContainer{
     width: 100%;
     bottom: 0;
@@ -155,7 +170,7 @@
     height: 60px;
 }
 
-.firstImageSlider, .carouselButton{
+.firstImageSlider, .carouselButton, .clientImageSlider{
     filter: invert(100%);
 }
 

@@ -9,6 +9,6 @@ public class TransactionDTO {
     private int page;
     private int display;
     private Long userId; // user id
-
+    private Long clientWriterExchangeId;
 
 }

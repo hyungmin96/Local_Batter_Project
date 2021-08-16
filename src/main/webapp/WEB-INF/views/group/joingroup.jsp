@@ -7,69 +7,70 @@
         <div class="fast__sale_products">
             <span class="fast__category">그룹 목록</span>
             <span style="float: right;">
+            <span>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">그룹 등록</button>
+            </span>
+            </span>
 
-<!-- Modal -->
-<span><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">그룹 등록</button> </span>
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <div class="modal-content" style="height: 100%;">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">물품 공동구매 채팅방 생성</h5> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true"></span> </button>
-                </div>
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                    <div class="modal-content" style="height: 100%;">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">물품 공동구매 채팅방 생성</h5> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true"></span> </button>
+                        </div>
 
-                <div class="modal-body">
-                    <div style="padding: 10px; margin-top: 10px;">
-                        <div id="step-1">
-                            <div style="display: flex; flex-direction: row;">
-                                <img id="img__upload" src="/images/upload.png">
-                                <input id="input__Group__img" type="file" accept="image/jpg, image/jpeg, image/png" class="custom-file-input" name="upload_file" style="display: none">
-                                <div id="preview__img__container"></div>
+                        <div class="modal-body">
+                            <div style="padding: 10px; margin-top: 10px;">
+                                <div id="step-1">
+                                    <div style="display: flex; flex-direction: row;">
+                                        <img id="img__upload" src="/images/upload.png">
+                                        <input id="input__Group__img" type="file" accept="image/jpg, image/jpeg, image/png" class="custom-file-input" name="upload_file" style="display: none">
+                                        <div id="preview__img__container"></div>
+                                    </div>
+                                </div>
                             </div>
+
+                            <div class="article__item__box">
+                                <label class="item__value">그룹 이름</label>
+                                <input type="text" name="title" id="Group__title" class="inputbox" placeholder="그룹 이름을 설정해주세요."/>
+                            </div>
+
+                            <div class="article__item__box">
+                                <label class="item__value">그룹 설명</label>
+                                <textarea class="inputbox" id="Group__desciption" rows="3"></textarea>
+                            </div>
+
+                            <div class="article__item__box">
+                                <label class="item__value">그룹 태그</label>
+                                <input type="text" name="tag" id="tags" class="inputbox" placeholder="그룹과 관련된 물품들을 입력해주세요"/>
+                            </div>
+
+                            <div class="article__item__box">
+                                <label class="item__value">그룹 설정</label>
+                                <div class="chk _group" style="display: inline-flex; width: 100%">
+                                    <div class="checkbox _openChk" onclick="checkboxOnLoad(this);"><input
+                                            type="checkbox" id="chk_1" checked="checked" value="1"/>전체 공개</div>
+                                    <div class="checkbox _partChk" onclick="checkboxOnLoad(this);"><input
+                                            type="checkbox" id="chk_2" value="0"/>일부 공개</div>
+                                    <div class="checkbox _secretChk" onclick="checkboxOnLoad(this);"><input
+                                            type="checkbox" id="chk_3" value="0"/>비공개</div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div style="display: flex; justify-content: flex-end; margin-right: 10px;">
+                                    <button id="room__create" class="btn btn-primary">생성</button>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
-
-                <div class="article__item__box">
-                    <label class="item__value">그룹 이름</label>
-                    <input type="text" name="title" id="Group__title" class="inputbox" placeholder="그룹 이름을 설정해주세요."/>
                 </div>
-
-                <div class="article__item__box">
-                    <label class="item__value">그룹 설명</label>
-                    <textarea class="inputbox" id="Group__desciption" rows="3"></textarea>
-                </div>
-
-                <div class="article__item__box">
-                    <label class="item__value">그룹 태그</label>
-                    <input type="text" name="tag" id="tags" class="inputbox" placeholder="그룹과 관련된 물품들을 입력해주세요"/>
-                </div>
-
-                <div class="article__item__box">
-                    <label class="item__value">그룹 설정</label>
-                    <div class="chk _group" style="display: inline-flex; width: 100%">
-                        <div class="checkbox _openChk" onclick="checkboxOnLoad(this);"><input
-                                type="checkbox" id="chk_1" checked="checked" value="1"/>전체 공개</div>
-                        <div class="checkbox _partChk" onclick="checkboxOnLoad(this);"><input
-                                type="checkbox" id="chk_2" value="0"/>일부 공개</div>
-                        <div class="checkbox _secretChk" onclick="checkboxOnLoad(this);"><input
-                                type="checkbox" id="chk_3" value="0"/>비공개</div>
-                    </div>
-                </div>
-
-                <div>
-                    <div style="display: flex; justify-content: flex-end; margin-right: 10px;">
-                        <button id="room__create" class="btn btn-primary">생성</button>
-                    </div>
-                </div>
-
             </div>
-            </div>
-        </div>
-    </div>
-<!-- Modal -->
-    </span>
+
     <hr style="border: none; height: 1px; background-color: #ccc;" />
         <div class="Group__room__list">
-            
+
         </div>
         <div class="page__container">
             <div class="page__box" style="display: inline-flex; max-width: 395px;">
@@ -84,8 +85,8 @@
         </div>
     </div>
 </div>
-
 <!-- modal -->
+
     <div id="my_modal" style="overflow:auto; margin-top: 25px; width: 850px;">
 
         <input type="hidden" class="groupId" value="0"/>

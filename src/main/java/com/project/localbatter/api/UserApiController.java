@@ -12,12 +12,13 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-public class UserRestController {
+public class UserApiController {
     
     private final UserService userService;
 
     @PostMapping("/api/login")
     public void login(){
+
     }
 
     @PostMapping("/api/join")

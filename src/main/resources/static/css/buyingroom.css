@@ -5,6 +5,13 @@
     font-style: normal;
 }
 
+@font-face {
+    font-family: 'Pretendard-SemiBold';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-SemiBold.woff') format('woff');
+    font-weight: 600;
+    font-style: normal;
+}
+
 #contentWrapper{
     min-height: 900px;
     width: 600px;
@@ -333,8 +340,23 @@ _content img{
     outline: none;
 }
 
+.groupBoardContent{
+    padding: 3px 10px 0 15px;
+    width: 100%;
+    max-height: 100%;
+    overflow:hidden;
+    word-break: break-all;
+    white-space: break-spaces;
+    text-overflow: ellipsis;
+}
+
 .addressInputBox{
     margin: 2px 0 2px 0;
+}
+
+.form-check-label{
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px;
 }
 
 .exchangeContainerHeader{
@@ -397,6 +419,16 @@ _content img{
 
 .board{
     font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px;
+}
+
+.board ._title{
+    font-family: 'Pretendard-SemiBold', sans-serif;
+    font-size: 17px;
+}
+
+.board ._content{
+    font-family: 'Pretendard-Regular', sans-serif;
     font-size: 14px;
 }
 
@@ -578,8 +610,17 @@ _content img{
 }
 
 .groupBoardTitle{
-    font-family: 'Noto Sans KR', sans-serif ;
-    font-size: 20px;
+    font-family: 'Pretendard-SemiBold', sans-serif;
+    font-size: 26px;
+    padding: 0 5px 5px 0;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 555px;
+    max-height: 165px;
+    word-break: break-all;
+    white-space: break-spaces;
+    line-height: 35px;
 }
 
 .search_bar{

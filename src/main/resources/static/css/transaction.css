@@ -170,11 +170,16 @@ input[type=checkbox]{
     height: 3.6em;
 }
 
+.requestThumbnail img{
+    border: 1px solid #e3e4e6;
+}
+
 .requestItemBox img{
     width: 85px;
     height: 85px;
     object-fit: cover;
     border-radius: 10%;
+    margin: auto;
 }
 
 .requestUserProfile img{

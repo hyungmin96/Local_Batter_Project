@@ -96,17 +96,16 @@ $(document).ready(function(){
             }
 
             $('.writerBoardContentContainer').append(
-                "<hr />" +
                 "<div class='writerProductTitle'>" +
-                response.title +
+                    response.title +
                 "</div>" +
-                "<hr />" +
                 "<div class='writerProductContent'>" +
-                response.content +
+                    response.content +
                 "</div>" +
-                "<hr />" +
-                "<div id='writerLocationMap' style='width:100%; height:270px; border: 1px solid #9d9d9d'>" +
-
+                "<div class='writerProductPrice'>" +
+                    convert(response.price) +
+                " 원</div>" +
+                "<div id='writerLocationMap' style='margin-top: 10px; width:100%; height:270px; border: 1px solid #9d9d9d'>" +
                 "</div>"
             )
 
@@ -121,3 +120,17 @@ $(document).ready(function(){
         }
     })
 })
+
+function convert(num){
+    var len, point, str;
+    num = num + "";
+    point = num.length % 3 ;
+    len = num.length;
+        str = num.substring(0, point);
+        while (point < len) {
+            if (str != "") str += ",";
+            str += num.substring(point, point + 3);
+            point += 3;
+        }
+        return str;
+}

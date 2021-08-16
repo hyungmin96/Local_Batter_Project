@@ -32,17 +32,17 @@ GroupBoardDTO implements Serializable {
     private int[] deleteImageIndex;
     private LocalDateTime regTime;
     private int boardLike = 0;
+    private String thumnbnailPath;
     private MultipartFile[] board_img;
     private List<GroupBoardFileEntity> files = new ArrayList<>();
 
     // 게시글 거래위치 DTO
-    private String residence;
-    private String detailAddr;
-    private String buildingcode;
-    private String longitude;
-    private String latitude;
+    private String price;
+    private WriterExchangeEntity.ExchageOnOff exchangeOn;
     private String location;
     private String locationDetail;
+    private String longitude;
+    private String latitude;
     private String preferTime;
 
     public GroupBoardEntity toEntity(GroupUserJoinEntity groupUserJoinEntity, WriterExchangeEntity writerExchangeEntity){
@@ -51,6 +51,7 @@ GroupBoardDTO implements Serializable {
                 .title(title)
                 .content(content)
                 .boardLike(0)
+                .thumnbnailPath(thumnbnailPath)
                 .groupUserJoinEntity(groupUserJoinEntity)
                 .writerExchangeEntity(writerExchangeEntity)
                 .BoardCategory(getCategory())
@@ -62,16 +63,14 @@ GroupBoardDTO implements Serializable {
     public WriterExchangeEntity getWriterExchangeEntity(){
         if(this.category.equals("exchange")){
             return WriterExchangeEntity.builder()
-                    .residence(residence)
-                    .longitude(longitude)
-                    .location(location)
-                    .detailAddr(detailAddr)
-                    .detailAddr(detailAddr)
                     .userId(userId)
-                    .buildingcode(buildingcode)
+                    .price(price)
+                    .exchangeOn(exchangeOn)
+                    .location(location)
                     .locationDetail(locationDetail)
+                    .longitude(longitude)
                     .latitude(latitude)
-                    .exchangeTime(preferTime)
+                    .preferTime(preferTime)
                     .build();
         } else return null;
     }

@@ -1,12 +1,5 @@
 package com.project.localbatter.config;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import com.project.localbatter.entity.UserEntity;
 import com.project.localbatter.repositories.UserRepository;
 import org.apache.logging.log4j.LogManager;
@@ -15,6 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 @Transactional
 public class LoginSuccessHandler implements AuthenticationSuccessHandler{
@@ -29,6 +28,6 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler{
          UserEntity userEntity = userRepository.findByUsername(authentication.getName()).get();
          HttpSession session = request.getSession();
          session.setAttribute("g_user", userEntity);
-        response.sendRedirect("/");
+            response.sendRedirect("/");
     }
 }

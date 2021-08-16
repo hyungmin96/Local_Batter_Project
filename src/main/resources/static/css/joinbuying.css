@@ -1,8 +1,25 @@
 @font-face {
-    font-family: 'ON-IGothic';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_eleven@1.0/ON-IGothic.woff') format('woff');
-    font-weight: normal;
+    font-family: 'Pretendard-SemiBold';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-SemiBold.woff') format('woff');
+    font-weight: 600;
     font-style: normal;
+}
+
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+.fast__sale_products button{
+    font-family: Pretendard-Regular;
+    font-size: 15px;
+}
+
+.fast__category{
+    font-family: Pretendard-SemiBold;
+    font-size: 24px;
 }
 
 #exampleModal .modal-header{
@@ -70,7 +87,8 @@
 
 .Group__room__list{
     margin: 10px 10px;
-    min-height: 400px;
+    min-height: 600px;
+    width: 100%;
     display: inline-flex;
     flex-direction: row;
     flex-wrap: wrap;

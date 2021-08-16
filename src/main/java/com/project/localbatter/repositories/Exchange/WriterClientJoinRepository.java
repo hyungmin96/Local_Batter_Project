@@ -5,6 +5,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 public interface WriterClientJoinRepository extends JpaRepository<WriterClientJoinEntity, Long> {
-    @Query(value = "select c from WriterClientJoinEntity c where c.clientExchangeEntity.id = :clientExchangeId")
+    @Query(value = "select wc from WriterClientJoinEntity wc " +
+            "join fetch wc.clientExchangeEntity c " +
+            "join fetch wc.writerExchangeEntity w " +
+            " where wc.clientExchangeEntity.id = :clientExchangeId")
     WriterClientJoinEntity findByClientExchangeEntity(Long clientExchangeId);
 }
