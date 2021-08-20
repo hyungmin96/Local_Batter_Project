@@ -14,5 +14,10 @@ public class MessageDTO {
     private String target;
     private String message;
     private String date;
+    private MessageType type;
+
+    public enum MessageType{
+        image, text, enter, quit
+    }
 
 }

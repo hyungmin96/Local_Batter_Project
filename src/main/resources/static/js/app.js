@@ -197,7 +197,7 @@ function sendMessage(type) {
             pubUrl = '/app/send/chat/number';
         }
 
-        data = {
+        var data = {
                 'roomId' : globalThis.roomId, 
                 'sender' : $('.user__name').text(), 
                 'target' : globalThis.targetUsername, 

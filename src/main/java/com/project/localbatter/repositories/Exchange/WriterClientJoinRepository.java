@@ -10,4 +10,7 @@ public interface WriterClientJoinRepository extends JpaRepository<WriterClientJo
             "join fetch wc.writerExchangeEntity w " +
             " where wc.clientExchangeEntity.id = :clientExchangeId")
     WriterClientJoinEntity findByClientExchangeEntity(Long clientExchangeId);
+
+    @Query(value = "select c from WriterClientJoinEntity c where c.clientExchangeEntity.id = :ExchangeId")
+    WriterClientJoinEntity findByExchangeId(Long ExchangeId);
 }

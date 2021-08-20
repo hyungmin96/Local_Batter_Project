@@ -1,6 +1,5 @@
 package com.project.localbatter.components;
 
-import com.project.localbatter.api.exchange.ExchangeChatApiController.ResponseChatListDTO;
 import com.project.localbatter.api.exchange.GroupExchangeApiController.ResponseClientAndWriterBoard;
 import com.project.localbatter.api.exchange.GroupExchangeApiController.ResponseClientRequestDTO;
 import com.project.localbatter.api.exchange.GroupExchangeApiController.ResponseRequestListDTO;
@@ -8,11 +7,10 @@ import com.project.localbatter.api.exchange.GroupExchangeApiController.ResponseW
 import com.project.localbatter.dto.Group.GroupBoardDTO;
 import com.project.localbatter.dto.TransactionDTO;
 import com.project.localbatter.dto.exchangeDTO.ClientExchangeDTO;
-import com.project.localbatter.entity.Exchange.QWriterClientJoinEntity;
+import com.project.localbatter.dto.exchangeDTO.ExchangeChatMessageDTO;
 import com.project.localbatter.entity.Exchange.WriterClientJoinEntity;
 import com.project.localbatter.entity.GroupBoardEntity;
 import com.project.localbatter.entity.QUserEntity;
-import com.project.localbatter.repositories.Exchange.WriterClientJoinRepository;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -21,11 +19,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.List;
 import static com.project.localbatter.entity.Exchange.QClientExchangeEntity.clientExchangeEntity;
 import static com.project.localbatter.entity.Exchange.QWriterClientJoinEntity.writerClientJoinEntity;
 import static com.project.localbatter.entity.Exchange.QWriterExchangeEntity.writerExchangeEntity;
-import static com.project.localbatter.entity.QExchangeChatEntity.exchangeChatEntity;
 import static com.project.localbatter.entity.QGroupBoardEntity.groupBoardEntity;
 import static com.project.localbatter.entity.QGroupBoardFileEntity.groupBoardFileEntity;
 import static com.project.localbatter.entity.QGroupUserJoinEntity.groupUserJoinEntity;
@@ -37,33 +33,6 @@ public class ExchangeQueryComponent {
 
     private final JPAQueryFactory queryFactory;
     private final PagingUtil pagingUtil;
-    private final WriterClientJoinRepository writerClientJoinRepository;
-
-    // Get List that writer accept request for exchange of client
-    // writer가 교환을 수락한 목록 조회
-    public List<ResponseChatListDTO> getChatList(Long userId){
-
-        QUserEntity writerId = new QUserEntity("writerEntity");
-        QUserEntity clientId = new QUserEntity("clientEntity");
-
-        return queryFactory
-                .select(Projections.constructor(ResponseChatListDTO.class,
-                        writerId.id.as("writerId"),
-                        writerId.username.as("writerUsername"),
-                        writerId.profilePath.as("writerProfile"),
-                        clientId.id.as("clientId"),
-                        clientId.username.as("clientUsername"),
-                        clientId.profilePath.as("clientProfile"),
-                        exchangeChatEntity.message.as("message")
-                        ))
-                .from(writerClientJoinEntity)
-                .leftJoin(writerId).on(writerClientJoinEntity.writerId.eq(writerId.id))
-                .leftJoin(clientId).on(writerClientJoinEntity.clientId.eq(clientId.id))
-                .leftJoin(writerClientJoinEntity.chats, exchangeChatEntity)
-                .where(writerClientJoinEntity.status.eq(WriterClientJoinEntity.status.process)
-                .and(writerClientJoinEntity.clientId.eq(userId).or(writerClientJoinEntity.writerId.eq(userId))))
-                .fetch();
-    }
 
     // View the client'request board and writer's board infomation
     // client와 writer 게시글 정보를 조회
@@ -206,15 +175,23 @@ public class ExchangeQueryComponent {
 
     // writer와 client의 교환이 진행중이지 않다면 교환요청
     // request to exchange user from client api
-    public WriterClientJoinEntity getWriterClientExchangeEntity(TransactionDTO transactionDTO){
+    public ExchangeChatMessageDTO getWriterClientExchangeEntity(TransactionDTO transactionDTO){
         // search to check if an exchange with another entity is already in progress
         return queryFactory
-                .selectFrom(QWriterClientJoinEntity.writerClientJoinEntity)
-                .join(QWriterClientJoinEntity.writerClientJoinEntity.writerExchangeEntity)
+                .select(Projections.fields(ExchangeChatMessageDTO.class,
+                        writerExchangeEntity.userId.as("userId"),
+                        clientExchangeEntity.userId.as("targetId"),
+                        userEntity.username.as("targetUsername"),
+                        userEntity.profilePath.as("targetProfile"),
+                        writerClientJoinEntity.clientExchangeEntity.id.as("exchangeId")
+                        ))
+                .from(writerClientJoinEntity)
+                .join(writerClientJoinEntity.writerExchangeEntity, writerExchangeEntity)
                 .fetchJoin()
-                .join(QWriterClientJoinEntity.writerClientJoinEntity.clientExchangeEntity)
+                .join(writerClientJoinEntity.clientExchangeEntity, clientExchangeEntity)
                 .fetchJoin()
-                .where(QWriterClientJoinEntity.writerClientJoinEntity.clientExchangeEntity.id.eq(transactionDTO.getClientWriterExchangeId()))
+                .join(userEntity).on(clientExchangeEntity.userId.eq(userEntity.id))
+                .where(writerClientJoinEntity.id.eq(transactionDTO.getClientWriterExchangeId()))
                 .fetchOne();
     }
 

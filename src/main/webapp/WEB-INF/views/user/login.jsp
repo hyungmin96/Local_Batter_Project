@@ -41,6 +41,7 @@
                     </div>
         </div>
     </div>
+<script src="/js/login.js"></script>
 
 <%@ include file="../common/footer.jsp" %>
 

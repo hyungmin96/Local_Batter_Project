@@ -38,8 +38,8 @@ public class WriterClientJoinEntity extends BaseTimeEntity {
     @JsonIgnore
     private ClientExchangeEntity clientExchangeEntity;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<ExchangeChatEntity> chats;
+    @OneToMany(mappedBy = "wrtierClientJoinId", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<ExchangeChatEntity> chat;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")

@@ -26,7 +26,10 @@ spring:
       enabled: always
   handlerbars:
     suffix: .jsp
+
   devtools:
+    livereload:
+      enabled: true
     restart:
       enabled: false
 

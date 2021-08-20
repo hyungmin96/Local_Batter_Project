@@ -22,6 +22,31 @@
     background-color: rgb(124, 124, 124);
 }
 
+.exchangeBox:hover{
+    background: rgb(234, 237, 241);
+}
+
+.exchangeTargetUsername{
+    font-family: Pretendard-SemiBold;
+    font-size: 17px;
+}
+
+.exchangeTargetChat{
+    font-family: Pretendard-Regular;
+    font-size: 14px;
+    color: #838282;
+}
+
+#exchangeProcessChatList img{
+    width: 45px;
+    height: 45px;
+}
+
+.chatContainer img{
+    width: 45px;
+    height: 45px;
+}
+
 .inputButton{
     border: none;
     width: 100%;

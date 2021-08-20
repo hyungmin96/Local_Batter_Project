@@ -1,6 +1,5 @@
 package com.project.localbatter.services;
 
-import com.project.localbatter.api.exchange.GroupExchangeApiController;
 import com.project.localbatter.api.exchange.GroupExchangeApiController.ResponseClientAndWriterBoard;
 import com.project.localbatter.api.exchange.GroupExchangeApiController.ResponseClientRequestDTO;
 import com.project.localbatter.api.exchange.GroupExchangeApiController.ResponseRequestListDTO;
@@ -12,8 +11,12 @@ import com.project.localbatter.dto.Group.GroupBoardDTO;
 import com.project.localbatter.dto.TransactionDTO;
 import com.project.localbatter.dto.exchangeDTO.ClientExchangeDTO;
 import com.project.localbatter.dto.exchangeDTO.ExchagneFileDTO;
+import com.project.localbatter.dto.exchangeDTO.ExchangeChatMessageDTO;
 import com.project.localbatter.dto.exchangeDTO.WriterClientJoinDTO;
-import com.project.localbatter.entity.Exchange.*;
+import com.project.localbatter.entity.Exchange.ClientExchangeEntity;
+import com.project.localbatter.entity.Exchange.ExchangeFileEntity;
+import com.project.localbatter.entity.Exchange.WriterClientJoinEntity;
+import com.project.localbatter.entity.Exchange.WriterExchangeEntity;
 import com.project.localbatter.entity.GroupBoardEntity;
 import com.project.localbatter.repositories.Exchange.ClientExchangeFileRepository;
 import com.project.localbatter.repositories.Exchange.ClientExchangeRepository;
@@ -40,6 +43,7 @@ public class ExchangeService {
     private final WriterClientJoinRepository writerClientJoinRepository;
     private final GenerateFile generateFile;
     private final ExchangeQueryComponent exchangeQueryComponent; // Using @Component annotaion to get exchange data
+    private final ExchangeChatService exchangeChatService;
 
     /*  post method service */
 
@@ -47,11 +51,21 @@ public class ExchangeService {
     // Accept to Request for exchange writer's user from client user
     @Transactional
     public ResponseRequestExchangeDTO accpetClientsRequest(TransactionDTO transactionDTO){
-        WriterClientJoinEntity writerClientJoinEntity = exchangeQueryComponent.getWriterClientExchangeEntity(transactionDTO);
+        ExchangeChatMessageDTO exchangeChatMessageDTO = exchangeQueryComponent.getWriterClientExchangeEntity(transactionDTO);
+        WriterClientJoinEntity writerClientJoinEntity = writerClientJoinRepository.findByExchangeId(exchangeChatMessageDTO.getExchangeId());
         if(writerClientJoinEntity != null){
             // update exchange status
             writerClientJoinEntity.setProcess();
-            return new GroupExchangeApiController.ResponseRequestExchangeDTO(writerClientJoinEntity);
+            // create MeesageDTo to send the message when create exchange chat room between writer and client
+            ExchangeChatMessageDTO message = new ExchangeChatMessageDTO();
+            message.setUserId(writerClientJoinEntity.getWriterId());
+            message.setTargetId(writerClientJoinEntity.getClientId());
+            message.setTargetUsername(exchangeChatMessageDTO.getTargetUsername());
+            message.setTargetProfile(exchangeChatMessageDTO.getTargetProfile());
+            message.setMessage("새로운 채팅방이 개설되었습니다.");
+            message.setType(ExchangeChatMessageDTO.ExchangeMessageType.enter);
+            exchangeChatService.sendMessage(message);
+            return new ResponseRequestExchangeDTO(writerClientJoinEntity);
         }
         return null;
     }
@@ -66,6 +80,7 @@ public class ExchangeService {
     }
 
     // client가 writer 게시글에 교환을 요청
+    @Transactional
     public ClientExchangeEntity clientPost(ClientExchangeDTO clientExchangeDTO){
         WriterExchangeEntity writerExchangeEntity = writerExchangeRepository.findWriterExchangeEntityByboardId(clientExchangeDTO.getBoardId());
         List<GenerateFileDTO> clientExchangeFiles = generateFile.createFile(clientExchangeDTO.getImages());

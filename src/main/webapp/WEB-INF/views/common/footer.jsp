@@ -19,6 +19,3 @@
 
         <script src="/webjars/sockjs-client/sockjs.min.js"></script>
         <script src="/webjars/stomp-websocket/stomp.min.js"></script>
-        <script src="/js/join.js"></script>
-        <script src="/js/login.js"></script>
-        <script type="text/javascript" src="/js/notificationStomp.js"></script>
