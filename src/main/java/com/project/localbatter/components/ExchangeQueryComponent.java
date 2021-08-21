@@ -187,9 +187,7 @@ public class ExchangeQueryComponent {
                         ))
                 .from(writerClientJoinEntity)
                 .join(writerClientJoinEntity.writerExchangeEntity, writerExchangeEntity)
-                .fetchJoin()
                 .join(writerClientJoinEntity.clientExchangeEntity, clientExchangeEntity)
-                .fetchJoin()
                 .join(userEntity).on(clientExchangeEntity.userId.eq(userEntity.id))
                 .where(writerClientJoinEntity.id.eq(transactionDTO.getClientWriterExchangeId()))
                 .fetchOne();

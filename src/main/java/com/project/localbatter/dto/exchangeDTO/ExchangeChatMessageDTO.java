@@ -1,9 +1,10 @@
 package com.project.localbatter.dto.exchangeDTO;
 
-import com.project.localbatter.entity.Exchange.WriterClientJoinEntity;
 import com.project.localbatter.entity.ExchangeChatEntity;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.time.LocalDateTime;
 
 @Setter @Getter
 public class ExchangeChatMessageDTO {
@@ -15,14 +16,15 @@ public class ExchangeChatMessageDTO {
     private String targetProfile;
 
     private Long exchangeId;
-    private String message;
     private ExchangeMessageType type;
+    private String message;
+    private LocalDateTime regTime;
 
     public enum ExchangeMessageType{
         enter, quit, image, text
     }
 
-    public ExchangeChatEntity toEntity(WriterClientJoinEntity writerClientJoinEntity){
+    public ExchangeChatEntity toEntity(){
         return ExchangeChatEntity
                 .builder()
                 .senderId(userId)
@@ -30,7 +32,6 @@ public class ExchangeChatMessageDTO {
                 .message(message)
                 .type(type)
                 .exchangeId(exchangeId)
-                .wrtierClientJoinId(writerClientJoinEntity)
                 .build();
     }
 

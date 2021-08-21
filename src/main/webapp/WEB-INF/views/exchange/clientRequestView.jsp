@@ -149,6 +149,7 @@
     function acceptClientExchangeRequest(){
 
         const data = {
+            // exchangeId
             clientWriterExchangeId: $('.clientWriterexchangeId').val(),
             userId: $('.g_user_id').val()
         }

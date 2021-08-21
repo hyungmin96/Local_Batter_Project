@@ -3,23 +3,21 @@ package com.project.localbatter.services;
 import com.project.localbatter.api.exchange.ExchangeChatApiController.ResponseChatListDTO;
 import com.project.localbatter.components.PagingUtil;
 import com.project.localbatter.dto.exchangeDTO.ExchangeChatMessageDTO;
-import com.project.localbatter.entity.Exchange.WriterClientJoinEntity;
 import com.project.localbatter.entity.ExchangeChatEntity;
 import com.project.localbatter.entity.QUserEntity;
 import com.project.localbatter.repositories.Exchange.ExchangeChatRepository;
-import com.project.localbatter.repositories.Exchange.WriterClientJoinRepository;
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
+
 import static com.project.localbatter.entity.Exchange.QWriterClientJoinEntity.writerClientJoinEntity;
 import static com.project.localbatter.entity.QExchangeChatEntity.exchangeChatEntity;
 
@@ -31,12 +29,9 @@ public class ExchangeChatService {
     private final JPAQueryFactory queryFactory;
     private final PagingUtil pagingUtil;
     private final ExchangeChatRepository exchangeChatRepository;
-    private final WriterClientJoinRepository writerClientJoinRepository;
-    private final Logger log = LogManager.getLogger();
 
     public void sendMessage(ExchangeChatMessageDTO messageDTO){
-        WriterClientJoinEntity writerClientJoinEntity = writerClientJoinRepository.findByExchangeId(messageDTO.getExchangeId());
-        exchangeChatRepository.save(messageDTO.toEntity(writerClientJoinEntity));
+        exchangeChatRepository.save(messageDTO.toEntity());
         simpMessagingTemplate.convertAndSend("/exchange/userId=" + messageDTO.getTargetId(), messageDTO);
     }
 
@@ -59,7 +54,9 @@ public class ExchangeChatService {
                         receiveEntity.username.as("targetUsername"),
                         receiveEntity.profilePath.as("targetProfile"),
                         exchangeChatEntity.exchangeId.as("exchangeId"),
-                        exchangeChatEntity.message.as("message")
+                        exchangeChatEntity.type.as("type"),
+                        exchangeChatEntity.message.as("message"),
+                        exchangeChatEntity.regTime.as("regTime")
                         ))
                 .from(exchangeChatEntity)
                 .innerJoin(senderEntity).on(exchangeChatEntity.senderId.eq(senderEntity.id))
@@ -67,22 +64,11 @@ public class ExchangeChatService {
                 .where(exchangeChatEntity.exchangeId.eq(exchangeId))
                 .offset(pageRequest.getPageNumber())
                 .limit(pageRequest.getPageSize())
-                .orderBy(exchangeChatEntity.regTime.asc());
+                .orderBy(exchangeChatEntity.regTime.desc());
 
         return pagingUtil.getPageImpl(pageRequest, query, queryCount, ExchangeChatEntity.class);
     }
 
-    // 방 마다 가장 최근 채팅내역을 불러옴
-    // 매우 비효율적인 쿼리작성인듯하다.. db설계도 이 부분은 다시 공부해봐야함
-    private BooleanExpression isMaxIdvalue(){
-        Long maxId = queryFactory
-                .select(exchangeChatEntity.id.max())
-                .from(writerClientJoinEntity)
-                .leftJoin(writerClientJoinEntity.chat, exchangeChatEntity)
-                .where(writerClientJoinEntity.clientExchangeEntity.id.eq(exchangeChatEntity.exchangeId))
-                .fetchFirst();
-        return (maxId != null) ?  exchangeChatEntity.id.eq(maxId) : null;
-    }
 
     // Get List that writer accept request for exchange of client
     // writer가 교환을 수락한 목록 조회
@@ -99,13 +85,17 @@ public class ExchangeChatService {
                         clientId.username.as("targetUsername"),
                         clientId.profilePath.as("targetProfile"),
                         writerClientJoinEntity.clientExchangeEntity.id.as("exchangeId"),
-                        exchangeChatEntity.message.as("message")
+                        exchangeChatEntity.type.as("type"),
+                        exchangeChatEntity.message.as("message"),
+                        exchangeChatEntity.regTime.as("regTime")
                 ))
                 .from(writerClientJoinEntity)
                 .innerJoin(writerId).on(writerClientJoinEntity.writerId.eq(writerId.id))
                 .innerJoin(clientId).on(writerClientJoinEntity.clientId.eq(clientId.id))
-                .leftJoin(writerClientJoinEntity.chat, exchangeChatEntity)
-                .where(writerClientJoinEntity.status.eq(WriterClientJoinEntity.status.process), isMaxIdvalue())
+                .innerJoin(exchangeChatEntity).on(writerClientJoinEntity.clientExchangeEntity.id.eq(exchangeChatEntity.exchangeId))
+                .where(exchangeChatEntity.id.eq(JPAExpressions.select(exchangeChatEntity.id.max())
+                .from(exchangeChatEntity)
+                .where(exchangeChatEntity.exchangeId.eq(writerClientJoinEntity.clientExchangeEntity.id))))
                 .fetch();
         /*
         *  로그인한 userId를 기준으로 정렬

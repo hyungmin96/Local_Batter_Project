@@ -1,5 +1,6 @@
 package com.project.localbatter.api.exchange;
 
+import com.project.localbatter.dto.exchangeDTO.ExchangeChatMessageDTO;
 import com.project.localbatter.services.ExchangeChatService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -43,9 +45,11 @@ public class ExchangeChatApiController {
         private String targetProfile;
 
         private Long exchangeId;
+        private ExchangeChatMessageDTO.ExchangeMessageType type;
         private String message;
+        private LocalDateTime regTime;
 
-        public ResponseChatListDTO(Long userId, String username, String userProfile, Long targetId, String targetUsername, String targetProfile, Long exchangeId, String message) {
+        public ResponseChatListDTO(Long userId, String username, String userProfile, Long targetId, String targetUsername, String targetProfile, Long exchangeId, ExchangeChatMessageDTO.ExchangeMessageType type, String message, LocalDateTime regTime) {
             this.userId = userId;
             this.username = username;
             this.userProfile = userProfile;
@@ -53,7 +57,9 @@ public class ExchangeChatApiController {
             this.targetUsername = targetUsername;
             this.targetProfile = targetProfile;
             this.exchangeId = exchangeId;
+            this.type = type;
             this.message = message;
+            this.regTime = regTime;
         }
     }
 }

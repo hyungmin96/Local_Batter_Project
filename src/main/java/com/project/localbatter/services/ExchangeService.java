@@ -63,6 +63,7 @@ public class ExchangeService {
             message.setTargetUsername(exchangeChatMessageDTO.getTargetUsername());
             message.setTargetProfile(exchangeChatMessageDTO.getTargetProfile());
             message.setMessage("새로운 채팅방이 개설되었습니다.");
+            message.setExchangeId(exchangeChatMessageDTO.getExchangeId());
             message.setType(ExchangeChatMessageDTO.ExchangeMessageType.enter);
             exchangeChatService.sendMessage(message);
             return new ResponseRequestExchangeDTO(writerClientJoinEntity);

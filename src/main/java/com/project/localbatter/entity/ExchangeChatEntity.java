@@ -1,7 +1,6 @@
 package com.project.localbatter.entity;
 
 import com.project.localbatter.dto.exchangeDTO.ExchangeChatMessageDTO;
-import com.project.localbatter.entity.Exchange.WriterClientJoinEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -34,8 +33,5 @@ public class ExchangeChatEntity extends BaseTimeEntity {
     @Column(name = "exchange_id")
     private Long exchangeId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "writer_client_id")
-    private WriterClientJoinEntity wrtierClientJoinId;
 
 }
