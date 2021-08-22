@@ -9,8 +9,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -31,6 +33,11 @@ public class ExchangeChatApiController {
     public Page<ResponseChatListDTO> getChatItems(int page, int display, Long exchangeId){
         Pageable pageRequest = PageRequest.of(page, display);
         return exchangeChatService.getChatItems(exchangeId, pageRequest);
+    }
+
+    @PostMapping("/upload/image")
+    public ExchangeChatMessageDTO uploadImageToChat(ExchangeChatMessageDTO messageDTO, MultipartFile[] files){
+        return exchangeChatService.uploadImageToChat(messageDTO, files);
     }
 
     @Setter @Getter

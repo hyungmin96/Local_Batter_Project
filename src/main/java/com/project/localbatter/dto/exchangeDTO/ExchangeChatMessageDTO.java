@@ -18,7 +18,7 @@ public class ExchangeChatMessageDTO {
     private Long exchangeId;
     private ExchangeMessageType type;
     private String message;
-    private LocalDateTime regTime;
+    private LocalDateTime regTime = LocalDateTime.now();
 
     public enum ExchangeMessageType{
         enter, quit, image, text

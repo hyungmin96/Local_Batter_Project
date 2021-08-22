@@ -1,7 +1,9 @@
 package com.project.localbatter.services;
 
 import com.project.localbatter.api.exchange.ExchangeChatApiController.ResponseChatListDTO;
+import com.project.localbatter.components.GenerateFile;
 import com.project.localbatter.components.PagingUtil;
+import com.project.localbatter.dto.GenerateFileDTO;
 import com.project.localbatter.dto.exchangeDTO.ExchangeChatMessageDTO;
 import com.project.localbatter.entity.ExchangeChatEntity;
 import com.project.localbatter.entity.QUserEntity;
@@ -15,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -28,11 +31,22 @@ public class ExchangeChatService {
     private final SimpMessagingTemplate simpMessagingTemplate;
     private final JPAQueryFactory queryFactory;
     private final PagingUtil pagingUtil;
+    private final GenerateFile generateFile;
     private final ExchangeChatRepository exchangeChatRepository;
 
     public void sendMessage(ExchangeChatMessageDTO messageDTO){
         exchangeChatRepository.save(messageDTO.toEntity());
         simpMessagingTemplate.convertAndSend("/exchange/userId=" + messageDTO.getTargetId(), messageDTO);
+    }
+
+    public ExchangeChatMessageDTO uploadImageToChat(ExchangeChatMessageDTO messageDTO, MultipartFile[] files){
+        List<GenerateFileDTO> items = generateFile.createFile(files);
+        items.forEach(item -> {
+            messageDTO.setMessage(item.getName());
+            exchangeChatRepository.save(messageDTO.toEntity());
+            simpMessagingTemplate.convertAndSend("/exchange/userId=" + messageDTO.getTargetId(), messageDTO);
+        });
+        return messageDTO;
     }
 
     public Page<ResponseChatListDTO> getChatItems(Long exchangeId, Pageable pageRequest){

@@ -37,7 +37,8 @@
 
                         <li class="chatInputItem">
                             <button type="button" class="inputButton chatImageUploadButton" data-toggle="tooltip" data-placement="top" title="이미지 업로드">
-                                <img src="/images/group/image_25px.png">
+                                <img id="uploadImageButton" src="/images/group/image_25px.png">
+                                <input id="uploadChatImage" type="file" multiple="multiple" style="display: none">
                             </button>
                         </li>
 
@@ -151,6 +152,31 @@
         }
     }
 
+    function uploadImageToChat(f){
+
+        var formData = new FormData()
+        formData.append('userId', chatInfoObject.userId)
+        formData.append('targetId', chatInfoObject.targetId)
+        formData.append('targetUsername', chatInfoObject.targetUsername)
+        formData.append('targetProfile', chatInfoObject.targetProfile)
+        formData.append('exchangeId', chatInfoObject.exchangeId)
+        formData.append('type', 'image')
+        formData.append('message', null)
+        formData.append('result', 'success')
+        formData.append('files', f)
+
+        $.ajax({
+            url: '/api/exchange/chat/upload/image',
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(response){
+                showMessage(response)
+            }
+        })
+    }
+
 </script>
 <script>
     // chatting Stomp Script
@@ -171,47 +197,65 @@
         })
     }
 
-    function sendMessage(message){
+    function sendMessage(message, type = 'text'){
         var sendMessageObject = {
             'exchangeId': '', // exchange uinque Id
-            'userId' : chatInfoObject.userId,
-            'targetId' : chatInfoObject.targetId,
+            'userId' : Number(chatInfoObject.userId),
+            'targetId' : Number(chatInfoObject.targetId),
             'targetUsername' : chatInfoObject.targetUsername,
             'targetProfile' : chatInfoObject.targetProfile,
-            'exchangeId' : chatInfoObject.exchangeId,
-            'type' : 'text',
+            'exchangeId' : Number(chatInfoObject.exchangeId),
+            'type' : type,
             'message' : message,
             'regTime' : new Date(),
             'result' : 'success'
         }
+
+        switch (type) {
+            case 'image':
+                sendMessageObject.message = "<img src=/upload/" + message + ">"
+                break
+            case 'location':
+                break
+            default:
+                break
+        }
+
         exchangeStomp.send('/app/userId=' + chatInfoObject.targetId, {}, JSON.stringify(sendMessageObject))
         $('.chatContainer').append(inputChat(sendMessageObject))
         refreshChatList(sendMessageObject)
+        $('.chatContainer')[0].scrollTop = $('.chatContainer')[0].scrollHeight
     }
 
     function showMessage(message){
         refreshChatList(message)
         if(chatInfoObject.exchangeId == message.exchangeId){
             $('.chatContainer').append(inputChat(message))
+            $('.chatContainer')[0].scrollTop = $('.chatContainer')[0].scrollHeight
         }
     }
 
     function refreshChatList(value){
+
+        var messageType = (value.type == 'image') ? '이미지 파일' : value.message
+
         $('#exchangeItemBoxId_' + value.exchangeId).remove()
         $('#exchangeProcessChatList').append(
             "<div id='exchangeItemBoxId_" + value.exchangeId + "' class='exchangeBox' style='cursor: pointer'>" +
-            "<div style='display: flex; padding: 15px 10px 15px 10px;'>" +
+            "<div style='display: flex; padding: 15px 10px 5px 10px;'>" +
             "<div class='exchangeTargetId' data-target-id='" + value.targetId + "'></div>" +
             "<div class='exchangeId' data-target-id='" + value.exchangeId + "'></div>" +
             "<div class='exchangeTargetProfile'>" +
             "<img src=/upload/" + value.targetProfile + ">" +
             "</div>" +
             "<div style='margin: 0 0 auto 10px'>" +
+            "<div style='display: inline-flex; width: 214px'>" +
             "<div class='exchangeTargetUsername'>" + value.targetUsername + "</div>" +
-            "<div class='exchangeTargetChat'>" + value.message + "</div>" +
-            "<div class='chatRegTime'>" + new Date(value.regTime).toLocaleTimeString([],
-                    {'hour': '2-digit',
+            "<div class='chatRegTime' style='margin: auto 0 auto auto'>" + new Date(value.regTime).toLocaleTimeString([],
+                {'hour': '2-digit',
                     'minute' : '2-digit'}) + "</div>" +
+            "</div>" +
+            "<div class='exchangeTargetChat'>" + messageType + "</div>" +
             "</div>" +
             "</div>" +
             "</div>"
@@ -220,37 +264,68 @@
 
     function inputChat(message){
 
-        if(message.type == 'enter'){
-            return "<div class='notiChatContent' style='padding: 10px 25px 10px 25px;'>" +
-                "<div class='notiContent' style='text-align: center'>" + message.message + "</div>" +
-                "</div>"
-        }
-        else if(message.userId == chatInfoObject.userId){
+        switch(message.userId){
             // 내가 보낸 채팅내용
+            case Number(chatInfoObject.userId):
             return "<div class='meChatContent' style='text-align: right; padding: 25px;'>" +
-                    "<div class='meContent'>" + message.message + "</div>" +
+                    "<div class='meContent'>" + returnValueOfChatType(message) + "</div>" +
                     "<div class='chatRegTime' style='margin-top: 0;'>" + new Date(message.regTime).toLocaleTimeString([],
                         {'hour': '2-digit',
                         'minute' : '2-digit'}) +
                     "</div>" +
                     "</div>"
-        }else{
+
             // 채팅상대가 보낸 채팅내용
-            return "<div class='targetChatContent' style='text-align: left; padding: 25px;'>" +
-                "<div style='display: inline-flex;'>" +
-                "<div class='targetProfile'><img src=/upload/" + message.targetProfile + "></div>" +
-                "<div class='userContentBox' style='margin-left: 10px;'>" +
-                "<div class='targetUsername' style='font-family: Pretendard-SemiBold; font-size: 15px;'>" + message.targetUsername + "</div>" +
-                "<div class='targetContent'>" + message.message + "</div>" +
-                "<div class='chatRegTime'>" + new Date(message.regTime).toLocaleTimeString([],
-                        {'hour': '2-digit',
-                        'minute' : '2-digit'}) +
-                "</div>" +
-                "</div>" +
-                "</div>" +
-                "</div>"
+            case Number(chatInfoObject.targetId):
+                return "<div class='targetChatContent' style='text-align: left; padding: 25px;'>" +
+                    "<div style='display: inline-flex;'>" +
+                    "<div class='targetProfile'><img src=/upload/" + message.targetProfile + "></div>" +
+                    "<div class='userContentBox' style='margin-left: 10px;'>" +
+                    "<div class='targetUsername' style='font-family: Pretendard-SemiBold; font-size: 15px;'>" + message.targetUsername + "</div>" +
+                    "<div class='targetContent'>" + returnValueOfChatType(message) + "</div>" +
+                    "<div class='chatRegTime'>" + new Date(message.regTime).toLocaleTimeString([],
+                            {'hour': '2-digit',
+                            'minute' : '2-digit'}) +
+                    "</div>" +
+                    "</div>" +
+                    "</div>" +
+                    "</div>"
+
+            default:
+                return "<div class='notiChatContent' style='padding: 10px 25px 10px 25px;'>" +
+                    "<div class='notiContent' style='text-align: center'>" + message + "</div>" +
+                    "</div>"
         }
     }
+
+    function returnValueOfChatType(message){
+        switch (message.type){
+            case 'text':
+                return message.message
+            case 'image':
+                return "<img class='userChatImageFile' src=/upload/" + message.message + ">"
+            case 'location':
+                return 'location'
+        }
+    }
+
+    $(function(){
+        $('#uploadImageButton').click(function () {
+            $('#uploadChatImage').click()
+        })
+
+        $('#uploadChatImage').change(function (e) {
+            const fileArray = Array.prototype.slice.call(e.target.files);
+            fileArray.forEach(function (f) {
+                if (!f.type.match("image.*")) {
+                    alert("이미지파일만 업로드가 가능합니다.");
+                    return;
+                }
+                uploadImageToChat(f)
+            });
+        })
+    })
+
 
     $('#SendChatContentBox').keyup(function(event) {
         const textBoxMessage = $('#SendChatContentBox').val();

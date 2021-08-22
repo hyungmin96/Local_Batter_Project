@@ -27,6 +27,11 @@ spring:
   handlerbars:
     suffix: .jsp
 
+  data:
+    redis:
+      repositories:
+        enabled: false
+
   devtools:
     livereload:
       enabled: true
