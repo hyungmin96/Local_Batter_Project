@@ -26,7 +26,7 @@ function setMaker(map, residence, long, lat){
     });
     setMarker.setMap(map);
     var iwContent = '<div class="windowInfoMarker" style="padding:5px;">' + residence + '<br>' +
-            '<a href="https://map.kakao.com/link/to/' + residence + ',' + long + ',' + lat + '" style="color:blue" target="_blank">길찾기</a></div>',// 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+            '<a href="https://map.kakao.com/link/map/' + residence + ',' + long + ',' + lat + '" style="color:blue" target="_blank">길찾기</a></div>',// 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
         iwPosition = new kakao.maps.LatLng(long, lat); //인포윈도우 표시 위치입니다
 
     // 인포윈도우를 생성합니다

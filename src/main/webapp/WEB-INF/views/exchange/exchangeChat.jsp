@@ -9,7 +9,7 @@
         <div style="padding: 5px 10px 5px 0; font-family: Pretendard-SemiBold; font-size: 23px;">물품교환 채팅목록</div>
         <div style="display: inline-flex; box-shadow: 0 0px 3px 0 rgba(0, 0, 0, 0.12); height: 725px; width: 100%">
 
-            <div id="exchangeProcessChatList" style="border-right: 1px solid #e2dede; width: 27%; background: rgb(227, 230, 234); height: 100%">
+            <div id="exchangeProcessChatList" style="border-right: 1px solid #e2dede; width: 23%; background: rgb(227, 230, 234); height: 100%">
 
             </div>
 
@@ -60,14 +60,46 @@
                     <textarea style="width: 100%" id="SendChatContentBox" class="SendChatContentBox" type="text" placeholder="전송할 메세지 내용을 입력해주세요." value=""></textarea>
                 </div>
             </div>
-
         </div>
-
     </div>
-
 </div>
-<%@ include file="../common/footer.jsp" %>
+
+<div class="modal fade" id="sendMapAddressModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="margin-top: 100px; margin-left: 27%;">
+        <div class="modal-content" style="width: 900px; border-radius: 0;">
+            <div class="modal-header" style="border: none;">
+                <div class="modal-title" id="MapAddressModal" style="margin: 0 0 0 auto">위치 보내기</div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="width: 20px; height: 20px;"></button>
+            </div>
+            <div class="clientBoardListModal clientRequestModal" style="height: 586px; padding: 0.5rem;">
+
+                <div style="display: none" id="longitude"></div>
+                <div style="display: none" id="latitudeValue"></div>
+                <div class="serachAddr">
+                    <input style="width: 400px;" type="text" id="serachAddrText" class="clientExchangeInfoBox inputbox" placeholder="검색할 지역의 주소를 입력해주세요">
+                    <button class="clientExchangeButton searchButton">검색</button>
+                    <input style="width: 250px;" type="text" id="detailAddrText" class="clientExchangeInfoBox inputbox" placeholder="세부주소를 입력해주세요">
+
+                </div>
+                <div id="currentAddr">지역을 선택하면 해당 위치가 표기됩니다.</div>
+                <div id="map" style="width:99%; height:433px;"></div>
+
+                <div>
+                    <button class="sendMapButton sendMapAddress">확인</button>
+                    <button class="sendMapButton sendMapClose">닫기</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2f665d933d93346898df736499236f77&libraries=services"></script>
+<script type="text/javascript" src="/js/exchange/registMapAddress.js"></script>
 <link rel="stylesheet" type="text/css" href="/css/transaction.css">
+<link rel="stylesheet" type="text/css" href="/css/clientExchange.css">
+<%@ include file="../common/footer.jsp" %>
 <script>
     // login user's list of exchanging request
 
@@ -198,6 +230,7 @@
     }
 
     function sendMessage(message, type = 'text'){
+        console.log(message)
         var sendMessageObject = {
             'exchangeId': '', // exchange uinque Id
             'userId' : Number(chatInfoObject.userId),
@@ -207,6 +240,7 @@
             'exchangeId' : Number(chatInfoObject.exchangeId),
             'type' : type,
             'message' : message,
+            'coordinate': '',
             'regTime' : new Date(),
             'result' : 'success'
         }
@@ -216,6 +250,8 @@
                 sendMessageObject.message = "<img src=/upload/" + message + ">"
                 break
             case 'location':
+                sendMessageObject.message = message.currentAddr + '\n' + message.detailAddr
+                sendMessageObject.coordinate = message.longtitude + ',' + message.langtitude
                 break
             default:
                 break
@@ -248,14 +284,17 @@
             "<div class='exchangeTargetProfile'>" +
             "<img src=/upload/" + value.targetProfile + ">" +
             "</div>" +
-            "<div style='margin: 0 0 auto 10px'>" +
-            "<div style='display: inline-flex; width: 214px'>" +
+            "<div style='margin: 0 0 auto 10px; width: 100%'>" +
+            "<div style='display: inline-flex; width: 100%'>" +
             "<div class='exchangeTargetUsername'>" + value.targetUsername + "</div>" +
             "<div class='chatRegTime' style='margin: auto 0 auto auto'>" + new Date(value.regTime).toLocaleTimeString([],
-                {'hour': '2-digit',
-                    'minute' : '2-digit'}) + "</div>" +
+                {
+                    'hour': '2-digit',
+                    'minute' : '2-digit'
+                }) +
             "</div>" +
-            "<div class='exchangeTargetChat'>" + messageType + "</div>" +
+            "</div>" +
+            "<div class='exchangeTargetChat' style='margin-bottom: 5px;'>" + messageType + "</div>" +
             "</div>" +
             "</div>" +
             "</div>"
@@ -270,8 +309,10 @@
             return "<div class='meChatContent' style='text-align: right; padding: 25px;'>" +
                     "<div class='meContent'>" + returnValueOfChatType(message) + "</div>" +
                     "<div class='chatRegTime' style='margin-top: 0;'>" + new Date(message.regTime).toLocaleTimeString([],
-                        {'hour': '2-digit',
-                        'minute' : '2-digit'}) +
+                        {
+                            'hour': '2-digit',
+                            'minute' : '2-digit'
+                        }) +
                     "</div>" +
                     "</div>"
 
@@ -279,13 +320,15 @@
             case Number(chatInfoObject.targetId):
                 return "<div class='targetChatContent' style='text-align: left; padding: 25px;'>" +
                     "<div style='display: inline-flex;'>" +
-                    "<div class='targetProfile'><img src=/upload/" + message.targetProfile + "></div>" +
+                    "<div class='targetProfile'><img class='targetProfileImage' src=/upload/" + message.targetProfile + "></div>" +
                     "<div class='userContentBox' style='margin-left: 10px;'>" +
                     "<div class='targetUsername' style='font-family: Pretendard-SemiBold; font-size: 15px;'>" + message.targetUsername + "</div>" +
                     "<div class='targetContent'>" + returnValueOfChatType(message) + "</div>" +
                     "<div class='chatRegTime'>" + new Date(message.regTime).toLocaleTimeString([],
-                            {'hour': '2-digit',
-                            'minute' : '2-digit'}) +
+                        {
+                            'hour': '2-digit',
+                            'minute' : '2-digit'
+                        }) +
                     "</div>" +
                     "</div>" +
                     "</div>" +
@@ -299,15 +342,50 @@
     }
 
     function returnValueOfChatType(message){
+        console.log(message)
         switch (message.type){
             case 'text':
                 return message.message
             case 'image':
                 return "<img class='userChatImageFile' src=/upload/" + message.message + ">"
             case 'location':
-                return 'location'
+                return "<div>" +
+                        message.message.split('\n')[0] +
+                            "<br>" +
+                        message.message.split('\n')[1] +
+                        "<div>" +
+                            "<input type='hidden' class='coordinateValue' value=" + message.coordinate + ">" +
+                            "<a href='https://map.kakao.com/link/map/" + message.message.split('\n')[0] + ',' + message.coordinate + "' target='_blank'>" +
+                                "<button class='actionButton findMapButton' style='margin: 5px 0 0 0; padding: 5px; width: 100%;'>" +
+                                        "길 찾기" +
+                                "</button>" +
+                            "</a>" +
+                        "</div>" +
+                        "</div>"
         }
     }
+
+    $('.chatMarkerUploadButton').click(function(){
+        $('#sendMapAddressModal').modal('show')
+    })
+
+    $('#sendMapAddressModal').on('shown.bs.modal', function (e) {
+        reloadKakaoMap()
+    })
+
+    $('.sendMapAddress').click(function(){
+        const locationInfoObject = {
+            currentAddr: $('#currentAddr')[0].innerHTML,
+            detailAddr: $('#detailAddrText').val(),
+            longtitude: $('#longitude')[0].innerHTML,
+            langtitude: $('#latitudeValue')[0].innerHTML
+        }
+        sendMessage(locationInfoObject, 'location')
+    })
+
+    $('.sendMapClose').click(function(){
+        $('#sendMapAddressModal').modal('hide')
+    })
 
     $(function(){
         $('#uploadImageButton').click(function () {
@@ -342,17 +420,6 @@
     });
 
 </script>
-
-
-
-
-
-
-
-
-
-
-
 
 
 

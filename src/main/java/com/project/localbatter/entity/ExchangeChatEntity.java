@@ -26,12 +26,14 @@ public class ExchangeChatEntity extends BaseTimeEntity {
     @Column(name = "receive_id")
     private Long receiveId;
 
+    @Column(name = "coordinate")
+    private String coordinate;
+
     @Column(name = "message_type")
     @Enumerated(EnumType.STRING)
     private ExchangeChatMessageDTO.ExchangeMessageType type;
 
     @Column(name = "exchange_id")
     private Long exchangeId;
-
 
 }

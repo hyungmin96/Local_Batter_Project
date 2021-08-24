@@ -54,9 +54,10 @@ public class ExchangeChatApiController {
         private Long exchangeId;
         private ExchangeChatMessageDTO.ExchangeMessageType type;
         private String message;
+        private String coordinate;
         private LocalDateTime regTime;
 
-        public ResponseChatListDTO(Long userId, String username, String userProfile, Long targetId, String targetUsername, String targetProfile, Long exchangeId, ExchangeChatMessageDTO.ExchangeMessageType type, String message, LocalDateTime regTime) {
+        public ResponseChatListDTO(Long userId, String username, String userProfile, Long targetId, String targetUsername, String targetProfile, Long exchangeId, ExchangeChatMessageDTO.ExchangeMessageType type, String message, String coordinate, LocalDateTime regTime) {
             this.userId = userId;
             this.username = username;
             this.userProfile = userProfile;
@@ -66,6 +67,7 @@ public class ExchangeChatApiController {
             this.exchangeId = exchangeId;
             this.type = type;
             this.message = message;
+            this.coordinate = coordinate;
             this.regTime = regTime;
         }
     }

@@ -20,13 +20,12 @@ kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
             // 마커를 클릭한 위치에 표시합니다
             marker.setPosition(mouseEvent.latLng);
             marker.setMap(map);
-
         }
     });
 });
 
-function searchAddrFromCoords(coords, callback) {
-    geocoder.coord2RegionCode(coords.getLng(), coords.getLat(), callback);
+function reloadKakaoMap(){
+    map.relayout()
 }
 
 function searchDetailAddrFromCoords(coords, callback) {
@@ -34,7 +33,6 @@ function searchDetailAddrFromCoords(coords, callback) {
 }
 
 document.getElementsByClassName('searchButton')[0].addEventListener('click', function (){
-    console.log($('#serachAddrText').val())
     geocoder.addressSearch($('#serachAddrText').val(), function (result, status) {
         // 정상적으로 검색이 완료됐으면
         if (status === kakao.maps.services.Status.OK) {

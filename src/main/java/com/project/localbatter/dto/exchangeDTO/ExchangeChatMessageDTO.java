@@ -17,11 +17,12 @@ public class ExchangeChatMessageDTO {
 
     private Long exchangeId;
     private ExchangeMessageType type;
+    private String coordinate;
     private String message;
     private LocalDateTime regTime = LocalDateTime.now();
 
     public enum ExchangeMessageType{
-        enter, quit, image, text
+        enter, quit, image, text, location
     }
 
     public ExchangeChatEntity toEntity(){
@@ -30,9 +31,9 @@ public class ExchangeChatMessageDTO {
                 .senderId(userId)
                 .receiveId(targetId)
                 .message(message)
+                .coordinate(coordinate)
                 .type(type)
                 .exchangeId(exchangeId)
                 .build();
     }
-
 }

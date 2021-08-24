@@ -18,7 +18,7 @@
     <input style="width: 400px;" type="text" id="serachAddrText" class="clientExchangeInfoBox inputbox" placeholder="검색할 지역의 주소를 입력해주세요"/>
     <button class="clientExchangeButton searchButton">검색</button>
 </div>
-<div id="currentAddr">지역을 선택하면 해당 위치가 표기됩니다.</div>
+<div id="currentAddr">지역을 선택하면 해당 위치가 이곳에 표기됩니다.</div>
 <div id="map" style="width:800px;height:600px;"></div>
 <div>
     <button class="clientExchangeButton" onclick="getValue();">확인</button>
@@ -32,7 +32,7 @@
             longitude: document.getElementById('longitude').innerHTML,
             latitude: document.getElementById('latitudeValue').innerHTML
         }
-        window.opener.getAddress(value)
+        window.opener.getAddress(value, 'exchange_address')
     }
 </script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>

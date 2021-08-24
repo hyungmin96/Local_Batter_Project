@@ -63,9 +63,9 @@
         openWin = window.open(url, title, "width=850, height=750, resizable = no, scrollbars = no");
     }
 
-    function getAddress(data){
+    function getAddress(data, containerId){
         if(data != null){
-            document.getElementById('exchange_address').value = data.location;
+            document.getElementById(containerId).value = data.location;
             $('.longitudeValue')[0].value = data.longitude;
             $('.latitudeValue')[0].value = data.latitude;
         }

@@ -46,7 +46,7 @@
     word-break: break-word;
     overflow: hidden;
     text-overflow: ellipsis;
-    height: 40px;
+    max-height: 45px;
 }
 
 #exchangeProcessChatList img{
@@ -66,21 +66,27 @@
 .targetContent{
     color: #3e3a3a;
     background: #e4e4e4;
-    padding: 7px;
+    padding: 10px;
     border-radius: 6px;
-    text-align: center;
+    text-align: left;
+    font-size: 16px;
+}
+
+.findMapButton{
+
 }
 
 .meContent{
     max-width: 280px;
     display: inline-block;
     background-color: rgb(218, 243, 231);
-    padding: 7px;
+    padding: 10px;
     border-radius: 6px;
     overflow: hidden;
     word-wrap: break-word;
     font-size: 14px;
     color: #454545;
+    text-align: left;
 }
 
 .notiContent{
@@ -97,7 +103,7 @@
     font-size: 15px;
 }
 
-.targetProfile{
+.targetProfileImage{
     width: 45px;
     height: 45px;
 }

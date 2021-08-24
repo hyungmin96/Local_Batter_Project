@@ -147,6 +147,20 @@
     min-width: 180px;
 }
 
+.sendMapButton{
+    margin: 10px 0;
+    background-color: white;
+    border: 1px solid rgb(215, 215, 215);
+    padding: 8px;
+    font-family: Noto Sans KR;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.sendMapButton:hover{
+    background: #f1f1f1;
+}
+
 .clientExchangeButton{
     margin: 10px 0;
     background-color: white;

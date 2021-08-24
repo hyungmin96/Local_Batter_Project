@@ -50,15 +50,12 @@ public class ExchangeChatService {
     }
 
     public Page<ResponseChatListDTO> getChatItems(Long exchangeId, Pageable pageRequest){
-
         QUserEntity senderEntity = new QUserEntity("senderEntity");
         QUserEntity receiveEntity = new QUserEntity("receiveEntity");
-
         Long queryCount = queryFactory
                 .selectFrom(exchangeChatEntity)
                 .where(exchangeChatEntity.exchangeId.eq(exchangeId))
                 .fetchCount();
-
         JPAQuery<ResponseChatListDTO> query = queryFactory
                 .select(Projections.constructor(ResponseChatListDTO.class,
                         senderEntity.id.as("userId"),
@@ -70,6 +67,7 @@ public class ExchangeChatService {
                         exchangeChatEntity.exchangeId.as("exchangeId"),
                         exchangeChatEntity.type.as("type"),
                         exchangeChatEntity.message.as("message"),
+                        exchangeChatEntity.coordinate.as("coordinate"),
                         exchangeChatEntity.regTime.as("regTime")
                         ))
                 .from(exchangeChatEntity)
@@ -79,7 +77,6 @@ public class ExchangeChatService {
                 .offset(pageRequest.getPageNumber())
                 .limit(pageRequest.getPageSize())
                 .orderBy(exchangeChatEntity.regTime.desc());
-
         return pagingUtil.getPageImpl(pageRequest, query, queryCount, ExchangeChatEntity.class);
     }
 
@@ -89,7 +86,6 @@ public class ExchangeChatService {
     public List<ResponseChatListDTO> getExchageChatList(Long userId){
         QUserEntity writerId = new QUserEntity("writerEntity");
         QUserEntity clientId = new QUserEntity("clientEntity");
-
         List<ResponseChatListDTO> items = queryFactory
                 .select(Projections.constructor(ResponseChatListDTO.class,
                         writerId.id.as("userId"),
@@ -101,6 +97,7 @@ public class ExchangeChatService {
                         writerClientJoinEntity.clientExchangeEntity.id.as("exchangeId"),
                         exchangeChatEntity.type.as("type"),
                         exchangeChatEntity.message.as("message"),
+                        exchangeChatEntity.coordinate.as("coordinate"),
                         exchangeChatEntity.regTime.as("regTime")
                 ))
                 .from(writerClientJoinEntity)
