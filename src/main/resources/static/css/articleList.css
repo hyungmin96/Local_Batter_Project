@@ -1,13 +1,20 @@
 @font-face {
-    font-family: 'SLEIGothicTTF';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2104@1.0/SLEIGothicTTF.woff') format('woff');
-    font-weight: normal;
+    font-family: 'Pretendard-SemiBold';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-SemiBold.woff') format('woff');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
     font-style: normal;
 }
 
 .content-wrapper {
     margin-top: 105px;
-    min-height: 712px;
+    min-height: 744px;
 }
 
 a:link {
@@ -25,8 +32,9 @@ a:link {
 
 .sub__category{
     color: rgb(128, 128, 128);
-    font-size: 15px;
+    font-size: 13px;
     font-weight: bold;
+    font-family: Pretendard-Regular;
 }
 
 #slider-div {
@@ -53,23 +61,12 @@ a:link {
     width: 80%;
 }
 
-.fast-slide-img {
-    height: 100%;
-    width: 100%;
-    background-image: url('/images/noImage.png');
-}
-
-.fast-slide-img img {
-    width: 100%;
-    height: 100%;
-}
-
 .fast-detail-box {
     background-color: #ffffff;
     align-items: center;
     padding: 5px;
     box-sizing: border-box;
-    font-family: paybooc-Light;
+    font-family: Pretendard-SemiBold;
 }
 
 .text span {
@@ -92,7 +89,7 @@ a:link {
     width: 180px;
     color: #303030;
     font-size: 15px;
-    font-family: 'NanumBarunGothic';
+    font-family: 'Pretendard-SemiBold';
     text-align: left;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
@@ -104,13 +101,13 @@ a:link {
 
 .line {
     display: flex;
-    font-family: paybooc-Light;
+    font-family: Pretendard-SemiBold;
     justify-content: space-between;
 }
 
 .price {
     color: #333333;
-    font-family: SLEIGothicTTF;
+    font-family: Pretendard-SemiBold;
     font-size: 16px;
 }
 
@@ -127,7 +124,7 @@ a:link {
     margin-top: 6px;
     font-weight: 300;
     font-size: 0.8rem;
-    font-family: paybooc-Light;
+    font-family: Pretendard-Regular;
     letter-spacing: 0.5px;
 }
 
@@ -203,21 +200,24 @@ a:link {
     background-color: #ffffff;
 }
 
+.groupExchangeBoardList{
+    display: inline-flex;
+    width: 100%;
+    min-height: 200px;
+    height: 100%;
+    flex-wrap: wrap;
+}
+
 .today-box {
     height: 210px;
-    width: 215px;
+    width: 216px;
+    border-bottom: 1px solid #eceaea;
 }
 
 .today-box img {
     width: 100%;
     height: 100%;
-}
-
-@font-face {
-    font-family: 'GongGothicMedium';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10@1.0/GongGothicMedium.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
+    object-fit: cover;
 }
 
 .fast__sale_products {
@@ -227,7 +227,7 @@ a:link {
 .fast__category {
     margin: 10px;
     font-size: 24px;
-    font-family: GongGothicMedium;
+    font-family: Pretendard-SemiBold;
     display: inline-block;
 }
 
@@ -237,28 +237,22 @@ a:link {
     margin: 0;
 }
 
-@font-face {
-    font-family: 'Arita-dotum-Medium';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/Arita-dotum-Medium.woff') format('woff');
-    font-weight: bold;
-    font-style: normal;
-}
-
 @media all and(max-width: 1185px) {
     .group__buy {
         display: none
     }
 }
 
-.carousel-inner img{
-    width: 1000px;
-    height: 390px;
+.logoImage{
+    object-fit: cover;
+    width: 400px;
+    height: 350px;
 }
 
 .group__Group__title {
     margin: 10px;
     font-size: 16px;
-    font-family: Arita-dotum-Medium;
+    font-family: Pretendard-SemiBold;
     display: inline-block;
 }
 

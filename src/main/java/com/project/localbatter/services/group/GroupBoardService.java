@@ -1,5 +1,6 @@
 package com.project.localbatter.services.group;
 
+import com.project.localbatter.api.group.GroupBoardApiController.ResponseGroupExchangeDTO;
 import com.project.localbatter.api.group.GroupBoardApiController.ResponseBoardViewDTO;
 import com.project.localbatter.components.DeleteFile;
 import com.project.localbatter.components.GenerateFile;
@@ -21,6 +22,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.project.localbatter.entity.Exchange.QWriterExchangeEntity.writerExchangeEntity;
 import static com.project.localbatter.entity.QGroupBoardEntity.groupBoardEntity;
 import static com.project.localbatter.entity.QGroupBoardFileEntity.groupBoardFileEntity;
 import static com.project.localbatter.entity.QGroupUserJoinEntity.groupUserJoinEntity;
@@ -46,6 +49,33 @@ public class GroupBoardService {
     private final GenerateFile generateFile;
     private final JPAQueryFactory queryFactory;
     private final PagingUtil pagingUtil;
+
+    // view the all group's exchange boards
+    // 그룹에 작성된 모든 교환글을 조회
+    @Transactional(readOnly = true)
+    public Page<ResponseGroupExchangeDTO> getGroupExchangeBoards(Pageable page){
+        Long queryCount = queryFactory
+                .select(groupBoardEntity.boardId)
+                .from(groupBoardEntity)
+                .fetchCount();
+
+        JPAQuery<ResponseGroupExchangeDTO> query = queryFactory
+                .select(Projections.fields(ResponseGroupExchangeDTO.class,
+                            groupBoardEntity.title,
+                            groupBoardEntity.content,
+                            writerExchangeEntity.price,
+                            writerExchangeEntity.location,
+                            groupBoardEntity.regTime,
+                            groupBoardEntity.thumnbnailPath.as("thumbnail")
+                        ))
+                .from(groupBoardEntity)
+                .innerJoin(groupBoardEntity.writerExchangeEntity, writerExchangeEntity)
+                .orderBy(groupBoardEntity.writerExchangeEntity.regTime.desc())
+                .offset(page.getPageNumber())
+                .limit(page.getPageSize());
+
+        return pagingUtil.getPageImpl(page, query, queryCount, ResponseGroupExchangeDTO.class);
+    }
 
     // 그룹 게시글 수정 api
     // update groub's board title, content

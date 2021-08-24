@@ -230,7 +230,6 @@
     }
 
     function sendMessage(message, type = 'text'){
-        console.log(message)
         var sendMessageObject = {
             'exchangeId': '', // exchange uinque Id
             'userId' : Number(chatInfoObject.userId),
@@ -276,7 +275,7 @@
         var messageType = (value.type == 'image') ? '이미지 파일' : value.message
 
         $('#exchangeItemBoxId_' + value.exchangeId).remove()
-        $('#exchangeProcessChatList').append(
+        $('#exchangeProcessChatList').prepend(
             "<div id='exchangeItemBoxId_" + value.exchangeId + "' class='exchangeBox' style='cursor: pointer'>" +
             "<div style='display: flex; padding: 15px 10px 5px 10px;'>" +
             "<div class='exchangeTargetId' data-target-id='" + value.targetId + "'></div>" +
@@ -303,10 +302,15 @@
 
     function inputChat(message){
 
-        switch(message.userId){
+        switch(true){
+            case message.type == 'enter':
+                return "<div class='notiChatContent' style='padding: 10px 25px 10px 25px;'>" +
+                    "<div class='notiContent' style='text-align: center'>" + message.message + "</div>" +
+                    "</div>"
+
             // 내가 보낸 채팅내용
-            case Number(chatInfoObject.userId):
-            return "<div class='meChatContent' style='text-align: right; padding: 25px;'>" +
+            case message.userId == Number(chatInfoObject.userId):
+            return "<div class='meChatContent' style='text-align: right; padding: 15px 25px 15px 25px;'>" +
                     "<div class='meContent'>" + returnValueOfChatType(message) + "</div>" +
                     "<div class='chatRegTime' style='margin-top: 0;'>" + new Date(message.regTime).toLocaleTimeString([],
                         {
@@ -317,8 +321,8 @@
                     "</div>"
 
             // 채팅상대가 보낸 채팅내용
-            case Number(chatInfoObject.targetId):
-                return "<div class='targetChatContent' style='text-align: left; padding: 25px;'>" +
+            case message.userId == Number(chatInfoObject.targetId):
+                return "<div class='targetChatContent' style='text-align: left; padding: 15px 25px 15px 25px;'>" +
                     "<div style='display: inline-flex;'>" +
                     "<div class='targetProfile'><img class='targetProfileImage' src=/upload/" + message.targetProfile + "></div>" +
                     "<div class='userContentBox' style='margin-left: 10px;'>" +
@@ -333,16 +337,10 @@
                     "</div>" +
                     "</div>" +
                     "</div>"
-
-            default:
-                return "<div class='notiChatContent' style='padding: 10px 25px 10px 25px;'>" +
-                    "<div class='notiContent' style='text-align: center'>" + message + "</div>" +
-                    "</div>"
         }
     }
 
     function returnValueOfChatType(message){
-        console.log(message)
         switch (message.type){
             case 'text':
                 return message.message

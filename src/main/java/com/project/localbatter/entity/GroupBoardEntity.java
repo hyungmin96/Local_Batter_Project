@@ -49,7 +49,7 @@ public class GroupBoardEntity extends BaseTimeEntity {
     @JoinColumn(name = "exchange_id")
     private WriterExchangeEntity writerExchangeEntity;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "board_writer")
     private GroupUserJoinEntity groupUserJoinEntity;
 

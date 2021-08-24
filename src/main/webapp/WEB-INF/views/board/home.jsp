@@ -2,81 +2,63 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="../common/header.jsp" %>
 
-<div id="products" class="container">
-    <div class="content-wrapper">
-
-            <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-indicators">
-                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-            </div>
-            <div class="carousel-inner">
-                <div class="carousel-item active" data-bs-interval="4000">
-                    <img src="/images/main/logo.gif" class="d-block w-100">
-                </div>
-                <div class="carousel-item" data-bs-interval="4000">
-                    <a href="#"><img src="/images/main/delivery.png" class="d-block w-100"></a>
-                </div>
-                <div class="carousel-item" data-bs-interval="4000">
-                    <a href="/product/group"><img src="/images/main/buy.png" class="d-block w-100"></a>
-                </div>
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-            </div>
-
-        <div class="fast__sale_products">
-            <span class="fast__category">완전 급해요</span>
-            <span class="sub__category">| 빠른 교환을 원하는 물품들이에요</span>
-            <hr style="border: none; height: 2px; background-color: #ccc;" />
-        </div>
-
-        <div class="item-list">
-            <div id="slider-div">
-                <c:forEach var="board" items="${fast}" varStatus="i">
-                    <div class="container-item">
-                        <div class="fast-item-box">
-                            <div class="fast-box">
-                                <div class="fast-slide-img">
-                                    <img src="/upload/${board.files[0].tempName}" onerror="this.style.display='none'" />
-                                    <div class="overlay">
-                                        <a href="/board/article/${board.id}" class="buy-btn">상세보기</a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="fast-detail-box">
-                                <div class="type">
-                                    <div class="title">${board.title}</div>
-                                    <div class="board-line"></div>
-                                    <div class="line">
-                                        <div class="price">${board.price}<span class="k-money">원</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+        <div class="container" style="margin: 120px auto 25px auto;">
+            <span class="fast__category">원하시는 활동을 선택해주세요!</span>
+            <div class="mainImageWrapper" style="display:flex; text-align: center">
+                <div class="groupCreate" style="width: 33%; text-align: center">
+                    <div>
+                        <img style="border: 1px solid #d3cfcf" src="/images/main/logo.jpg" class="logoImage exchangeBoards">
                     </div>
-                </c:forEach>
+                    <div></div>
+                </div>
+                <div class="groupList" style="width: 33%">
+                    <div>
+                        <img style="border: 1px solid #d3cfcf" src="/images/main/group.jpg" class="logoImage groupList">
+                    </div>
+                </div>
+                <div class="batterServiceList" style="width: 33%">
+                    <div >
+                        <img style="border: 1px solid #d3cfcf" src="/images/main/delivery.jpg" class="logoImage batterService">
+                    </div>
+                </div>
             </div>
         </div>
 
-            <div class="fast__sale_products">
-                <span class="fast__category">바꾸고 싶어요</span>
-                <span class="sub__category">| 마음에 드는 물품과 교환 해보세요</span>
-                <hr style="border: none; height: 2px; background-color: #ccc;" />
+        <div class="fast__sale_products" style="padding: 25px; background: rgb(227, 230, 234);">
+            <div class="container">
+                <span class="fast__category">완전 급해요</span>
+                <span class="sub__category">| 빠른 교환을 원하는 물품들이에요</span>
+                <div style="width: 100%; height: 300px;">
+                </div>
             </div>
+        </div>
 
-            <div class="today-item-list">
+        <div class="groupListContainer" style="padding: 25px">
+            <div class="container">
+                <span class="fast__category">이런 그룹은 어떠신가요?</span>
+                <span class="sub__category">| 특정 그룹 멤버들과 소통해보세요</span>
+                <div style="width: 100%; height: 300px;">
             </div>
+        </div>
+        </div>
+
+        <div class="batterServiceContainer" style="padding: 25px; background: rgb(227, 230, 234);">
+            <div class="container">
+                <span class="fast__category">배달서비스로 용돈벌기</span>
+                <span class="sub__category">| 물물교환을 대신 진행하고 용돈을 벌어보세요</span>
+                <div style="width: 100%; height: 300px;">
+                </div>
             </div>
+        </div>
+
+        <div class="groupListContainer" style="padding: 25px">
+            <div class="container">
+                <span class="fast__category">새로운 물품들과 교환해보세요</span>
+                <span class="sub__category">| 원하시는 물품을 골라 물물교환 해보세요</span>
+                <div class="groupExchangeBoardList">
+                </div>
             </div>
+        </div>
 
 <script>
     history.scrollRestoration = "manual"

@@ -29,7 +29,7 @@
 
             <div style="height: 55px; padding: 15px; box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.12)">
                 <div class="itemHeader" style="height: 20px">
-                    진행중인 물품
+                    교환요청 목록
                     <img id="upDownButton" class="requestListUpButton" src="/images/exchange/up.png" style="cursor: pointer">
                 </div>
             </div>

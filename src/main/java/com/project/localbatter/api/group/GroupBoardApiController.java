@@ -9,10 +9,7 @@ import com.project.localbatter.services.group.GroupBoardService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +28,12 @@ import java.util.stream.Collectors;
 public class GroupBoardApiController {
 
     private final GroupBoardService groupBoardService;
+
+    @GetMapping("/get_exchange_list")
+    public Page<ResponseGroupExchangeDTO> getGroupExchangeBoards(int pageNum, int display){
+        Pageable page = PageRequest.of(pageNum, display);
+        return groupBoardService.getGroupExchangeBoards(page);
+    }
 
     @PostMapping("/update")
     public ResponseBoardDTO updateGroupBoard(GroupBoardDTO groupBoardDTO){
@@ -71,6 +74,18 @@ public class GroupBoardApiController {
         Page<GroupBoardEntity> items = groupBoardService.getBoardList(groupBoardDTO.getGroupId(), request);
         List<ResponseBoardDTO> response = items.stream().map(ResponseBoardDTO::new).collect(Collectors.toList());
         return new PageImpl<>(response, request, items.getTotalElements());
+    }
+
+    @Getter @Setter
+    public static class ResponseGroupExchangeDTO{
+
+        private String title;
+        private String content;
+        private String price;
+        private String location;
+        private LocalDateTime regTime;
+        private String thumbnail;
+
     }
 
     @Setter @Getter
