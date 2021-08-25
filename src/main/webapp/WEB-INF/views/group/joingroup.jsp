@@ -5,7 +5,7 @@
 <div id="Group__wrapper" class="container" style="margin-top: 155px; min-height: 800px;">
 
         <div class="fast__sale_products">
-            <span class="fast__category">그룹 목록</span>
+            <span class="fast__category">내가 가입한 그룹 목록</span>
             <span style="float: right;">
             <span>
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">그룹 등록</button>

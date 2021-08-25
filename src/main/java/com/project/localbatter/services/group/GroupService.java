@@ -26,8 +26,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Random;
 
 import static com.project.localbatter.entity.QGroupEntity.groupEntity;
 import static com.project.localbatter.entity.QGroupUserJoinEntity.groupUserJoinEntity;
@@ -93,20 +95,24 @@ public class GroupService {
     }
 
     @Transactional(readOnly = true)
-    public List<GroupPageDTO> getGroupList(GroupPageDTO groupPageDTO) {
+    public Page<GroupEntity> getGroupList(GroupPageDTO groupPageDTO) {
         Pageable page = PageRequest.of(groupPageDTO.getPage(), groupPageDTO.getDisplay());
-        List<GroupEntity> items = queryFactory
-                .selectDistinct(groupEntity)
-                .from(groupEntity)
-                .orderBy(groupEntity.id.desc())
-                .offset(page.getOffset())
-                .limit(page.getPageSize())
-                .fetch();
-        return items.stream().map(GroupPageDTO::new).collect(Collectors.toList());
+        return groupRepository.findByIdUsingDesending(page);
+    }
+
+    @Transactional(readOnly = true)
+    public List<GroupEntity> getRandomGroupList(GroupPageDTO groupPageDTO) {
+        long totalElementCount = queryFactory.selectFrom(groupEntity).fetchCount();
+        int totalPages = (int)(totalElementCount / groupPageDTO.getDisplay());
+        int randomPageIndex = (totalPages > 0) ? new Random().nextInt(totalPages) : 0;
+        Pageable page = PageRequest.of(randomPageIndex, 30);
+        List<GroupEntity> items = new ArrayList<>(groupRepository.findByIdUsingDesending(page).getContent());
+        Collections.shuffle(items);
+        return items;
     }
 
     public ResponseEntity<GroupCreateDTO> createGroupRoom(GroupCreateDTO groupCreateDTO) {
-        UserEntity userEntity = userRepository.getOne(groupCreateDTO.getUserId());
+        UserEntity userEntity = userRepository.getById(groupCreateDTO.getUserId());
         List<GenerateFileDTO> generateGroupFiles = generateFile.createFile(groupCreateDTO.getFiles());
         if(generateGroupFiles.size() > 0){
             groupCreateDTO.setFiles(null);
@@ -117,7 +123,6 @@ public class GroupService {
         GroupUserJoinEntity groupUserJoinEntity = GroupUserJoinEntity.builder().user(userEntity).group(groupEntity).type(GroupUserJoinEntity.userAuthority.manager).build();
         groupUserJoinRepository.save(groupUserJoinEntity);
         groupRepository.memberCountUp(groupEntity.getId());
-
         return new ResponseEntity<>(groupCreateDTO, HttpStatus.OK);
     }
 

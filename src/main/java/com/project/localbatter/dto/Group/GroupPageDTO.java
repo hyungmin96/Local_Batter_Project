@@ -11,23 +11,25 @@ public class GroupPageDTO {
 
     private int page;
     private int display;
+
     private Long userId;
     private Long groupId;
     private String groupTitle;
     private String description;
     private String owner;
     private String filePath;
+    private String tag;
     private int memberCount;
     private String result;
 
-
-    public GroupPageDTO(GroupEntity groupEntity) {
-        this.groupId = groupEntity.getId();
-        this.groupTitle = groupEntity.getGroupTitle();
-        this.description = groupEntity.getDescription();
-        this.owner = groupEntity.getOwner();
-        this.memberCount = groupEntity.getMemberCount();
-        this.filePath = groupEntity.getFilePath();
+    public GroupPageDTO(Long groupId, String groupTitle, String description, String owner, String filePath, String tag, int memberCount) {
+        this.groupId = groupId;
+        this.groupTitle = groupTitle;
+        this.description = description;
+        this.owner = owner;
+        this.filePath = filePath;
+        this.tag = tag;
+        this.memberCount = memberCount;
     }
 
 }

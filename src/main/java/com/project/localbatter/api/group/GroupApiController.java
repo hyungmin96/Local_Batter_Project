@@ -13,6 +13,7 @@ import lombok.Setter;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -55,8 +56,13 @@ public class GroupApiController {
     }
 
     @GetMapping("/get_group_list")
-    public List<GroupPageDTO> getGroupList(GroupPageDTO groupPageDTO){
+    public Page<GroupEntity> getGroupList(GroupPageDTO groupPageDTO){
         return groupService.getGroupList(groupPageDTO);
+    }
+
+    @GetMapping("/random/get_group_list")
+    public List<GroupEntity> getRandomGroupList(GroupPageDTO groupPageDTO){
+        return groupService.getRandomGroupList(groupPageDTO);
     }
 
     @PostMapping("/create")

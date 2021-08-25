@@ -12,6 +12,39 @@
     font-style: normal;
 }
 
+
+/*Home's group List css */
+<!--
+.groupThumbnail{
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+}
+
+.groupTextContainer .groupTitle{
+    color: black;
+    font-family: Pretendard-SemiBold;
+    font-size: 21px;
+}
+
+.groupTextContainer .groupDescription{
+    color: #676565;
+    font-family: Pretendard-SemiBold;
+    font-size: 15px;
+}
+
+.groupTextContainer .groupMemberCount{
+    font-size: 13px;
+    color: #9d9d9d;
+}
+
+.groupItemContainer:hover{
+    background: rgb(227, 230, 234);
+}
+
+-->
+
+
 .content-wrapper {
     margin-top: 105px;
     min-height: 744px;

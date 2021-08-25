@@ -55,6 +55,8 @@ spring:
 
   jpa:
     open-in-view: true
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     hibernate:
       ddl-auto: update
       naming:

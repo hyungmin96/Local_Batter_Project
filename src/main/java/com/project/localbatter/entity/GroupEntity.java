@@ -1,8 +1,10 @@
 package com.project.localbatter.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
@@ -11,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "tbl_group")
 @Builder
-public class GroupEntity {
+public class GroupEntity implements Serializable {
 
     @Column(name = "group_id")
     @Id @GeneratedValue
@@ -40,9 +42,11 @@ public class GroupEntity {
     private String filePath;
 
     @OneToMany(mappedBy = "group", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<GroupUserJoinEntity> groupUserJoinEntity;
 
     @OneToMany(mappedBy = "groupEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<GroupChatEntity> chats;
 
     public enum roomEnumType{

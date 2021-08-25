@@ -37,26 +37,28 @@ $(document).on('click', '.group_item_box', function(){
 
 function loadGroupChatRoomList(e, page = 0){
 
-    const data = {page: page, display: 30};
+    const data = {
+        orderType: false,
+        page: page,
+        display: 30
+    };
 
     $.ajax({
         url: '/api/group/get_group_list',
         type: 'GET',
         data: data,
         success: function(response){
-
             const lastPage = document.getElementsByClassName('lastpage')[0];
             lastPage.dataset.value = response.totalPages
 
             $('.Group__room__list').empty();
-
-            $.each(response, function(key, value){
-
+            $.each(response.content, function(key, value){
                 const files = (value.filePath != null) ? value.filePath : '';
-
                 $('.Group__room__list').append(
                     "<div id='item__box__" + value.groupId + "' class='group_item_box'>" +
-                    "<img src=/upload/" + files + ">" +
+                    "<div style='border-bottom: 1px solid #f1eeee'>" +
+                        "<img style='padding: 0 1px 0 1px' src=/upload/" + files + ">" +
+                    "</div>" +
                     "<div class='Group__room__content'>" +
                         "<div class = 'Group__room__title'>" + value.groupTitle + "</div>" +
                             "<div class='user_number'>" +
