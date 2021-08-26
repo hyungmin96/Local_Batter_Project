@@ -28,9 +28,6 @@ function deletePost() {
                 alert('권한이 없습니다');
             }
         })
-        .fail(function (error) {
-            console.log(error);
-        });
 }
 
 function moveUpdate() {

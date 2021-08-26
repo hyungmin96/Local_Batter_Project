@@ -10,8 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface GroupRepository extends JpaRepository<GroupEntity, Long>{
 
+    @Query(value = "select g.group from GroupUserJoinEntity as g where g.user.id =:userId order by g.id desc")
+    Page<GroupEntity> findByJoinGroupList(Long userId, Pageable page);
+
     @Query(value = "select g from GroupEntity as g order by g.id desc")
-    Page<GroupEntity> findByIdUsingDesending(Pageable page);
+    Page<GroupEntity> findByRandomGroup(Pageable page);
 
     @Transactional
     @Modifying

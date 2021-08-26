@@ -9,6 +9,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Controller
 public class GroupExchangeController {
 
+    @GetMapping("/view/client/confirm/exchange/{exchangeId}")
+    public String getClientExhcangeConfirmView(Model model, @PathVariable Long exchangeId){
+        model.addAttribute("exchangeId", exchangeId);
+        return "/exchange/clientConfirmRequestView";
+    }
+
     @GetMapping("/view/exchange/chat/list")
     public String getExchangeChatList(){
         return "/exchange/exchangeChat";

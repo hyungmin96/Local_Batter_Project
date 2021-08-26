@@ -1,9 +1,6 @@
 package com.project.localbatter.components;
 
-import com.project.localbatter.api.exchange.GroupExchangeApiController.ResponseClientAndWriterBoard;
-import com.project.localbatter.api.exchange.GroupExchangeApiController.ResponseClientRequestDTO;
-import com.project.localbatter.api.exchange.GroupExchangeApiController.ResponseRequestListDTO;
-import com.project.localbatter.api.exchange.GroupExchangeApiController.ResponseWrtierExchangeDTO;
+import com.project.localbatter.api.exchange.GroupExchangeApiController.*;
 import com.project.localbatter.dto.Group.GroupBoardDTO;
 import com.project.localbatter.dto.TransactionDTO;
 import com.project.localbatter.dto.exchangeDTO.ClientExchangeDTO;
@@ -19,13 +16,21 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import static com.project.localbatter.entity.Exchange.QClientExchangeEntity.clientExchangeEntity;
+import static com.project.localbatter.entity.Exchange.QExchangeFileEntity.exchangeFileEntity;
 import static com.project.localbatter.entity.Exchange.QWriterClientJoinEntity.writerClientJoinEntity;
 import static com.project.localbatter.entity.Exchange.QWriterExchangeEntity.writerExchangeEntity;
 import static com.project.localbatter.entity.QGroupBoardEntity.groupBoardEntity;
 import static com.project.localbatter.entity.QGroupBoardFileEntity.groupBoardFileEntity;
 import static com.project.localbatter.entity.QGroupUserJoinEntity.groupUserJoinEntity;
 import static com.project.localbatter.entity.QUserEntity.userEntity;
+import static com.querydsl.core.group.GroupBy.groupBy;
+import static com.querydsl.core.group.GroupBy.list;
 
 @Component
 @RequiredArgsConstructor
@@ -33,6 +38,32 @@ public class ExchangeQueryComponent {
 
     private final JPAQueryFactory queryFactory;
     private final PagingUtil pagingUtil;
+
+    // View the client's reqeust for exchange info
+    // client가 교환요청한 게시글의 정보를 조회
+    public ResponseClientDTO getClientRequestExchangeInfo(Long exchangeId){
+        Map<ResponseClientDTO, List<String>> items = queryFactory
+                .from(clientExchangeEntity)
+                .join(clientExchangeEntity.files, exchangeFileEntity).on(exchangeFileEntity.client.id.eq(exchangeId))
+                .join(writerClientJoinEntity).on(clientExchangeEntity.id.eq(writerClientJoinEntity.clientExchangeEntity.id))
+                .join(userEntity).on(writerClientJoinEntity.writerId.eq(userEntity.id))
+                .transform(groupBy(Projections.fields(ResponseClientDTO.class,
+                            userEntity.id.as("writerId"),
+                            userEntity.username,
+                            userEntity.profilePath,
+                            clientExchangeEntity.id.as("clientId"),
+                            clientExchangeEntity.title,
+                            clientExchangeEntity.content,
+                            clientExchangeEntity.price,
+                            clientExchangeEntity.address.as("location"),
+                            clientExchangeEntity.request)).as(list(exchangeFileEntity.name)));
+
+        ResponseClientDTO dto = items.entrySet().stream().findFirst().get().getKey();
+        List<String> files = new ArrayList<>();
+        items.forEach((key, value) -> files.add(value.get(0)));
+
+        return new ResponseClientDTO(dto, files);
+    }
 
     // View the client'request board and writer's board infomation
     // client와 writer 게시글 정보를 조회
@@ -126,7 +157,7 @@ public class ExchangeQueryComponent {
                             .and(groupBoardEntity.BoardCategory.eq(GroupBoardEntity.BoardCategory.exchange)))
                     .offset(page.getPageNumber())
                     .limit(page.getPageSize())
-                    .orderBy(writerExchangeEntity.requestCount.desc());
+                    .orderBy(writerExchangeEntity.requestCount.desc(), writerExchangeEntity.regTime.desc());
 
             return pagingUtil.getPageImpl(page, query, queryCount, GroupBoardEntity.class);
         }

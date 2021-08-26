@@ -2,15 +2,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="../common/header.jsp"%>
 
-<div id="Group__wrapper" class="container" style="margin-top: 155px; min-height: 800px;">
+<div id="Group__wrapper" class="container" style="width: 1600px; margin-top: 155px; min-height: 800px;">
 
         <div class="fast__sale_products">
             <span class="fast__category">내가 가입한 그룹 목록</span>
-            <span style="float: right;">
-            <span>
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">그룹 등록</button>
-            </span>
-            </span>
 
             <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
@@ -70,7 +65,10 @@
 
     <hr style="border: none; height: 1px; background-color: #ccc;" />
         <div class="Group__room__list">
-
+            <button class="groupRegistButton" type="button" data-toggle="modal" data-target="#exampleModal">
+                <img style="width: 60px; height: 60px" src="/images/group/Plus +_88px.png">
+                <div style="margin: 10px; font-size: 16px;">그룹 만들기</div>
+            </button>
         </div>
         <div class="page__container">
             <div class="page__box" style="display: inline-flex; max-width: 395px;">

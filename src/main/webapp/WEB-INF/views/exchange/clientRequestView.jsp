@@ -160,6 +160,8 @@
             data: data,
             success: function(response){
                 console.log(response)
+                alert('교환을 수락하였습니다. 채팅방으로 이동합니다.')
+                window.location.href = '/view/exchange/chat/list'
             }
         })
     }
@@ -176,7 +178,6 @@
             type: 'GET',
             data: data,
             success: function(response){
-                console.log(response)
                 // writer request info
                 $('.writerBoardUsername').html(response.writerUsername)
                 $('.writerId')[0].value = response.writerId // writer Id
@@ -253,7 +254,6 @@
                 setMapConainer('clientLocationMap', response.clientExchangeEntity.address, response.clientExchangeEntity.longtitude, response.clientExchangeEntity.latitude)
             }
         })
-
     })
 
     function convert(num){

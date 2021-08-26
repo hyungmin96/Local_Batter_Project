@@ -66,7 +66,6 @@ a:link {
 .sub__category{
     color: rgb(128, 128, 128);
     font-size: 13px;
-    font-weight: bold;
     font-family: Pretendard-Regular;
 }
 
@@ -121,8 +120,8 @@ a:link {
 .title {
     width: 180px;
     color: #303030;
-    font-size: 15px;
-    font-family: 'Pretendard-SemiBold';
+    font-size: 14px;
+    font-family: 'Pretendard-Regular';
     text-align: left;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
@@ -139,9 +138,10 @@ a:link {
 }
 
 .price {
-    color: #333333;
     font-family: Pretendard-SemiBold;
+    letter-spacing: 0;
     font-size: 16px;
+    color: #bb5f5f;
 }
 
 .k-money {
@@ -157,8 +157,7 @@ a:link {
     margin-top: 6px;
     font-weight: 300;
     font-size: 0.8rem;
-    font-family: Pretendard-Regular;
-    letter-spacing: 0.5px;
+    font-family: Pretendard-SemiBold;
 }
 
 .group-item-list {

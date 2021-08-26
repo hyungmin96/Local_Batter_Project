@@ -45,7 +45,6 @@
             data: data,
             contentType: 'application/x-www-form-urlencoded',
             success: function (response) {
-                console.log(response)
                 $.each(response.content, function (key, value){
                     let requestExchangeButton = (value.boardCategory !== 'article') ? "<button class='requestExchangeButton'>교환요청</button>" : ''
                     $('.boardListContainer').append(

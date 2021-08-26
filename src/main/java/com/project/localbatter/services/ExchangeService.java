@@ -1,5 +1,6 @@
 package com.project.localbatter.services;
 
+import com.project.localbatter.api.exchange.GroupExchangeApiController.ResponseClientDTO;
 import com.project.localbatter.api.exchange.GroupExchangeApiController.ResponseClientAndWriterBoard;
 import com.project.localbatter.api.exchange.GroupExchangeApiController.ResponseClientRequestDTO;
 import com.project.localbatter.api.exchange.GroupExchangeApiController.ResponseRequestListDTO;
@@ -102,25 +103,27 @@ public class ExchangeService {
 
     /* Get method service */
 
+    // View the client's reqeust for exchange info
+    // client가 교환요청한 게시글의 정보를 조회
+    public ResponseClientDTO getClientRequestExchangeInfo(Long exchangeId){
+        return exchangeQueryComponent.getClientRequestExchangeInfo(exchangeId);
+    }
     // View the client'request board and writer's board infomation
     // client와 writer 게시글 정보를 조회
     public ResponseClientAndWriterBoard getClientAndWriterBoard(TransactionDTO transactionDTO){
         return exchangeQueryComponent.getClientAndWriterBoard(transactionDTO);
     }
-    
     // View the list of clients requested for exchange to Writer's aritcle
     // 해당 게시글에 교환요청한 client 요청 게시글 조회
     @Transactional(readOnly = true)
     public Page<ResponseClientRequestDTO> getBoardClientRequestList(ClientExchangeDTO clientExchangeDTO, Pageable page){
         return exchangeQueryComponent.getBoardClientRequestList(clientExchangeDTO, page);
     }
-
     // view writer's board List
     @Transactional(readOnly = true)
     public Page<ResponseWrtierExchangeDTO> getWriterBoards(TransactionDTO transactionDTO, Pageable page){
         return exchangeQueryComponent.getWriterBoards(transactionDTO, page);
     }
-
     // view client's(login user) request exchange for board
     @Transactional(readOnly = true)
     public Page<ResponseRequestListDTO> getRequestList(TransactionDTO transactionDTO, Pageable page) {

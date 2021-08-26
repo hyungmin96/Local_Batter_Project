@@ -38,24 +38,24 @@ $(document).on('click', '.group_item_box', function(){
 function loadGroupChatRoomList(e, page = 0){
 
     const data = {
+        userId: $('.g_user_id').val(),
         orderType: false,
         page: page,
         display: 30
     };
 
     $.ajax({
-        url: '/api/group/get_group_list',
+        url: '/api/group/join/get_group_list',
         type: 'GET',
         data: data,
         success: function(response){
             const lastPage = document.getElementsByClassName('lastpage')[0];
             lastPage.dataset.value = response.totalPages
 
-            $('.Group__room__list').empty();
             $.each(response.content, function(key, value){
                 const files = (value.filePath != null) ? value.filePath : '';
                 $('.Group__room__list').append(
-                    "<div id='item__box__" + value.groupId + "' class='group_item_box'>" +
+                    "<div id='item__box__" + value.id + "' class='group_item_box' style='width: 190px;'>" +
                     "<div style='border-bottom: 1px solid #f1eeee'>" +
                         "<img style='padding: 0 1px 0 1px' src=/upload/" + files + ">" +
                     "</div>" +

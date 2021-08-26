@@ -18,6 +18,7 @@ function uploadClientExchange(files){
 
     var formData = new FormData()
     // client user id that request exchange to writer
+    formData.append('clientExchangeId', $('.g_user_id').val())
     formData.append('userId', $('.g_user_id').val())
     formData.append('writerId', $('.writerId').val())
     formData.append('boardId', $('.boardId')[0].value)
@@ -42,7 +43,7 @@ function uploadClientExchange(files){
         success: function (response){
             console.log(response)
             alert('물품 교환을 성공적으로 요청하였습니다.')
-            // window.close()
+            window.location.href = '/view/client/confirm/exchange/' + response.clientId
         }
     })
 }

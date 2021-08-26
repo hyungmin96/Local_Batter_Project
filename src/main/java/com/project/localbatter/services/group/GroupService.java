@@ -97,7 +97,7 @@ public class GroupService {
     @Transactional(readOnly = true)
     public Page<GroupEntity> getGroupList(GroupPageDTO groupPageDTO) {
         Pageable page = PageRequest.of(groupPageDTO.getPage(), groupPageDTO.getDisplay());
-        return groupRepository.findByIdUsingDesending(page);
+        return groupRepository.findByJoinGroupList(groupPageDTO.getUserId(), page);
     }
 
     @Transactional(readOnly = true)
@@ -106,7 +106,7 @@ public class GroupService {
         int totalPages = (int)(totalElementCount / groupPageDTO.getDisplay());
         int randomPageIndex = (totalPages > 0) ? new Random().nextInt(totalPages) : 0;
         Pageable page = PageRequest.of(randomPageIndex, 30);
-        List<GroupEntity> items = new ArrayList<>(groupRepository.findByIdUsingDesending(page).getContent());
+        List<GroupEntity> items = new ArrayList<>(groupRepository.findByRandomGroup(page).getContent());
         Collections.shuffle(items);
         return items;
     }

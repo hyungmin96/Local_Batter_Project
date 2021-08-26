@@ -239,7 +239,7 @@
             contentType: 'application/x-www-form-urlencoded',
             success: function (response){
                 $('.boardModal').empty()
-                $('.boardModal').append(showBoardInfo(response[0]))
+                $('.boardModal').append(showBoardInfo(response[0], false))
             }
         })
     })

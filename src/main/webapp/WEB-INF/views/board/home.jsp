@@ -41,7 +41,7 @@
                         <ol class="carousel-indicators" style="bottom: -18px; filter: invert(40%);">
                             <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
                         </ol>
-                        <div class="carousel-inner">
+                        <div class="carousel-inner" style="padding: 0 0 0 33px">
                             <div class="groupItemBox0 carousel-item active">
                             </div>
                         </div>
@@ -95,11 +95,10 @@
             data: data,
             success: function (response) {
                 $('.groupList').empty()
-
                 $.each(response, function (key, value) {
                     var html = ''
                     const files = (value.filePath != null) ? value.filePath : ''
-                    html += "<div class='groupItemContainer' style='cursor: pointer; width: 1400px; display: inline-flex; padding: 15px;'>"
+                    html += "<div id='groupId_" + value.id + "' onclick=location.href='/group/" + value.id + "' class='groupItemContainer' style='cursor: pointer; width: 1400px; display: inline-flex; padding: 15px;'>"
                     html += "<div class='groupThumbnailBox'>"
                     html += "<img class='groupThumbnail' src='/upload/" + files + "'>"
                     html += "</div>"

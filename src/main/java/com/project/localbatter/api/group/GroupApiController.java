@@ -55,7 +55,7 @@ public class GroupApiController {
         return groupService.isMember(userId, groupId);
     }
 
-    @GetMapping("/get_group_list")
+    @GetMapping("/join/get_group_list")
     public Page<GroupEntity> getGroupList(GroupPageDTO groupPageDTO){
         return groupService.getGroupList(groupPageDTO);
     }

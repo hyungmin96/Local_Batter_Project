@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,6 +32,11 @@ import java.util.stream.Collectors;
 public class GroupExchangeApiController {
 
     private final ExchangeService groupExchangeService;
+
+    @GetMapping("/view/client/exchange")
+    public ResponseClientDTO getClientRequestExchangeInfo(Long exchangeId){
+        return groupExchangeService.getClientRequestExchangeInfo(exchangeId);
+    }
 
     @GetMapping("/view/client_writer_exchange")
     public ResponseClientAndWriterBoard getClientWriterExchange(TransactionDTO transactionDTO){
@@ -46,8 +52,7 @@ public class GroupExchangeApiController {
     @GetMapping("/my/request_list")
     public Page<ResponseRequestListDTO> getRequestList(TransactionDTO transactionDTO){
         Pageable page = PageRequest.of(transactionDTO.getPage(), transactionDTO.getDisplay());
-        Page<ResponseRequestListDTO> items = groupExchangeService.getRequestList(transactionDTO, page);
-        return items;
+        return groupExchangeService.getRequestList(transactionDTO, page);
     }
 
     @PostMapping("/cancel/request")
@@ -63,8 +68,7 @@ public class GroupExchangeApiController {
     @GetMapping("/my/get_write_list")
     public Page<ResponseWrtierExchangeDTO> getWriterBoards(TransactionDTO transactionDTO) {
         Pageable page = PageRequest.of(transactionDTO.getPage(), transactionDTO.getDisplay());
-        Page<ResponseWrtierExchangeDTO> items = groupExchangeService.getWriterBoards(transactionDTO, page);
-        return items;
+        return groupExchangeService.getWriterBoards(transactionDTO, page);
     }
 
     @PostMapping("/client/post")
@@ -270,15 +274,31 @@ public class GroupExchangeApiController {
         private String content;     // client's product description
         private String price;       // add price with product or none product
         private String request;     // client's request content
+        private String location;     // client's request location
         private WriterClientJoinEntity.status status; // To check exchange was progressing
         private List<String> file;
 
         public ResponseClientDTO(ClientExchangeEntity entity) {
+            this.clientId = entity.getId();
             this.userId = entity.getUserId();
             this.content = entity.getContent();
             this.price = entity.getPrice();
             this.request = entity.getRequest();
         }
-    }
 
+        public ResponseClientDTO(ResponseClientDTO dto, List<String> file){
+            this.userId = dto.clientId;
+            this.writerId = dto.writerId;
+            this.username = dto.username;
+            this.clientId = dto.clientId;
+            this.profilePath = dto.profilePath;
+            this.title = dto.title;
+            this.content = dto.content;
+            this.price = dto.price;
+            this.request = dto.request;
+            this.location = dto.location;
+            this.file = file;
+        }
+
+    }
 }

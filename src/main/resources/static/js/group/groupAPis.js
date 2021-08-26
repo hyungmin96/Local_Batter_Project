@@ -422,9 +422,10 @@ function getBoardList() {
     }
 }
 
-function showBoardInfo(value){
-    console.log(value)
-    const boardType = (value.type !== 'general') ? "<span class='notice _noticeText'>공지</span>" : '';
+function showBoardInfo(value, showNoticeBoolean = true){
+
+    const boardType = (showNoticeBoolean && (value.type !== 'general')) ? "<span class='notice _noticeText'>공지</span>" : '';
+
     return "<input type='hidden' value=" + value.boardId + ">" +
         "<div class='boardItemBox' style='animation: fadein 1.5s; margin-bottom: 20px;'>" +
         "<input type='hidden' class='boardId' value=" + value.boardId + "/>" +

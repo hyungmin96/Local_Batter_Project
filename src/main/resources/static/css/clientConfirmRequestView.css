@@ -1,0 +1,92 @@
+@font-face {
+    font-family: 'Pretendard-SemiBold';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-SemiBold.woff') format('woff');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'GmarketSansMedium';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.editExchange{
+    background: #265dc5;
+    width: 48%;
+}
+
+.cancelExchange{
+    background: #e15959;
+    width: 48%;
+}
+
+.clientActionButton{
+    padding: 10px 25px 10px 25px;
+    border: none;
+    font-family: Pretendard-Regular;
+    font-size: 17px;
+    color: white;
+    border-radius: 5px;
+}
+
+.clientActionButton:hover{
+    filter: invert(15%);
+}
+
+.infoCategory{
+    margin: 5px 0 5px 0;
+}
+
+.infoDetail{
+    color: black;
+    font-size: 14px;
+    font-family: Pretendard-Regular;
+    margin: 5px 0 5px 10px;
+}
+
+.exchangeDetail li{
+    margin: 5px 0 5px 3px;
+    font-family: Pretendard-Regular;
+    font-size: 14px;
+    color: #8d8d8d;
+}
+
+.clientExchangeTitle{
+    font-family: Pretendard-Regular;
+    font-size: 23px;
+}
+
+.clientExchangePrice{
+    font-family: GmarketSansMedium;
+    font-weight: bold;
+    font-size: 27px;
+}
+
+.exchangeContent{
+    width: 412px;
+}
+
+.exchangeInfoContainer{
+    text-align: center;
+}
+
+.exchangeInfoContainer .info_1{
+    font-family: Pretendard-SemiBold;
+    font-size: 27px;
+    color: black;
+}
+
+.exchangeInfoContainer .info_2{
+    font-family: Pretendard-Regular;
+    font-size: 23px;
+    color: black;
+}
