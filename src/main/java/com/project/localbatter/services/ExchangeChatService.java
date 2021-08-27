@@ -36,7 +36,7 @@ public class ExchangeChatService {
 
     public void sendMessage(ExchangeChatMessageDTO messageDTO){
         exchangeChatRepository.save(messageDTO.toEntity());
-        simpMessagingTemplate.convertAndSend("/exchange/userId=" + messageDTO.getTargetId(), messageDTO);
+        simpMessagingTemplate.convertAndSend("/exchange/userId=" + messageDTO.getReceiveId(), messageDTO);
     }
 
     public ExchangeChatMessageDTO uploadImageToChat(ExchangeChatMessageDTO messageDTO, MultipartFile[] files){
@@ -44,7 +44,7 @@ public class ExchangeChatService {
         items.forEach(item -> {
             messageDTO.setMessage(item.getName());
             exchangeChatRepository.save(messageDTO.toEntity());
-            simpMessagingTemplate.convertAndSend("/exchange/userId=" + messageDTO.getTargetId(), messageDTO);
+            simpMessagingTemplate.convertAndSend("/exchange/userId=" + messageDTO.getReceiveId(), messageDTO);
         });
         return messageDTO;
     }
@@ -65,6 +65,7 @@ public class ExchangeChatService {
                         receiveEntity.username.as("targetUsername"),
                         receiveEntity.profilePath.as("targetProfile"),
                         exchangeChatEntity.exchangeId.as("exchangeId"),
+                        exchangeChatEntity.senderId.as("senderId"),
                         exchangeChatEntity.type.as("type"),
                         exchangeChatEntity.message.as("message"),
                         exchangeChatEntity.coordinate.as("coordinate"),
@@ -86,7 +87,7 @@ public class ExchangeChatService {
     public List<ResponseChatListDTO> getExchageChatList(Long userId){
         QUserEntity writerId = new QUserEntity("writerEntity");
         QUserEntity clientId = new QUserEntity("clientEntity");
-        List<ResponseChatListDTO> items = queryFactory
+        return queryFactory
                 .select(Projections.constructor(ResponseChatListDTO.class,
                         writerId.id.as("userId"),
                         writerId.username.as("username"),
@@ -95,6 +96,7 @@ public class ExchangeChatService {
                         clientId.username.as("targetUsername"),
                         clientId.profilePath.as("targetProfile"),
                         writerClientJoinEntity.clientExchangeEntity.id.as("exchangeId"),
+                        exchangeChatEntity.senderId.as("senderId"),
                         exchangeChatEntity.type.as("type"),
                         exchangeChatEntity.message.as("message"),
                         exchangeChatEntity.coordinate.as("coordinate"),
@@ -104,32 +106,10 @@ public class ExchangeChatService {
                 .innerJoin(writerId).on(writerClientJoinEntity.writerId.eq(writerId.id))
                 .innerJoin(clientId).on(writerClientJoinEntity.clientId.eq(clientId.id))
                 .innerJoin(exchangeChatEntity).on(writerClientJoinEntity.clientExchangeEntity.id.eq(exchangeChatEntity.exchangeId))
-                .where(exchangeChatEntity.id.eq(JPAExpressions.select(exchangeChatEntity.id.max())
+                .where(writerClientJoinEntity.writerId.eq(userId).or(writerClientJoinEntity.clientId.eq(userId))
+                        , exchangeChatEntity.id.eq(JPAExpressions.select(exchangeChatEntity.id.max())
                 .from(exchangeChatEntity)
                 .where(exchangeChatEntity.exchangeId.eq(writerClientJoinEntity.clientExchangeEntity.id))))
                 .fetch();
-        /*
-        *  로그인한 userId를 기준으로 정렬
-        *  로그인한 계정이 거래를 수락하여 writer 객체에 들어가거나
-        *  client 객체에 들어갈 경우 로그인한 user 정보를 userId 객체에 담음
-        *  원래의 userId 정보였던 객체는 targetId 객체에 담김
-        */
-        items.forEach(item -> {
-            if(item.getTargetId().equals(userId)){
-                Long userTemp = item.getUserId();
-                String usernameTemp = item.getUsername();
-                String userProfileTemp = item.getUserProfile();
-
-                item.setUserId(userId);
-                item.setUsername(item.getTargetUsername());
-                item.setUserProfile(item.getUserProfile());
-
-                item.setTargetId(userTemp);
-                item.setTargetUsername(usernameTemp);
-                item.setUserProfile(userProfileTemp);
-            }
-        });
-        return items;
     }
-
 }

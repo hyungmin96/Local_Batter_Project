@@ -43,28 +43,44 @@ public class ExchangeChatApiController {
     @Setter @Getter
     public static class ResponseChatListDTO{
 
-        private Long userId; // 채팅방의 로그인유저 정보
-        private String username;
-        private String userProfile;
+        private Long senderId; // 채팅방의 로그인유저 정보
+        private String senderUsername;
+        private String senderProfile;
 
-        private Long targetId; // 채팅방의 상대유저 정보
-        private String targetUsername;
-        private String targetProfile;
+        private Long receiveId; // 채팅방의 상대유저 정보
+        private String receiveUsername;
+        private String receiveProfile;
 
         private Long exchangeId;
         private ExchangeChatMessageDTO.ExchangeMessageType type;
+        private Long messageId;
         private String message;
         private String coordinate;
         private LocalDateTime regTime;
 
         public ResponseChatListDTO(Long userId, String username, String userProfile, Long targetId, String targetUsername, String targetProfile, Long exchangeId, ExchangeChatMessageDTO.ExchangeMessageType type, String message, String coordinate, LocalDateTime regTime) {
-            this.userId = userId;
-            this.username = username;
-            this.userProfile = userProfile;
-            this.targetId = targetId;
-            this.targetUsername = targetUsername;
-            this.targetProfile = targetProfile;
+            this.senderId = userId;
+            this.senderUsername = username;
+            this.senderProfile = userProfile;
+            this.receiveId = targetId;
+            this.receiveUsername = targetUsername;
+            this.receiveProfile = targetProfile;
             this.exchangeId = exchangeId;
+            this.type = type;
+            this.message = message;
+            this.coordinate = coordinate;
+            this.regTime = regTime;
+        }
+
+        public ResponseChatListDTO(Long userId, String username, String userProfile, Long targetId, String targetUsername, String targetProfile, Long exchangeId, Long messageId, ExchangeChatMessageDTO.ExchangeMessageType type, String message, String coordinate, LocalDateTime regTime) {
+            this.senderId = userId;
+            this.senderUsername = username;
+            this.senderProfile = userProfile;
+            this.receiveId = targetId;
+            this.receiveUsername = targetUsername;
+            this.receiveProfile = targetProfile;
+            this.exchangeId = exchangeId;
+            this.messageId = messageId;
             this.type = type;
             this.message = message;
             this.coordinate = coordinate;

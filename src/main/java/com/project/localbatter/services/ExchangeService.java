@@ -59,10 +59,6 @@ public class ExchangeService {
             writerClientJoinEntity.setProcess();
             // create MeesageDTo to send the message when create exchange chat room between writer and client
             ExchangeChatMessageDTO message = new ExchangeChatMessageDTO();
-            message.setUserId(writerClientJoinEntity.getWriterId());
-            message.setTargetId(writerClientJoinEntity.getClientId());
-            message.setTargetUsername(exchangeChatMessageDTO.getTargetUsername());
-            message.setTargetProfile(exchangeChatMessageDTO.getTargetProfile());
             message.setMessage("새로운 채팅방이 개설되었습니다.");
             message.setExchangeId(exchangeChatMessageDTO.getExchangeId());
             message.setType(ExchangeChatMessageDTO.ExchangeMessageType.enter);

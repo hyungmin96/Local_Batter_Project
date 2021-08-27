@@ -399,6 +399,12 @@
         })
     }
 
+    // 교환 요청한 게시글 보기
+    $(document).on('click', '.showMyRequestBoard', ()=>{
+        const exchangeId = $('.showMyRequestBoard').attr('id').split('_')[1]
+        window.open('/view/client/confirm/exchange/' + exchangeId, '_blank')
+    })
+
     // 교환요청 글 삭제
     $(document).on('click', '.requestCancelButton, .rejectRequestButton', function () {
         const data = {

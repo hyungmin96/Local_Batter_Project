@@ -17,10 +17,10 @@
                 <div class="chatUsernameContainer" style="display: inline-flex; width: 100%; height: 7%; background: white">
                     <div class="chatUsername" style="display: inline-flex; justify-content: center; font-size: 17px; width: 95%; font-family: Pretendard-SemiBold; margin: auto auto auto auto; text-align: center">
                         <div>
-                            <img style="border-radius: 50%; object-fit: cover; width: 35px; height: 35px; margin-right: 10px;" class="chatUserProfile" src="/upload/">
+                            <img style="border-radius: 50%; object-fit: cover; width: 35px; height: 35px; margin-right: 10px;" class="chatUserProfile" src="" onerror="this.style.display='none'">
                         </div>
                         <div class="targetUsernameBox" style="margin: auto 0 auto 0;">
-                            Username
+
                         </div>
                     </div>
 
@@ -106,6 +106,8 @@
     // global variable
     const chatInfoObject = {
         userId: $('.g_user_id').val(),
+        username : '',
+        userProfile : '',
         targetId: '',
         targetUsername: '',
         targetProfile: '',
@@ -131,6 +133,16 @@
             data: data,
             success: (response) => {
                 $.each(response, (key, value) => {
+                    if($('.g_user_id').val() == value.senderId){
+                        chatInfoObject.userId = value.senderId
+                        chatInfoObject.username = value.senderUsername
+                        chatInfoObject.userProfile = value.senderProfile
+                    }else{
+                        chatInfoObject.userId = value.receiveId
+                        chatInfoObject.username = value.receiveUsername
+                        chatInfoObject.userProfile = value.receiveProfile
+                    }
+                    console.log(value)
                     refreshChatList(value)
                 })
             }
@@ -147,6 +159,7 @@
         chatInfoObject.targetProfile = $(this).find('img')[0].src.replace(/^.*[\\\/]/, '');
         chatInfoObject.exchangeId = $(this).find('.exchangeId')[0].getAttribute('data-target-id')
         $('.chatUserProfile')[0].src = '/upload/' + chatInfoObject.targetProfile
+        $('.chatUserProfile')[0].style.display = 'block'
         $('.targetUsernameBox')[0].innerHTML = chatInfoObject.targetUsername + '님과의 채팅'
 
         $('.chatContainer').empty()
@@ -187,11 +200,14 @@
     function uploadImageToChat(f){
 
         var formData = new FormData()
-        formData.append('userId', chatInfoObject.userId)
-        formData.append('targetId', chatInfoObject.targetId)
-        formData.append('targetUsername', chatInfoObject.targetUsername)
-        formData.append('targetProfile', chatInfoObject.targetProfile)
+        formData.append('senderId', chatInfoObject.userId)
+        formData.append('senderUsername', chatInfoObject.username)
+        formData.append('senderProfile', chatInfoObject.userProfile)
+        formData.append('receiveId', chatInfoObject.targetId)
+        formData.append('receiveUsername', chatInfoObject.targetUsername)
+        formData.append('receiveProfile', chatInfoObject.targetProfile)
         formData.append('exchangeId', chatInfoObject.exchangeId)
+        formData.append('messageId', chatInfoObject.userId)
         formData.append('type', 'image')
         formData.append('message', null)
         formData.append('result', 'success')
@@ -230,36 +246,40 @@
     }
 
     function sendMessage(message, type = 'text'){
-        var sendMessageObject = {
-            'exchangeId': '', // exchange uinque Id
-            'userId' : Number(chatInfoObject.userId),
-            'targetId' : Number(chatInfoObject.targetId),
-            'targetUsername' : chatInfoObject.targetUsername,
-            'targetProfile' : chatInfoObject.targetProfile,
-            'exchangeId' : Number(chatInfoObject.exchangeId),
-            'type' : type,
-            'message' : message,
-            'coordinate': '',
-            'regTime' : new Date(),
-            'result' : 'success'
-        }
+        if (chatInfoObject.targetId != null && chatInfoObject.targetId != '') {
+            var sendMessageObject = {
+                'exchangeId': '', // exchange uinque Id
+                'senderId': Number(chatInfoObject.userId),
+                'senderUsername': chatInfoObject.username,
+                'senderProfile': chatInfoObject.userProfile,
+                'receiveId': Number(chatInfoObject.targetId),
+                'receiveUsername': chatInfoObject.targetUsername,
+                'receiveProfile': chatInfoObject.targetProfile,
+                'exchangeId': Number(chatInfoObject.exchangeId),
+                'messageId': Number(chatInfoObject.userId),
+                'type': type,
+                'message': message,
+                'coordinate': '',
+                'regTime': new Date(),
+                'result': 'success'
+            }
+            switch (type) {
+                case 'image':
+                    sendMessageObject.message = "<img src=/upload/" + message + ">"
+                    break
+                case 'location':
+                    sendMessageObject.message = message.currentAddr + '\n' + message.detailAddr
+                    sendMessageObject.coordinate = message.longtitude + ',' + message.langtitude
+                    break
+                default:
+                    break
+            }
 
-        switch (type) {
-            case 'image':
-                sendMessageObject.message = "<img src=/upload/" + message + ">"
-                break
-            case 'location':
-                sendMessageObject.message = message.currentAddr + '\n' + message.detailAddr
-                sendMessageObject.coordinate = message.longtitude + ',' + message.langtitude
-                break
-            default:
-                break
-        }
-
-        exchangeStomp.send('/app/userId=' + chatInfoObject.targetId, {}, JSON.stringify(sendMessageObject))
-        $('.chatContainer').append(inputChat(sendMessageObject))
-        refreshChatList(sendMessageObject)
-        $('.chatContainer')[0].scrollTop = $('.chatContainer')[0].scrollHeight
+            exchangeStomp.send('/app/userId=' + chatInfoObject.targetId, {}, JSON.stringify(sendMessageObject))
+            $('.chatContainer').append(inputChat(sendMessageObject))
+            refreshChatList(sendMessageObject)
+            $('.chatContainer')[0].scrollTop = $('.chatContainer')[0].scrollHeight
+        } else alert('대화할 상대를 선택 후 다시 시도해주세요')
     }
 
     function showMessage(message){
@@ -270,22 +290,41 @@
         }
     }
 
+
+    // 로그인한 user의 교환 진행중인 채팅목록을 불러옵니다.
     function refreshChatList(value){
 
-        var messageType = (value.type == 'image') ? '이미지 파일' : value.message
+        var targetId
+        var targetUsername
+        var targetProfile
+        console.log(value)
 
-        $('#exchangeItemBoxId_' + value.exchangeId).remove()
-        $('#exchangeProcessChatList').prepend(
+        var messageType = (value.type == 'image') ? '이미지 파일' : value.message
+        // 내가 보낸 채팅일 경우 메세지 앞에 '나'를 표시
+        var fromChat = ($('.g_user_id').val() == value.messageId) ? '<div>나 </div>' : ''
+        // 채팅방목록 조회 시 로그인한 계정과 대화중인 계정의 정보를 조회
+        if($('.g_user_id').val() == value.senderId){
+             targetId = value.receiveId
+             targetUsername = value.receiveUsername
+             targetProfile = value.receiveProfile
+        }else{
+            targetId = value.senderId
+            targetUsername = value.senderUsername
+            targetProfile = value.senderProfile
+        }
+
+            $('#exchangeItemBoxId_' + value.exchangeId).remove()
+            $('#exchangeProcessChatList').prepend(
             "<div id='exchangeItemBoxId_" + value.exchangeId + "' class='exchangeBox' style='cursor: pointer'>" +
             "<div style='display: flex; padding: 15px 10px 5px 10px;'>" +
-            "<div class='exchangeTargetId' data-target-id='" + value.targetId + "'></div>" +
+            "<div class='exchangeTargetId' data-target-id='" + targetId + "'></div>" +
             "<div class='exchangeId' data-target-id='" + value.exchangeId + "'></div>" +
             "<div class='exchangeTargetProfile'>" +
-            "<img src=/upload/" + value.targetProfile + ">" +
+            "<img src=/upload/" + targetProfile + ">" +
             "</div>" +
             "<div style='margin: 0 0 auto 10px; width: 100%'>" +
             "<div style='display: inline-flex; width: 100%'>" +
-            "<div class='exchangeTargetUsername'>" + value.targetUsername + "</div>" +
+            "<div class='exchangeTargetUsername'>" + targetUsername + "</div>" +
             "<div class='chatRegTime' style='margin: auto 0 auto auto'>" + new Date(value.regTime).toLocaleTimeString([],
                 {
                     'hour': '2-digit',
@@ -293,15 +332,15 @@
                 }) +
             "</div>" +
             "</div>" +
-            "<div class='exchangeTargetChat' style='margin-bottom: 5px;'>" + messageType + "</div>" +
+            "<div class='exchangeTargetChat' style='margin-bottom: 5px;'>" + fromChat + messageType + "</div>" +
             "</div>" +
             "</div>" +
             "</div>"
         )
     }
 
+    // 선택한 채팅방의 채팅내용목록을 불러옵니다.
     function inputChat(message){
-
         switch(true){
             case message.type == 'enter':
                 return "<div class='notiChatContent' style='padding: 10px 25px 10px 25px;'>" +
@@ -309,7 +348,7 @@
                     "</div>"
 
             // 내가 보낸 채팅내용
-            case message.userId == Number(chatInfoObject.userId):
+            case message.senderId == Number(chatInfoObject.userId):
             return "<div class='meChatContent' style='text-align: right; padding: 15px 25px 15px 25px;'>" +
                     "<div class='meContent'>" + returnValueOfChatType(message) + "</div>" +
                     "<div class='chatRegTime' style='margin-top: 0;'>" + new Date(message.regTime).toLocaleTimeString([],
@@ -321,12 +360,12 @@
                     "</div>"
 
             // 채팅상대가 보낸 채팅내용
-            case message.userId == Number(chatInfoObject.targetId):
+            case message.senderId != Number(chatInfoObject.userId):
                 return "<div class='targetChatContent' style='text-align: left; padding: 15px 25px 15px 25px;'>" +
                     "<div style='display: inline-flex;'>" +
-                    "<div class='targetProfile'><img class='targetProfileImage' src=/upload/" + message.targetProfile + "></div>" +
+                    "<div class='targetProfile'><img class='targetProfileImage' src=/upload/" + message.receiveProfile + "></div>" +
                     "<div class='userContentBox' style='margin-left: 10px;'>" +
-                    "<div class='targetUsername' style='font-family: Pretendard-SemiBold; font-size: 15px;'>" + message.targetUsername + "</div>" +
+                    "<div class='targetUsername' style='font-family: Pretendard-SemiBold; font-size: 15px;'>" + message.receiveUsername + "</div>" +
                     "<div class='targetContent'>" + returnValueOfChatType(message) + "</div>" +
                     "<div class='chatRegTime'>" + new Date(message.regTime).toLocaleTimeString([],
                         {
@@ -340,6 +379,8 @@
         }
     }
 
+
+    // 사용자가 보낸 메세지의 Type에 따라 값을 변환합니다.
     function returnValueOfChatType(message){
         switch (message.type){
             case 'text':

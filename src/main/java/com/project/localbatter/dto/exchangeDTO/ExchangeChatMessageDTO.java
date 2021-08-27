@@ -9,13 +9,16 @@ import java.time.LocalDateTime;
 @Setter @Getter
 public class ExchangeChatMessageDTO {
 
-    private Long userId;
+    private Long senderId;
+    private String senderUsername;
+    private String senderProfile;
 
-    private Long targetId;
-    private String targetUsername;
-    private String targetProfile;
+    private Long receiveId;
+    private String receiveUsername;
+    private String receiveProfile;
 
     private Long exchangeId;
+    private Long messageId;
     private ExchangeMessageType type;
     private String coordinate;
     private String message;
@@ -28,8 +31,8 @@ public class ExchangeChatMessageDTO {
     public ExchangeChatEntity toEntity(){
         return ExchangeChatEntity
                 .builder()
-                .senderId(userId)
-                .receiveId(targetId)
+                .senderId(senderId)
+                .receiveId(receiveId)
                 .message(message)
                 .coordinate(coordinate)
                 .type(type)

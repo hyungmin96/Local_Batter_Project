@@ -50,7 +50,7 @@ public class GroupChatService {
     }
 
     public void sendGroupRoomToChat(GroupChatMessageDTO messageDTO){
-        GroupEntity groupEntity = groupRepository.getOne(messageDTO.getGroupId());
+        GroupEntity groupEntity = groupRepository.getById(messageDTO.getGroupId());
         groupChatRepository.save(messageDTO.toEntity(groupEntity));
         simpMessagingTemplate.convertAndSend("/group/chat/" + messageDTO.getGroupId(), messageDTO);
     }
