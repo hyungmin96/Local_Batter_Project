@@ -26,7 +26,7 @@ public class WriterClientJoinEntity extends BaseTimeEntity {
     @Column(name = "client_id")
     private Long clientId;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "writer_exchange_id")
     @JsonIgnore
     private WriterExchangeEntity writerExchangeEntity;

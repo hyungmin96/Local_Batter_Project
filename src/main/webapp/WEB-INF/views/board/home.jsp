@@ -106,11 +106,13 @@
                     html += "<div class='groupTitle'>"
                     html += value.groupTitle
                     html += "</div>"
+                    html += "<div style='margin: 3px 0 0 5px;'>"
                     html += "<div class='groupDescription'>"
                     html += value.description
                     html += "</div>"
                     html += "<div class='groupMemberCount'>"
                     html += "멤버 " + value.memberCount + "명"
+                    html += "</div>"
                     html += "</div>"
                     html += "</div>"
                     html += "</div>"

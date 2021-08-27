@@ -102,8 +102,10 @@ function exchangeInfoShow(value){
             "<div>" +
             "<img src='/images/boardDetail/google_maps_old_98px.png'>" +
             "</div>" +
-            "<div class='locationTextInfoBox'>" +
-                "<div>" + value.location + "</div>" +
+            "<div onclick='goKakaoMap(" + value + ");' class='locationTextInfoBox'>" +
+                "<input type='hidden' class='longtitude' value='" + value.longitude + "'>" +
+                "<input type='hidden' class='langtitude' value='" + value.latitude + "'>" +
+                "<div class='locationAddr'>" + value.location + "</div>" +
                 "<div>" + value.locationDetail + "</div>" +
                 "<div class='price' style='font-size: 14px; color: #ea5757'>" + convert(value.price) + "<span>원</span></div>" +
             "</div>" +
@@ -111,6 +113,10 @@ function exchangeInfoShow(value){
             "</div>"
     }
     return result
+}
+
+function goKakaoMap(value){
+    window.location.href = 'https://map.kakao.com/link/map/' + residence + ',' + long + ',' + lat
 }
 
 function convert(num){

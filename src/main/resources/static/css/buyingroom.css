@@ -12,6 +12,13 @@
     font-style: normal;
 }
 
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
 #contentWrapper{
     min-height: 900px;
     width: 600px;
@@ -225,10 +232,13 @@ _content img{
     border: 1px solid #f9f5f5;
     width: 40px;
     height: 40px;
-    border-radius: 50%;
     object-fit: cover;
     cursor: pointer;
     margin: 5px;
+}
+
+#Group__title, #Group__desciption{
+    width: 100%;
 }
 
 ._commentBox{
@@ -332,6 +342,14 @@ _content img{
 .exchangeContainer{
     margin: 5px 0 5px 0;
     border-top: 1px solid #ebebeb;
+    font-family: Pretendard-SemiBold;
+}
+
+.inputbox{
+    border: 1px solid #ccc;
+    padding: 5px;
+    font-family: Pretendard-Regular;
+    font-size: 14px;
 }
 
 .addressInputBox{
@@ -352,6 +370,7 @@ _content img{
 
 .addressInputBox{
     margin: 2px 0 2px 0;
+    width: 500px;
 }
 
 .form-check-label{
@@ -361,7 +380,7 @@ _content img{
 
 .exchangeContainerHeader{
     background-color: #ffffff;
-    font-family: 'Noto Sans KR', sans-serif;
+    font-family: Pretendard-SemiBold;
     font-size: 17px;
     padding: 10px 10px 0 0;
     margin: 0;
@@ -476,7 +495,6 @@ _content img{
 ._userProfileImg{
     width: 40px;
     height: 40px;
-    border-radius: 50%;
     object-fit: cover;
 }
 
@@ -567,8 +585,10 @@ _content img{
 .groupTitleInputBox{
     outline: none;
     border: none;
-    padding: 7px;
-    font-family: Noto Sans KR;
+    border-bottom: 1px solid #ccc;
+    padding: 10px;
+    background: white;
+    font-family: Pretendard-Regular;
     width: 100%;
 }
 

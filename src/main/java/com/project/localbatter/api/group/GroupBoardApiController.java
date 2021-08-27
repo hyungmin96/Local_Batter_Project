@@ -182,7 +182,6 @@ public class GroupBoardApiController {
             this.profilePath = entity.getGroupUserJoinEntity().getUser().getProfilePath();
         }
     }
-
 }
 
 

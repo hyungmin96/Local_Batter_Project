@@ -21,11 +21,9 @@
                 <link rel="stylesheet" href="/css/imgWrap.css">
                 <link rel="stylesheet" href="/css/articleList.css">
                 <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
-                <link rel="stylesheet" href="/css/articleDetail.css">
                 <link rel="stylesheet" href="/css/join.css">
                 <link rel="stylesheet" href="/css/header.css">
                 <link rel="stylesheet" href="/css/searchList.css">
-                <link rel="stylesheet" href="/css/articleWrite.css">
                 <link rel="stylesheet" href="/css/footer.css">
                 <link rel="stylesheet" href="/css/modal.css">
                 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">

@@ -78,9 +78,10 @@ public class ExchangeService {
         WriterClientJoinEntity writerClientJoinEntity = writerClientJoinRepository.findByClientExchangeEntity(clientExchangeDTO.getClientExchangeId());
         writerClientJoinEntity.getWriterExchangeEntity().updateCount(-1);
         ClientExchangeEntity clientExchangeEntity = writerClientJoinEntity.getClientExchangeEntity();
-        clientExchangeRepository.delete(clientExchangeEntity);
+        writerClientJoinRepository.delete(writerClientJoinEntity);
     }
 
+    // Client request exchange to writer's board
     // client가 writer 게시글에 교환을 요청
     @Transactional
     public ClientExchangeEntity clientPost(ClientExchangeDTO clientExchangeDTO){

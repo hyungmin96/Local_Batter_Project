@@ -8,10 +8,10 @@
 
         <div class="exchangeInfoContainer" style="padding: 20px; background: rgb(227, 230, 234);">
             <div class="info_1"><span style="color: #4b834b">성공적으로</span> 교환을 요청하였습니다.</div>
-            <div class="info_2">아래는 작성한 물품의 정보입니다.</div>
+            <div class="info_2">아래는 작성하신 물품의 정보입니다.</div>
         </div>
 
-        <div class="exchangeWrapper" style="display: inline-flex; height: 100%; width: 100%; padding: 35px;">
+        <div class="exchangeWrapper" style="background: rgb(235, 235, 240); display: inline-flex; height: 100%; width: 100%; padding: 35px;">
 
             <div class="clientImageContainer">
                 <div>
@@ -32,11 +32,13 @@
                 <ul class="exchangeDetail">
                     <div class="infoCategory" style="display: inline-flex; width: 100%">
 
-                    <li>상대 프로필 </li>
-                        <div class="writerProfileImageContainer">
-                            <img class="writerProfile" src="">
+                    <li style="margin: 10px 10px 0 0">상대 프로필 </li>
+                        <div style="display: inline-flex; cursor: pointer;">
+                            <div class="writerProfileImageContainer">
+                                <img class="writerProfile" src="" style="width: 40px; height: 40px;">
+                            </div>
+                            <div style="margin: auto auto auto 10px;" class="infoDetail writerUsernameBox"></div>
                         </div>
-                        <div class="infoDetail writerUsernameBox">상대 닉네임</div>
                     </div>
 
                     <div class="infoCategory" style="display: inline-flex; width: 100%">
@@ -46,14 +48,14 @@
 
                     <div class="infoCategory" style="width: 100%">
                         <li>물품설명 </li>
-                        <div class="infoDetail clientExchangeDescription" style="background: #dcdcdc; width: 100%; max-height: 80px; padding: 10px">
+                        <div class="infoDetail clientExchangeDescription" style="overflow: hidden; text-overflow: ellipsis; background: #e4e4e4; width: 100%; max-height: 77px; padding: 10px">
 
                         </div>
                     </div>
 
                     <div class="infoCategory" style="width: 100%">
                         <li>요청사항 </li>
-                        <div class="infoDetail clientExchangeRequest" style="background: #dcdcdc; width: 100%; max-height: 80px; padding: 10px">
+                        <div class="infoDetail clientExchangeRequest" style="overflow: hidden; text-overflow: ellipsis; background: #e4e4e4; width: 100%; max-height: 77px; padding: 10px">
 
                         </div>
                     </div>
@@ -77,6 +79,27 @@
         exchangeId: $('.exchangeId').val()
     }
 
+    $(document).on('click', '.cancelExchange', ()=>{
+        cancelRequestExhcange()
+    })
+
+    function cancelRequestExhcange(){
+        const data = {
+            // clientId: clientData.clientId,
+            clientExchangeId: $('.exchangeId').val()
+        }
+
+        $.ajax({
+            url: '/api/exchange/cancel/request',
+            type: 'POST',
+            data: data,
+            contentType: 'application/x-www-form-urlencoded',
+            success: function(response){
+                alert('교환요청을 삭제하였습니다.')
+            }
+        })
+    }
+
     $(document).ready(() => {
 
         $.ajax({
@@ -85,10 +108,12 @@
             data: data,
             success: (response) => {
                 var otherThumbnailImage = ''
-                console.log(response)
+
+                $('.writerProfile')[0].src = '/upload/' + response.profilePath
+                $('.writerUsernameBox').append(response.username)
 
                 $('.clientExchangeTitle').append(response.title)
-                $('.clientExchangePrice').append(convert(response.price) + '<span style="font-family: sans-serif; font-size: 18px;"> 원</span>')
+                $('.clientExchangePrice').append(response.price + '<span style="font-family: sans-serif; font-size: 18px;"> 원</span>')
                 $('.clientExchangeDescription').append(response.content)
                 $('.clientExchangeRequest').append(response.request)
                 $('.clientExchangeLocation').append(response.location)
@@ -97,7 +122,7 @@
                     if(key == 0)
                         $('.thumbnailImage')[0].src = '/upload/' + value
 
-                    otherThumbnailImage += '<img onclick="showThumbnail(this);" style="object-fit: cover; cursor: pointer; border: 1px solid rgb(227, 240, 245); margin: 10px 13px 0 0; width: 65px; height: 65px;" src="/upload/' + value + '">'
+                    otherThumbnailImage += '<img onclick="showThumbnail(this);" style="object-fit: cover; cursor: pointer; border: 1px solid rgb(206,206,206); margin: 10px 13px 0 0; width: 65px; height: 65px;" src="/upload/' + value + '">'
                 })
                 $('.otherImageThumbnail').append(otherThumbnailImage)
             }
@@ -108,17 +133,4 @@
         $('.thumbnailImage')[0].src = '/upload/' + e.src.split('/upload/')[1]
     }
 
-    function convert(num){
-        var len, point, str;
-        num = num + "";
-        point = num.length % 3 ;
-        len = num.length;
-        str = num.substring(0, point);
-        while (point < len) {
-            if (str != "") str += ",";
-            str += num.substring(point, point + 3);
-            point += 3;
-        }
-        return str;
-    }
 </script>

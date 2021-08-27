@@ -82,7 +82,7 @@
                 <div class="clientCategoryBox">
                     <label class="item__value"><strong>물품 및 추가금액</strong></label>
                     <div class="col-sm-10">
-                        <input type="text" name="title" class="clientExchangeInfoBox clientAddPriceBox" value=""
+                        <input type="text" onkeyup="convertM(this)" name="title" class="clientExchangeInfoBox clientAddPriceBox" value=""
                                placeholder="교환없이 금액으로 교환할 경우 입력해주세요">
                     </div>
                 </div>
@@ -138,3 +138,24 @@
 <script type="text/javascript" src="/js/exchange/clientMap.js"></script>
 <script type="text/javascript" src="/js/exchange/lineTheMap.js"></script>
 <script type="text/javascript" src="/js/exchange/mapAPI.js"></script>
+<script>
+    function convertM(object){
+        var len, point, str;
+        var num = object.value.replaceAll(',', '');
+        num = num + "";
+        point = num.length % 3 ;
+        len = num.length;
+        if(num.length < 9){
+            str = num.substring(0, point);
+            while (point < len) {
+                if (str != "") str += ",";
+                str += num.substring(point, point + 3);
+                point += 3;
+            }
+            object.value = str;
+        }else{
+            alert('최대 입력가능한 숫자를 초과하였습니다.');
+            object.value = num.substr(0, 8)
+        }
+    }
+</script>

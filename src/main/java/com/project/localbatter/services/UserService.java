@@ -1,19 +1,17 @@
 package com.project.localbatter.services;
 
 import com.project.localbatter.dto.UserDTO;
-import com.project.localbatter.entity.NotificationEntity;
 import com.project.localbatter.entity.ProfileEntity;
 import com.project.localbatter.entity.UserEntity;
 import com.project.localbatter.repositories.ProfileRepository;
 import com.project.localbatter.repositories.UserRepository;
-import com.project.localbatter.vo.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.io.IOException;
 import java.security.Principal;
 
@@ -35,24 +33,19 @@ public class UserService implements UserDetailsService{
         return null;
     }
 
-    public void userSave(UserDTO vo){
+    public void userSave(UserDTO userDTO){
         ProfileEntity profile = ProfileEntity.builder()
         .preferTime("상관없음")
         .accountNumber("미설정")
-        .location(vo.getLocation())
+        .location(userDTO.getLocation())
         .introduce("자기소개")
-        .nickname(vo.getNickname())
-        .phoneNum(vo.getPhone())
+        .nickname(userDTO.getNickname())
+        .phoneNum(userDTO.getPhone())
         .mannerScore(0)
         .mileage(0)
         .build();
-        profileRepository.save(profile);
-        UserEntity userEntity = new UserEntity();
-        userEntity.setUsername(vo.getUsername());
-        userEntity.setRole(Role.ROLE_USER);
-        userEntity.setProfile(profile);
-        userEntity.setPassword(new BCryptPasswordEncoder().encode(vo.getPassword()));
-        userEntity.setNotification(new NotificationEntity());
+
+        UserEntity userEntity = userDTO.toEntity(profile);
         userRepository.save(userEntity);
     }
 

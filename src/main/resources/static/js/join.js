@@ -15,6 +15,7 @@ function join() {
         nickname: $('#nickname').val(),
         phone: $('#phone').val(),
         location: $('#location').val(),
+        profilePath: 'default_profile_img.png'
     };
     
     if (!checkUsernameResult) {

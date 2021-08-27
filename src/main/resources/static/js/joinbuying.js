@@ -18,7 +18,7 @@ $(function(){
     $('#enter__btn').click(function(){
         enterRoom();
     })
-    $('#room__create').click(function(){
+    $('#createGroupButton').click(function(){
         createGroup();
     })
     $('#img__upload').click(function(){
@@ -49,9 +49,6 @@ function loadGroupChatRoomList(e, page = 0){
         type: 'GET',
         data: data,
         success: function(response){
-            const lastPage = document.getElementsByClassName('lastpage')[0];
-            lastPage.dataset.value = response.totalPages
-
             $.each(response.content, function(key, value){
                 const files = (value.filePath != null) ? value.filePath : '';
                 $('.Group__room__list').append(
@@ -83,8 +80,8 @@ function createGroup(){
     const checkboxArary = $(".checkbox");
 
     formData.append('userId', $('.g_user_id').val());
-    formData.append('title', $('#Group__title').val());
-    formData.append('description', $('#Group__desciption').val());
+    formData.append('title', $('.groupTitle').val());
+    formData.append('description', $('.groupDescriptionText').val());
     formData.append('owner', $('.g_user_name').val());
     formData.append('tag', $('#tags').val());
     formData.append('chk_1', $('#' + checkboxArary[0].children[0].id).val());
@@ -126,8 +123,8 @@ function GroupPreview(e){
         reader.onload = function(e){
             const html = "<a href=\"javascript:void(0);\"" +
                 "onclick=\"previewDelete(" + index + ")\"" +
-                "id=\"img_id_" + index + "\"><img style='object-fit: cover; display: inline-flex; padding: 10px;' src=\"" + e.target.result +
-                "\"boarder='10' height='150px' width='180px' data-file='" + f.name + "'" +
+                "id=\"img_id_" + index + "\"><img style='margin: 10px 0 0 10px; object-fit: cover; display: inline-flex;' src=\"" + e.target.result +
+                "\"boarder='10' height='190px' width='190px' data-file='" + f.name + "'" +
                 "' class='selProductFile' title='사진 삭제'></a>";
             $('#preview__img__container').empty()
             $("#preview__img__container").append(html);

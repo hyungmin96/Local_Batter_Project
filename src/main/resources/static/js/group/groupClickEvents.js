@@ -28,6 +28,7 @@ $(function () {
     })
     $('.uploadBtn').click(function () {
         postContent();
+        $('#exchange_price')[0].value = ''
         $('.groupTitleInputBox')[0].value = ''
         $('.locationDetailTinfo')[0].value = ''
         $('#exchange_address')[0].value = ''

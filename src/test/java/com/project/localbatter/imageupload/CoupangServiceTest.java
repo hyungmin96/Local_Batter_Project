@@ -14,7 +14,6 @@ public class CoupangServiceTest {
 
     private static Logger log = LogManager.getLogger();
     private final String root = "D:\\Spring projects\\SpringBoot LocalBatter\\src\\main\\downloads\\";;
-
 //    @Test
 //    void 쿠팡_게시글_가져오기_테스트() throws IOException {
 //

@@ -211,7 +211,7 @@
                     response.content +
                     "</div>" +
                     "<div class='writerProductPrice'>" +
-                    convert(response.price) +
+                    response.price +
                     " 원</div>"
                 )
                 setMapConainer('writerLocationMap', response.writerExchangeEntity.location, response.writerExchangeEntity.longitude, response.writerExchangeEntity.latitude)
@@ -248,26 +248,13 @@
                     response.clientExchangeEntity.content +
                     "</div>" +
                     "<div class='writerProductPrice'>" +
-                    convert(response.clientExchangeEntity.price) +
-                    " 원</div>"
+                    response.clientExchangeEntity.price +
+                    " 원" +
+                    "</div>"
                 )
                 setMapConainer('clientLocationMap', response.clientExchangeEntity.address, response.clientExchangeEntity.longtitude, response.clientExchangeEntity.latitude)
             }
         })
     })
-
-    function convert(num){
-        var len, point, str;
-        num = num + "";
-        point = num.length % 3 ;
-        len = num.length;
-        str = num.substring(0, point);
-        while (point < len) {
-            if (str != "") str += ",";
-            str += num.substring(point, point + 3);
-            point += 3;
-        }
-        return str;
-    }
 
 </script>

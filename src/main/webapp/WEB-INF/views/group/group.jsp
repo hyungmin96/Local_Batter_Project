@@ -203,7 +203,7 @@
             </div>
             <div class="modal-body" style="padding: 0.5rem 0.5rem 0 0.5rem">
                 <div class="groupTitleBox" style="padding: 10px 10px 0 10px;">
-                    <input style="background: #fdfdfd" type="text" class="groupTitleInputBox" value="" placeholder="게시글의 제목을 입력해주세요">
+                    <input type="text" class="groupTitleInputBox" value="" placeholder="게시글의 제목을 입력해주세요">
                 </div>
                 <div style="padding: 10px; margin-top: 10px;">
                     <div style="padding: 5px; background-color: #f8f9fa;">
@@ -232,8 +232,8 @@
                             <div class="LocationContainerTitle">
                                 <h5 class="exchangeContainerHeader">물품 교환금액</h5>
                             </div>
-                            <div style="padding: 5px 5px 5px 5px;">
-                                <input type="text" onkeyup="convertM(this);" class="inputbox addressInputBox" id="exchange_price" placeholder="판매하실 금액을 입력해주세요" style="margin-top: 5px; width: 180px;">
+                            <div style="padding: 5px;">
+                                <input type="text" onkeyup="convertM(this);" class="inputbox addressInputBox" id="exchange_price" placeholder="판매하실 금액을 입력해주세요" style="margin-top: 5px; width: 235px;">
                             </div>
                         </div>
 
@@ -309,17 +309,17 @@
             <div class="modal-body" style="text-align: center">
                 <div style="padding: 10px; margin-top: 10px;">
                     <div>
-                        <img id="img__upload" src="/images/upload.png" style="border: 1px solid #f5f5f5; width: 198px; height: 198px; object-fit: cover; border-radius: 50%">
+                        <img id="img__upload" src="/images/upload.png" style="border: 1px solid #f5f5f5; width: 198px; height: 198px; object-fit: cover;">
                         <input id="input__Group__img" type="file" accept="image/jpg, image/jpeg, image/png" class="custom-file-input" name="upload_file" style="display: none">
                         <div id="preview__img__container"></div>
                     </div>
                 </div>
 
-                <div class="article__item__box">
+                <div class="article__item__box" style="margin-top: 20px;">
                     <input type="text" name="title" id="Group__title" class="inputbox" placeholder="그룹 이름을 설정해주세요."/>
                 </div>
 
-                <div class="article__item__box">
+                <div class="article__item__box" style="margin-top: 20px;">
                     <textarea class="inputbox" id="Group__desciption" placeholder="그룹에 대한 설명을 입력해주세요." style="resize: none;" rows="3"></textarea>
                 </div>
             </div>
