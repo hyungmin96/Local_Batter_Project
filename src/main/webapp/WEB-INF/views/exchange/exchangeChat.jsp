@@ -7,13 +7,13 @@
     <div class="container" style="margin-top: 85px; width: 100%; height: 850px">
 
         <div style="padding: 5px 10px 5px 0; font-family: Pretendard-SemiBold; font-size: 23px;">물품교환 채팅목록</div>
-        <div style="display: inline-flex; box-shadow: 0 0px 3px 0 rgba(0, 0, 0, 0.12); height: 725px; width: 100%">
+        <div style="display: inline-flex; height: 725px; width: 100%">
 
-            <div id="exchangeProcessChatList" style="border-right: 1px solid #e2dede; width: 23%; background: rgb(227, 230, 234); height: 100%">
+            <div id="exchangeProcessChatList" style="box-shadow: 2px 2px 3px -1px rgba(0, 0, 0, 0.12); width: 30%; background: rgb(227, 230, 234); height: 100%">
 
             </div>
 
-            <div id="currentChatContainer" style="width: 77%; height: 100%; background: #f7f8f9">
+            <div id="currentChatContainer" style="box-shadow: 2px 2px 3px -1px rgba(0, 0, 0, 0.12); width: 77%; margin-left: 20px; height: 100%; background: rgb(238, 240, 243)">
                 <div class="chatUsernameContainer" style="display: inline-flex; width: 100%; height: 7%; background: white">
                     <div class="chatUsername" style="display: inline-flex; justify-content: center; font-size: 17px; width: 95%; font-family: Pretendard-SemiBold; margin: auto auto auto auto; text-align: center">
                         <div>
@@ -29,7 +29,7 @@
                     </div>
 
                 </div>
-                <div class="chatContainer" style="border-top: 1px solid #ebebeb; border-bottom: 1px solid #ebebeb; height: 78%">
+                <div class="chatContainer" style="border-top: 1px solid #ebebeb; background: rgb(247, 248, 249); border-bottom: 1px solid #ebebeb; height: 78%">
 
                 </div>
                 <div class="chatInputCommand" style="position: relative; width: 100%; border-bottom: 1px solid #ebebeb; height: 5%; background: #F1F3FB;">
@@ -60,6 +60,52 @@
                     <textarea style="width: 100%" id="SendChatContentBox" class="SendChatContentBox" type="text" placeholder="전송할 메세지 내용을 입력해주세요." value=""></textarea>
                 </div>
             </div>
+
+            <div id="requestBatterServiceContainer" style="box-shadow: 2px 2px 3px -1px rgba(0, 0, 0, 0.12); width: 40%; height: 70%; margin: 0 0 0 20px;">
+                <div class="requestBatterService" style="width: 100%; height: 106%; background: white">
+                    <div style="font-family: Pretendard-SemiBold; margin: 0 11px 0 11px; font-size: 17px; border-bottom: 1px solid #e3dfdf; padding: 10px">
+                        로컬바터 서비스 등록
+                    </div>
+
+                    <div style="margin: 10px 20px">
+                        <div style="width: 100%; padding: 5px; font-weight: 600; font-size: 13px;">
+                            <div>
+                                물품을 받을 위치
+                            </div>
+                            <div style="margin-top: 10px; display: inline-flex; width: 100%; height: 90px; background: rgb(252, 252, 252); ">
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin: 10px 20px">
+                        <div style="width: 100%; padding: 5px; font-weight: 600; font-size: 13px;">
+                            <div>
+                                상대방과 만나는 위치
+                            </div>
+                            <div style="margin-top: 10px; display: inline-flex; width: 100%; height: 90px; background: rgb(252, 252, 252); ">
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin: 10px 20px">
+                        <div style="width: 100%; padding: 5px; font-weight: 600; font-size: 13px;">
+                            <div>
+                                요청사항 및 결제금액
+                            </div>
+                            <div style="margin-top: 10px; display: inline-flex; width: 100%; height: 90px; background: rgb(252, 252, 252); ">
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center;">
+                        <button class="btn btn-primary batterServiceCreateButton" style="font-family: Pretendard-Regular; width: 86%; border-radius: 0; font-size: 16px; padding: 5px;">서비스 등록</button>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
@@ -301,7 +347,7 @@
 
         var messageType = (value.type == 'image') ? '이미지 파일' : value.message
         // 내가 보낸 채팅일 경우 메세지 앞에 '나'를 표시
-        var fromChat = ($('.g_user_id').val() == value.messageId) ? '<div>나 </div>' : ''
+        var fromChat = ($('.g_user_id').val() == value.messageId) ? '<span class="displayMeChat">나</span>' : ''
         // 채팅방목록 조회 시 로그인한 계정과 대화중인 계정의 정보를 조회
         if($('.g_user_id').val() == value.senderId){
              targetId = value.receiveId
