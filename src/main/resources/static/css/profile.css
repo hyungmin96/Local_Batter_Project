@@ -1,133 +1,42 @@
 @font-face {
-    font-family: 'ChosunBg';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@1.0/ChosunBg.woff') format('woff');
-    font-weight: normal;
+    font-family: 'Pretendard-SemiBold';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-SemiBold.woff') format('woff');
+    font-weight: 600;
     font-style: normal;
 }
 
-.page__container{
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+.userProfileImage{
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+}
+
+.tabPageContainer button{
+    padding: 10px;
+    font-family: Pretendard-Regular;
+    font-size: 17px;
     text-align: center;
+    border: none;
+    background-color: rgb(245, 245, 245);
 }
 
-.transaction__count{
-    font-family: ChosunBg;
-    font-size: 13px;
-    margin: auto auto;
-    margin-left: 5px;
-    color: rgb(184, 184, 184);
+.tabPageContainer button:hover, .tabPageContainer button:focus {
+    outline:none;
 }
 
-.review__count{
-    font-family: ChosunBg;
-    font-size: 13px;
-    margin: auto auto;
-    margin-left: 5px;
-    color: rgb(184, 184, 184);
+.userMannerScrore{
+    object-fit: cover;
 }
 
-.profile__exchange__list{
-    height: 285px;
-}
-
-.comment__list{
-    height: 285px;
-}
-
-.comment__box{
-    font-family: 'ChosunBg';
-    display: inline-flex;
-    margin: 7px 5px;
-}
-
-.score{
-    width: 150px;
-    margin: auto;
-}
-
-.board__number__box{
-    max-width: 380px;
-    display: inline;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: nowrap;
-    overflow: hidden;
-}
-
-.comment{
-    font-size: 15px;
-    width: 470px;
-    white-space: nowrap;
-    overflow:hidden;
-    text-overflow: ellipsis;
-    margin: auto auto;
-}
-
-.board__title{
-    font-size: 15px;
-    width: 620px;
-    white-space: nowrap;
-    overflow:hidden;
-    text-overflow: ellipsis;
-    margin: auto auto;
-}
-
-.writer{
-    text-align: center;
-    font-size: 13px;
-    width: 100px;
-    margin: auto auto;
-    color: rgb(112, 112, 112);
-}
-
-.date{
-    text-align: center;
-    font-size: 13px;
-    width: 200px;
-    margin: auto auto;
-    color: rgb(112, 112, 112);
-}
-
-
-.profile__box{
-    border: 1px solid rgb(240, 240, 240);
-    padding: 15px;
-    margin: 30px 20px;
-}
-
-.profile__item{
-    font-size: 13px;
-    color: rgb(165, 165, 165);
-    margin: 5px 5px;
-}
-
-.profile__box .category__list{
-    font-family: ChosunBg;
-    font-size: 16px;
-}
-
-.user__pr{
-    max-width: 200px; 
-    height: 30px;
-    font-family: Noto Sans KR;
+.userProfileInfoContainer{
+    font-family: Pretendard-Regular;
     font-size: 14px;
-    color: rgb(187, 187, 187);
-    margin: auto auto;
-    text-align: center;
-    word-break: break-all;
-    word-wrap: break-word;
-    overflow: hidden;
-}
-
-.user__profile__name{
-    font-family: ChosunBg;
-    font-size: 22px;
-    color: black;
-    margin: auto auto;
-}
-
-.user__info span{
-    font-family: ChosunBg;
-    font-size: 14px;
-    color: black;
-    margin: 15px;
 }

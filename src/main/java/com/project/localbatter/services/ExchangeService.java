@@ -1,38 +1,27 @@
 package com.project.localbatter.services;
 
-import com.project.localbatter.api.exchange.GroupExchangeApiController.ResponseClientDTO;
-import com.project.localbatter.api.exchange.GroupExchangeApiController.ResponseClientAndWriterBoard;
-import com.project.localbatter.api.exchange.GroupExchangeApiController.ResponseClientRequestDTO;
-import com.project.localbatter.api.exchange.GroupExchangeApiController.ResponseRequestListDTO;
-import com.project.localbatter.api.exchange.GroupExchangeApiController.ResponseWrtierExchangeDTO;
 import com.project.localbatter.components.ExchangeQueryComponent;
 import com.project.localbatter.components.GenerateFile;
 import com.project.localbatter.dto.GenerateFileDTO;
 import com.project.localbatter.dto.Group.GroupBoardDTO;
 import com.project.localbatter.dto.TransactionDTO;
-import com.project.localbatter.dto.exchangeDTO.ClientExchangeDTO;
-import com.project.localbatter.dto.exchangeDTO.ExchagneFileDTO;
-import com.project.localbatter.dto.exchangeDTO.ExchangeChatMessageDTO;
-import com.project.localbatter.dto.exchangeDTO.WriterClientJoinDTO;
+import com.project.localbatter.dto.exchangeDTO.*;
 import com.project.localbatter.entity.Exchange.ClientExchangeEntity;
 import com.project.localbatter.entity.Exchange.ExchangeFileEntity;
 import com.project.localbatter.entity.Exchange.WriterClientJoinEntity;
 import com.project.localbatter.entity.Exchange.WriterExchangeEntity;
 import com.project.localbatter.entity.GroupBoardEntity;
-import com.project.localbatter.repositories.Exchange.ClientExchangeFileRepository;
-import com.project.localbatter.repositories.Exchange.ClientExchangeRepository;
-import com.project.localbatter.repositories.Exchange.WriterClientJoinRepository;
-import com.project.localbatter.repositories.Exchange.WriterExchangeRepository;
+import com.project.localbatter.repositories.Exchange.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static com.project.localbatter.api.exchange.GroupExchangeApiController.ResponseRequestExchangeDTO;
+import static com.project.localbatter.api.exchange.GroupExchangeApiController.*;
 
 @Service
 @RequiredArgsConstructor
@@ -45,8 +34,22 @@ public class ExchangeService {
     private final GenerateFile generateFile;
     private final ExchangeQueryComponent exchangeQueryComponent; // Using @Component annotaion to get exchange data
     private final ExchangeChatService exchangeChatService;
-
+    private final LocalBatterServiceRepository localBatterServiceRepository;
     /*  post method service */
+
+    // 사용자가 신청한 Batter Service 게시글을 삭제
+    // delete user's LocalBatter Service
+    public ResponseEntity<String> deleteLocalBatterService(LocalBatterServiceDTO localBatterServiceDTO){
+        localBatterServiceRepository.deleteBywriterClientJoinId(localBatterServiceDTO.getWriterClientJoinId());
+        return new ResponseEntity<String>("해당 요청을 삭제하였습니다.", HttpStatus.OK);
+    }
+
+    // 사용자가 신청한 localBatter Service 등록
+    // Save users's LocalBatter Service
+    public LocalBatterServiceDTO saveLocalBatterService(LocalBatterServiceDTO localBatterServiceDTO){
+        localBatterServiceRepository.save(localBatterServiceDTO.toEntity());
+        return localBatterServiceDTO;
+    }
 
     // writer 유저가 client 유저의 교환요청 수락
     // Accept to Request for exchange writer's user from client user

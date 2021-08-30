@@ -109,6 +109,44 @@
     font-size: 15px;
 }
 
+.inputbox:hover, .inputbox:focus{
+    outline: none;
+}
+
+.batterServiceItem{
+    background: white;
+    font-size: 13px;
+    font-family: Pretendard-Regular;
+    padding: 10px;
+}
+
+.serviceButton button{
+    background: white;
+    border: none;
+    color: #969696;
+    padding: 0;
+}
+
+.serviceButton:hover{
+    border-bottom: 1px solid #ccc;
+}
+
+.requestContentBox{
+    resize: none;
+    width: 100%;
+    font-size: 12px;
+}
+
+.receiveAddr, .exchangeAddr{
+    font-size: 12px;
+    width: 100%;
+}
+
+.receiveDetailAddr, .exchangeDetailAddr, .priceBox{
+    margin-top: 7px;
+    font-size: 12px;
+}
+
 .displayMeChat{
     border-radius: 50%;
     background: #d4d4d4;

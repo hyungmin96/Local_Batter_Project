@@ -81,7 +81,7 @@
                                     <img src="/images/header/user.png">
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    <li><a href="/profile/user=${principal.username}" class="dropdown-item">프로필 보기</a><hr/></li>
+                                    <li><div style="cursor: pointer" onclick="goProfile();" class="dropdown-item">내 정보</div><hr/></li>
                                     <li><a href="/product/group" class="dropdown-item">가입 그룹목록</a></li>
                                     <li><a href="/view/transaction/my/boards" class="dropdown-item">물품 교환목록</a><hr/></li>
                                     <li><a href="/user/logout" class="dropdown-item">로그아웃</a></li>
@@ -101,6 +101,11 @@
         </div>
     </div>
 </div>
+<script>
+    function goProfile(){
+        window.location.href = '/my/profile/' + $('.g_user_id').val()
+    }
+</script>
 <style>
     body{
         background-color: rgb(238, 240, 243);

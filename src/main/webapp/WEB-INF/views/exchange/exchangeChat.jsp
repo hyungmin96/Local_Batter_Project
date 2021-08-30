@@ -61,10 +61,51 @@
                 </div>
             </div>
 
-            <div id="requestBatterServiceContainer" style="box-shadow: 2px 2px 3px -1px rgba(0, 0, 0, 0.12); width: 40%; height: 70%; margin: 0 0 0 20px;">
-                <div class="requestBatterService" style="width: 100%; height: 106%; background: white">
+            <div id="chatUsingInfoBox" style="width: 45%; height: 70%; margin: 0 0 0 20px;">
+                <div style="padding: 5px; box-shadow: 2px 2px 3px -1px rgba(0, 0, 0, 0.12); background: white">
                     <div style="font-family: Pretendard-SemiBold; margin: 0 11px 0 11px; font-size: 17px; border-bottom: 1px solid #e3dfdf; padding: 10px">
-                        로컬바터 서비스 등록
+                        채팅 유의사항
+                    </div>
+
+                    <div style="font-size: 14px;">
+                        <div style="margin: 10px 20px">
+                            <div>
+                                반드시 물품을 교환할 상대의 프로필 정보와 계좌인증 여부를 확인하세요
+                            </div>
+                        </div>
+
+                        <hr style="border: none; height: 1px; background: #ccc; margin: 0 20px 0 20px;">
+
+                        <div style="margin: 10px 20px">
+                            <div>
+                                늦은 시간에 교환을 진행하실 경우 동행자와 함께 진행하세요
+                            </div>
+                        </div>
+
+                        <hr style="border: none; height: 1px; background: #ccc; margin: 0 20px 0 20px;">
+
+                        <div style="margin: 10px 20px">
+                            <div>
+                                상대와 정한 시간과 약속을 반드시 준수해주세요
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div id="requestBatterServiceContainer" style="display: none;width: 40%; margin: 0 0 0 20px;">
+                <div class="requestBatterService" style="padding: 0 0 20px 0; box-shadow: 2px 2px 3px -1px rgba(0, 0, 0, 0.12); width: 100%; background: white">
+
+                    <div style="display: inline-flex; width:90%; justify-content: space-between; border-bottom: 1px solid #e3dfdf; margin: 0 11px 0 11px; padding: 10px">
+                        <div style="font-family: Pretendard-SemiBold;font-size: 17px;">
+                            로컬바터 서비스 등록
+                        </div>
+                        <div class = "closeLocalBatterBox" style="margin: auto 0;">
+                            <div>
+                                <img src="/images/delete_35px.png" style="object-fit: cover; width: 17px; height: 17px; float: right; cursor: pointer;">
+                            </div>
+                        </div>
                     </div>
 
                     <div style="margin: 10px 20px">
@@ -72,8 +113,13 @@
                             <div>
                                 물품을 받을 위치
                             </div>
-                            <div style="margin-top: 10px; display: inline-flex; width: 100%; height: 90px; background: rgb(252, 252, 252); ">
-
+                            <div style="margin-top: 10px; padding: 10px; width: 100%; height: 90px; background: rgb(252, 252, 252); ">
+                                <div>
+                                    <input type="text" class="inputbox receiveAddr" value="" placeholder="도로명, 지번주소">
+                                </div>
+                                <div>
+                                    <input type="text" class="inputbox receiveDetailAddr" value="" placeholder="상세주소">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -83,8 +129,13 @@
                             <div>
                                 상대방과 만나는 위치
                             </div>
-                            <div style="margin-top: 10px; display: inline-flex; width: 100%; height: 90px; background: rgb(252, 252, 252); ">
-
+                            <div style="margin-top: 10px; padding: 10px; width: 100%; height: 90px; background: rgb(252, 252, 252); ">
+                                <div>
+                                    <input type="text" class="inputbox exchangeAddr" value="" placeholder="도로명, 지번주소">
+                                </div>
+                                <div>
+                                    <input type="text" class="inputbox exchangeDetailAddr" value="" placeholder="상세주소">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -94,8 +145,13 @@
                             <div>
                                 요청사항 및 결제금액
                             </div>
-                            <div style="margin-top: 10px; display: inline-flex; width: 100%; height: 90px; background: rgb(252, 252, 252); ">
-
+                            <div style="margin-top: 10px; padding: 10px; width: 100%; height: 100%; background: rgb(252, 252, 252); ">
+                                <div>
+                                    <textarea type="text" class="inputbox requestContentBox" value="" placeholder="요청사항" rows="3"></textarea>
+                                </div>
+                                <div>
+                                    <input type="text"  onkeyup="convertM(this);" class="inputbox priceBox" value="" placeholder="결제금액">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -104,8 +160,18 @@
                         <button class="btn btn-primary batterServiceCreateButton" style="font-family: Pretendard-Regular; width: 86%; border-radius: 0; font-size: 16px; padding: 5px;">서비스 등록</button>
                     </div>
                 </div>
-            </div>
 
+                <div style="height: 15px; background: rgb(238, 240, 243)">
+
+                </div>
+
+                <div class="viewBatterService">
+                    <div class="viewBatterServiceContainer">
+
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
 </div>
@@ -188,14 +254,82 @@
                         chatInfoObject.username = value.receiveUsername
                         chatInfoObject.userProfile = value.receiveProfile
                     }
-                    console.log(value)
                     refreshChatList(value)
                 })
             }
         })
     })
 
+    // 로컬 바터 서비스 등록
+    $(document).on('click', '.batterServiceCreateButton', ()=>{
+        const data = {
+            userId: chatInfoObject.userId,
+            writerClientJoinId: chatInfoObject.exchangeId,
+            receiveAddr: $('.receiveAddr').val(),
+            receiveDetailAddr: $('.receiveDetailAddr').val(),
+            receiveLongitude: '',
+            receiveLatitude: '',
+            exchangeAddr: $('.exchangeAddr').val(),
+            exchangeDetailAddr: $('.exchangeDetailAddr').val(),
+            exchangeLongitude: '',
+            exchangeLatitude: '',
+            request: $('.requestContentBox').val(),
+            price: $('.priceBox').val(),
+        }
+
+        $.ajax({
+            url: '/api/exchange/save/service',
+            type: 'POST',
+            contentType: 'application/x-www-form-urlencoded',
+            data: data,
+            success: (response) =>{
+                var html = ''
+                console.log(response)
+
+                html += '<div class="batterServiceItem">'
+                html += '<input type="hidden" class="serviceId" value=' + response.writerClientJoinId + '>'
+                html += '<div style="display: inline-flex; width: 100%">'
+                html += '<div style="margin: auto auto auto 5px;">물품 대리교환을 등록하였습니다.</div>'
+                html += '<div class="serviceButton showServiceInfoButton" style="margin: auto 0 auto 0"><button>보기</button></div>'
+                html += '<div class="serviceButton deleteServiceButton" style="margin: auto 0 auto 10px"><button>삭제</button></div>'
+                html += '</div>'
+                html += '</div>'
+
+                $('.viewBatterServiceContainer').append(html)
+            }
+        })
+
+    })
+
+    // 로컬 바터 서비스 삭제
+    $(document).on('click', '.deleteServiceButton', ()=>{
+        const data = {
+            userId: chatInfoObject.userId,
+            writerClientJoinId: chatInfoObject.exchangeId,
+        }
+
+        $.ajax({
+            url: '/api/exchange/delete/service',
+            type: 'POST',
+            contentType: 'application/x-www-form-urlencoded',
+            data: data,
+            success: (response) =>{
+                console.log(response)
+            }
+        })
+
+    })
+
+    // 로컬바터 서비스 등록 창 닫기
+    $(document).on('click', '.closeLocalBatterBox', () =>{
+        $('#requestBatterServiceContainer')[0].style.display = 'none'
+    })
+
+    // 개설된 채팅방 목록 중 특정 방 선택 이벤트
     $(document).on('click', '.exchangeBox', function (){
+
+        $('#chatUsingInfoBox')[0].style.display = 'none'
+        $('#requestBatterServiceContainer')[0].style.display = 'block'
 
         var chatItems = Array.prototype.slice.call(document.getElementById('exchangeProcessChatList').children)
         chatItems.forEach(item => item.style.background = '')
@@ -503,6 +637,26 @@
                 }else alert('메세지 내용을 입력해주세요.')
             }
     });
+
+    function convertM(object){
+        var len, point, str;
+        var num = object.value.replaceAll(',', '');
+        num = num + "";
+        point = num.length % 3 ;
+        len = num.length;
+        if(num.length < 9){
+            str = num.substring(0, point);
+            while (point < len) {
+                if (str != "") str += ",";
+                str += num.substring(point, point + 3);
+                point += 3;
+            }
+            object.value = str;
+        }else{
+            alert('최대 입력가능한 숫자를 초과하였습니다.');
+            object.value = num.substr(0, 8)
+        }
+    }
 
 </script>
 

@@ -3,6 +3,7 @@ package com.project.localbatter.api.exchange;
 import com.project.localbatter.dto.Group.GroupBoardDTO;
 import com.project.localbatter.dto.TransactionDTO;
 import com.project.localbatter.dto.exchangeDTO.ClientExchangeDTO;
+import com.project.localbatter.dto.exchangeDTO.LocalBatterServiceDTO;
 import com.project.localbatter.entity.Exchange.ClientExchangeEntity;
 import com.project.localbatter.entity.Exchange.WriterClientJoinEntity;
 import com.project.localbatter.entity.Exchange.WriterExchangeEntity;
@@ -17,6 +18,7 @@ import lombok.Setter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +34,16 @@ import java.util.stream.Collectors;
 public class GroupExchangeApiController {
 
     private final ExchangeService groupExchangeService;
+
+    @PostMapping("/delete/service")
+    public ResponseEntity<String> deleteLocalBatterService(LocalBatterServiceDTO localBatterServiceDTO){
+        return groupExchangeService.deleteLocalBatterService(localBatterServiceDTO);
+    }
+
+    @PostMapping("/save/service")
+    public LocalBatterServiceDTO saveLocalBatterService(LocalBatterServiceDTO localBatterServiceDTO){
+        return groupExchangeService.saveLocalBatterService(localBatterServiceDTO);
+    }
 
     @GetMapping("/view/client/exchange")
     public ResponseClientDTO getClientRequestExchangeInfo(Long exchangeId){
