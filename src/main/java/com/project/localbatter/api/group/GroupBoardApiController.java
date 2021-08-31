@@ -79,6 +79,7 @@ public class GroupBoardApiController {
     @Getter @Setter
     public static class ResponseGroupExchangeDTO{
 
+        private Long boardId;
         private String title;
         private String content;
         private String price;
@@ -98,6 +99,7 @@ public class GroupBoardApiController {
         private String title;
         private String content;
         private LocalDateTime regTime;
+        private String boardThumbnail;
         private List<String> files;
 
         public ResponseBoardViewDTO(GroupBoardEntity boardInfo, List<GroupBoardFileEntity> files){

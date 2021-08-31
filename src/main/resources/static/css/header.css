@@ -191,6 +191,7 @@
     font-weight: bold;
     font-size: 1.2rem;
     font-family: Noto Sans KR;
+    text-decoration: none;
 }
 
 @media all and (max-width: 1000px) {

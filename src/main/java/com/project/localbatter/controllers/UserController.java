@@ -1,6 +1,5 @@
 package com.project.localbatter.controllers;
 
-import com.project.localbatter.entity.UserEntity;
 import com.project.localbatter.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -16,12 +15,7 @@ public class UserController {
 
     @GetMapping("/my/profile/{userId}")
     public String getProfile(Model model, @PathVariable Long userId){
-        UserEntity userEntity = userService.findById(userId);
-        if(userEntity != null){
-            model.addAttribute("profile", userEntity.getProfile());
-            return "/user/profile";
-        }
-        return "/error/errorpage";
+        return "/user/profile";
     }
 
     @GetMapping("/user/login")

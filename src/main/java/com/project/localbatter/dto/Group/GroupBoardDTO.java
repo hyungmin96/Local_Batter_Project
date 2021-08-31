@@ -20,6 +20,7 @@ GroupBoardDTO implements Serializable {
     private int page;
     private int display;
 
+    private Long writer;
     private Long groupId;
     private Long boardId;
     private String title;
@@ -50,6 +51,7 @@ GroupBoardDTO implements Serializable {
                 .groupId(groupId)
                 .title(title)
                 .content(content)
+                .writer(writer)
                 .boardLike(0)
                 .thumnbnailPath(thumnbnailPath)
                 .groupUserJoinEntity(groupUserJoinEntity)

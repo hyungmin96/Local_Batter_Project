@@ -2,23 +2,24 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="../common/header.jsp" %>
 
-        <div class="container" style="margin: 120px auto 25px auto;">
-            <span class="fast__category">원하시는 활동을 선택해주세요!</span>
-            <div class="mainImageWrapper" style="display:flex; text-align: center">
-                <div class="bannerGroupCreate" style="width: 33%; text-align: center">
+        <div style="display: flex; margin: 100px auto 25px auto; padding: 10px 120px 10px 120px">
+            <div class="mainImageWrapper" style="display:flex; text-align: center; margin: auto">
+                <div class="bannerGroupCreate">
                     <div>
-                        <img style="border: 1px solid #d3cfcf" src="/images/main/logo.jpg" class="logoImage exchangeBoards">
+                        <img style="height: 480px; width: 880px; border: 1px solid #d3cfcf" src="/images/main/logo.jpg" class="logoImage exchangeBoards">
                     </div>
                     <div></div>
                 </div>
-                <div class="bannerGroupList" style="width: 33%">
-                    <div>
-                        <img style="border: 1px solid #d3cfcf" src="/images/main/group.jpg" class="logoImage goGroupList">
+                <div class="subBannerContainer">
+                    <div class="bannerGroupList">
+                        <div>
+                            <img style="height: 270px; width: 480px; border: 1px solid #d3cfcf" src="/images/main/group.jpg" class="logoImage goGroupList">
+                        </div>
                     </div>
-                </div>
-                <div class="bannerBatterServiceList" style="width: 33%">
-                    <div >
-                        <img style="border: 1px solid #d3cfcf" src="/images/main/delivery.jpg" class="logoImage batterService">
+                    <div class="bannerBatterServiceList">
+                        <div >
+                            <img style="object-fit: fill; height: 210px; width: 480px; border: 1px solid #d3cfcf" src="/images/main/delivery.jpg" class="logoImage batterService">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -66,7 +67,7 @@
                 </div>
             </div>
         </div>
-
+<link rel="stylesheet" href="/css/articleList.css">
 <script>
 
     // global variables

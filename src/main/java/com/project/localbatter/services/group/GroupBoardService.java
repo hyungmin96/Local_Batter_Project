@@ -61,6 +61,7 @@ public class GroupBoardService {
 
         JPAQuery<ResponseGroupExchangeDTO> query = queryFactory
                 .select(Projections.fields(ResponseGroupExchangeDTO.class,
+                            groupBoardEntity.boardId,
                             groupBoardEntity.title,
                             groupBoardEntity.content,
                             writerExchangeEntity.price,

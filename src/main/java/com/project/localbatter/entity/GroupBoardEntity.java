@@ -45,6 +45,9 @@ public class GroupBoardEntity extends BaseTimeEntity {
     @Column(name = "board_thumbnail")
     private String thumnbnailPath;
 
+    @Column(name = "writer_id")
+    private Long writer;
+
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "exchange_id")
     private WriterExchangeEntity writerExchangeEntity;

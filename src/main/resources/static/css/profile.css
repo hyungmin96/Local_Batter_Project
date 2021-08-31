@@ -19,13 +19,48 @@
     object-fit: cover;
 }
 
+.usernameInfoBox{
+    font-size: 17px;
+    margin: 10px;
+}
+
+.emptyViewContainer{
+    font-family: Pretendard-SemiBold;
+    font-size: 19px;
+}
+
+.badge{
+    padding: 7px;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.title{
+    font-family: Pretendard-Regular;
+    position: relative;
+    font-size: 14px;
+    padding-bottom: 15px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.price{
+    font-size: 16px;
+    font-weight: 600;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
 .tabPageContainer button{
-    padding: 10px;
+    padding: 15px;
     font-family: Pretendard-Regular;
     font-size: 17px;
     text-align: center;
     border: none;
-    background-color: rgb(245, 245, 245);
+    background-color: white;
+    width: 100%;
 }
 
 .tabPageContainer button:hover, .tabPageContainer button:focus {
