@@ -14,5 +14,4 @@ public interface GroupBoardRepository extends JpaRepository<GroupBoardEntity, Lo
             "join fetch b.groupUserJoinEntity g " +
             "where b.boardId = :boardId")
     GroupBoardEntity findUserIdUsingBoardId(Long boardId);
-
 }

@@ -1,7 +1,7 @@
 package com.project.localbatter.controllers;
 
 import com.project.localbatter.dto.exchangeDTO.ExchangeChatMessageDTO;
-import com.project.localbatter.services.ExchangeChatService;
+import com.project.localbatter.services.Exchange.ExchangeChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;

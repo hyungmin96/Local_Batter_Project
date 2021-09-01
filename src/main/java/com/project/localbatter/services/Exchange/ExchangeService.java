@@ -1,4 +1,4 @@
-package com.project.localbatter.services;
+package com.project.localbatter.services.Exchange;
 
 import com.project.localbatter.components.ExchangeQueryComponent;
 import com.project.localbatter.components.GenerateFile;

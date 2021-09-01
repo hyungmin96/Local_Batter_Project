@@ -25,16 +25,7 @@
             </div>
         </div>
 
-        <div class="fast__sale_products" style="padding: 25px; background: rgb(227, 230, 234);">
-            <div class="container">
-                <span class="fast__category">완전 급해요</span>
-                <span class="sub__category">| 빠른 교환을 원하는 물품들이에요</span>
-                <div style="width: 100%; height: 300px;">
-                </div>
-            </div>
-        </div>
-
-        <div class="groupListContainer" style="padding: 25px">
+        <div class="groupListContainer" style="padding: 25px; background: rgb(227, 230, 234);">
             <div class="container">
                 <span class="fast__category">이런 그룹은 어떠신가요?</span>
                 <span class="sub__category">| 특정 그룹 멤버들과 소통해보세요</span>
@@ -50,7 +41,7 @@
             </div>
         </div>
 
-        <div class="batterServiceContainer" style="padding: 25px; background: rgb(227, 230, 234);">
+        <div class="batterServiceContainer" style="padding: 25px;">
             <div class="container">
                 <span class="fast__category">배달서비스로 용돈벌기</span>
                 <span class="sub__category">| 물물교환을 대신 진행하고 용돈을 벌어보세요</span>
@@ -59,7 +50,7 @@
             </div>
         </div>
 
-        <div class="groupListContainer" style="padding: 25px">
+        <div class="groupListContainer" style="padding: 25px; background: rgb(227, 230, 234);">
             <div class="container">
                 <span class="fast__category">새로운 물품들과 교환해보세요</span>
                 <span class="sub__category">| 원하시는 물품을 골라 물물교환 해보세요</span>
@@ -120,7 +111,7 @@
 
                     if (groupKeyIndex >= 5) {
                         groupKeyIndex = 0
-                        groupPageIndex++
+                        groupPageIndex ++
                         $('.carousel-inner').append(
                             '<div class="groupItemBox' + groupPageIndex + ' carousel-item">' +
                             '</div>'
@@ -163,7 +154,7 @@
                 $.each(data.content, function(key, value){
 
                     console.log(value)
-                    var boardId = value.id;
+                    var boardId = value.boardId;
                     var title = value.title;
                     var price = value.price;
                     var location = value.location;
@@ -200,8 +191,8 @@
 
     }
 
-    function goToUrl(id){
-        location.href = 'http://localhost:8000/board/article/' + id;
+    function goToUrl(boardId){
+        location.href = 'http://localhost:8000/request/exchange/' + boardId;
     }
 
     function convert(num){

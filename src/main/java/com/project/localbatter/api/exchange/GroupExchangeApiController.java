@@ -10,7 +10,7 @@ import com.project.localbatter.entity.Exchange.WriterExchangeEntity;
 import com.project.localbatter.entity.Exchange.WriterExchangeEntity.ExchageOnOff;
 import com.project.localbatter.entity.GroupBoardEntity;
 import com.project.localbatter.entity.GroupBoardFileEntity;
-import com.project.localbatter.services.ExchangeService;
+import com.project.localbatter.services.Exchange.ExchangeService;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;

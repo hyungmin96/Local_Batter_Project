@@ -5,15 +5,15 @@
 <input type="hidden" class="login_user_id" value="${g_user.id}">
 <input type="hidden" class="group_title" value="${group_title.groupTitle}">
 
-        <div class="title__container">
-                <div class="chatroom__title">${group_title.groupTitle} 채팅방</div>
-                <div class="menu__option">
-                        <img src="/images/menu24.png" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-                </div>
+<div class="title__container">
+        <div class="chatroom__title">${group_title.groupTitle} 채팅방</div>
+        <div class="menu__option">
+                <img src="/images/menu_14px.png" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
         </div>
-        <div id="group_box" class="group_chat_box">
-                <div class="Groupchatroom__chat__list" style="height: 469px;">
-        </div>
+</div>
+
+<div id="group_box" class="group_chat_box">
+        <div class="Groupchatroom__chat__list" style="height: 469px;"></div>
 </div>
 
 <div class="chatroom__file__container">
@@ -38,12 +38,11 @@
                                 <img class="search_img" src="/images/search_26px.png">
                         </div>
                 </div>
-       </div>
+        </div>
 
         <div class="offcanvas-body" style="padding: 5px; background-color: #eaeaea">
 
         </div>
-
 </div>
 <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 <script src="/webjars/sockjs-client/sockjs.min.js"></script>

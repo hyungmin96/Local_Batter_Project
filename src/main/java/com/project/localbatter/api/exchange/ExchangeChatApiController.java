@@ -1,7 +1,7 @@
 package com.project.localbatter.api.exchange;
 
 import com.project.localbatter.dto.exchangeDTO.ExchangeChatMessageDTO;
-import com.project.localbatter.services.ExchangeChatService;
+import com.project.localbatter.services.Exchange.ExchangeChatService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;

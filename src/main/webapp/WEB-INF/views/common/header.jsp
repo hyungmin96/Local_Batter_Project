@@ -30,7 +30,6 @@
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
                 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
                 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-                <script src="/js/search.js"></script>
             </head>
 
 <body>
@@ -103,6 +102,20 @@
     function goProfile(){
         window.location.href = '/my/profile/' + $('.g_user_id').val()
     }
+    $(function (){
+        $('#search-value').keyup(function(event) {
+            if (event.keyCode === 13){
+                if($('#search-value').val().length > 0)
+                    window.location.href = '/search/exchange/search=' + $('#search-value').val()
+                else alert('검색하실 내용을 입력해주세요')
+            }
+        });
+        $('.icon').click(() => {
+            if ($('#search-value').val().length > 0)
+                window.location.href = '/search/exchange/search=' + $('#search-value').val()
+            else alert('검색하실 내용을 입력해주세요')
+        })
+    })
 </script>
 <style>
     body{
