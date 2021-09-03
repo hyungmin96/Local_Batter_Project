@@ -29,12 +29,12 @@
             <div class="container">
                 <span class="fast__category">이런 그룹은 어떠신가요?</span>
                 <span class="sub__category">| 특정 그룹 멤버들과 소통해보세요</span>
-                    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" style="min-height: 606px;">
+                    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" style="min-height: 535px;">
                         <ol class="carousel-indicators" style="bottom: -18px; filter: invert(40%);">
                             <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
                         </ol>
                         <div class="carousel-inner" style="padding: 0 0 0 33px">
-                            <div class="groupItemBox0 carousel-item active">
+                            <div class="groupItemBox0 carousel-item active" style="display:flex; flex-direction: row; flex-wrap: wrap;">
                             </div>
                         </div>
                     </div>
@@ -90,8 +90,8 @@
                 $.each(response, function (key, value) {
                     var html = ''
                     const files = (value.filePath != null) ? value.filePath : ''
-                    html += "<div id='groupId_" + value.id + "' onclick=location.href='/group/" + value.id + "' class='groupItemContainer' style='cursor: pointer; width: 1400px; display: inline-flex; padding: 15px;'>"
-                    html += "<div class='groupThumbnailBox'>"
+                    html += "<div id='groupId_" + value.id + "' onclick=location.href='/group/" + value.id + "' class='groupItemContainer' style='cursor: pointer; width: 545px; display: inline-flex; padding: 10px;'>"
+                    html += "<div class='groupThumbnailBox' style='border: 1px solid #d2d2d2;'>"
                     html += "<img class='groupThumbnail' src='/upload/" + files + "'>"
                     html += "</div>"
                     html += "<div class='groupTextContainer' style='margin-left: 20px;'>"
@@ -109,7 +109,8 @@
                     html += "</div>"
                     html += "</div>"
 
-                    if (groupKeyIndex >= 5) {
+                    // 하나의 indicator에서 표시할 그룹의 갯수
+                    if (groupKeyIndex >= 10) {
                         groupKeyIndex = 0
                         groupPageIndex ++
                         $('.carousel-inner').append(
@@ -213,6 +214,7 @@
     $(window).on('unload', function() {
         $(window).scrollTop(0);
     });
+
 </script>
 <%@ include file="../common/footer.jsp" %>
 

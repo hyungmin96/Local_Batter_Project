@@ -9,12 +9,20 @@
 
         <div class="searchResultWrapper">
 
-            <div class="searchResultBox">
-                <span class="searchKeyword"></span>의 검색결과 <span class="searchCount"></span>개가 검색되었습니다.
+            <div class="selectCategory" style="display: flex; flex-direction: row">
+                <button class="selectButton selectBoardsButton" style="background: #e0dcdc; border-radius: 15px;">게시글</button>
+                <button class="selectButton selectGroupButton">그룹</button>
+                <div class="searchResultBox" style="padding: 3px;">
+                    <span class="searchKeyword"></span>검색결과 <span class="searchCount"></span>개가 검색되었습니다.
+                </div>
             </div>
 
-            <div class="searchItemsContainer" style="padding: 10px; display: flex; flex-wrap: wrap; flex-direction: row;">
+            <hr style="border: none; height: 1px; background: #8a8888;"/>
 
+            <div>
+                <div class="searchItemsContainer" style="padding: 10px;">
+
+                </div>
             </div>
 
         </div>
@@ -48,7 +56,6 @@
             type: 'GET',
             data: data,
             success: (response) => {
-                console.log(response)
                 $('#search-value')[0].value = data.search
                 $('.searchKeyword')[0].innerHTML = data.search
                 $('.searchCount')[0].innerHTML = response.numberOfElements
@@ -56,31 +63,49 @@
                 if(response.numberOfElements > 0){
                     var html = ''
                     $.each(response.content, (key, value) =>{
-                        html += '<div class="img_box fadein" style="border: 1px solid rgb(238, 238, 238); cursor: pointer; width: 196px; height: 316px; margin: 0 6px 0 6px;">';
-                        html += '<div onclick="goToUrl(' + value.boardId + ')" style="width: 189px;" class="today-item-box">';
-                        html += '<div class="today-box">';
-                        html += '<img style="width: 189px; height: 196px;" src="/upload/' + value.thumbnail + '" onerror="this.style.display=none">';
-                        html += '</div>';
-                        html += '<div class="today-detail-box" style="width: 189px; background: white; border-top: 1px solid rgb(238, 238, 238)">';
-                        html += '<div style="padding: 10px;" ss="type">';
-                        html += '<div class="title">' + value.title + '</div>';
-                        html += '<div class="board-line"></div>';
-                        html += '<div class="line">';
-                        html += '<div class="price">' + convert(value.price) + '<span class="k-money" style="font-size: 12px;"> 원</span></div>';
-                        html += '</div>';
-                        html += '</div>';
-                        html += '<div style="border-top: 1px solid rgb(238, 238, 238); padding: 5px;">';
-                        html += '<div style="border-radius: 0" class="badge bg-secondary">' + value.location + '</div>';
+                        console.log(value)
+                        html += '<div style="width: 100%;">';
+                        html += '<div class="searchItemBox" style="padding: 10px; margin: auto auto 12px auto; height: 250px; width: 900px; background: white; border: 1px solid rgb(238, 238, 238);">';
+                        html += '<div style="cursor: pointer;">';
+                        html += '<div class="searchItemTitle">' + value.title + '</div>';
+                        html += '<hr style="border: none; height: 1px; background: #918f8f;">';
+                        html += '<div style="padding: 0 10px 0 10px;">';
+                        html += '<div style="display: flex; flex-direction: row; justify-content: space-between;">';
+                        html += '<div class="searchItemContent">' + value.content + '</div>';
+                        html += '<div class="searchItemThumbnail">'
+                        html += '<img class="searchItemThumbnailImg" src=/upload/' + value.thumbnail + '>'
                         html += '</div>';
                         html += '</div>';
                         html += '</div>';
+                        html += '<div class="searchItemUser" style="display: flex; flex-direction: row">'
+                        html += '<div class="searchItemUserProfile">'
+                        html += '<img class="searchItemUserProfileImg" src="/upload/' + value.writerProfile + '">'
+                        html += '</div>'
+                        html += '<div class="searchItemUsername" style="margin: auto 10px auto 10px;">' + value.writerUsername + '</div>'
+                        html += '<div class="searchItemRegTime" style="margin: auto 10px auto 10px;">'
+                        html += new Date(value.regTime).toLocaleDateString([], {
+                            'year' : '2-digit',
+                            'month' : '2-digit',
+                            'day' : '2-digit',
+                            'hour' : '2-digit',
+                            'minute' : '2-digit',
+                        }) + '분'
+                        html += '</div>'
+                        html += '</div>';
+                        html += '</div>';
+                        html += '<hr style="border: none; height: 1px; background: #918f8f; margin: 10px 0 10px 0">';
+                        html += '<a class="searchGroupUrl" style="text-decoration: none;" href="#"><div class="searchGroupId_' + value.groupId + '" style="display: flex; flex-direction: row;">'
+                        html += '<div class="searchItemGroupProfile">'
+                        html += '<img class="searchItemGroupProfileImg" src="/upload/' + value.groupProfile + '">'
+                        html += '</div>'
+                        html += '<div class="searchItemGroupTitle" style="margin: auto 5px auto 5px;">' + value.groupTitle + '</div>';
+                        html += '</div></a>';
                         html += '</div>';
                     })
                     $('.searchItemsContainer').append(html)
                 }
             }
         })
-
     }
 
     function convert(num){

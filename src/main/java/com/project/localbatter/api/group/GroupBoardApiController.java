@@ -87,6 +87,12 @@ public class GroupBoardApiController {
         private LocalDateTime regTime;
         private String thumbnail;
 
+        private String writerUsername;
+        private String writerProfile;
+        private Long groupId;
+        private String groupProfile;
+        private String groupTitle;
+
     }
 
     @Setter @Getter

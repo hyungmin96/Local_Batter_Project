@@ -13,6 +13,9 @@ import org.springframework.stereotype.Service;
 
 import static com.project.localbatter.entity.Exchange.QWriterExchangeEntity.writerExchangeEntity;
 import static com.project.localbatter.entity.QGroupBoardEntity.groupBoardEntity;
+import static com.project.localbatter.entity.QGroupEntity.groupEntity;
+import static com.project.localbatter.entity.QGroupUserJoinEntity.groupUserJoinEntity;
+import static com.project.localbatter.entity.QUserEntity.userEntity;
 
 @Service
 @RequiredArgsConstructor
@@ -34,10 +37,19 @@ public class SearchExchangeService {
                         writerExchangeEntity.price,
                         writerExchangeEntity.location,
                         groupBoardEntity.regTime,
-                        groupBoardEntity.thumnbnailPath.as("thumbnail")
+                        groupBoardEntity.thumnbnailPath.as("thumbnail"),
+                        userEntity.username.as("writerUsername"),
+                        userEntity.profilePath.as("writerProfile"),
+                        groupEntity.id.as("groupId"),
+                        groupEntity.filePath.as("groupProfile"),
+                        groupEntity.groupTitle.as("groupTitle")
                         ))
                 .from(groupBoardEntity)
-                .innerJoin(groupBoardEntity.writerExchangeEntity, writerExchangeEntity)
+                .leftJoin(groupBoardEntity.groupUserJoinEntity, groupUserJoinEntity)
+                .leftJoin(groupUserJoinEntity.group, groupEntity)
+                .leftJoin(groupBoardEntity.writerExchangeEntity, writerExchangeEntity)
+                .leftJoin(userEntity)
+                .on(groupBoardEntity.writer.eq(userEntity.id))
                 .where(groupBoardEntity.content.contains(search)
                 .and(groupBoardEntity.BoardCategory.eq(GroupBoardEntity.BoardCategory.exchange)));
 
