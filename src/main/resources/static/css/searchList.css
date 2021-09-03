@@ -41,6 +41,28 @@
     object-fit: cover;
 }
 
+.groupItemContainer img{
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+}
+
+.groupTextContainer .groupTitle{
+    color: black;
+    font-family: Pretendard-Regular;
+    font-size: 17px;
+}
+
+.groupTextContainer .groupDescription{
+    color: #252525;
+    font-size: 13px;
+}
+
+.groupTextContainer .groupMemberCount{
+    font-size: 12px;
+    color: #484848;
+}
+
 .searchItemUserProfileImg{
     width: 35px;
     height: 35px;

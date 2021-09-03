@@ -2,6 +2,7 @@ package com.project.localbatter.services;
 
 import com.project.localbatter.api.group.GroupBoardApiController.ResponseGroupExchangeDTO;
 import com.project.localbatter.components.PagingUtil;
+import com.project.localbatter.dto.Group.GroupPageDTO;
 import com.project.localbatter.entity.GroupBoardEntity;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -23,6 +24,27 @@ public class SearchExchangeService {
 
     private final JPAQueryFactory queryFactory;
     private final PagingUtil pagingUtil;
+
+    public Page<GroupPageDTO> getSearchGroupList(String search, Pageable pageRequest){
+
+        long queryCount = queryFactory.selectFrom(groupEntity).fetchCount();
+
+        JPAQuery<GroupPageDTO> query = queryFactory.select(Projections.fields(GroupPageDTO.class,
+                    groupEntity.id.as("groupId"),
+                    groupEntity.groupTitle.as("groupTitle"),
+                    groupEntity.description.as("description"),
+                    groupEntity.owner.as("owner"),
+                    groupEntity.filePath.as("filePath"),
+                    groupEntity.location.as("location"),
+                    groupEntity.tag.as("tag"),
+                    groupEntity.memberCount.as("memberCount")
+                ))
+                .from(groupEntity)
+                .where(groupEntity.groupTitle.contains(search));
+
+        return pagingUtil.getPageImpl(pageRequest, query, queryCount, GroupPageDTO.class);
+
+    }
 
     public Page<ResponseGroupExchangeDTO> getSearchExchangeList(String search, Pageable pageRequest){
 

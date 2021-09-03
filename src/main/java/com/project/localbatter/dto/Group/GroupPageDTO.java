@@ -1,6 +1,5 @@
 package com.project.localbatter.dto.Group;
 
-import com.project.localbatter.entity.GroupEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,6 +17,7 @@ public class GroupPageDTO {
     private String description;
     private String owner;
     private String filePath;
+    private String location;
     private String tag;
     private int memberCount;
     private String result;

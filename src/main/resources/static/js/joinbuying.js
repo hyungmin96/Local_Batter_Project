@@ -83,6 +83,7 @@ function createGroup(){
     formData.append('title', $('.groupTitle').val());
     formData.append('description', $('.groupDescriptionText').val());
     formData.append('owner', $('.g_user_name').val());
+    formData.append('location', $('#location').val());
     formData.append('tag', $('#tags').val());
     formData.append('chk_1', $('#' + checkboxArary[0].children[0].id).val());
     formData.append('chk_2', $('#' + checkboxArary[1].children[0].id).val());

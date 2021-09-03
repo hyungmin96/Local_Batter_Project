@@ -16,6 +16,7 @@ public class GroupCreateDTO {
     private String chk_1; // 전체공개
     private String chk_2; // 일부공개
     private String chk_3; // 비공개
+    private String location;
     private String tags;
     private GroupEntity.roomEnumType type;
     private MultipartFile[] files;

@@ -1,6 +1,7 @@
 package com.project.localbatter.api;
 
 import com.project.localbatter.api.group.GroupBoardApiController.ResponseGroupExchangeDTO;
+import com.project.localbatter.dto.Group.GroupPageDTO;
 import com.project.localbatter.services.SearchExchangeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,4 +22,11 @@ public class SeachExchangeAPIController {
         Pageable pageRequest = PageRequest.of(page, display);
         return searchExchangeService.getSearchExchangeList(search, pageRequest);
     }
+
+    @GetMapping("/api/search/get_group_list/")
+    public Page<GroupPageDTO> getSearchGroupList(@RequestParam String search, @RequestParam int page, @RequestParam int display){
+        Pageable pageRequest = PageRequest.of(page, display);
+        return searchExchangeService.getSearchGroupList(search, pageRequest);
+    }
+
 }

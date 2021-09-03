@@ -71,6 +71,14 @@
     outline: none;
 }
 
+#location{
+    border: 1px solid #ccc;
+    padding: 5px;
+    font-size: 13px;
+    margin: 0 0 0 10px;
+    width: 85%;
+}
+
 #tags{
     border: 1px solid #ccc;
     padding: 5px;

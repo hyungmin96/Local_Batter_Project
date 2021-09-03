@@ -34,6 +34,9 @@ public class GroupEntity implements Serializable {
     @Column(name = "group_tag")
     private String tag;
 
+    @Column(name = "group_location")
+    private String location;
+
     @Column(name = "group_type")
     @Enumerated(EnumType.STRING)
     private roomEnumType type;

@@ -36,15 +36,22 @@
                             </div>
                             <div style="background: rgb(243, 245, 248); padding: 25px; margin: 10px;">
                                 <div class="article__item__box">
+                                    <label class="item__value" style="font-size: 13px; font-weight: 400">그룹 위치</label>
+                                    <input type="text" name="tag" id="location" class="inputbox" placeholder="대전 유성구 용산동"/>
+                                </div>
+
+                                <hr style="border: none; height: 1px; background: #ccc; margin: 10px 3px 10px 3px;">
+
+                                <div class="article__item__box">
                                     <label class="item__value" style="font-size: 13px; font-weight: 400">그룹 태그</label>
                                     <input type="text" name="tag" id="tags" class="inputbox" placeholder="#한밭대학교#컴퓨터공학과"/>
                                 </div>
 
-                                <hr style="border: none; height: 1px; background: #ccc; margin: 5px 3px 5px 3px;">
+                                <hr style="border: none; height: 1px; background: #ccc; margin: 10px 3px 10px 3px;">
 
                                 <div class="article__item__box">
                                     <label class="item__value" style="font-size: 13px; font-weight: 400">그룹 설정</label>
-                                    <div class="chk _group" style="display: inline-flex; padding: 10px; width: 100%">
+                                    <div class="chk _group" style="display: inline-flex; padding: 10px;">
                                         <div class="checkbox _openChk" onclick="checkboxOnLoad(this);"><input
                                                 type="checkbox" id="chk_1" checked="checked" value="1"/>전체 공개</div>
                                         <div class="checkbox _partChk" onclick="checkboxOnLoad(this);"><input
