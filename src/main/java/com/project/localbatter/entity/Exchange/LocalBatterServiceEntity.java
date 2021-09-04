@@ -1,5 +1,6 @@
 package com.project.localbatter.entity.Exchange;
 
+import com.project.localbatter.entity.BaseTimeEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -10,7 +11,7 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @Table(name = "tbl_localbatter_service")
-public class LocalBatterServiceEntity {
+public class LocalBatterServiceEntity extends BaseTimeEntity {
 
     @Id
     @GeneratedValue

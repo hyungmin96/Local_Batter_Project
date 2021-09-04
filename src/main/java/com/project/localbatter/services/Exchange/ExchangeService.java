@@ -6,10 +6,7 @@ import com.project.localbatter.dto.GenerateFileDTO;
 import com.project.localbatter.dto.Group.GroupBoardDTO;
 import com.project.localbatter.dto.TransactionDTO;
 import com.project.localbatter.dto.exchangeDTO.*;
-import com.project.localbatter.entity.Exchange.ClientExchangeEntity;
-import com.project.localbatter.entity.Exchange.ExchangeFileEntity;
-import com.project.localbatter.entity.Exchange.WriterClientJoinEntity;
-import com.project.localbatter.entity.Exchange.WriterExchangeEntity;
+import com.project.localbatter.entity.Exchange.*;
 import com.project.localbatter.entity.GroupBoardEntity;
 import com.project.localbatter.repositories.Exchange.*;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +16,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.stream.Collectors;
+
 import static com.project.localbatter.api.exchange.GroupExchangeApiController.*;
 
 @Service
@@ -35,6 +34,7 @@ public class ExchangeService {
     private final ExchangeQueryComponent exchangeQueryComponent; // Using @Component annotaion to get exchange data
     private final ExchangeChatService exchangeChatService;
     private final LocalBatterServiceRepository localBatterServiceRepository;
+
     /*  post method service */
 
     // 사용자가 신청한 Batter Service 게시글을 삭제
@@ -102,6 +102,13 @@ public class ExchangeService {
     }
 
     /* Get method service */
+
+    // 로컬바터서비스에 등록된 TOP10 Entities를 조회
+    // View top 10 entities in localbatterservice Repository
+    @Transactional(readOnly = true)
+    public List<LocalBatterServiceEntity> getServiceList(){
+        return localBatterServiceRepository.findTop5ByOrderById();
+    }
 
     // View the client's reqeust for exchange info
     // client가 교환요청한 게시글의 정보를 조회

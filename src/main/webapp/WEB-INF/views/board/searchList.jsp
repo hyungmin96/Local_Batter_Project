@@ -135,7 +135,7 @@
             search: $('.searchKeywordValue').val(),
             order: 'Latest',
             page: searchGroupPage,
-            display: 50
+            display: 20
         }
 
         $.ajax({
@@ -152,7 +152,7 @@
                 $.each(response.content, function (key, value) {
                     var html = ''
                     const files = (value.filePath != null) ? value.filePath : ''
-                    html += "<div id='groupId_" + value.id + "' onclick=location.href='/group/" + value.id + "' class='groupItemContainer' style='cursor: pointer; width: 100%; display: inline-flex; padding: 10px;'>"
+                    html += "<div id='groupId_" + value.id + "' onclick=location.href='/group/" + value.groupId + "' class='groupItemContainer' style='cursor: pointer; width: 100%; display: inline-flex; padding: 10px;'>"
                     html += "<div class='groupThumbnailBox' style='border: 1px solid #d2d2d2;'>"
                     html += "<img class='groupThumbnail' src='/upload/" + files + "'>"
                     html += "</div>"

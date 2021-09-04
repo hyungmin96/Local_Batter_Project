@@ -34,6 +34,7 @@ public class ExchangeChatService {
     private final GenerateFile generateFile;
     private final ExchangeChatRepository exchangeChatRepository;
 
+
     public void sendMessage(ExchangeChatMessageDTO messageDTO){
         exchangeChatRepository.save(messageDTO.toEntity());
         simpMessagingTemplate.convertAndSend("/exchange/userId=" + messageDTO.getReceiveId(), messageDTO);

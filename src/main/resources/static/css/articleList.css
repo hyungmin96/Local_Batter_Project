@@ -24,7 +24,7 @@
 .groupTextContainer .groupTitle{
     color: black;
     font-family: Pretendard-Regular;
-    font-size: 17px;
+    font-size: 16px;
 }
 
 .groupTextContainer .groupDescription{
@@ -39,8 +39,37 @@
 
 -->
 
+.localBatterServiceItem{
+    font-family: Pretendard-Regular;
+    font-size: 14px;
+}
+
+.serviceItemsContainer button{
+    border: 1px solid #d9d6d6;
+    background: white;
+    font-size: 14px;
+    padding: 5px;
+    width: 60px;
+    height: 33px;
+    margin: auto 0 auto 0
+}
+
+.serviceItemsContainer button:hover{
+    background: #ece9e9;
+}
+
 .groupItemContainer:hover{
     background: #d8d8d8;
+}
+
+.localBatterServiceColumn{
+    font-family: Pretendard-Regular;
+    font-size: 15px;
+    background: white;
+}
+
+.localBatterServiceColumn div{
+    padding: 10px 15px 10px 15px;
 }
 
 .content-wrapper {

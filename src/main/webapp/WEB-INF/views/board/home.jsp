@@ -43,9 +43,25 @@
 
         <div class="batterServiceContainer" style="padding: 25px;">
             <div class="container">
-                <span class="fast__category">배달서비스로 용돈벌기</span>
-                <span class="sub__category">| 물물교환을 대신 진행하고 용돈을 벌어보세요</span>
-                <div style="width: 100%; height: 300px;">
+                    <div class="fast__category">배달서비스로 용돈벌기</div>
+                    <span class="sub__category">| 물물교환을 대신 진행하고 용돈을 벌어보세요</span>
+
+                <div style="padding: 0 0 0 33px; width: 100%; max-height: 500px;">
+                    <div class="localBatterServiceColumn" style="border-bottom: 1px solid #d9d6d6; text-align: center; width: 100%; display: inline-flex;">
+                        <div style="width: 25%">등록시간</div>
+                        <div style="width: 40%">교환위치</div>
+                        <div style="width: 15%">닉네임</div>
+                        <div style="width: 10%">결제금액</div>
+                        <div style="width: 10%"></div>
+                    </div>
+                    <div class="serviceListContainer" style="display:flex; width: 100%; max-height: 500px; background: white;">
+                        <div class="emptyServiceView" style="margin: auto;">
+                            등록된 서비스가 존재하지 않습니다.
+                        </div>
+                        <div class="serviceItemsContainer" style="padding: 10px; max-height: 500px; width: 100%; text-align: center">
+
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -68,6 +84,7 @@
 
     $(document).ready((e) =>{
         loadGroupChatRoomList(e, 0)
+        loadServiceListAjax()
     })
 
     function loadGroupChatRoomList(e, groupPage = 0){
@@ -137,6 +154,53 @@
         }
     });
 
+    function loadServiceListAjax(){
+
+        $.ajax({
+            url: '/api/exchange/get_service_list',
+            type: 'GET',
+            data: '',
+            success: (response) =>{
+                if(response.length > 0){
+                    $('.emptyServiceView').hide()
+                    var html = ''
+                    var moreViewButton = ''
+                    $.each(response, (key, value) =>{
+                        html += '<div class="localBatterServiceItem" id=localBatterServiceId_' + value.id + '>'
+                        html += '<div style="padding: 10px; display: inline-flex; width: 100%;">'
+                        html += '<div style="width: 25%; margin: auto 0 auto 0">'
+                        html += new Date(value.regTime).toLocaleTimeString([], {
+                            'year': '2-digit',
+                            'month': '2-digit',
+                            'day': '2-digit',
+                            'hour': '2-digit',
+                            'minute': '2-digit',
+                        }) + '분'
+                        html += '</div>'
+                        html += '<div style="width: 40%;">'
+                        html += '<div>' + value.exchangeAddr + '</div>'
+                        html += '<div>' + value.exchangeDetailAddr + '</div>'
+                        html += '</div>'
+                        html += '<div style="width: 16%; margin: auto 0 auto 0;">작성자 닉네임</div>'
+                        html += '<div style="width: 11%; margin: auto 0 auto 0;">' + value.price + '원</div>'
+                        html += '<div style="width: 8%;"><button>보기</button></div>'
+                        html += '</div>'
+                        html += '</div>'
+                    })
+                    $('.serviceItemsContainer').append(html)
+                    if(response.length >= 5){
+                        moreViewButton += '<div style="padding: 10px; width: 100%">'
+                        moreViewButton += '<button style="width: 100%; font-family: Pretendard-Regular">더 보기</button>'
+                        moreViewButton += '</div>'
+                        $('.serviceItemsContainer').append(moreViewButton)
+                    }
+                }
+            }
+        })
+
+    }
+
+    var isLastBoardPage = false;
     function loadData(){
 
         var display = 60;
@@ -146,46 +210,47 @@
             url: '/api/v2/group/board/get_exchange_list',
             type: 'GET',
             data: { pageNum: groupBoardPage, display: display},
-            success: function(data){
+            success: function(response){
 
                 var html = '';
-
                 var todayItemBox = $('.groupExchangeBoardList');
 
-                $.each(data.content, function(key, value){
+                if(!isLastBoardPage){
+                    isLastBoardPage = (response.last == true)
+                    $.each(response.content, function(key, value){
 
-                    console.log(value)
-                    var boardId = value.boardId;
-                    var title = value.title;
-                    var price = value.price;
-                    var location = value.location;
+                        var boardId = value.boardId;
+                        var title = value.title;
+                        var price = value.price;
+                        var location = value.location;
 
-                    let fileName = value.thumbnail != null ? value.thumbnail : '';
-                    html += '<div class="img_box fadein" style="width: 230px; margin: 0 12px 0 12px;">';
-                    html += '<div onclick="goToUrl(' + boardId + ')" class="today-item-box">';
-                    html += '<div class="today-box">';
-                    html += '<img src="/upload/' + fileName + '" onerror="this.style.display=none">';
-                    html += '</div>';
-                    html += '<div class="today-detail-box">';
-                    html += '<div class="type">';
-                    html += '<div class="title">' + title + '</div>';
-                    html += '<div class="board-line"></div>';
-                    html += '<div class="line">';
-                    html += '<div class="price">' + convert(price) + '<span class="k-money">원</span></div>';
-                    html += '</div>';
-                    html += '<hr style="border: none; height: 1px; background-color: #848484; margin: 5px 0 5px 0;"/>';
-                    html += '<span class="badge bg-secondary">' + location + '</span>';
-                    html += '</div>';
-                    html += '</div>';
-                    html += '</div>';
-                    html += '</div>';
+                        let fileName = value.thumbnail != null ? value.thumbnail : '';
+                        html += '<div class="img_box fadein" style="width: 230px; margin: 0 12px 0 12px;">';
+                        html += '<div onclick="goToUrl(' + boardId + ')" class="today-item-box">';
+                        html += '<div class="today-box">';
+                        html += '<img src="/upload/' + fileName + '" onerror="this.style.display=none">';
+                        html += '</div>';
+                        html += '<div class="today-detail-box">';
+                        html += '<div class="type">';
+                        html += '<div class="title">' + title + '</div>';
+                        html += '<div class="board-line"></div>';
+                        html += '<div class="line">';
+                        html += '<div class="price">' + convert(price) + '<span class="k-money">원</span></div>';
+                        html += '</div>';
+                        html += '<hr style="border: none; height: 1px; background-color: #848484; margin: 5px 0 5px 0;"/>';
+                        html += '<span class="badge bg-secondary">' + location + '</span>';
+                        html += '</div>';
+                        html += '</div>';
+                        html += '</div>';
+                        html += '</div>';
 
-                });
+                    });
 
-                todayItemBox.append(html);
+                    todayItemBox.append(html);
 
-                groupBoardPage++;
-                flag = false;
+                    groupBoardPage++;
+                    flag = false;
+                }
             }
 
         })

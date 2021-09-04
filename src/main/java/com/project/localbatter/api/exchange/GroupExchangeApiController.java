@@ -5,6 +5,7 @@ import com.project.localbatter.dto.TransactionDTO;
 import com.project.localbatter.dto.exchangeDTO.ClientExchangeDTO;
 import com.project.localbatter.dto.exchangeDTO.LocalBatterServiceDTO;
 import com.project.localbatter.entity.Exchange.ClientExchangeEntity;
+import com.project.localbatter.entity.Exchange.LocalBatterServiceEntity;
 import com.project.localbatter.entity.Exchange.WriterClientJoinEntity;
 import com.project.localbatter.entity.Exchange.WriterExchangeEntity;
 import com.project.localbatter.entity.Exchange.WriterExchangeEntity.ExchageOnOff;
@@ -34,6 +35,11 @@ import java.util.stream.Collectors;
 public class GroupExchangeApiController {
 
     private final ExchangeService groupExchangeService;
+
+    @GetMapping("/get_service_list")
+    public List<LocalBatterServiceEntity> getServiceList(){
+        return groupExchangeService.getServiceList();
+    }
 
     @PostMapping("/delete/service")
     public ResponseEntity<String> deleteLocalBatterService(LocalBatterServiceDTO localBatterServiceDTO){
