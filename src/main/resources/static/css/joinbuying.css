@@ -50,8 +50,13 @@
 .Group__room__content{
     font-family: Noto Sans KR;
     font-size: 13px;
-    height: 75px;
+    height: 90px;
     padding: 10px;
+}
+
+.groupLocation{
+    font-size: 12px;
+    font-family: Pretendard-Regular;
 }
 
 .groupTitle{

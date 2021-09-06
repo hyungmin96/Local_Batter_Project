@@ -8,7 +8,6 @@
                     <div>
                         <img style="height: 480px; width: 880px; border: 1px solid #d3cfcf" src="/images/main/logo.jpg" class="logoImage exchangeBoards">
                     </div>
-                    <div></div>
                 </div>
                 <div class="subBannerContainer">
                     <div class="bannerGroupList">
@@ -31,11 +30,10 @@
                 <span class="sub__category">| 특정 그룹 멤버들과 소통해보세요</span>
                     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" style="min-height: 535px;">
                         <ol class="carousel-indicators" style="bottom: -18px; filter: invert(40%);">
-                            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+
                         </ol>
                         <div class="carousel-inner" style="padding: 0 0 0 33px">
-                            <div class="groupItemBox0 carousel-item active" style="display:flex; flex-direction: row; flex-wrap: wrap;">
-                            </div>
+
                         </div>
                     </div>
             </div>
@@ -54,8 +52,8 @@
                         <div style="width: 10%">결제금액</div>
                         <div style="width: 10%"></div>
                     </div>
-                    <div class="serviceListContainer" style="display:flex; width: 100%; max-height: 500px; background: white;">
-                        <div class="emptyServiceView" style="margin: auto;">
+                    <div class="serviceListContainer" style="width: 100%; max-height: 500px; background: white;">
+                        <div class="emptyServiceView" style="text-align: center; height: 150px;">
                             등록된 서비스가 존재하지 않습니다.
                         </div>
                         <div class="serviceItemsContainer" style="padding: 10px; max-height: 500px; width: 100%; text-align: center">
@@ -103,11 +101,14 @@
             type: 'GET',
             data: data,
             success: function (response) {
+
                 $('.groupList').empty()
+                var isActive = true;
+
                 $.each(response, function (key, value) {
                     var html = ''
                     const files = (value.filePath != null) ? value.filePath : ''
-                    html += "<div id='groupId_" + value.id + "' onclick=location.href='/group/" + value.id + "' class='groupItemContainer' style='cursor: pointer; width: 545px; display: inline-flex; padding: 10px;'>"
+                    html += "<div id='groupId_" + value.id + "' onclick=location.href='/group/" + value.id + "' class='groupItemContainer' style='cursor: pointer; width: 590px; display: inline-flex; padding: 10px;'>"
                     html += "<div class='groupThumbnailBox' style='border: 1px solid #d2d2d2;'>"
                     html += "<img class='groupThumbnail' src='/upload/" + files + "'>"
                     html += "</div>"
@@ -115,8 +116,8 @@
                     html += "<div class='groupTitle'>"
                     html += value.groupTitle
                     html += "</div>"
-                    html += "<div style='margin: 3px 0 0 5px;'>"
-                    html += "<div class='groupDescription'>"
+                    html += "<div style='margin: 0 0 0 3px;'>"
+                    html += "<div class='groupDescription' style='height: 40px;'>"
                     html += value.description
                     html += "</div>"
                     html += "<div class='groupMemberCount'>"
@@ -128,17 +129,23 @@
 
                     // 하나의 indicator에서 표시할 그룹의 갯수
                     if (groupKeyIndex >= 10) {
+                        var activeStatus = ''
+                        if(isActive) {
+                            isActive = false
+                            activeStatus = 'active'
+                        }
                         groupKeyIndex = 0
                         groupPageIndex ++
+                        $('.carousel-indicators').append(
+                            '<li data-target="#carouselExampleIndicators" data-slide-to="' + (groupPageIndex - 1) + '" class="active"></li>'
+                        )
+
                         $('.carousel-inner').append(
-                            '<div class="groupItemBox' + groupPageIndex + ' carousel-item">' +
+                            '<div class="groupItemBox' + groupPageIndex + ' carousel-item ' + activeStatus + '">' +
                             '</div>'
                         )
-                        $('.carousel-indicators').append(
-                            '<li data-target="#carouselExampleIndicators" data-slide-to="' + groupPageIndex + '"></li>'
-                        )
                     }
-                    groupKeyIndex++
+                    groupKeyIndex ++
                     $('.groupItemBox' + groupPageIndex).prepend(html)
                 })
             }
@@ -186,6 +193,7 @@
                         html += '<div style="width: 8%;"><button>보기</button></div>'
                         html += '</div>'
                         html += '</div>'
+                        html += '</div>'
                     })
                     $('.serviceItemsContainer').append(html)
                     if(response.length >= 5){
@@ -197,7 +205,6 @@
                 }
             }
         })
-
     }
 
     var isLastBoardPage = false;
@@ -214,7 +221,7 @@
 
                 var html = '';
                 var todayItemBox = $('.groupExchangeBoardList');
-
+                console.log(response)
                 if(!isLastBoardPage){
                     isLastBoardPage = (response.last == true)
                     $.each(response.content, function(key, value){
@@ -224,25 +231,45 @@
                         var price = value.price;
                         var location = value.location;
 
-                        let fileName = value.thumbnail != null ? value.thumbnail : '';
-                        html += '<div class="img_box fadein" style="width: 230px; margin: 0 12px 0 12px;">';
-                        html += '<div onclick="goToUrl(' + boardId + ')" class="today-item-box">';
-                        html += '<div class="today-box">';
-                        html += '<img src="/upload/' + fileName + '" onerror="this.style.display=none">';
-                        html += '</div>';
-                        html += '<div class="today-detail-box">';
-                        html += '<div class="type">';
-                        html += '<div class="title">' + title + '</div>';
-                        html += '<div class="board-line"></div>';
-                        html += '<div class="line">';
-                        html += '<div class="price">' + convert(price) + '<span class="k-money">원</span></div>';
-                        html += '</div>';
-                        html += '<hr style="border: none; height: 1px; background-color: #848484; margin: 5px 0 5px 0;"/>';
-                        html += '<span class="badge bg-secondary">' + location + '</span>';
-                        html += '</div>';
-                        html += '</div>';
-                        html += '</div>';
-                        html += '</div>';
+                        var diffValue
+                        var diffTime
+                        if(new Date().getFullYear() - new Date(value.regTime).getFullYear() > 0){
+                            diffValue = new Date().getFullYear() - new Date(value.regTime).getFullYear()
+                            diffTime = '년 전'
+                        }else if(new Date().getMonth() - new Date(value.regTime).getMonth() > 0){
+                            diffValue = new Date().getMonth() - new Date(value.regTime).getMonth()
+                            diffTime = '달 전'
+                        }else if(new Date().getHours() - new Date(value.regTime).getHours() > 0){
+                            diffValue = new Date().getHours() - new Date(value.regTime).getHours()
+                            diffTime = '시간 전'
+                        }else if(new Date().getMinutes() - new Date(value.regTime).getMinutes() > 0){
+                            diffValue = new Date().getMinutes() - new Date(value.regTime).getMinutes()
+                            diffTime = '분 전'
+                        }else if(new Date().getSeconds() - new Date(value.regTime).getSeconds() > 0){
+                            diffValue = new Date().getSeconds() - new Date(value.regTime).getSeconds()
+                            diffTime = '초 전'
+                        }
+
+                        let fileName = value.thumbnail != null ? value.thumbnail : ''
+                        html += '<div class="img_box fadein" style="width: 208px;">'
+                        html += '<div onclick="goToUrl(' + boardId + ')" class="today-item-box">'
+                        html += '<div class="today-box">'
+                        html += '<img src="/upload/' + fileName + '" onerror="this.style.display=none">'
+                        html += '</div>'
+                        html += '<div class="today-detail-box">'
+                        html += '<div class="type">'
+                        html += '<div class="title" style="margin-bottom: -3px;">' + title + '</div>'
+                        html += '<div style="display: flex; justify-content: space-between;">'
+                        html += '<div class="price">' + convert(price) + '<span class="k-money">원</span></div>'
+                        html += '<div style="width: 35%; margin: auto 0 auto 0; font-size: 12px; color: #919090; text-align: right">' + diffValue + diffTime + '</div>'
+                        html += '</div>'
+                        html += '</div>'
+                        html += '<hr style="border: none; height: 1px; background-color: #dad8d8; margin: 3px 0 3px 0;"/>'
+                        html += '<span class="badge bg-secondary" style="font-size: 11px;">' + location + '</span>'
+                        html += '</div>'
+                        html += '</div>'
+                        html += '</div>'
+                        html += '</div>'
 
                     });
 

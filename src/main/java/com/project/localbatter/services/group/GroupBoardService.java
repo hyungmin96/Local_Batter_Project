@@ -71,7 +71,7 @@ public class GroupBoardService {
                         ))
                 .from(groupBoardEntity)
                 .innerJoin(groupBoardEntity.writerExchangeEntity, writerExchangeEntity)
-                .orderBy(groupBoardEntity.writerExchangeEntity.regTime.desc())
+                .orderBy(groupBoardEntity.writerExchangeEntity.id.desc())
                 .offset(page.getPageNumber())
                 .limit(page.getPageSize());
 

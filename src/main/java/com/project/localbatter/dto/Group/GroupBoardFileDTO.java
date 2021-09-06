@@ -3,7 +3,6 @@ package com.project.localbatter.dto.Group;
 import com.project.localbatter.dto.GenerateFileDTO;
 import com.project.localbatter.entity.GroupBoardEntity;
 import com.project.localbatter.entity.GroupBoardFileEntity;
-import com.querydsl.core.annotations.QueryProjection;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,6 +14,10 @@ public class GroupBoardFileDTO {
     private Long groupId;
     private Long id;
     private int size;
+
+    public GroupBoardFileDTO(){
+
+    }
 
     public GroupBoardFileDTO(GenerateFileDTO groupFileDTO) {
         this.name = groupFileDTO.getName();

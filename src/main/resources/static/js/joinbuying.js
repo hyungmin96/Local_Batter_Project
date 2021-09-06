@@ -50,6 +50,7 @@ function loadGroupChatRoomList(e, page = 0){
         data: data,
         success: function(response){
             $.each(response.content, function(key, value){
+                console.log(value)
                 const files = (value.filePath != null) ? value.filePath : '';
                 $('.Group__room__list').append(
                     "<div id='item__box__" + value.id + "' class='group_item_box' style='width: 190px;'>" +
@@ -62,8 +63,10 @@ function loadGroupChatRoomList(e, page = 0){
                                 "<span>인원 : </span>" +
                                 "<span class = 'Group__room__users'>" + value.memberCount + "명</span>" +
                             "</div>" +
-                        "</div>" +
-                        "</div>" +
+                        "<hr style='margin: 7px 0 7px 0; border: none; height: 1px; background: #cccccc'>" +
+                        "<div class = 'groupLocation'>" + value.location + "</div>" +
+                    "</div>" +
+                    "</div>" +
                     "</div>" +
                     "</div>"
                 );

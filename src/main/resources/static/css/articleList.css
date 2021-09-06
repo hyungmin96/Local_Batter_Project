@@ -45,7 +45,7 @@
 }
 
 .serviceItemsContainer button{
-    border: 1px solid #d9d6d6;
+    border: 1px solid #f7f7f7;
     background: white;
     font-size: 14px;
     padding: 5px;
@@ -134,7 +134,7 @@ a:link {
 }
 
 .type {
-    padding: 5px;
+    padding: 3px;
 }
 
 @font-face {
@@ -267,11 +267,12 @@ a:link {
     min-height: 200px;
     height: 100%;
     flex-wrap: wrap;
+    padding: 0 0 0 27px;
 }
 
 .today-box {
-    height: 210px;
-    width: 216px;
+    height: 186px;
+    width: 194px;
     border-bottom: 1px solid #eceaea;
 }
 
@@ -320,7 +321,6 @@ a:link {
 .fadein {
     -webkit-animation: fadein 2s;
     -moz-animation: fadein 2s;
-    -ms-animation: fadein 2s;
     -o-animation: fadein 2s;
     animation: fadein 2s;
 }

@@ -1,6 +1,7 @@
 package com.project.localbatter.services.Exchange;
 
 import com.project.localbatter.api.exchange.ExchangeChatApiController.ResponseChatListDTO;
+import com.project.localbatter.api.exchange.ExchangeChatApiController.ResponseServiceDTO;
 import com.project.localbatter.components.GenerateFile;
 import com.project.localbatter.components.PagingUtil;
 import com.project.localbatter.dto.GenerateFileDTO;
@@ -21,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+import static com.project.localbatter.entity.Exchange.QLocalBatterServiceEntity.localBatterServiceEntity;
 import static com.project.localbatter.entity.Exchange.QWriterClientJoinEntity.writerClientJoinEntity;
 import static com.project.localbatter.entity.QExchangeChatEntity.exchangeChatEntity;
 
@@ -48,6 +50,14 @@ public class ExchangeChatService {
             simpMessagingTemplate.convertAndSend("/exchange/userId=" + messageDTO.getReceiveId(), messageDTO);
         });
         return messageDTO;
+    }
+
+    public ResponseServiceDTO getService(Long userId, Long exchangeId){
+        return queryFactory.select(Projections.constructor(ResponseServiceDTO.class, localBatterServiceEntity))
+                .from(localBatterServiceEntity)
+                .where(localBatterServiceEntity.userId.eq(userId)
+                .and(localBatterServiceEntity.writerClientJoinId.eq(exchangeId)))
+                .fetchOne();
     }
 
     public Page<ResponseChatListDTO> getChatItems(Long exchangeId, Pageable pageRequest){
@@ -111,6 +121,7 @@ public class ExchangeChatService {
                         , exchangeChatEntity.id.eq(JPAExpressions.select(exchangeChatEntity.id.max())
                 .from(exchangeChatEntity)
                 .where(exchangeChatEntity.exchangeId.eq(writerClientJoinEntity.clientExchangeEntity.id))))
+                .orderBy(exchangeChatEntity.regTime.asc())
                 .fetch();
     }
 }

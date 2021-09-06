@@ -16,6 +16,12 @@
     color: #262626;
 }
 
+.searchItemPrice{
+    font-size: 21px;
+    font-family: 'Pretendard-SemiBold';
+    color: #e65151;
+}
+
 .searchItemGroupTitle{
     font-family: Pretendard-Regular;
     font-size: 13px;

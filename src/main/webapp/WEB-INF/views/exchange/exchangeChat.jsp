@@ -150,6 +150,9 @@
                                     <textarea type="text" class="inputbox requestContentBox" value="" placeholder="요청사항" rows="3"></textarea>
                                 </div>
                                 <div>
+                                    <input type="text" class="inputbox preferTimeBox" value="" placeholder="물품교환 날짜" style="margin-top: 7px; font-size: 12px; width: 100%;">
+                                </div>
+                                <div>
                                     <input type="text"  onkeyup="convertM(this);" class="inputbox priceBox" value="" placeholder="결제금액">
                                 </div>
                             </div>
@@ -176,6 +179,31 @@
     </div>
 </div>
 
+<!-- Localbatter Service 보기 알림창 -->
+<div class="modal fade" id="viewServiceModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="margin-top: 100px; margin-left: 27%;">
+        <div class="modal-content" style="width: 900px; border-radius: 0;">
+            <div class="modal-header" style="border: none;">
+                <div class="modal-title" id="serviceRegistModal" style="margin: 0 0 0 auto">등록한 요청</div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="width: 20px; height: 20px;"></button>
+            </div>
+            <div class="registServiceContentWrapper" style="height: 586px; padding: 0.5rem;">
+
+                <div class="serviceContainer" style="display: flex; flex-direction: row">
+                    <div>교환일시</div><div class="serviceTimeBox"></div>
+                    <div>교환위치</div><div class="serviceLocationBox"></div>
+                    <div>수령위치</div><div class="serviceReceiveBox"></div>
+                    <div>요청사항</div><div class="serviceRequestBox"></div>
+                    <div>결제금액</div><div class="servicePriceBox"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!--  -->
+
+<!-- 채팅 위치발송 알림창 -->
 <div class="modal fade" id="sendMapAddressModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" style="margin-top: 100px; margin-left: 27%;">
         <div class="modal-content" style="width: 900px; border-radius: 0;">
@@ -205,6 +233,8 @@
         </div>
     </div>
 </div>
+<!--  -->
+
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2f665d933d93346898df736499236f77&libraries=services"></script>
@@ -275,6 +305,7 @@
             exchangeLatitude: '',
             request: $('.requestContentBox').val(),
             price: $('.priceBox').val(),
+            time: $('.preferTimeBox').val(),
         }
 
         $.ajax({
@@ -284,7 +315,6 @@
             data: data,
             success: (response) =>{
                 var html = ''
-                console.log(response)
 
                 html += '<div class="batterServiceItem">'
                 html += '<input type="hidden" class="serviceId" value=' + response.writerClientJoinId + '>'
@@ -313,8 +343,8 @@
             type: 'POST',
             contentType: 'application/x-www-form-urlencoded',
             data: data,
-            success: (response) =>{
-                console.log(response)
+            success: () =>{
+                $('.viewBatterServiceContainer').empty()
             }
         })
 
@@ -346,6 +376,7 @@
         chatPage = 0
         isLastPage = false
         getChatItemsAjax()
+        getLocalbatterServiceAjax()
     })
 
     $('.chatContainer').scroll(function(){
@@ -375,6 +406,39 @@
             flag = false
             chatPage++
         }
+    }
+
+    function getLocalbatterServiceAjax(){
+
+        const data = {
+            userId: chatInfoObject.userId,
+            exchangeId: chatInfoObject.exchangeId
+        }
+
+        $.ajax({
+            url: '/api/exchange/chat/get/service/item',
+            type: 'GET',
+            data: data,
+            success: (response) =>{
+                $('.viewBatterServiceContainer').empty()
+                console.log(response)
+                var html = ''
+
+                if(JSON.stringify(response).includes('userId')){
+                    html += '<div class="batterServiceItem">'
+                    html += '<input type="hidden" class="serviceId" value=' + response.writerClientJoinId + '>'
+                    html += '<div style="display: inline-flex; width: 100%">'
+                    html += '<div style="margin: auto auto auto 5px;">등록된 대리교환 요청이 있습니다.</div>'
+                    html += '<div class="serviceButton showServiceInfoButton" style="margin: auto 0 auto 0"><button>보기</button></div>'
+                    html += '<div class="serviceButton deleteServiceButton" style="margin: auto 0 auto 10px"><button>삭제</button></div>'
+                    html += '</div>'
+                    html += '</div>'
+
+                    $('.viewBatterServiceContainer').append(html)
+                }
+            }
+        })
+
     }
 
     function uploadImageToChat(f){
@@ -477,7 +541,6 @@
         var targetId
         var targetUsername
         var targetProfile
-        console.log(value)
 
         var messageType = (value.type == 'image') ? '이미지 파일' : value.message
         // 내가 보낸 채팅일 경우 메세지 앞에 '나'를 표시
@@ -586,6 +649,11 @@
 
     $('.chatMarkerUploadButton').click(function(){
         $('#sendMapAddressModal').modal('show')
+    })
+
+    $(document).on('click', '.showServiceInfoButton', ()=>{
+        console.log('run')
+        $('#viewServiceModal').modal('show')
     })
 
     $('#sendMapAddressModal').on('shown.bs.modal', function (e) {

@@ -1,6 +1,7 @@
 package com.project.localbatter.api.exchange;
 
 import com.project.localbatter.dto.exchangeDTO.ExchangeChatMessageDTO;
+import com.project.localbatter.entity.Exchange.LocalBatterServiceEntity;
 import com.project.localbatter.services.Exchange.ExchangeChatService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -8,10 +9,7 @@ import lombok.Setter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
@@ -38,6 +36,42 @@ public class ExchangeChatApiController {
     @PostMapping("/upload/image")
     public ExchangeChatMessageDTO uploadImageToChat(ExchangeChatMessageDTO messageDTO, MultipartFile[] files){
         return exchangeChatService.uploadImageToChat(messageDTO, files);
+    }
+
+    @GetMapping("/get/service/item")
+    public ResponseServiceDTO getService(@RequestParam("userId") Long userId, @RequestParam("exchangeId") Long exchangeId){
+        return exchangeChatService.getService(userId, exchangeId);
+    }
+
+    @Setter @Getter
+    public static class ResponseServiceDTO{
+        private Long userId;
+        private String receiveAddr;
+        private String receiveDetailAddr;
+        private String receiveLongitude;
+        private String receiveLatitude;
+        private Long writerClientJoinId;
+        private String exchangeAddr;
+        private String exchangeDetailAddr;
+        private String exchangeLongitude;
+        private String exchangeLatitude;
+        private String request;
+        private String price;
+
+        public ResponseServiceDTO(LocalBatterServiceEntity entity){
+            this.userId = entity.getUserId();
+            this.receiveAddr = entity.getReceiveAddr();
+            this.receiveDetailAddr = entity.getReceiveDetailAddr();
+            this.receiveLongitude = entity.getReceiveLongitude();
+            this.receiveLatitude = entity.getReceiveLatitude();
+            this.writerClientJoinId = entity.getWriterClientJoinId();
+            this.exchangeAddr = entity.getExchangeAddr();
+            this.exchangeDetailAddr = entity.getExchangeDetailAddr();
+            this.exchangeLongitude = entity.getExchangeLongitude();
+            this.exchangeLatitude = entity.getExchangeLatitude();
+            this.request = entity.getRequest();
+            this.price = entity.getPrice();
+        }
     }
 
     @Setter @Getter

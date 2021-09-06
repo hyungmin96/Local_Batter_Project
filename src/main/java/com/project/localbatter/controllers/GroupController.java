@@ -34,7 +34,7 @@ public class GroupController {
 
     @GetMapping("/group/{groupId}")
     public String getGrouproom(Model model, @PathVariable Long groupId){
-        GroupEntity groupEntity = groupRepository.getOne(groupId);
+        GroupEntity groupEntity = groupRepository.getById(groupId);
         List<GroupCommentEntity> comment = groupCommentRepository.findTop5ByGroupId(groupEntity.getId());
         List<GroupBoardFileEntity> files = groupBoardFileRepository.findTop9BygroupId(groupEntity.getId());
         model.addAttribute("groupObject", groupEntity);

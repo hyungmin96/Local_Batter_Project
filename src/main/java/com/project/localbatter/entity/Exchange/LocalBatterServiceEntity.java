@@ -54,4 +54,7 @@ public class LocalBatterServiceEntity extends BaseTimeEntity {
     @Column(name = "price")
     private String price;
 
+    @Column(name = "time")
+    private String time;
+
 }

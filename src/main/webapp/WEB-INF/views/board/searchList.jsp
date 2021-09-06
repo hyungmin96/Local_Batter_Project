@@ -72,7 +72,10 @@
                         html += '<hr style="border: none; height: 1px; background: #918f8f;">';
                         html += '<div style="padding: 0 10px 0 10px;">';
                         html += '<div style="display: flex; flex-direction: row; justify-content: space-between;">';
+                        html += '<div>'
                         html += '<div class="searchItemContent">' + value.content + '</div>';
+                        html += '<div class="searchItemPrice">' + convert(value.price) + '<span style="font-size: 16px; color: black"> 원</span></div>';
+                        html += '</div>'
                         html += '<div class="searchItemThumbnail">'
                         html += '<img class="searchItemThumbnailImg" src=/upload/' + value.thumbnail + '>'
                         html += '</div>';
@@ -192,5 +195,19 @@
         $('.selectGroupButton')[0].style.background = 'transparent'
         loadSearchDataAjax()
     })
+
+    function convert(num){
+        var len, point, str;
+        num = num + "";
+        point = num.length % 3 ;
+        len = num.length;
+        str = num.substring(0, point);
+        while (point < len) {
+            if (str != "") str += ",";
+            str += num.substring(point, point + 3);
+            point += 3;
+        }
+        return str;
+    }
 
 </script>

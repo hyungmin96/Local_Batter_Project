@@ -20,7 +20,7 @@
 
 .writerProductTitle{
     font-family: 'Pretendard-SemiBold', sans-serif;
-    font-size: 37px;
+    font-size: 27px;
     padding: 0 5px 5px 0;
     display: inline-block;
     overflow: hidden;
@@ -34,7 +34,7 @@
 
 .writerProductContent{
     font-family: 'Pretendard-Regular', sans-serif;
-    font-size: 21px;
+    font-size: 17px;
     padding: 0 5px 5px 0;
     word-break: break-all;
     white-space: break-spaces;
@@ -44,9 +44,9 @@
 
 .writerProductPrice{
     font-family: Pretendard-SemiBold;
-    font-size: 19px;
+    font-size: 23px;
     letter-spacing: 0;
-    color: red;
+    color: #fb4d4d;
 }
 
 .clientImageUploadButton{
@@ -118,6 +118,7 @@
     font-size: 13px;
     font-family: Pretendard-Regular;
     padding: 10px;
+    width: 100%;
 }
 
 .serviceButton button{
