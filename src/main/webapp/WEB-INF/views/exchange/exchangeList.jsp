@@ -412,11 +412,6 @@
             clientExchangeId: $(this).attr('id').split('_')[1]
         }
 
-        if($(this)[0].id.indexOf('clientCancelExhchangeId') >= 0)
-            $(this).closest('.requestItemBox').remove()
-        else
-            $(this).closest('.clientRequestItemBox').remove()
-
         $.ajax({
             url: '/api/exchange/cancel/request',
             type: 'POST',
@@ -424,6 +419,10 @@
             contentType: 'application/x-www-form-urlencoded',
             success: function(response){
                 alert('교환요청을 삭제하였습니다.')
+                if($(this)[0].id.indexOf('clientCancelExhchangeId') >= 0)
+                    $(this).closest('.requestItemBox').remove()
+                else
+                    $(this).closest('.clientRequestItemBox').remove()
             }
         })
     })

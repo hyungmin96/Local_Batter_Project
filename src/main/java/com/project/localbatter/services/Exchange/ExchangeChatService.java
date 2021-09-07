@@ -9,6 +9,7 @@ import com.project.localbatter.dto.exchangeDTO.ExchangeChatMessageDTO;
 import com.project.localbatter.entity.Exchange.WriterClientJoinEntity;
 import com.project.localbatter.entity.ExchangeChatEntity;
 import com.project.localbatter.entity.QUserEntity;
+import com.project.localbatter.repositories.Exchange.ClientExchangeRepository;
 import com.project.localbatter.repositories.Exchange.ExchangeChatRepository;
 import com.project.localbatter.repositories.Exchange.WriterClientJoinRepository;
 import com.querydsl.core.types.Projections;
@@ -38,7 +39,7 @@ public class ExchangeChatService {
     private final GenerateFile generateFile;
     private final ExchangeChatRepository exchangeChatRepository;
     private final WriterClientJoinRepository writerClientJoinRepository;
-
+    private final ClientExchangeRepository clientExchangeRepository;
 
     public void sendMessage(ExchangeChatMessageDTO messageDTO){
         exchangeChatRepository.save(messageDTO.toEntity());
@@ -60,7 +61,22 @@ public class ExchangeChatService {
     public void exitChat(Long userId, Long exchangeId){
         WriterClientJoinEntity writerClientJoinEntity = writerClientJoinRepository.findByExchangeId(exchangeId);
         writerClientJoinEntity.exitChatRoom(userId);
-        writerClientJoinRepository.save(writerClientJoinEntity);
+        ExchangeChatMessageDTO messageDTO = new ExchangeChatMessageDTO();
+        messageDTO.setMessage("상대방이 채팅방을 나갔습니다.");
+        messageDTO.setExchangeId(exchangeId);
+        messageDTO.setType(ExchangeChatMessageDTO.ExchangeMessageType.quit);
+
+        if(writerClientJoinEntity.getWriterId() == null && writerClientJoinEntity.getClientId() == null){
+            // 모든 채팅내역 삭제
+            List<ExchangeChatEntity> items = exchangeChatRepository.findAllByExchangeId(exchangeId);
+            exchangeChatRepository.deleteAll(items);
+            writerClientJoinRepository.delete(writerClientJoinEntity);
+            // 교환요청 삭제
+            clientExchangeRepository.deleteById(exchangeId);
+        }else{
+            simpMessagingTemplate.convertAndSend("/exchange/userId=" + messageDTO.getReceiveId(), messageDTO);
+            exchangeChatRepository.save(messageDTO.toEntity());
+        }
     }
 
     // Get registed service of exchangeId's room
@@ -98,8 +114,8 @@ public class ExchangeChatService {
                         exchangeChatEntity.regTime.as("regTime")
                         ))
                 .from(exchangeChatEntity)
-                .innerJoin(senderEntity).on(exchangeChatEntity.senderId.eq(senderEntity.id))
-                .innerJoin(receiveEntity).on(exchangeChatEntity.receiveId.eq(receiveEntity.id))
+                .leftJoin(senderEntity).on(exchangeChatEntity.senderId.eq(senderEntity.id))
+                .leftJoin(receiveEntity).on(exchangeChatEntity.receiveId.eq(receiveEntity.id))
                 .where(exchangeChatEntity.exchangeId.eq(exchangeId))
                 .offset(pageRequest.getPageNumber())
                 .limit(pageRequest.getPageSize())
@@ -129,8 +145,8 @@ public class ExchangeChatService {
                         exchangeChatEntity.regTime.as("regTime")
                 ))
                 .from(writerClientJoinEntity)
-                .innerJoin(writerId).on(writerClientJoinEntity.writerId.eq(writerId.id))
-                .innerJoin(clientId).on(writerClientJoinEntity.clientId.eq(clientId.id))
+                .leftJoin(writerId).on(writerClientJoinEntity.writerId.eq(writerId.id))
+                .leftJoin(clientId).on(writerClientJoinEntity.clientId.eq(clientId.id))
                 .innerJoin(exchangeChatEntity).on(writerClientJoinEntity.clientExchangeEntity.id.eq(exchangeChatEntity.exchangeId))
                 .where(writerClientJoinEntity.writerId.eq(userId).or(writerClientJoinEntity.clientId.eq(userId))
                         , exchangeChatEntity.id.eq(JPAExpressions.select(exchangeChatEntity.id.max())

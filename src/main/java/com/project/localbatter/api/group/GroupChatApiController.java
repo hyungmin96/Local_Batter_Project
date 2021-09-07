@@ -29,9 +29,8 @@ public class GroupChatApiController {
     }
 
     @PostMapping("/upload")
-    public ResponseImageChatDTO uploadImgToGroupChat(GroupChatMessageDTO messageDTO){
-        groupChatService.sendImageToGroupChat(messageDTO);
-        return new ResponseImageChatDTO(messageDTO);
+    public GroupChatMessageDTO uploadImgToGroupChat(GroupChatMessageDTO messageDTO){
+        return groupChatService.sendImageToGroupChat(messageDTO);
     }
 
     @PostMapping("/exit")
@@ -41,7 +40,6 @@ public class GroupChatApiController {
         messageDTO.setUserId(groupJoinRequestDTO.getUserId());
         messageDTO.setMessage(groupJoinRequestDTO.getUsername() + " 님이 나갔습니다.");
         messageDTO.setType("exit");
-
         groupChatService.sendGroupRoomToChat(messageDTO);
         return new ResponseEntity<String>("Success", HttpStatus.OK);
     }

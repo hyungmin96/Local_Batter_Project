@@ -14,6 +14,7 @@ import static com.project.localbatter.entity.Exchange.WriterClientJoinEntity.sta
 @AllArgsConstructor
 @Builder
 @Table(name = "tbl_writer_client_join")
+@EntityListeners(WriterClientJoinListenerEntity.class)
 public class WriterClientJoinEntity extends BaseTimeEntity {
 
     @Id @GeneratedValue

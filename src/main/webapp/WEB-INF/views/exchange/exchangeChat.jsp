@@ -429,6 +429,7 @@
                 type: 'GET',
                 data: {exchangeId: chatInfoObject.exchangeId, page: chatPage, display: 20},
                 success: (response) => {
+                    console.log(response)
                     if(response.last != false) isLastPage = true
                     let currentScrollbarPosition = $('.chatContainer')[0].scrollHeight - $('.chatContainer')[0].scrollTop
                     $.each(response.content, function(key, value){
@@ -580,11 +581,17 @@
         var targetUsername
         var targetProfile
 
+
         var messageType = (value.type == 'image') ? '이미지 파일' : value.message
         // 내가 보낸 채팅일 경우 메세지 앞에 '나'를 표시
         var fromChat = ($('.g_user_id').val() == value.messageId) ? '<span class="displayMeChat">나</span>' : ''
+
+        if(value.receiveId == null){
+            // 채팅방의 상대 user가 대화방을 나갈경우
+            targetUsername = '알수없음'
+        }
+        else if($('.g_user_id').val() == value.senderId){
         // 채팅방목록 조회 시 로그인한 계정과 대화중인 계정의 정보를 조회
-        if($('.g_user_id').val() == value.senderId){
              targetId = value.receiveId
              targetUsername = value.receiveUsername
              targetProfile = value.receiveProfile
@@ -624,6 +631,11 @@
     function inputChat(message){
         switch(true){
             case message.type == 'enter':
+                return "<div class='notiChatContent' style='padding: 10px 25px 10px 25px;'>" +
+                    "<div class='notiContent' style='text-align: center'>" + message.message + "</div>" +
+                    "</div>"
+
+            case message.type == 'quit':
                 return "<div class='notiChatContent' style='padding: 10px 25px 10px 25px;'>" +
                     "<div class='notiContent' style='text-align: center'>" + message.message + "</div>" +
                     "</div>"
@@ -708,20 +720,22 @@
 
     $(document).on('click', '.chatExitMenuButton', ()=>{
 
-        const data = {
-            userId: chatInfoObject.userId,
-            exchangeId: chatInfoObject.exchangeId
-        }
-
-        $.ajax({
-            url: '/api/exchange/chat/exit',
-            type: 'POST',
-            data: data,
-            contentType: 'application/x-www-form-urlencoded',
-            success: (response) =>{
-
+        if(confirm('채팅방을 나가면 대화목록에서 삭제되며 교환요청이 취소됩니다. \n 나가시겠습니까?')){
+            const data = {
+                userId: chatInfoObject.userId,
+                exchangeId: chatInfoObject.exchangeId
             }
-        })
+
+            $.ajax({
+                url: '/api/exchange/chat/exit',
+                type: 'POST',
+                data: data,
+                contentType: 'application/x-www-form-urlencoded',
+                success: () =>{
+                    alert('해당 채팅방을 나갔습니다.')
+                }
+            })
+        }
     })
 
     $(document).on('click', '.showProfileMenuButton', ()=>{
