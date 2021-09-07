@@ -19,6 +19,7 @@ public class LocalBatterServiceDTO {
     private String exchangeLatitude;
     private String request;
     private String price;
+    private String time;
 
     public LocalBatterServiceEntity toEntity(){
         return LocalBatterServiceEntity
@@ -35,6 +36,7 @@ public class LocalBatterServiceDTO {
                 .exchangeLatitude(exchangeLatitude)
                 .request(request)
                 .price(price)
+                .time(time)
                 .build();
     }
 }

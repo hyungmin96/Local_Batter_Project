@@ -22,6 +22,11 @@ public class ExchangeChatApiController {
 
     private final ExchangeChatService exchangeChatService;
 
+    @PostMapping("/exit")
+    public void exitChat(@RequestParam("userId") Long userId, @RequestParam("exchangeId") Long exchangeId){
+        exchangeChatService.exitChat(userId, exchangeId);
+    }
+
     @GetMapping("/get_chat_list")
     public List<ResponseChatListDTO> getChatList(Long userId){
         return exchangeChatService.getExchageChatList(userId);
@@ -57,6 +62,7 @@ public class ExchangeChatApiController {
         private String exchangeLatitude;
         private String request;
         private String price;
+        private String time;
 
         public ResponseServiceDTO(LocalBatterServiceEntity entity){
             this.userId = entity.getUserId();
@@ -71,6 +77,7 @@ public class ExchangeChatApiController {
             this.exchangeLatitude = entity.getExchangeLatitude();
             this.request = entity.getRequest();
             this.price = entity.getPrice();
+            this.time = entity.getTime();
         }
     }
 

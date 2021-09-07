@@ -239,6 +239,9 @@
                         }else if(new Date().getMonth() - new Date(value.regTime).getMonth() > 0){
                             diffValue = new Date().getMonth() - new Date(value.regTime).getMonth()
                             diffTime = '달 전'
+                        }else if(new Date().getDate() - new Date(value.regTime).getDate() > 0){
+                            diffValue = new Date().getDate() - new Date(value.regTime).getDate()
+                            diffTime = '일 전'
                         }else if(new Date().getHours() - new Date(value.regTime).getHours() > 0){
                             diffValue = new Date().getHours() - new Date(value.regTime).getHours()
                             diffTime = '시간 전'

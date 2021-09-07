@@ -6,9 +6,11 @@ import com.project.localbatter.components.GenerateFile;
 import com.project.localbatter.components.PagingUtil;
 import com.project.localbatter.dto.GenerateFileDTO;
 import com.project.localbatter.dto.exchangeDTO.ExchangeChatMessageDTO;
+import com.project.localbatter.entity.Exchange.WriterClientJoinEntity;
 import com.project.localbatter.entity.ExchangeChatEntity;
 import com.project.localbatter.entity.QUserEntity;
 import com.project.localbatter.repositories.Exchange.ExchangeChatRepository;
+import com.project.localbatter.repositories.Exchange.WriterClientJoinRepository;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -35,6 +37,7 @@ public class ExchangeChatService {
     private final PagingUtil pagingUtil;
     private final GenerateFile generateFile;
     private final ExchangeChatRepository exchangeChatRepository;
+    private final WriterClientJoinRepository writerClientJoinRepository;
 
 
     public void sendMessage(ExchangeChatMessageDTO messageDTO){
@@ -52,6 +55,16 @@ public class ExchangeChatService {
         return messageDTO;
     }
 
+    // Exit exchangeId's chatting room
+    // exchangeId의 채팅방 나가기
+    public void exitChat(Long userId, Long exchangeId){
+        WriterClientJoinEntity writerClientJoinEntity = writerClientJoinRepository.findByExchangeId(exchangeId);
+        writerClientJoinEntity.exitChatRoom(userId);
+        writerClientJoinRepository.save(writerClientJoinEntity);
+    }
+
+    // Get registed service of exchangeId's room
+    // exchangeId 채팅방에 등록된 서비스를 조회
     public ResponseServiceDTO getService(Long userId, Long exchangeId){
         return queryFactory.select(Projections.constructor(ResponseServiceDTO.class, localBatterServiceEntity))
                 .from(localBatterServiceEntity)
@@ -60,6 +73,8 @@ public class ExchangeChatService {
                 .fetchOne();
     }
 
+    // Get all chats of exchangeId's room
+    // exchangeId 채팅방의 모든 채팅내역을 조회
     public Page<ResponseChatListDTO> getChatItems(Long exchangeId, Pageable pageRequest){
         QUserEntity senderEntity = new QUserEntity("senderEntity");
         QUserEntity receiveEntity = new QUserEntity("receiveEntity");

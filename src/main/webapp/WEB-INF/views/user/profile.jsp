@@ -4,6 +4,8 @@
 
 <div class="container">
 
+    <input type="hidden" class="userId" value="${userId}">
+
     <div style="margin: 105px 0 45px 0; height: 100%; background: rgb(255, 255, 255)">
         <div class="userProfileInfoContainer" style="box-shadow: 1px 2px 5px 2px rgba(0, 0, 0, 0.05); width: 100%; display: inline-flex; padding: 15px;">
             <div class="userInfoContainer" style="margin: auto; justify-content: center; text-align: center; width: 40%; height: 100%;">
@@ -74,7 +76,7 @@
 
         // profile user 정보 조회
         const data = {
-            userId: $('.g_user_id').val(),
+            userId: $('.userId').val(),
         }
 
         $.ajax({
@@ -112,7 +114,7 @@
 
         // profile url 의 게시글 목록을 조회
         const data = {
-            userId: $('.g_user_id').val(),
+            userId: $('.userId').val(),
             display: 10,
             page: profileBoardPage
         }

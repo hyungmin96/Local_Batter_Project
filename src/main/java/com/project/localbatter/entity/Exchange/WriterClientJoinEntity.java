@@ -60,4 +60,8 @@ public class WriterClientJoinEntity extends BaseTimeEntity {
         this.status = complete;
     }
 
+    public void exitChatRoom(Long userId){
+        if(writerId.equals(userId)) this.writerId = null; else this.clientId = null;
+    }
+
 }

@@ -24,11 +24,14 @@
                         </div>
                     </div>
 
-                    <div class="chatOptionButton" style="margin:auto auto auto auto; width: 5%">
-                        <img style="cursor:pointer;" src="/images/menu_14px.png">
+                    <div style="position: relative; height: 0;" class="menuOptionBox">
+                        <div class="chatOptionButton">
+                            <img style="float: right; cursor: pointer; object-fit: cover; margin: 15px 10px;" src="/images/menu_14px.png">
+                        </div>
                     </div>
 
                 </div>
+
                 <div class="chatContainer" style="border-top: 1px solid #ebebeb; background: rgb(247, 248, 249); border-bottom: 1px solid #ebebeb; height: 78%">
 
                 </div>
@@ -181,20 +184,45 @@
 
 <!-- Localbatter Service 보기 알림창 -->
 <div class="modal fade" id="viewServiceModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" style="margin-top: 100px; margin-left: 27%;">
-        <div class="modal-content" style="width: 900px; border-radius: 0;">
+    <div class="modal-dialog" style="margin-top: 100px; margin-left: 31%;">
+        <div class="modal-content" style="width: 700px; border-radius: 0;">
             <div class="modal-header" style="border: none;">
                 <div class="modal-title" id="serviceRegistModal" style="margin: 0 0 0 auto">등록한 요청</div>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="width: 20px; height: 20px;"></button>
             </div>
-            <div class="registServiceContentWrapper" style="height: 586px; padding: 0.5rem;">
+            <div class="registServiceContentWrapper" style="height: 386px; padding: 0.5rem;">
 
-                <div class="serviceContainer" style="display: flex; flex-direction: row">
-                    <div>교환일시</div><div class="serviceTimeBox"></div>
-                    <div>교환위치</div><div class="serviceLocationBox"></div>
-                    <div>수령위치</div><div class="serviceReceiveBox"></div>
-                    <div>요청사항</div><div class="serviceRequestBox"></div>
-                    <div>결제금액</div><div class="servicePriceBox"></div>
+                <div class="serviceContainer" style="padding: 10px 25px 0 37px">
+                    <div style="padding: 10px;">
+                        <div style="display: inline-flex;">
+                            <div class="itemCategory">교환일시</div>
+                            <div class="serviceContent serviceTimeBox"></div>
+                        </div>
+                    </div>
+                    <div style="padding: 10px;">
+                        <div style="display: inline-flex;">
+                            <div class="itemCategory">교환위치</div>
+                            <div class="serviceContent serviceLocationBox"></div>
+                        </div>
+                    </div>
+                    <div style="padding: 10px;">
+                        <div style="display: inline-flex;">
+                            <div class="itemCategory">수령위치</div>
+                            <div class="serviceContent serviceReceiveBox"></div>
+                        </div>
+                    </div>
+                    <div style="padding: 10px;">
+                        <div style="display: inline-flex;">
+                            <div class="itemCategory">요청사항</div>
+                            <div class="serviceContent serviceRequestBox"></div>
+                        </div>
+                    </div>
+                    <div style="padding: 10px;">
+                        <div style="display: inline-flex;">
+                            <div class="itemCategory">결제금액</div>
+                            <div class="serviceContent servicePriceBox"></div>
+                        </div>
+                    </div>
                 </div>
 
             </div>
@@ -318,6 +346,12 @@
 
                 html += '<div class="batterServiceItem">'
                 html += '<input type="hidden" class="serviceId" value=' + response.writerClientJoinId + '>'
+                html += '<input type="hidden" class="ServiceIdValue" value=' + response.writerClientJoinId + '>'
+                html += '<input type="hidden" class="serviceTimeBoxValue" value=' + response.time + '>'
+                html += '<input type="hidden" class="serviceLocationBoxValue" value=' + response.exchangeAddr + ' ' + response.exchangeDetailAddr + '>'
+                html += '<input type="hidden" class="serviceReceiveBoxValue" value=' + response.receiveAddr + ' ' + response.receiveDetailAddr + '>'
+                html += '<input type="hidden" class="serviceRequestBoxValue" value=' + response.request + '>'
+                html += '<input type="hidden" class="servicePriceBoxValue" value=' + response.price + '>'
                 html += '<div style="display: inline-flex; width: 100%">'
                 html += '<div style="margin: auto auto auto 5px;">물품 대리교환을 등록하였습니다.</div>'
                 html += '<div class="serviceButton showServiceInfoButton" style="margin: auto 0 auto 0"><button>보기</button></div>'
@@ -421,12 +455,16 @@
             data: data,
             success: (response) =>{
                 $('.viewBatterServiceContainer').empty()
-                console.log(response)
                 var html = ''
 
                 if(JSON.stringify(response).includes('userId')){
                     html += '<div class="batterServiceItem">'
-                    html += '<input type="hidden" class="serviceId" value=' + response.writerClientJoinId + '>'
+                    html += '<input type="hidden" class="ServiceIdValue" value=' + response.writerClientJoinId + '>'
+                    html += '<input type="hidden" class="serviceTimeBoxValue" value=' + response.time + '>'
+                    html += '<input type="hidden" class="serviceLocationBoxValue" value=' + response.exchangeAddr + ' ' + response.exchangeDetailAddr + '>'
+                    html += '<input type="hidden" class="serviceReceiveBoxValue" value=' + response.receiveAddr + ' ' + response.receiveDetailAddr + '>'
+                    html += '<input type="hidden" class="serviceRequestBoxValue" value=' + response.request + '>'
+                    html += '<input type="hidden" class="servicePriceBoxValue" value=' + response.price + '>'
                     html += '<div style="display: inline-flex; width: 100%">'
                     html += '<div style="margin: auto auto auto 5px;">등록된 대리교환 요청이 있습니다.</div>'
                     html += '<div class="serviceButton showServiceInfoButton" style="margin: auto 0 auto 0"><button>보기</button></div>'
@@ -651,9 +689,60 @@
         $('#sendMapAddressModal').modal('show')
     })
 
+    $(document).on('click', '.chatOptionButton', ()=>{
+        $('.optionMoreContainer').remove()
+
+        var html = ''
+        html += '<div class="optionMoreContainer">'
+        html += '<div class="optionMenuButton showProfileMenuButton">프로필 보기</div>'
+        html += '<hr />'
+        html += '<div class="optionMenuButton exchangeConfirmMenuButton">교환확정</div>'
+        html += '<hr />'
+        html += '<div class="optionMenuButton chatExitMenuButton">나가기</div>'
+        html += '<hr />'
+        html += '</div>'
+
+        $('.menuOptionBox').append(html)
+
+    })
+
+    $(document).on('click', '.chatExitMenuButton', ()=>{
+
+        const data = {
+            userId: chatInfoObject.userId,
+            exchangeId: chatInfoObject.exchangeId
+        }
+
+        $.ajax({
+            url: '/api/exchange/chat/exit',
+            type: 'POST',
+            data: data,
+            contentType: 'application/x-www-form-urlencoded',
+            success: (response) =>{
+
+            }
+        })
+    })
+
+    $(document).on('click', '.showProfileMenuButton', ()=>{
+        window.open('http://localhost:8000/my/profile/' + chatInfoObject.targetId)
+    })
+
+    document.body.addEventListener('click', removeMenuBox, true);
+
+    function removeMenuBox(){
+        if (document.getElementsByClassName('optionMoreContainer').length != 0)
+            $('.optionMoreContainer').remove();
+    }
+
     $(document).on('click', '.showServiceInfoButton', ()=>{
-        console.log('run')
         $('#viewServiceModal').modal('show')
+
+        $('.serviceTimeBox')[0].innerHTML = $('.serviceTimeBoxValue').val()
+        $('.serviceLocationBox')[0].innerHTML = $('.serviceLocationBoxValue').val()
+        $('.serviceReceiveBox')[0].innerHTML = $('.serviceReceiveBoxValue').val()
+        $('.serviceRequestBox')[0].innerHTML = $('.serviceRequestBoxValue').val()
+        $('.servicePriceBox')[0].innerHTML = $('.servicePriceBoxValue').val()
     })
 
     $('#sendMapAddressModal').on('shown.bs.modal', function (e) {

@@ -144,7 +144,7 @@ public class GroupBoardService {
         // Check Authorization to enter user
         GroupUserJoinEntity groupUserJoinEntity = groupUserJoinQuseryRepository
                             .findGroupUserJoinEntity(groupBoardDTO.getUserId(), groupBoardDTO.getGroupId());
-        GroupBoardEntity groupBoardEntity = groupBoardRepository.getOne(groupBoardDTO.getBoardId());
+        GroupBoardEntity groupBoardEntity = groupBoardRepository.getById(groupBoardDTO.getBoardId());
         if(!groupUserJoinEntity.getType().equals(GroupUserJoinEntity.userAuthority.member)){
             groupBoardEntity.updateNotice(groupBoardDTO.getType());
             groupBoardRepository.save(groupBoardEntity);

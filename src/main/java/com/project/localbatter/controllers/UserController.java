@@ -12,6 +12,7 @@ public class UserController {
 
     @GetMapping("/my/profile/{userId}")
     public String getProfile(Model model, @PathVariable Long userId){
+        model.addAttribute("userId", userId);
         return "/user/profile";
     }
 
