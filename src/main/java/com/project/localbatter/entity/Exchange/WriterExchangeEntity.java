@@ -48,9 +48,15 @@ public class WriterExchangeEntity extends BaseTimeEntity {
     @Column(name = "request_count")
     private int requestCount = 0;
 
+    @Column(name = "exchange_status")
+    @Enumerated(EnumType.STRING)
+    private exchangeStatus status;
+
     @OneToMany(mappedBy = "writerExchangeEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnore
     private List<WriterClientJoinEntity> writerClientJoinEntity;
+
+    public void exchangeComplete(){ this.status = exchangeStatus.complete; }
 
     public void updateCount(int value){
         this.requestCount += value;
@@ -66,8 +72,8 @@ public class WriterExchangeEntity extends BaseTimeEntity {
         this.preferTime = groupBoardDTO.getPreferTime();
     }
 
-    public enum ExchageOnOff{
-        on, off
-    }
+    public enum exchangeStatus{ wait, complete }
+
+    public enum ExchageOnOff{ on, off }
 
 }

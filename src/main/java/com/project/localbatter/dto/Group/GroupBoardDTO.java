@@ -40,6 +40,7 @@ GroupBoardDTO implements Serializable {
     // 게시글 거래위치 DTO
     private String price;
     private WriterExchangeEntity.ExchageOnOff exchangeOn;
+    private WriterExchangeEntity.exchangeStatus exchangeStatus = WriterExchangeEntity.exchangeStatus.wait;
     private String location;
     private String locationDetail;
     private String longitude;
@@ -53,7 +54,7 @@ GroupBoardDTO implements Serializable {
                 .content(content)
                 .writer(writer)
                 .boardLike(0)
-                .thumnbnailPath(thumnbnailPath)
+                .thumbnailPath(thumnbnailPath)
                 .groupUserJoinEntity(groupUserJoinEntity)
                 .writerExchangeEntity(writerExchangeEntity)
                 .BoardCategory(getCategory())
@@ -68,6 +69,7 @@ GroupBoardDTO implements Serializable {
                     .userId(userId)
                     .price(price)
                     .exchangeOn(exchangeOn)
+                    .status(exchangeStatus)
                     .location(location)
                     .locationDetail(locationDetail)
                     .longitude(longitude)

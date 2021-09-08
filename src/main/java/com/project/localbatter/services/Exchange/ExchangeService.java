@@ -37,6 +37,20 @@ public class ExchangeService {
 
     /*  post method service */
 
+    // 교환확정
+    // Confirm exchange
+    @Transactional
+    public void confirmExchange(Long userId, Long exchangeId){
+        WriterClientJoinEntity writerClientJoinEntity = writerClientJoinRepository.findByExchangeId(exchangeId);
+        writerClientJoinEntity.confirmExchangeUpdate(userId);
+        if(writerClientJoinEntity.getWriterStatus() == WriterClientJoinEntity.status.complete
+                && writerClientJoinEntity.getClientStatus() == WriterClientJoinEntity.status.complete){
+            writerClientJoinEntity.getWriterExchangeEntity().exchangeComplete();
+            writerClientJoinEntity.setComplete();
+        }
+        writerClientJoinRepository.save(writerClientJoinEntity);
+    }
+
     // 사용자가 신청한 Batter Service 게시글을 삭제
     // delete user's LocalBatter Service
     public ResponseEntity<String> deleteLocalBatterService(LocalBatterServiceDTO localBatterServiceDTO){
@@ -76,7 +90,6 @@ public class ExchangeService {
     public void cancelRequest(ClientExchangeDTO clientExchangeDTO){
         WriterClientJoinEntity writerClientJoinEntity = writerClientJoinRepository.findByClientExchangeEntity(clientExchangeDTO.getClientExchangeId());
         writerClientJoinEntity.getWriterExchangeEntity().updateCount(-1);
-        ClientExchangeEntity clientExchangeEntity = writerClientJoinEntity.getClientExchangeEntity();
         writerClientJoinRepository.delete(writerClientJoinEntity);
     }
 

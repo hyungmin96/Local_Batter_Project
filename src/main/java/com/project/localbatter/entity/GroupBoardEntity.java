@@ -43,7 +43,7 @@ public class GroupBoardEntity extends BaseTimeEntity {
     private BoardCategory BoardCategory;
 
     @Column(name = "board_thumbnail")
-    private String thumnbnailPath;
+    private String thumbnailPath;
 
     @Column(name = "writer_id")
     private Long writer;
@@ -68,7 +68,7 @@ public class GroupBoardEntity extends BaseTimeEntity {
         writerExchangeEntity.update(groupBoardDTO);
         if(files != null && files.size() > 0){
             this.files = files;
-            this.thumnbnailPath = files.get(0).getName();
+            this.thumbnailPath = files.get(0).getName();
         }
     }
 

@@ -6,6 +6,7 @@ import com.project.localbatter.dto.TransactionDTO;
 import com.project.localbatter.dto.exchangeDTO.ClientExchangeDTO;
 import com.project.localbatter.dto.exchangeDTO.ExchangeChatMessageDTO;
 import com.project.localbatter.entity.Exchange.WriterClientJoinEntity;
+import com.project.localbatter.entity.Exchange.WriterExchangeEntity;
 import com.project.localbatter.entity.GroupBoardEntity;
 import com.project.localbatter.entity.QUserEntity;
 import com.querydsl.core.types.Projections;
@@ -145,14 +146,16 @@ public class ExchangeQueryComponent {
                             groupBoardEntity.title.as("title"),
                             groupBoardEntity.content.as("content"),
                             groupBoardEntity.regTime.as("regTime"),
-                            groupBoardEntity.thumnbnailPath.as("tumbnail")
+                            groupBoardEntity.thumbnailPath.as("thumbnail"),
+                            writerExchangeEntity.status.as("status")
                     ))
                     .from(groupBoardEntity)
                     .leftJoin(groupBoardEntity.groupUserJoinEntity, groupUserJoinEntity)
                     .leftJoin(groupUserJoinEntity.user, userEntity)
                     .leftJoin(groupBoardEntity.writerExchangeEntity, writerExchangeEntity)
                     .where(userEntity.id.eq(transactionDTO.getUserId())
-                            .and(groupBoardEntity.BoardCategory.eq(GroupBoardEntity.BoardCategory.exchange)))
+                    .and(writerExchangeEntity.status.eq(WriterExchangeEntity.exchangeStatus.wait))
+                    .and(groupBoardEntity.BoardCategory.eq(GroupBoardEntity.BoardCategory.exchange)))
                     .offset(page.getPageNumber())
                     .limit(page.getPageSize())
                     .orderBy(writerExchangeEntity.requestCount.desc(), writerExchangeEntity.regTime.desc());
@@ -165,7 +168,7 @@ public class ExchangeQueryComponent {
     // view client's(login user) request exchange for board
     @Transactional(readOnly = true)
     public Page<ResponseRequestListDTO> getRequestList(TransactionDTO transactionDTO, Pageable page) {
-        Long queryCount = queryFactory
+        long queryCount = queryFactory
                 .select(writerClientJoinEntity.id)
                 .from(writerClientJoinEntity)
                 .where(writerClientJoinEntity.clientId.eq(transactionDTO.getUserId()))

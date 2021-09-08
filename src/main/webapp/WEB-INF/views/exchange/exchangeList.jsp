@@ -326,9 +326,13 @@
                         "<div id='requestBox_" + key + "' style='padding: 15px 25px 15px 25px;'>" +
                         "<div style='width:100%; display:inline-flex'>" +
                         "<div class='item requestDate' style='width: 15%; margin: auto auto; text-align: center;'>" +
-                        new Date(value.regTime).toLocaleTimeString(
-                            [], {'year':'2-digit', 'month': '2-digit', 'day':'2-digit', 'hour': '2-digit', 'minute' : '2-digit'}
-                        ) +
+                        new Date(value.regTime).toLocaleTimeString([], {
+                            'year':'2-digit',
+                            'month': '2-digit',
+                            'day':'2-digit',
+                            'hour': '2-digit',
+                            'minute' : '2-digit'
+                        }) +
                         "</div>" +
                         "<div class='item requestThumbnail' style='display: flex; text-align: center; width: 10%;'><img src=/upload/" + value.thumbnail + "></div>" +
                         "<div id='writerBoardBoxId_" + value.boardId + "' class='viewWriterBoardBox' style='cursor: pointer; width: 60%; padding: 5px 20px 10px 15px;'>" +

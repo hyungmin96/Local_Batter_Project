@@ -23,8 +23,8 @@ public class ExchangeChatApiController {
     private final ExchangeChatService exchangeChatService;
 
     @PostMapping("/exit")
-    public void exitChat(@RequestParam("userId") Long userId, @RequestParam("exchangeId") Long exchangeId){
-        exchangeChatService.exitChat(userId, exchangeId);
+    public void exitChat(@RequestParam("userId") Long userId, @RequestParam("receiveId") Long receiveId, @RequestParam("exchangeId") Long exchangeId){
+        exchangeChatService.exitChat(userId, receiveId, exchangeId);
     }
 
     @GetMapping("/get_chat_list")

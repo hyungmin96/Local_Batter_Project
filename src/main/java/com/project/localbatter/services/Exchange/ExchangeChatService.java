@@ -9,7 +9,6 @@ import com.project.localbatter.dto.exchangeDTO.ExchangeChatMessageDTO;
 import com.project.localbatter.entity.Exchange.WriterClientJoinEntity;
 import com.project.localbatter.entity.ExchangeChatEntity;
 import com.project.localbatter.entity.QUserEntity;
-import com.project.localbatter.repositories.Exchange.ClientExchangeRepository;
 import com.project.localbatter.repositories.Exchange.ExchangeChatRepository;
 import com.project.localbatter.repositories.Exchange.WriterClientJoinRepository;
 import com.querydsl.core.types.Projections;
@@ -39,7 +38,6 @@ public class ExchangeChatService {
     private final GenerateFile generateFile;
     private final ExchangeChatRepository exchangeChatRepository;
     private final WriterClientJoinRepository writerClientJoinRepository;
-    private final ClientExchangeRepository clientExchangeRepository;
 
     public void sendMessage(ExchangeChatMessageDTO messageDTO){
         exchangeChatRepository.save(messageDTO.toEntity());
@@ -58,23 +56,21 @@ public class ExchangeChatService {
 
     // Exit exchangeId's chatting room
     // exchangeId의 채팅방 나가기
-    public void exitChat(Long userId, Long exchangeId){
+    public void exitChat(Long userId, Long receiveId, Long exchangeId){
         WriterClientJoinEntity writerClientJoinEntity = writerClientJoinRepository.findByExchangeId(exchangeId);
         writerClientJoinEntity.exitChatRoom(userId);
         ExchangeChatMessageDTO messageDTO = new ExchangeChatMessageDTO();
         messageDTO.setMessage("상대방이 채팅방을 나갔습니다.");
         messageDTO.setExchangeId(exchangeId);
+        messageDTO.setReceiveId(receiveId);
         messageDTO.setType(ExchangeChatMessageDTO.ExchangeMessageType.quit);
-
+        simpMessagingTemplate.convertAndSend("/exchange/userId=" + messageDTO.getReceiveId(), messageDTO);
         if(writerClientJoinEntity.getWriterId() == null && writerClientJoinEntity.getClientId() == null){
             // 모든 채팅내역 삭제
             List<ExchangeChatEntity> items = exchangeChatRepository.findAllByExchangeId(exchangeId);
             exchangeChatRepository.deleteAll(items);
             writerClientJoinRepository.delete(writerClientJoinEntity);
-            // 교환요청 삭제
-            clientExchangeRepository.deleteById(exchangeId);
         }else{
-            simpMessagingTemplate.convertAndSend("/exchange/userId=" + messageDTO.getReceiveId(), messageDTO);
             exchangeChatRepository.save(messageDTO.toEntity());
         }
     }
@@ -149,9 +145,10 @@ public class ExchangeChatService {
                 .leftJoin(clientId).on(writerClientJoinEntity.clientId.eq(clientId.id))
                 .innerJoin(exchangeChatEntity).on(writerClientJoinEntity.clientExchangeEntity.id.eq(exchangeChatEntity.exchangeId))
                 .where(writerClientJoinEntity.writerId.eq(userId).or(writerClientJoinEntity.clientId.eq(userId))
-                        , exchangeChatEntity.id.eq(JPAExpressions.select(exchangeChatEntity.id.max())
+                        ,exchangeChatEntity.id.eq(JPAExpressions.select(exchangeChatEntity.id.max())
                 .from(exchangeChatEntity)
-                .where(exchangeChatEntity.exchangeId.eq(writerClientJoinEntity.clientExchangeEntity.id))))
+                .where(exchangeChatEntity.exchangeId.eq(writerClientJoinEntity.clientExchangeEntity.id)))
+                .and(writerClientJoinEntity.status.eq(WriterClientJoinEntity.status.process)))
                 .orderBy(exchangeChatEntity.regTime.asc())
                 .fetch();
     }

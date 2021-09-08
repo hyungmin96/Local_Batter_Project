@@ -59,7 +59,7 @@ public class SearchExchangeService {
                         writerExchangeEntity.price,
                         writerExchangeEntity.location,
                         groupBoardEntity.regTime,
-                        groupBoardEntity.thumnbnailPath.as("thumbnail"),
+                        groupBoardEntity.thumbnailPath.as("thumbnail"),
                         userEntity.username.as("writerUsername"),
                         userEntity.profilePath.as("writerProfile"),
                         groupEntity.id.as("groupId"),

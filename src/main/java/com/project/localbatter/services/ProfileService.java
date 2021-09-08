@@ -53,7 +53,7 @@ public class ProfileService {
                         writerExchangeEntity.price,
                         writerExchangeEntity.location,
                         groupBoardEntity.regTime,
-                        groupBoardEntity.thumnbnailPath.as("thumbnail")
+                        groupBoardEntity.thumbnailPath.as("thumbnail")
                         ))
                 .from(groupBoardEntity)
                 .innerJoin(groupBoardEntity.writerExchangeEntity, writerExchangeEntity)

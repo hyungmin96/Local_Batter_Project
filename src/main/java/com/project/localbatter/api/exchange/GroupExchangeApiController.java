@@ -20,10 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -35,6 +32,11 @@ import java.util.stream.Collectors;
 public class GroupExchangeApiController {
 
     private final ExchangeService groupExchangeService;
+
+    @PostMapping("/confirm")
+    public void confirmExchange(@RequestParam("userId") Long userId, @RequestParam("exchangeId") Long exchangeId){
+        groupExchangeService.confirmExchange(userId, exchangeId);
+    }
 
     @GetMapping("/get_service_list")
     public List<LocalBatterServiceEntity> getServiceList(){
@@ -177,8 +179,9 @@ public class GroupExchangeApiController {
         private String content;
         private LocalDateTime regTime;
         private String thumbnail;
+        private WriterExchangeEntity.exchangeStatus status;
 
-        public ResponseWrtierExchangeDTO(Long writerId, Long writerExchangeId, Long boardId, int reqeustCount, String title, String content, LocalDateTime regTime, String thumbnail) {
+        public ResponseWrtierExchangeDTO(Long writerId, Long writerExchangeId, Long boardId, int reqeustCount, String title, String content, LocalDateTime regTime, String thumbnail, WriterExchangeEntity.exchangeStatus status) {
             this.writerId = writerId;
             this.writerExchangeId = writerExchangeId;
             this.boardId = boardId;
@@ -187,6 +190,7 @@ public class GroupExchangeApiController {
             this.content = content;
             this.regTime = regTime;
             this.thumbnail = thumbnail;
+            this.status = status;
         }
     }
 

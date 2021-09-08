@@ -9,7 +9,7 @@
         <div style="padding: 5px 10px 5px 0; font-family: Pretendard-SemiBold; font-size: 23px;">물품교환 채팅목록</div>
         <div style="display: inline-flex; height: 725px; width: 100%">
 
-            <div id="exchangeProcessChatList" style="box-shadow: 2px 2px 3px -1px rgba(0, 0, 0, 0.12); width: 30%; background: rgb(227, 230, 234); height: 100%">
+            <div id="exchangeProcessChatList" style="box-shadow: 2px 2px 3px -1px rgba(0, 0, 0, 0.12); width: 40%; background: rgb(227, 230, 234); height: 100%">
 
             </div>
 
@@ -520,7 +520,7 @@
         chatInfoObject.userId = $('.g_user_id').val()
         const socket = new SockJS('/ex')
         exchangeStomp = Stomp.over(socket)
-        exchangeStomp.debug = null
+        // exchangeStomp.debug = null
         exchangeStomp.connect({}, function(){
             exchangeStomp.subscribe('/exchange/userId=' + chatInfoObject.userId, (message) => {
                 showMessage(JSON.parse(message.body))
@@ -718,11 +718,30 @@
 
     })
 
+    $(document).on('click', '.exchangeConfirmMenuButton', ()=>{
+
+        const data = {
+            userId: chatInfoObject.userId,
+            exchangeId: chatInfoObject.exchangeId
+        }
+
+        $.ajax({
+            url: '/api/exchange/confirm',
+            type: 'POST',
+            data: data,
+            contentType: 'application/x-www-form-urlencoded',
+            success: (response) =>{
+
+            }
+        })
+    })
+
     $(document).on('click', '.chatExitMenuButton', ()=>{
 
         if(confirm('채팅방을 나가면 대화목록에서 삭제되며 교환요청이 취소됩니다. \n 나가시겠습니까?')){
             const data = {
                 userId: chatInfoObject.userId,
+                receiveId: (chatInfoObject.targetId == 'undefined') ? 0 : chatInfoObject.targetId,
                 exchangeId: chatInfoObject.exchangeId
             }
 

@@ -14,7 +14,6 @@ import static com.project.localbatter.entity.Exchange.WriterClientJoinEntity.sta
 @AllArgsConstructor
 @Builder
 @Table(name = "tbl_writer_client_join")
-@EntityListeners(WriterClientJoinListenerEntity.class)
 public class WriterClientJoinEntity extends BaseTimeEntity {
 
     @Id @GeneratedValue
@@ -41,28 +40,30 @@ public class WriterClientJoinEntity extends BaseTimeEntity {
     @Column(name = "status")
     private status status;
 
-    public enum status{
-        reject, wait, process, complete
-    }
+    @Enumerated(EnumType.STRING)
+    @Column(name = "writer_status")
+    private status writerStatus;
 
-    public void setReject(){
-        this.status = reject;
-    }
+    @Enumerated(EnumType.STRING)
+    @Column(name = "client_status")
+    private status clientStatus;
 
-    public void setWait(){
-        this.status = wait;
-    }
-
-    public void setProcess(){
-        this.status = process;
-    }
-
-    public void setComplete(){
-        this.status = complete;
-    }
+    public enum status{ reject, wait, process, complete }
 
     public void exitChatRoom(Long userId){
-        if(writerId.equals(userId)) this.writerId = null; else this.clientId = null;
+        if(writerId != null && writerId.equals(userId)) this.writerId = null; else this.clientId = null;
+    }
+    /* 사용자의 교환 확정을 업데이트 하는 로직 */
+    public void confirmExchangeUpdate(Long userId){
+        if(userId.equals(this.writerId)) writerStatus = complete; else clientStatus = complete;
     }
 
+    /* 교환상태를 업데이트 하는 로직 */
+    public void setReject(){ this.status = reject; }
+
+    public void setWait(){ this.status = wait; }
+
+    public void setProcess(){ this.status = process; }
+
+    public void setComplete(){ this.status = complete; }
 }
