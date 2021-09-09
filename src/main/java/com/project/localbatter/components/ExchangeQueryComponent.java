@@ -10,6 +10,7 @@ import com.project.localbatter.entity.Exchange.WriterExchangeEntity;
 import com.project.localbatter.entity.GroupBoardEntity;
 import com.project.localbatter.entity.QUserEntity;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -17,9 +18,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 import static com.project.localbatter.entity.Exchange.QClientExchangeEntity.clientExchangeEntity;
 import static com.project.localbatter.entity.Exchange.QExchangeFileEntity.exchangeFileEntity;
 import static com.project.localbatter.entity.Exchange.QWriterClientJoinEntity.writerClientJoinEntity;
@@ -33,6 +36,7 @@ import static com.querydsl.core.group.GroupBy.list;
 
 @Component
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ExchangeQueryComponent {
 
     private final JPAQueryFactory queryFactory;
@@ -96,7 +100,6 @@ public class ExchangeQueryComponent {
 
     // View the list of clients requested for exchange to Writer's aritcle
     // 해당 게시글에 교환요청한 client 요청 게시글 조회
-    @Transactional(readOnly = true)
     public Page<ResponseClientRequestDTO> getBoardClientRequestList(ClientExchangeDTO clientExchangeDTO, Pageable page){
 
         Long queryCount = queryFactory
@@ -128,9 +131,16 @@ public class ExchangeQueryComponent {
     }
 
     // view writer's board List
-    @Transactional(readOnly = true)
+
+    private BooleanExpression getStatusBoardList(WriterExchangeEntity.exchangeStatus status){
+        if(status.equals(WriterExchangeEntity.exchangeStatus.wait))
+            return writerExchangeEntity.status.eq(WriterExchangeEntity.exchangeStatus.wait);
+        else
+            return writerExchangeEntity.status.eq(WriterExchangeEntity.exchangeStatus.complete);
+    }
+
     public Page<ResponseWrtierExchangeDTO> getWriterBoards(TransactionDTO transactionDTO, Pageable page){
-        Long queryCount = queryFactory
+        long queryCount = queryFactory
                 .select(writerExchangeEntity.id)
                 .from(writerExchangeEntity)
                 .where(writerExchangeEntity.userId.eq(transactionDTO.getUserId()))
@@ -138,7 +148,7 @@ public class ExchangeQueryComponent {
 
         if(queryCount > 0){
             JPAQuery<ResponseWrtierExchangeDTO> query = queryFactory
-                    .select(Projections.constructor(ResponseWrtierExchangeDTO.class,
+                    .select(Projections.fields(ResponseWrtierExchangeDTO.class,
                             writerExchangeEntity.userId.as("writerId"),
                             writerExchangeEntity.id.as("writerExchangeId"),
                             groupBoardEntity.boardId.as("boardId"),
@@ -147,14 +157,18 @@ public class ExchangeQueryComponent {
                             groupBoardEntity.content.as("content"),
                             groupBoardEntity.regTime.as("regTime"),
                             groupBoardEntity.thumbnailPath.as("thumbnail"),
-                            writerExchangeEntity.status.as("status")
+                            writerExchangeEntity.status.as("status"),
+                            writerClientJoinEntity.id.as("writerClientJoinId"),
+                            writerClientJoinEntity.reviewWriterId.as("reviewWriterId"),
+                            writerClientJoinEntity.reviewClientId.as("reviewClientId")
                     ))
                     .from(groupBoardEntity)
                     .leftJoin(groupBoardEntity.groupUserJoinEntity, groupUserJoinEntity)
                     .leftJoin(groupUserJoinEntity.user, userEntity)
                     .leftJoin(groupBoardEntity.writerExchangeEntity, writerExchangeEntity)
+                    .leftJoin(writerExchangeEntity.writerClientJoinEntity, writerClientJoinEntity)
                     .where(userEntity.id.eq(transactionDTO.getUserId())
-                    .and(writerExchangeEntity.status.eq(WriterExchangeEntity.exchangeStatus.wait))
+                    .and(getStatusBoardList(transactionDTO.getStatus()))
                     .and(groupBoardEntity.BoardCategory.eq(GroupBoardEntity.BoardCategory.exchange)))
                     .offset(page.getPageNumber())
                     .limit(page.getPageSize())
@@ -166,7 +180,6 @@ public class ExchangeQueryComponent {
     }
 
     // view client's(login user) request exchange for board
-    @Transactional(readOnly = true)
     public Page<ResponseRequestListDTO> getRequestList(TransactionDTO transactionDTO, Pageable page) {
         long queryCount = queryFactory
                 .select(writerClientJoinEntity.id)

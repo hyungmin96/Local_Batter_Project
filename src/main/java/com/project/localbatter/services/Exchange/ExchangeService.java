@@ -135,12 +135,10 @@ public class ExchangeService {
     }
     // View the list of clients requested for exchange to Writer's aritcle
     // 해당 게시글에 교환요청한 client 요청 게시글 조회
-    @Transactional(readOnly = true)
     public Page<ResponseClientRequestDTO> getBoardClientRequestList(ClientExchangeDTO clientExchangeDTO, Pageable page){
         return exchangeQueryComponent.getBoardClientRequestList(clientExchangeDTO, page);
     }
     // view writer's board List
-    @Transactional(readOnly = true)
     public Page<ResponseWrtierExchangeDTO> getWriterBoards(TransactionDTO transactionDTO, Pageable page){
         return exchangeQueryComponent.getWriterBoards(transactionDTO, page);
     }

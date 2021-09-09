@@ -174,24 +174,16 @@ public class GroupExchangeApiController {
         private Long writerId; // writer user id
         private Long writerExchangeId; // writerExchange Entity id
         private Long boardId;
-        private int reqeustCount;
+        private int requestCount;
         private String title;
         private String content;
         private LocalDateTime regTime;
         private String thumbnail;
         private WriterExchangeEntity.exchangeStatus status;
+        private Long writerClientJoinId;
+        private Long reviewWriterId;
+        private Long reviewClientId;
 
-        public ResponseWrtierExchangeDTO(Long writerId, Long writerExchangeId, Long boardId, int reqeustCount, String title, String content, LocalDateTime regTime, String thumbnail, WriterExchangeEntity.exchangeStatus status) {
-            this.writerId = writerId;
-            this.writerExchangeId = writerExchangeId;
-            this.boardId = boardId;
-            this.reqeustCount = reqeustCount;
-            this.title = title;
-            this.content = content;
-            this.regTime = regTime;
-            this.thumbnail = thumbnail;
-            this.status = status;
-        }
     }
 
     @Setter @Getter

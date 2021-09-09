@@ -48,6 +48,12 @@ public class WriterClientJoinEntity extends BaseTimeEntity {
     @Column(name = "client_status")
     private status clientStatus;
 
+    @Column(name = "review_Writer_Id")
+    private Long reviewWriterId;
+
+    @Column(name = "review_client_Id")
+    private Long reviewClientId;
+
     public enum status{ reject, wait, process, complete }
 
     public void exitChatRoom(Long userId){
@@ -57,7 +63,6 @@ public class WriterClientJoinEntity extends BaseTimeEntity {
     public void confirmExchangeUpdate(Long userId){
         if(userId.equals(this.writerId)) writerStatus = complete; else clientStatus = complete;
     }
-
     /* 교환상태를 업데이트 하는 로직 */
     public void setReject(){ this.status = reject; }
 

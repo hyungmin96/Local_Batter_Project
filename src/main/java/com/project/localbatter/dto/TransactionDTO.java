@@ -1,5 +1,6 @@
 package com.project.localbatter.dto;
 
+import com.project.localbatter.entity.Exchange.WriterExchangeEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,5 +11,6 @@ public class TransactionDTO {
     private int display;
     private Long userId; // user id
     private Long clientWriterExchangeId;
+    private WriterExchangeEntity.exchangeStatus status;
 
 }

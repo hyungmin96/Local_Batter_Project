@@ -25,21 +25,55 @@
             </div>
 
         <div class="textItem _listHeader" style="margin-top: 20px">요청한 교환 게시글</div>
-        <div class="itemWrapper" style="box-shadow: 1px 1px 17px 2px rgba(0, 0, 0, 0.12); background: white; margin: 10px 15px 45px 15px;">
+            <div class="itemWrapper" style="box-shadow: 1px 1px 17px 2px rgba(0, 0, 0, 0.12); background: white; margin: 10px 15px 25px 15px;">
+                <div style="height: 55px; padding: 15px; box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.12)">
+                    <div class="itemHeader" style="height: 20px">
+                        교환요청 목록
+                        <img id="upDownButton" class="requestListUpButton" src="/images/exchange/up.png" style="cursor: pointer">
+                    </div>
+                </div>
+                <div id="transactionItemsContainer" style="overflow-y: scroll; max-height: 450px; ">
 
-            <div style="height: 55px; padding: 15px; box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.12)">
-                <div class="itemHeader" style="height: 20px">
-                    교환요청 목록
-                    <img id="upDownButton" class="requestListUpButton" src="/images/exchange/up.png" style="cursor: pointer">
                 </div>
             </div>
 
-            <div id="transactionItemsContainer" style="overflow-y: scroll; max-height: 450px; ">
+            <div class="textItem _listHeader" style="margin-top: 20px">교환완료된 게시글</div>
+                <div class="itemWrapper" style="box-shadow: 1px 1px 17px 2px rgba(0, 0, 0, 0.12); background: white; margin: 10px 15px 45px 15px;">
+                    <div style="height: 55px; padding: 15px; box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.12)">
+                        <div class="itemHeader" style="height: 20px">
+                            교환요청 목록
+                            <img id="exchangedUpDownButton" class="requestListUpButton" src="/images/exchange/up.png" style="cursor: pointer">
+                        </div>
+                    </div>
+                    <div id="exchangedItemsContainer" style="overflow-y: scroll; max-height: 450px; ">
 
+                    </div>
+                </div>
             </div>
 
-        </div>
     </div>
+</div>
+
+<!-- review write modal -->
+<div class="modal fade" id="reviewWriterModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="margin-top: 100px; margin-left: 30%;">
+        <div class="modal-content" style="width: 800px; border-radius: 0;">
+            <div class="modal-header" style="border: none;">
+                <div class="modal-title" id="reviewWrite" style="margin: 0 0 0 auto">교환후기 작성</div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="width: 20px; height: 20px;"></button>
+            </div>
+            <div class="reviewWriteModal" style="width: 800px; height: 500px; padding: 0.5rem;">
+                <div class="container" style="padding: 10px;">
+                    <div class="targetUserWrapper" style="display: flex; flex-direction: row">
+                        <div class="targetUserProfileImageBox">
+                            <img class="targetUserProfileImage" src="" style="border-radius: 50%; margin: auto 0 auto 0; width: 45px; height: 45px; object-fit: cover">
+                        </div>
+                        <div class="targetUsername" style="margin: auto 0 auto 0">유저 아이디</div>
+                    </div>
+                    <hr style="border:none; height: 1px; background: #8c8989;" />
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -140,9 +174,10 @@
 <script>
     $(document).ready(function (){
         setTimeout(function(){
-            getWriterBoardList();
-        }, 100);
-        getRequestList();
+            getWriterWaitBoard()
+            getWriterCompleteBoard()
+        }, 100)
+        getRequestList()
     })
 
     // global varialbes
@@ -213,6 +248,11 @@
         })
     })
 
+    // 리뷰 작성 modal
+    $(document).on('click', '.reviewButton', function (){
+        $('#reviewWriterModal').modal('show')
+    })
+
     // 특정 게시글에 교환요청한 client 게시글 목록 조회
     $(document).on('click', '.showClientRequestList', function (){
         $('#requestListModal').modal('show')
@@ -220,6 +260,12 @@
         $('.pagenumberList').empty()
         getBoardClientRequest()
         pageArrayGenerater('pagenumberList', clientRequestVariable.totalPages)
+    })
+
+    // 교환요청목록 보기
+    $(document).on('click', '.showRequestDetailButton', function(){
+        var clientWriterExchangeId = $(this).attr('id').split('_')[1]
+        window.open('/view/client/request/' + clientWriterExchangeId, '_blank')
     })
 
     // writer가 작성한 게시글 내용 조회
@@ -297,18 +343,13 @@
         })
     }
 
-    $(document).on('click', '.showRequestDetailButton', function(){
-        var clientWriterExchangeId = $(this).attr('id').split('_')[1]
-        window.open('/view/client/request/' + clientWriterExchangeId, '_blank')
-    })
-
-    // writer 작성글 목록 조회
-    function getWriterBoardList(){
-
+    // writer 교환이 완료되지 않은 작성글 목록 조회
+    function getWriterWaitBoard(){
         const data = {
             page: 0,
             display: 10,
-            userId: $('.g_user_id').val()
+            userId: $('.g_user_id').val(),
+            status: 'wait'
         }
 
         $.ajax({
@@ -317,44 +358,74 @@
             data: data,
             success: function(response){
                 $.each(response.content, function(key, value){
-
-                    let displayCountValue
-                    if(value.reqeustCount > 0) displayCountValue = 'position-relative'
-
-                    $('#myBoardItemsContainer').append(
-                        "<div class='requestItemBox'>" +
-                        "<div id='requestBox_" + key + "' style='padding: 15px 25px 15px 25px;'>" +
-                        "<div style='width:100%; display:inline-flex'>" +
-                        "<div class='item requestDate' style='width: 15%; margin: auto auto; text-align: center;'>" +
-                        new Date(value.regTime).toLocaleTimeString([], {
-                            'year':'2-digit',
-                            'month': '2-digit',
-                            'day':'2-digit',
-                            'hour': '2-digit',
-                            'minute' : '2-digit'
-                        }) +
-                        "</div>" +
-                        "<div class='item requestThumbnail' style='display: flex; text-align: center; width: 10%;'><img src=/upload/" + value.thumbnail + "></div>" +
-                        "<div id='writerBoardBoxId_" + value.boardId + "' class='viewWriterBoardBox' style='cursor: pointer; width: 60%; padding: 5px 20px 10px 15px;'>" +
-                        "<div class='item requestTitle' >" + value.title + "</div>" +
-                        "<div class='item requestContent' style='height: 65px'>" + value.content + "</div>" +
-                        "</div>" +
-                        "<div class='item _requestStatus' style='text-align:center; width: 15%; margin: auto 0 auto 0;'>" +
-                        '<button id="writerExchangeId_' + value.writerExchangeId + '" type="button" class="actionButton showClientRequestList ' + displayCountValue + '">요청목록' +
-                        '<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">' +
-                            value.reqeustCount +
-                        "</span>" +
-                        '</button>' +
-                        "<button class='actionButton stopRequest'>교환마감</button>" +
-                        "</div>" +
-                        "</div>" +
-                        "</div>" +
-                        "</div>"
-                    )
+                    $('#myBoardItemsContainer').append(appendBoardToContainer(key, value))
                     if(key % 2 != 0) document.getElementById('requestBox_' + key).style.background = '#fcfcfc'
                 })
             }
         })
+    }
+
+    // writer 교환이 완료된 작성글 목록 조회
+    function getWriterCompleteBoard(){
+        const data = {
+            page: 0,
+            display: 10,
+            userId: $('.g_user_id').val(),
+            status: 'complete'
+        }
+
+        $.ajax({
+            url: '/api/exchange/my/get_write_list',
+            type: 'GET',
+            data: data,
+            success: function(response){
+                $.each(response.content, function(key, value){
+                    $('#exchangedItemsContainer').append(appendBoardToContainer(key, value, 'complete'))
+                    if(key % 2 != 0) document.getElementById('requestBox_' + key).style.background = '#fcfcfc'
+                })
+            }
+        })
+    }
+
+    // writer 작성글 목록을 그리는 함수
+    function appendBoardToContainer(key, value, type = 'wait'){
+
+        console.log(value)
+        let displayCountValue
+        displayCountValue = (value.requestCount > 0) ? 'position-relative' : ''
+
+        var isReviewButton = (value.reviewClientId == $('.g_user_id').val() || value.reviewWriterId == $('.g_user_id').val()) ? 'false' : 'true'
+
+        var actionButtonContainer = (type == 'wait') ? "<div class='item _requestStatus' style='text-align:center; width: 15%; margin: auto 0 auto 0;'>" +
+            '<button id="writerExchangeId_' + value.writerExchangeId + '" type="button" class="' + displayCountValue + ' actionButton showClientRequestList">요청목록' +
+            '<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">' +
+            value.requestCount +
+            "</span>" +
+            '</button>' +
+        "<button class='actionButton stopRequest'>교환마감</button>" +
+        "</div>" :  "<button id='writerClientId_" + value.writerClientJoinId + "' style='height: 37px; margin: auto;' enabled='" + isReviewButton + "' class='actionButton reviewButton'>리뷰작성</button>"
+
+        return "<div class='requestItemBox'>" +
+                "<div id='requestBox_" + key + "' style='padding: 15px 25px 15px 25px;'>" +
+                "<div style='width:100%; display:inline-flex'>" +
+                "<div class='item requestDate' style='width: 15%; margin: auto auto; text-align: center;'>" +
+                new Date(value.regTime).toLocaleTimeString([], {
+                    'year':'2-digit',
+                    'month': '2-digit',
+                    'day':'2-digit',
+                    'hour': '2-digit',
+                    'minute' : '2-digit'
+                }) +
+                "</div>" +
+                "<div class='item requestThumbnail' style='display: flex; text-align: center; width: 10%;'><img src=/upload/" + value.thumbnail + "></div>" +
+                "<div id='writerBoardBoxId_" + value.boardId + "' class='viewWriterBoardBox' style='cursor: pointer; width: 60%; padding: 5px 20px 10px 15px;'>" +
+                "<div class='item requestTitle' >" + value.title + "</div>" +
+                "<div class='item requestContent' style='height: 65px'>" + value.content + "</div>" +
+                "</div>" +
+                actionButtonContainer +
+                "</div>" +
+                "</div>" +
+                "</div>"
     }
 
     function getRequestList(){
@@ -452,6 +523,19 @@
             upDownButton.setAttribute('src', '/images/exchange/up.png')
         }else{
             $('#myBoardItemsContainer').hide()
+            upDownButton.className = 'requestListDownButton'
+            upDownButton.setAttribute('src', '/images/exchange/down.png')
+        }
+    })
+
+    $(document).on('click', '#exchangedUpDownButton', function(){
+        var upDownButton = document.getElementById('exchangedUpDownButton')
+        if(upDownButton.className === 'requestListDownButton'){
+            $('#exchangedItemsContainer').show()
+            upDownButton.className = 'requestListUpButton'
+            upDownButton.setAttribute('src', '/images/exchange/up.png')
+        }else{
+            $('#exchangedItemsContainer').hide()
             upDownButton.className = 'requestListDownButton'
             upDownButton.setAttribute('src', '/images/exchange/down.png')
         }
