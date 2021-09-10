@@ -30,12 +30,20 @@ public class ExchangeService {
     private final ClientExchangeFileRepository clientExchangeFileRepository;
     private final WriterExchangeRepository writerExchangeRepository;
     private final WriterClientJoinRepository writerClientJoinRepository;
+    private final ReviewRepository reviewRepository;
+    private final LocalBatterServiceRepository localBatterServiceRepository;
     private final GenerateFile generateFile;
     private final ExchangeQueryComponent exchangeQueryComponent; // Using @Component annotaion to get exchange data
     private final ExchangeChatService exchangeChatService;
-    private final LocalBatterServiceRepository localBatterServiceRepository;
-
     /*  post method service */
+
+    // 교환완료시 상대방 사용자의 reivew 작성
+    // Write review of target profile
+    public ReviewDTO writeReview(ReviewDTO reviewDTO){
+        WriterClientJoinEntity writerClientJoinEntity = writerClientJoinRepository.findByExchangeId(reviewDTO.getWriterClientJoinId());
+        reviewRepository.save(reviewDTO.toEntity(writerClientJoinEntity));
+        return reviewDTO;
+    }
 
     // 교환확정
     // Confirm exchange
@@ -137,6 +145,10 @@ public class ExchangeService {
     // 해당 게시글에 교환요청한 client 요청 게시글 조회
     public Page<ResponseClientRequestDTO> getBoardClientRequestList(ClientExchangeDTO clientExchangeDTO, Pageable page){
         return exchangeQueryComponent.getBoardClientRequestList(clientExchangeDTO, page);
+    }
+    // view writer's exchanged board List
+    public Page<ResponseWrtierExchangeDTO> getCompleteBoards(TransactionDTO transactionDTO, Pageable page){
+        return exchangeQueryComponent.getCompleteBoards(transactionDTO, page);
     }
     // view writer's board List
     public Page<ResponseWrtierExchangeDTO> getWriterBoards(TransactionDTO transactionDTO, Pageable page){

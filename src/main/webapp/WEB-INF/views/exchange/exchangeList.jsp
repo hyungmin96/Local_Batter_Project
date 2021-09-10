@@ -5,7 +5,7 @@
 <%--로그인한 사용자가 현재 진행중인 물품교환 목록을 보여줍니다--%>
 <div>
 
-    <div class="container" style="margin-top: 100px;">
+    <div class="container" style="margin-top: 100px; margin-bottom: 60px;">
 
         <div id="transactionListContainer" style="max-height: 1600px; min-height: 801px">
             <div class="textItem _listHeader">작성한 교환 게시글</div>
@@ -56,21 +56,42 @@
 
 <!-- review write modal -->
 <div class="modal fade" id="reviewWriterModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" style="margin-top: 100px; margin-left: 30%;">
-        <div class="modal-content" style="width: 800px; border-radius: 0;">
+    <div class="modal-dialog" style="margin-top: 10%; margin-left: 33%;">
+        <div class="modal-content" style="width: 600px; border-radius: 0;">
             <div class="modal-header" style="border: none;">
                 <div class="modal-title" id="reviewWrite" style="margin: 0 0 0 auto">교환후기 작성</div>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="width: 20px; height: 20px;"></button>
             </div>
-            <div class="reviewWriteModal" style="width: 800px; height: 500px; padding: 0.5rem;">
+            <div class="reviewWriteModal" style="width: 600px; height: 100%; padding: 0.5rem;">
                 <div class="container" style="padding: 10px;">
                     <div class="targetUserWrapper" style="display: flex; flex-direction: row">
                         <div class="targetUserProfileImageBox">
                             <img class="targetUserProfileImage" src="" style="border-radius: 50%; margin: auto 0 auto 0; width: 45px; height: 45px; object-fit: cover">
                         </div>
-                        <div class="targetUsername" style="margin: auto 0 auto 0">유저 아이디</div>
+                        <div class="targetUsername" style="margin: auto 0 auto 0; padding: 5px;">유저 아이디</div>
                     </div>
-                    <hr style="border:none; height: 1px; background: #8c8989;" />
+                    <div style="display: flex; flex-direction: row">
+                        <div style="margin: auto 0 auto 0">매너점수</div>
+                        <div class="rating" style="margin: 10px 0 auto 0; padding: 1px 10px 0 10px">
+                            <input type="hidden" name="rate" id="rate" value="0"/>
+                            <input type="checkbox" name="rating" id="rating1" value="1" class="rate_radio" title="1점">
+                            <label for="rating1"></label>
+                            <input type="checkbox" name="rating" id="rating2" value="2" class="rate_radio" title="2점">
+                            <label for="rating2"></label>
+                            <input type="checkbox" name="rating" id="rating3" value="3" class="rate_radio" title="3점" >
+                            <label for="rating3"></label>
+                            <input type="checkbox" name="rating" id="rating4" value="4" class="rate_radio" title="4점">
+                            <label for="rating4"></label>
+                            <input type="checkbox" name="rating" id="rating5" value="5" class="rate_radio" title="5점">
+                            <label for="rating5"></label>
+                        </div>
+                    </div>
+                    <div>
+                        <textarea class="reviewContentBox" rows="5" placeholder="후기내용을 입력해주세요" style="padding: 10px;"></textarea>
+                    </div>
+                    <div>
+                        <button class="btn-primary float-right submitReviewButton">후기작성</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -187,6 +208,40 @@
         pageArray: []
     }
 
+    // 리뷰 작성 modal
+
+    const reviewInfoObject = {
+        reviewWriterId: $('.g_user_id').val(),
+        reviewReceiveId: '',
+        writerClientJoinId: '',
+        content: '',
+        score: ''
+    }
+
+    $(document).on('click', '.reviewButton', function (){
+        $('#reviewWriterModal').modal('show')
+        var reviewIndex = $('.reviewButton').index(this)
+        console.log(reviewIndex)
+        reviewInfoObject.reviewReceiveId = ($('.g_user_id').val() == $('.reviewWriterUserId')[reviewIndex].value) ? $('.reviewReceiveUserId')[reviewIndex].value : $('.reviewWriterUserId')[reviewIndex].value
+        reviewInfoObject.writerClientJoinId = $('.reviewWriterClientJoinId')[reviewIndex].value
+
+    })
+
+    $(document).on('click', '.submitReviewButton', ()=>{
+
+        reviewInfoObject.content = $('.reviewContentBox').val()
+        reviewInfoObject.score = $('#rate').val()
+
+        $.ajax({
+            url: '/api/exchange/write/review',
+            type: 'POST',
+            data: reviewInfoObject,
+            contentType: 'application/x-www-form-urlencoded',
+            success: (response) =>{
+                console.log(response)
+            }
+        })
+    })
 
     $('.nextPageButton').click(function () {
         if (Number($('.currentPage').attr('data-current-page')) < clientRequestVariable.pageArray.length){
@@ -246,11 +301,6 @@
             else
                 $('.pageValue')[item].style.background = ''
         })
-    })
-
-    // 리뷰 작성 modal
-    $(document).on('click', '.reviewButton', function (){
-        $('#reviewWriterModal').modal('show')
     })
 
     // 특정 게시글에 교환요청한 client 게시글 목록 조회
@@ -375,7 +425,7 @@
         }
 
         $.ajax({
-            url: '/api/exchange/my/get_write_list',
+            url: '/api/exchange/my/get_complete_list',
             type: 'GET',
             data: data,
             success: function(response){
@@ -394,16 +444,25 @@
         let displayCountValue
         displayCountValue = (value.requestCount > 0) ? 'position-relative' : ''
 
-        var isReviewButton = (value.reviewClientId == $('.g_user_id').val() || value.reviewWriterId == $('.g_user_id').val()) ? 'false' : 'true'
+        var isReviewButton = (value.isReviewWrite != null) ? 'disabled' : ''
 
-        var actionButtonContainer = (type == 'wait') ? "<div class='item _requestStatus' style='text-align:center; width: 15%; margin: auto 0 auto 0;'>" +
-            '<button id="writerExchangeId_' + value.writerExchangeId + '" type="button" class="' + displayCountValue + ' actionButton showClientRequestList">요청목록' +
-            '<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">' +
-            value.requestCount +
-            "</span>" +
-            '</button>' +
-        "<button class='actionButton stopRequest'>교환마감</button>" +
-        "</div>" :  "<button id='writerClientId_" + value.writerClientJoinId + "' style='height: 37px; margin: auto;' enabled='" + isReviewButton + "' class='actionButton reviewButton'>리뷰작성</button>"
+        var actionButtonContainer
+
+        if(type == 'wait'){
+            actionButtonContainer = "<div class='item _requestStatus' style='text-align:center; width: 15%; margin: auto 0 auto 0;'>" +
+                '<button id="writerExchangeId_' + value.writerExchangeId + '" type="button" class="' + displayCountValue + ' actionButton showClientRequestList">요청목록' +
+                '<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">' +
+                value.requestCount +
+                "</span>" +
+                '</button>' +
+                "<button class='actionButton stopRequest'>교환마감</button>" +
+                "</div>"
+        }else{
+            actionButtonContainer = "<input type='hidden' class='reviewWriterUserId' value='" + value.writerId + "'>" +
+                "<input type='hidden' class='reviewReceiveUserId' value='" + value.clientId + "'>" +
+                "<input type='hidden' class='reviewWriterClientJoinId' value='" + value.writerClientJoinId + "'>" +
+                "<button " + isReviewButton + " id='reviewWriterClientId_" + value.writerClientJoinId + "' style='height: 37px; margin: auto;' class='actionButton reviewButton'>리뷰작성</button>"
+        }
 
         return "<div class='requestItemBox'>" +
                 "<div id='requestBox_" + key + "' style='padding: 15px 25px 15px 25px;'>" +
@@ -541,5 +600,32 @@
         }
     })
 
+    function Rating(){};
+    Rating.prototype.rate = 0;
+    Rating.prototype.setRate = function(newrate){
+        //별점 마킹 - 클릭한 별 이하 모든 별 체크 처리
+        this.rate = newrate;
+        let items = document.querySelectorAll('.rate_radio');
+        var score = 0
+        items.forEach(function(item, idx){
+            if(idx < newrate){
+                item.checked = true;
+                score = idx
+            }else{
+                item.checked = false;
+            }
+        });
+        $('#rate')[0].value = Number(score + 1)
+    }
+    let rating = new Rating();
+
+    document.addEventListener('DOMContentLoaded', function(){
+        document.querySelector('.rating').addEventListener('click',function(e){
+            let elem = e.target;
+            if(elem.classList.contains('rate_radio')){
+                rating.setRate(parseInt(elem.value));
+            }
+        })
+    });
 </script>
 <link rel="stylesheet" href="/css/transaction.css" />

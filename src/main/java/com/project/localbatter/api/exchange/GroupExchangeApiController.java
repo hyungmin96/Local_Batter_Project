@@ -4,6 +4,7 @@ import com.project.localbatter.dto.Group.GroupBoardDTO;
 import com.project.localbatter.dto.TransactionDTO;
 import com.project.localbatter.dto.exchangeDTO.ClientExchangeDTO;
 import com.project.localbatter.dto.exchangeDTO.LocalBatterServiceDTO;
+import com.project.localbatter.dto.exchangeDTO.ReviewDTO;
 import com.project.localbatter.entity.Exchange.ClientExchangeEntity;
 import com.project.localbatter.entity.Exchange.LocalBatterServiceEntity;
 import com.project.localbatter.entity.Exchange.WriterClientJoinEntity;
@@ -32,6 +33,11 @@ import java.util.stream.Collectors;
 public class GroupExchangeApiController {
 
     private final ExchangeService groupExchangeService;
+
+    @PostMapping("/write/review")
+    public ReviewDTO writeReview(ReviewDTO reviewDTO){
+        return groupExchangeService.writeReview(reviewDTO);
+    }
 
     @PostMapping("/confirm")
     public void confirmExchange(@RequestParam("userId") Long userId, @RequestParam("exchangeId") Long exchangeId){
@@ -89,6 +95,12 @@ public class GroupExchangeApiController {
     public Page<ResponseWrtierExchangeDTO> getWriterBoards(TransactionDTO transactionDTO) {
         Pageable page = PageRequest.of(transactionDTO.getPage(), transactionDTO.getDisplay());
         return groupExchangeService.getWriterBoards(transactionDTO, page);
+    }
+
+    @GetMapping("/my/get_complete_list")
+    public Page<ResponseWrtierExchangeDTO> getCompleteBoards(TransactionDTO transactionDTO) {
+        Pageable page = PageRequest.of(transactionDTO.getPage(), transactionDTO.getDisplay());
+        return groupExchangeService.getCompleteBoards(transactionDTO, page);
     }
 
     @PostMapping("/client/post")
@@ -172,6 +184,7 @@ public class GroupExchangeApiController {
     @Setter @Getter
     public static class ResponseWrtierExchangeDTO{
         private Long writerId; // writer user id
+        private Long clientId; // client user id
         private Long writerExchangeId; // writerExchange Entity id
         private Long boardId;
         private int requestCount;
@@ -181,9 +194,7 @@ public class GroupExchangeApiController {
         private String thumbnail;
         private WriterExchangeEntity.exchangeStatus status;
         private Long writerClientJoinId;
-        private Long reviewWriterId;
-        private Long reviewClientId;
-
+        private Long isReviewWrite;
     }
 
     @Setter @Getter

@@ -9,8 +9,9 @@ import com.project.localbatter.entity.Exchange.WriterClientJoinEntity;
 import com.project.localbatter.entity.Exchange.WriterExchangeEntity;
 import com.project.localbatter.entity.GroupBoardEntity;
 import com.project.localbatter.entity.QUserEntity;
+import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ import java.util.Map;
 
 import static com.project.localbatter.entity.Exchange.QClientExchangeEntity.clientExchangeEntity;
 import static com.project.localbatter.entity.Exchange.QExchangeFileEntity.exchangeFileEntity;
+import static com.project.localbatter.entity.Exchange.QReviewEntity.reviewEntity;
 import static com.project.localbatter.entity.Exchange.QWriterClientJoinEntity.writerClientJoinEntity;
 import static com.project.localbatter.entity.Exchange.QWriterExchangeEntity.writerExchangeEntity;
 import static com.project.localbatter.entity.QGroupBoardEntity.groupBoardEntity;
@@ -130,15 +132,55 @@ public class ExchangeQueryComponent {
         return null;
     }
 
-    // view writer's board List
+    // View writer's completed exchange boards
+    // 로그인한 user의 교환완료된 게시글 목록 조회
+    public Page<ResponseWrtierExchangeDTO> getCompleteBoards(TransactionDTO transactionDTO, Pageable page){
+        long queryCount = queryFactory
+                .select(writerClientJoinEntity.id)
+                .from(writerClientJoinEntity)
+                .where(writerClientJoinEntity.status.eq(WriterClientJoinEntity.status.complete)
+                .and(writerClientJoinEntity.clientId.eq(transactionDTO.getUserId()))
+                .or(writerClientJoinEntity.writerId.eq(transactionDTO.getUserId())))
+                .fetchCount();
 
-    private BooleanExpression getStatusBoardList(WriterExchangeEntity.exchangeStatus status){
-        if(status.equals(WriterExchangeEntity.exchangeStatus.wait))
-            return writerExchangeEntity.status.eq(WriterExchangeEntity.exchangeStatus.wait);
-        else
-            return writerExchangeEntity.status.eq(WriterExchangeEntity.exchangeStatus.complete);
+        if(queryCount > 0){
+            JPAQuery<ResponseWrtierExchangeDTO> query = queryFactory
+                    .select(Projections.fields(ResponseWrtierExchangeDTO.class,
+                            writerExchangeEntity.userId.as("writerId"),
+                            writerClientJoinEntity.clientId.as("clientId"),
+                            writerExchangeEntity.id.as("writerExchangeId"),
+                            groupBoardEntity.boardId.as("boardId"),
+                            writerExchangeEntity.requestCount.as("requestCount"),
+                            groupBoardEntity.title.as("title"),
+                            groupBoardEntity.content.as("content"),
+                            groupBoardEntity.regTime.as("regTime"),
+                            groupBoardEntity.thumbnailPath.as("thumbnail"),
+                            writerExchangeEntity.status.as("status"),
+                            writerClientJoinEntity.id.as("writerClientJoinId"),
+                            ExpressionUtils.as(
+                                    JPAExpressions.select(reviewEntity.reviewId)
+                                            .from(reviewEntity)
+                                            .where(reviewEntity.reviewWriterId.eq(transactionDTO.getUserId())),
+                                    "isReviewWrite")
+                    ))
+                    .from(writerClientJoinEntity)
+                    .leftJoin(writerClientJoinEntity.writerExchangeEntity, writerExchangeEntity)
+                    .leftJoin(groupBoardEntity).on(writerExchangeEntity.id.eq(groupBoardEntity.writerExchangeEntity.id))
+                    .leftJoin(groupBoardEntity.writerExchangeEntity, writerExchangeEntity)
+                    .leftJoin(groupBoardEntity.groupUserJoinEntity, groupUserJoinEntity)
+                    .leftJoin(groupUserJoinEntity.user, userEntity)
+                    .offset(page.getPageNumber())
+                    .limit(page.getPageSize())
+                    .where(writerExchangeEntity.status.eq(WriterExchangeEntity.exchangeStatus.complete))
+                    .orderBy(writerExchangeEntity.requestCount.desc(), writerExchangeEntity.regTime.desc());
+
+            return pagingUtil.getPageImpl(page, query, queryCount, GroupBoardEntity.class);
+        }
+        return null;
     }
 
+    // view writer's exchange board List
+    // writer의 교환 작성 게시글 목록 조회
     public Page<ResponseWrtierExchangeDTO> getWriterBoards(TransactionDTO transactionDTO, Pageable page){
         long queryCount = queryFactory
                 .select(writerExchangeEntity.id)
@@ -150,6 +192,7 @@ public class ExchangeQueryComponent {
             JPAQuery<ResponseWrtierExchangeDTO> query = queryFactory
                     .select(Projections.fields(ResponseWrtierExchangeDTO.class,
                             writerExchangeEntity.userId.as("writerId"),
+                            writerClientJoinEntity.clientId.as("clientId"),
                             writerExchangeEntity.id.as("writerExchangeId"),
                             groupBoardEntity.boardId.as("boardId"),
                             writerExchangeEntity.requestCount.as("requestCount"),
@@ -158,18 +201,14 @@ public class ExchangeQueryComponent {
                             groupBoardEntity.regTime.as("regTime"),
                             groupBoardEntity.thumbnailPath.as("thumbnail"),
                             writerExchangeEntity.status.as("status"),
-                            writerClientJoinEntity.id.as("writerClientJoinId"),
-                            writerClientJoinEntity.reviewWriterId.as("reviewWriterId"),
-                            writerClientJoinEntity.reviewClientId.as("reviewClientId")
+                            writerClientJoinEntity.id.as("writerClientJoinId")
                     ))
                     .from(groupBoardEntity)
                     .leftJoin(groupBoardEntity.groupUserJoinEntity, groupUserJoinEntity)
                     .leftJoin(groupUserJoinEntity.user, userEntity)
                     .leftJoin(groupBoardEntity.writerExchangeEntity, writerExchangeEntity)
                     .leftJoin(writerExchangeEntity.writerClientJoinEntity, writerClientJoinEntity)
-                    .where(userEntity.id.eq(transactionDTO.getUserId())
-                    .and(getStatusBoardList(transactionDTO.getStatus()))
-                    .and(groupBoardEntity.BoardCategory.eq(GroupBoardEntity.BoardCategory.exchange)))
+                    .where(userEntity.id.eq(transactionDTO.getUserId()), writerExchangeEntity.status.eq(transactionDTO.getStatus()))
                     .offset(page.getPageNumber())
                     .limit(page.getPageSize())
                     .orderBy(writerExchangeEntity.requestCount.desc(), writerExchangeEntity.regTime.desc());
@@ -208,7 +247,8 @@ public class ExchangeQueryComponent {
                     .on(groupBoardEntity.writerExchangeEntity.id.eq(writerClientJoinEntity.writerExchangeEntity.id))
                     .leftJoin(groupBoardEntity.groupUserJoinEntity, groupUserJoinEntity)
                     .leftJoin(userEntity).on(writerClientJoinEntity.clientId.eq(userEntity.id))
-                    .where(writerClientJoinEntity.clientId.eq(transactionDTO.getUserId()))
+                    .where(writerClientJoinEntity.clientId.eq(transactionDTO.getUserId())
+                    .and(writerClientJoinEntity.status.ne(WriterClientJoinEntity.status.complete)))
                     .offset(page.getPageNumber())
                     .limit(page.getPageSize())
                     .orderBy(writerClientJoinEntity.id.desc());

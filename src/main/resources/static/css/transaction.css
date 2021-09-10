@@ -49,6 +49,68 @@
     max-height: 45px;
 }
 
+.reviewContentBox{
+    width: 100%;
+    resize: none;
+    border: 1px solid #d2cdcd;
+}
+
+.reviewContentBox:hover, .reviewContentBox:focus{
+    outline: none;
+    border: 1px solid #d2cdcd;
+}
+
+.reviewWriteModal{
+    font-family: Pretendard-Regular;
+    font-size: 14px;
+}
+
+.submitReviewButton{
+    padding: 10px;
+}
+
+.rating .rate_radio + label {
+    position: relative;
+    display: inline-block;
+    margin-left: -4px;
+    z-index: 10;
+    width: 20px;
+    height: 20px;
+    background-image: url(../images/nonestar_15px.png);
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+    cursor: pointer;
+    background-color: white;
+    object-fit: cover;
+}
+.rating .rate_radio:checked + label {
+    background-image: url("../images/star_15px.png");
+}
+
+.rating .rate_radio {
+    position: relative;
+    z-index: 20;
+    opacity: 0.001;
+    width: 60px;
+    height: 60px;
+    background-color: #fff;
+    cursor: pointer;
+    vertical-align: top;
+    display: none;
+}
+.warning_msg {
+    display: none;
+    position: relative;
+    text-align: center;
+    background: #ffffff;
+    line-height: 26px;
+    width: 100%;
+    color: red;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #e0e0e0;
+}
+
 #exchangeProcessChatList img{
     width: 45px;
     height: 45px;

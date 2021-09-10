@@ -48,12 +48,6 @@ public class WriterClientJoinEntity extends BaseTimeEntity {
     @Column(name = "client_status")
     private status clientStatus;
 
-    @Column(name = "review_Writer_Id")
-    private Long reviewWriterId;
-
-    @Column(name = "review_client_Id")
-    private Long reviewClientId;
-
     public enum status{ reject, wait, process, complete }
 
     public void exitChatRoom(Long userId){
