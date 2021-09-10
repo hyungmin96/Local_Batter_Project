@@ -14,6 +14,10 @@ public class ReviewDTO {
     private String content;
     private float score;
 
+    /* selective writer dto */
+    private String reviewWriterProfile;
+    private String reviewWriterUsername;
+
     public ReviewEntity toEntity(WriterClientJoinEntity writerClientJoinEntity){
         return ReviewEntity.builder()
                 .reviewWriterId(reviewWriterId)

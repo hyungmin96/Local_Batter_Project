@@ -25,4 +25,8 @@ public class ProfileEntity implements Serializable {
     private String accountNumber;
     private String preferTime;
 
+    public void updateMannerScore(float value){
+        this.mannerScore += value;
+    }
+
 }

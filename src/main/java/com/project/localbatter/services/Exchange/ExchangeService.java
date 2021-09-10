@@ -8,7 +8,9 @@ import com.project.localbatter.dto.TransactionDTO;
 import com.project.localbatter.dto.exchangeDTO.*;
 import com.project.localbatter.entity.Exchange.*;
 import com.project.localbatter.entity.GroupBoardEntity;
+import com.project.localbatter.entity.ProfileEntity;
 import com.project.localbatter.repositories.Exchange.*;
+import com.project.localbatter.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,6 +34,7 @@ public class ExchangeService {
     private final WriterClientJoinRepository writerClientJoinRepository;
     private final ReviewRepository reviewRepository;
     private final LocalBatterServiceRepository localBatterServiceRepository;
+    private final UserRepository userRepository;
     private final GenerateFile generateFile;
     private final ExchangeQueryComponent exchangeQueryComponent; // Using @Component annotaion to get exchange data
     private final ExchangeChatService exchangeChatService;
@@ -41,6 +44,8 @@ public class ExchangeService {
     // Write review of target profile
     public ReviewDTO writeReview(ReviewDTO reviewDTO){
         WriterClientJoinEntity writerClientJoinEntity = writerClientJoinRepository.findByExchangeId(reviewDTO.getWriterClientJoinId());
+        ProfileEntity profileEntity = userRepository.getById(reviewDTO.getReviewReceiveId()).getProfile();
+        profileEntity.updateMannerScore(reviewDTO.getScore());
         reviewRepository.save(reviewDTO.toEntity(writerClientJoinEntity));
         return reviewDTO;
     }

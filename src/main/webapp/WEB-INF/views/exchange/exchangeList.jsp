@@ -238,7 +238,8 @@
             data: reviewInfoObject,
             contentType: 'application/x-www-form-urlencoded',
             success: (response) =>{
-                console.log(response)
+                alert('교환후기를 작성하였습니다.')
+                $('#reviewWriterModal').modal('hide')
             }
         })
     })

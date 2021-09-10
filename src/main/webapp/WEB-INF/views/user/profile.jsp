@@ -53,9 +53,13 @@
         </div>
 
         <div class="viewTabPageContainer" style="display: flex; flex-wrap: wrap; padding: 15px; width:100%; min-height: 345px; height: 100%; background: white; margin-bottom: 40px;">
-            <div class="emptyViewContainer" style="display: flex; width: 100%; height: 300px;">
-                <div style="width: 100%; margin: auto auto auto auto; text-align: center;">등록된 내용이 없습니다.</div>
-            </div>
+
+        </div>
+        <div class="viewReviewContainer" style="display: none; padding: 15px; width:100%; min-height: 345px; height: 100%; background: white; margin-bottom: 40px;">
+
+        </div>
+        <div class="emptyViewContainer" style="display: flex; width: 100%; height: 300px;">
+            <div style="width: 100%; margin: auto auto auto auto; text-align: center;">등록된 내용이 없습니다.</div>
         </div>
     </div>
 
@@ -84,7 +88,6 @@
             type: 'GET',
             data: data,
             success: (response) => {
-                console.log(response)
                 $('.usernameInfoBox')[0].innerHTML = response.nickname
                 $('.currentMannerScore')[0].innerHTML = response.mannerScore
                 $('.usernameBox')[0].innerHTML = response.nickname
@@ -109,6 +112,50 @@
         })
     }
 
+    var reviewPage = 0
+    function getProfileReviewDataAjax(){
+
+        const data = {
+            userId: $('.userId').val(),
+            display: 30,
+            page: reviewPage
+        }
+
+        $.ajax({
+
+            url: '/api/profile/list/get_user_review',
+            type: 'GET',
+            data: data,
+            success: (response) => {
+                console.log(response)
+                $('.viewTabPageContainer')[0].style.display = 'none'
+                $('.viewReviewContainer')[0].style.display = 'block'
+                $('.badge-success')[0].innerHTML = '리뷰 수 : ' + response.length + '개'
+                var html = ''
+
+                $.each(response, (key, value) => {
+                    html += '<div class="reviewWrapper" style="height: 100%; width: 100%; display: flex; flex-direction: row; padding: 10px;">'
+                    html += '<div class="reviewWriterProfile">'
+                    html += '<img class="reviewWriterProfileImage" src="/upload/' + value.reviewWriterProfile + '" style="width: 45px; height: 45px; object-fit: cover;">'
+                    html += '</div>'
+                    html += '<div class="reviewInfoBox" style="width: 100%; padding: 0 10px 10px 15px">'
+                    html += '<div style="display: inline-flex">'
+                    html += '<div class="reviewWriterUsername">' + value.reviewWriterUsername + '</div>'
+                    html += '<div class="reviewWriterScore" style="margin: auto 0 auto 10px">'
+                    for(let i = 1; i <= value.score; i ++)
+                        html += '<img src="/images/star_15px.png">'
+                    html += '</div>'
+                    html += '</div>'
+                    html += '<div class="reviewContent">' + value.content + '</div>'
+                    html += '</div>'
+                    html += '</div>'
+                    html += '</div>'
+                })
+                $('.viewReviewContainer').append(html)
+            }
+        })
+    }
+
     var profileBoardPage = 0
     function getProfileBoardsDataAjax(){
 
@@ -124,18 +171,18 @@
             type: 'GET',
             data: data,
             success: (response) => {
-                console.log(response)
                 $('.badge-secondary')[0].innerHTML = '상품 수 : ' + response.numberOfElements + '개'
-                $('.badge-success')[0].innerHTML = '리뷰 수 : ' + response.numberOfElements + '개'
                 var html = ''
+                $('.viewTabPageContainer')[0].style.display = 'flex'
+                $('.viewReviewContainer')[0].style.display = 'none'
 
                 if(response.numberOfElements > 0){
                     $('.emptyViewContainer')[0].style.display = 'none'
                     $.each(response.content, (key, value) =>{
-                        html += '<div class="img_box fadein" style="border: 1px solid rgb(238, 238, 238); cursor: pointer; width: 196px; height: 316px; margin: 0 12px 0 12px;">';
+                        html += '<div class="img_box fadein" style="border: 1px solid rgb(238, 238, 238); cursor: pointer; width: 196px; height: 310px; margin: 10px 6px 10px 6px;">';
                         html += '<div onclick="goToUrl(' + value.boardId + ')" class="today-item-box">';
                         html += '<div class="today-box">';
-                        html += '<img style="width: 189px; height: 196px;" src="/upload/' + value.thumbnail + '" onerror="this.style.display=none">';
+                        html += '<img style="width: 194px; height: 196px;" src="/upload/' + value.thumbnail + '" onerror="this.style.display=none">';
                         html += '</div>';
                         html += '<div class="today-detail-box" style="border-top: 1px solid rgb(238, 238, 238)">';
                         html += '<div style="padding: 10px;" ss="type">';
@@ -146,7 +193,7 @@
                         html += '</div>';
                         html += '</div>';
                         html += '<div style="border-top: 1px solid rgb(238, 238, 238); padding: 5px;">';
-                        html += '<div style="border-radius: 0" class="badge bg-secondary">' + value.location + '</div>';
+                        html += '<div style="border-radius: 0; font-size: 11px;" class="badge bg-secondary">' + value.location + '</div>';
                         html += '</div>';
                         html += '</div>';
                         html += '</div>';
@@ -180,11 +227,12 @@
 
 <script>
     $('.exchangePageButton').click(() =>{
+        $('.viewTabPageContainer').empty()
+        $('.viewReviewContainer').empty()
         $('.reviewPageButton')[0].style.background = 'white'
         $('.reviewPageButton')[0].style.color = '#bfbfbf'
         $('.reviewPageButton')[0].style.fontsize = '15'
         $('.exchangePageButton')[0].style.color = 'black'
-        $('.exchangePageButton')[0].style.fontsize = '17'
         $('.exchangePageButton')[0].style.background = 'rgb(251, 252, 253)'
         $('.reviewPageButton')[0].style.border = 'none'
         $('.exchangePageButton')[0].style.border = 'none'
@@ -192,14 +240,16 @@
         $('.exchangePageButton')[0].style.borderLeft = '1px solid #4e4e4e'
         $('.exchangePageButton')[0].style.borderRight = '1px solid #4e4e4e'
         $('.reviewPageButton')[0].style.borderBottom = '1px solid #4e4e4e'
+        getProfileBoardsDataAjax()
     })
 
     $('.reviewPageButton').click(() =>{
+        $('.viewTabPageContainer').empty()
+        $('.viewReviewContainer').empty()
         $('.exchangePageButton')[0].style.background = 'white'
         $('.exchangePageButton')[0].style.color = '#bfbfbf'
         $('.exchangePageButton')[0].style.fontsize = '15'
         $('.reviewPageButton')[0].style.color = 'black'
-        $('.reviewPageButton')[0].style.fontsize = '17'
         $('.reviewPageButton')[0].style.background = 'rgb(251, 252, 253)'
         $('.reviewPageButton')[0].style.border = 'none'
         $('.exchangePageButton')[0].style.border = 'none'
@@ -208,6 +258,7 @@
         $('.reviewPageButton')[0].style.borderRight = '1px solid #4e4e4e'
         $('.reviewPageButton')[0].style.borderRight = '1px solid #4e4e4e'
         $('.exchangePageButton')[0].style.borderBottom = '1px solid #4e4e4e'
+        getProfileReviewDataAjax()
     })
 </script>
 <%@ include file="../common/footer.jsp" %>

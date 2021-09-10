@@ -1,6 +1,7 @@
 package com.project.localbatter.api;
 
 import com.project.localbatter.api.group.GroupBoardApiController;
+import com.project.localbatter.dto.exchangeDTO.ReviewDTO;
 import com.project.localbatter.entity.ProfileEntity;
 import com.project.localbatter.services.ProfileService;
 import lombok.Getter;
@@ -11,6 +12,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,8 +33,9 @@ public class ProfileApiController {
     }
 
     @GetMapping("/api/profile/list/get_user_review")
-    public void getReviews(RequestProfileDTO requestProfileDTO){
-
+    public List<ReviewDTO> getReviews(RequestProfileDTO requestProfileDTO){
+            Pageable pageable = PageRequest.of(requestProfileDTO.getPage(), requestProfileDTO.getDisplay());
+            return profileService.getProfileReviews(requestProfileDTO.getUserId(), pageable);
     }
 
     @Getter @Setter
