@@ -213,6 +213,8 @@
     const reviewInfoObject = {
         reviewWriterId: $('.g_user_id').val(),
         reviewReceiveId: '',
+        reviewReceiveUsername: '',
+        reviewReceiveProfile: '',
         writerClientJoinId: '',
         content: '',
         score: ''
@@ -221,10 +223,12 @@
     $(document).on('click', '.reviewButton', function (){
         $('#reviewWriterModal').modal('show')
         var reviewIndex = $('.reviewButton').index(this)
-        console.log(reviewIndex)
         reviewInfoObject.reviewReceiveId = ($('.g_user_id').val() == $('.reviewWriterUserId')[reviewIndex].value) ? $('.reviewReceiveUserId')[reviewIndex].value : $('.reviewWriterUserId')[reviewIndex].value
         reviewInfoObject.writerClientJoinId = $('.reviewWriterClientJoinId')[reviewIndex].value
-
+        reviewInfoObject.reviewReceiveProfile = ($('.g_user_id').val() == $('.reviewWriterUserId')[reviewIndex].value) ? $('.reviewReceiveProfile')[reviewIndex].value : $('.reviewWriterProfile')[reviewIndex].value
+        reviewInfoObject.reviewReceiveUsername = ($('.g_user_id').val() == $('.reviewWriterUserId')[reviewIndex].value) ? $('.reviewReceiveUserId')[reviewIndex].value : $('.reviewWriterUserId')[reviewIndex].value
+        $('.targetUserProfileImage')[reviewIndex].src = '/upload/' + reviewInfoObject.reviewReceiveProfile
+        $('.targetUsername')[reviewIndex].innerHTML = reviewInfoObject.reviewReceiveUsername
     })
 
     $(document).on('click', '.submitReviewButton', ()=>{
@@ -239,7 +243,7 @@
             contentType: 'application/x-www-form-urlencoded',
             success: (response) =>{
                 alert('교환후기를 작성하였습니다.')
-                $('#reviewWriterModal').modal('hide')
+                location.reload()
             }
         })
     })
@@ -441,12 +445,9 @@
     // writer 작성글 목록을 그리는 함수
     function appendBoardToContainer(key, value, type = 'wait'){
 
-        console.log(value)
         let displayCountValue
         displayCountValue = (value.requestCount > 0) ? 'position-relative' : ''
-
         var isReviewButton = (value.isReviewWrite != null) ? 'disabled' : ''
-
         var actionButtonContainer
 
         if(type == 'wait'){
@@ -462,6 +463,10 @@
             actionButtonContainer = "<input type='hidden' class='reviewWriterUserId' value='" + value.writerId + "'>" +
                 "<input type='hidden' class='reviewReceiveUserId' value='" + value.clientId + "'>" +
                 "<input type='hidden' class='reviewWriterClientJoinId' value='" + value.writerClientJoinId + "'>" +
+                "<input type='hidden' class='reviewReceiveProfile' value='" + value.reviewReceiveProfile + "'>" +
+                "<input type='hidden' class='reviewReceiveUsername' value='" + value.reviewReceiveUsername + "'>" +
+                "<input type='hidden' class='reviewWriterProfile' value='" + value.reviewWriterProfile + "'>" +
+                "<input type='hidden' class='reviewWriterUsername' value='" + value.reviewWriterUsername + "'>" +
                 "<button " + isReviewButton + " id='reviewWriterClientId_" + value.writerClientJoinId + "' style='height: 37px; margin: auto;' class='actionButton reviewButton'>리뷰작성</button>"
         }
 

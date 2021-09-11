@@ -13,9 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
-
 import static com.project.localbatter.entity.Exchange.QReviewEntity.reviewEntity;
 import static com.project.localbatter.entity.Exchange.QWriterExchangeEntity.writerExchangeEntity;
 import static com.project.localbatter.entity.QGroupBoardEntity.groupBoardEntity;

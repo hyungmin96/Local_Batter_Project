@@ -194,7 +194,12 @@ public class GroupExchangeApiController {
         private String thumbnail;
         private WriterExchangeEntity.exchangeStatus status;
         private Long writerClientJoinId;
+
         private Long isReviewWrite;
+        private String reviewWriterUsername;
+        private String reviewWriterProfile;
+        private String reviewReceiveUsername;
+        private String reviewReceiveProfile;
     }
 
     @Setter @Getter

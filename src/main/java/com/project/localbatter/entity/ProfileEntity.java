@@ -16,7 +16,7 @@ public class ProfileEntity implements Serializable {
 
     @Id @GeneratedValue
     private Long id;
-    private float mannerScore;
+    private double mannerScore;
     private int mileage;
     private String nickname;
     private String introduce;
@@ -25,8 +25,8 @@ public class ProfileEntity implements Serializable {
     private String accountNumber;
     private String preferTime;
 
-    public void updateMannerScore(float value){
-        this.mannerScore += value;
+    public void updateMannerScore(double value){
+        this.mannerScore = value;
     }
 
 }

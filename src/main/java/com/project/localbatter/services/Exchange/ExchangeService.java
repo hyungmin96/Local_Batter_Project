@@ -42,11 +42,13 @@ public class ExchangeService {
 
     // 교환완료시 상대방 사용자의 reivew 작성
     // Write review of target profile
+    @Transactional
     public ReviewDTO writeReview(ReviewDTO reviewDTO){
         WriterClientJoinEntity writerClientJoinEntity = writerClientJoinRepository.findByExchangeId(reviewDTO.getWriterClientJoinId());
         ProfileEntity profileEntity = userRepository.getById(reviewDTO.getReviewReceiveId()).getProfile();
-        profileEntity.updateMannerScore(reviewDTO.getScore());
         reviewRepository.save(reviewDTO.toEntity(writerClientJoinEntity));
+        double reviewScore = reviewRepository.getReviewScore(reviewDTO.getReviewReceiveId());
+        profileEntity.updateMannerScore(reviewScore);
         return reviewDTO;
     }
 

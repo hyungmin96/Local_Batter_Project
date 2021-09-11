@@ -135,6 +135,10 @@ public class ExchangeQueryComponent {
     // View writer's completed exchange boards
     // 로그인한 user의 교환완료된 게시글 목록 조회
     public Page<ResponseWrtierExchangeDTO> getCompleteBoards(TransactionDTO transactionDTO, Pageable page){
+
+        QUserEntity writerUserEntity = new QUserEntity("writerUserEntity");
+        QUserEntity clientUserEntity = new QUserEntity("clientUserEntity");
+
         long queryCount = queryFactory
                 .select(writerClientJoinEntity.id)
                 .from(writerClientJoinEntity)
@@ -161,14 +165,18 @@ public class ExchangeQueryComponent {
                                     JPAExpressions.select(reviewEntity.reviewId)
                                             .from(reviewEntity)
                                             .where(reviewEntity.reviewWriterId.eq(transactionDTO.getUserId())),
-                                    "isReviewWrite")
+                                    "isReviewWrite"),
+                            writerUserEntity.username.as("reviewWriterUsername"),
+                            writerUserEntity.profilePath.as("reviewWriterProfile"),
+                            clientUserEntity.username.as("reviewReceiveUsername"),
+                            clientUserEntity.profilePath.as("reviewReceiveProfile")
                     ))
                     .from(writerClientJoinEntity)
                     .leftJoin(writerClientJoinEntity.writerExchangeEntity, writerExchangeEntity)
                     .leftJoin(groupBoardEntity).on(writerExchangeEntity.id.eq(groupBoardEntity.writerExchangeEntity.id))
                     .leftJoin(groupBoardEntity.writerExchangeEntity, writerExchangeEntity)
-                    .leftJoin(groupBoardEntity.groupUserJoinEntity, groupUserJoinEntity)
-                    .leftJoin(groupUserJoinEntity.user, userEntity)
+                    .innerJoin(writerUserEntity).on(writerClientJoinEntity.writerId.eq(writerUserEntity.id))
+                    .innerJoin(clientUserEntity).on(writerClientJoinEntity.clientId.eq(clientUserEntity.id))
                     .offset(page.getPageNumber())
                     .limit(page.getPageSize())
                     .where(writerExchangeEntity.status.eq(WriterExchangeEntity.exchangeStatus.complete))

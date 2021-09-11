@@ -42,7 +42,7 @@ public class ProfileApiController {
     public static class ResponseUserDTO{
 
         private Long userId;
-        private float mannerScore;
+        private double mannerScore;
         private String nickname;
         private String introduce;
         private String phoneNum;
