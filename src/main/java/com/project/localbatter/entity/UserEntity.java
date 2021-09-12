@@ -47,6 +47,14 @@ public class UserEntity implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role Role;
 
+    public void updateProfileImage(String profilePath){
+        this.profilePath = profilePath;
+    }
+
+    public void updateUsername(String username){
+        this.username = username;
+    }
+
 	@Override
 	public String getPassword() {
 		return this.password;

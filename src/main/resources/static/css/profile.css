@@ -12,6 +12,40 @@
     font-style: normal;
 }
 
+.profileEditButton{
+    border: none;
+    background: white;
+    padding: 5px;
+}
+
+.editValueInput{
+    border: 1px solid #b2b0b0;
+    padding: 5px;
+    font-size: 15px;
+    resize: none;
+}
+
+.editValueInput:hover, .editValueInput:focus{
+    outline: none;
+}
+
+.editProfile div{
+    margin: 10px 0 10px 0;
+}
+
+.profileEditButton:hover, profileEditButton:focus{
+    border: none;
+    outline: none;
+    background: rgb(235, 235, 235);
+}
+
+.editConfirmButton{
+    padding: 10px 5px 10px 5px;
+    font-family: Pretendard-Regular;
+    font-size: 16px;
+    width: 80px;
+}
+
 .reviewWrapper{
     font-family: Pretendard-Regular;
     font-size: 16px;

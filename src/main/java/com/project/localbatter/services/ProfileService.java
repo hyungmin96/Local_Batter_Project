@@ -3,8 +3,15 @@ package com.project.localbatter.services;
 import com.project.localbatter.api.ProfileApiController.RequestProfileDTO;
 import com.project.localbatter.api.ProfileApiController.ResponseUserDTO;
 import com.project.localbatter.api.group.GroupBoardApiController.ResponseGroupExchangeDTO;
+import com.project.localbatter.components.GenerateFile;
 import com.project.localbatter.components.PagingUtil;
+import com.project.localbatter.dto.GenerateFileDTO;
+import com.project.localbatter.dto.ProfileEditDTO;
 import com.project.localbatter.dto.exchangeDTO.ReviewDTO;
+import com.project.localbatter.entity.ProfileEntity;
+import com.project.localbatter.entity.UserEntity;
+import com.project.localbatter.repositories.ProfileRepository;
+import com.project.localbatter.repositories.UserRepository;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -13,7 +20,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
+
 import static com.project.localbatter.entity.Exchange.QReviewEntity.reviewEntity;
 import static com.project.localbatter.entity.Exchange.QWriterExchangeEntity.writerExchangeEntity;
 import static com.project.localbatter.entity.QGroupBoardEntity.groupBoardEntity;
@@ -27,6 +36,28 @@ public class ProfileService {
 
     private final JPAQueryFactory queryFactory;
     private final PagingUtil pagingUtil;
+    private final GenerateFile generateFile;
+    private final UserRepository userRepository;
+    private final ProfileRepository profileRepository;
+
+    // Edit profile info
+    // 사용자 프로필 정보 수정
+    @Transactional
+    public ProfileEditDTO editProfile(ProfileEditDTO profileEditDTO){
+        List<GenerateFileDTO> file = generateFile.createFile(profileEditDTO.getProfileImage());
+
+        UserEntity userEntity = userRepository.findById(profileEditDTO.getUserId()).get();
+        ProfileEntity profileEntity = userEntity.getProfile();
+
+        userEntity.updateProfileImage(file.get(0).getName());
+        profileEntity.updateNickname(profileEditDTO.getUsername());
+        profileEntity.updateIntroduce(profileEditDTO.getIntroduce());
+
+        userRepository.save(userEntity);
+
+        profileEditDTO.setProfileImage(null);
+        return profileEditDTO;
+    }
 
     // Get user's all reviews
     // 사용자에게 등록된 리뷰 목록을 조회

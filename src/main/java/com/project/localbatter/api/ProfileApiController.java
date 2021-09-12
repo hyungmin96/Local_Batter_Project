@@ -1,6 +1,7 @@
 package com.project.localbatter.api;
 
 import com.project.localbatter.api.group.GroupBoardApiController;
+import com.project.localbatter.dto.ProfileEditDTO;
 import com.project.localbatter.dto.exchangeDTO.ReviewDTO;
 import com.project.localbatter.entity.ProfileEntity;
 import com.project.localbatter.services.ProfileService;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -20,6 +22,11 @@ import java.util.List;
 public class ProfileApiController {
 
     private final ProfileService profileService;
+
+    @PostMapping("/api/profile/edit/user")
+    public ProfileEditDTO editProfile(ProfileEditDTO profileEditDTO){
+        return profileService.editProfile(profileEditDTO);
+    }
 
     @GetMapping("/api/profile/info/user")
     public ResponseUserDTO getUsersInfo(RequestProfileDTO requestProfileDTO){
