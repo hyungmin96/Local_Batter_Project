@@ -69,6 +69,7 @@ function postContent() {
         formData.append('content', postBox.innerHTML.split('<div class=\"imgBox\"')[0]);
         formData.append('preferTime', $('#exchange_time').val())
         formData.append('category', category)
+        formData.append('expireDate', $('#endDate').val())
 
         for (let i = 0; i < infoImgs.length; i++)
             if (infoImgs[i] != null)
@@ -417,6 +418,7 @@ function getBoardList() {
                     $('.contentEmptyContiner').remove();
                     document.getElementsByClassName('_contentListWrapper')[0].setAttribute("style", "hieght:500px");
                     $.each(response.content, function (key, value) {
+                        console.log(value)
                         $('.contentContainer').append(
                             inputPostBox(value)
                         );
@@ -467,10 +469,15 @@ function showBoardInfo(value, showNoticeBoolean = true){
 function inputPostBox(value) {
     const boardType = (value.type !== 'general') ? "<span class='notice _noticeText'>공지</span>" : '';
     const boardCategory = (value.boardCategory == 'exchange') ? "<span class='boardCategory'>교환 게시글</span>" : '';
+    const isStatus = (value.status == 'wait') ? 'none' : 'flex';
+    const statusText = (value.status == 'complete') ? '거래완료' : '기부완료';
 
     return "<div class='boardItemBox' style='animation: fadein 1.5s; margin-bottom: 20px; box-shadow: 0 2px 3px 0 rgba(161, 161, 161, 0.12);'>" +
         "<input type='hidden' class='boardId' value=" + value.boardId + ">" +
         "<div class='contentItemBox'>" +
+        "<div class='statusAlertContainer' style='display: " + isStatus + "'>" +
+        "<div class='statusAlertTextContainer'>" + statusText + "</div>" +
+        "</div>" +
         "<div class='contentAuthorBox'>" +
         "<div><img class='board _userProfileImg' src=/upload/" + value.profilePath + "></div>" +
         "<div class='contentInfoBox'>" +

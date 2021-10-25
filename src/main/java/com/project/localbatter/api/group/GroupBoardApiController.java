@@ -116,7 +116,7 @@ public class GroupBoardApiController {
             this.title = boardInfo.getTitle();
             this.content = boardInfo.getContent();
             this.regTime = boardInfo.getRegTime();
-            this.files = files.stream().map(item -> item.getName()).collect(Collectors.toList());
+            this.files = files.stream().map(GroupBoardFileEntity::getName).collect(Collectors.toList());
         }
     }
 
@@ -141,11 +141,13 @@ public class GroupBoardApiController {
         // 게시글 거래위치 DTO
         private String price;
         private WriterExchangeEntity.ExchageOnOff exchageOn;
+        private WriterExchangeEntity.exchangeStatus status;
         private String location;
         private String locationDetail;
         private String longitude;
         private String latitude;
         private String preferTime;
+        private LocalDateTime expireDate;
 
         public ResponseBoardDTO(GroupBoardEntity entity) {
             this.userId = entity.getGroupUserJoinEntity().getUser().getId();
@@ -163,11 +165,13 @@ public class GroupBoardApiController {
             if (entity.getWriterExchangeEntity() != null) {
                 this.price = entity.getWriterExchangeEntity().getPrice();
                 this.exchageOn = entity.getWriterExchangeEntity().getExchangeOn();
+                this.status = entity.getWriterExchangeEntity().getStatus();
                 this.location = entity.getWriterExchangeEntity().getLocation();
                 this.locationDetail = entity.getWriterExchangeEntity().getLocationDetail();
                 this.longitude = entity.getWriterExchangeEntity().getLongitude();
                 this.latitude = entity.getWriterExchangeEntity().getLatitude();
                 this.preferTime = entity.getWriterExchangeEntity().getPreferTime();
+                this.expireDate = entity.getWriterExchangeEntity().getExpireDate();
             }
         }
     }

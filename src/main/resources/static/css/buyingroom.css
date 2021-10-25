@@ -84,7 +84,7 @@ _content img{
 }
 
 .modal-dialog {
-    max-width: 600px;
+    max-width: 100%;
     margin: 1.75rem auto;
 }
 
@@ -342,7 +342,7 @@ _content img{
 
 .exchangeContainer{
     margin: 5px 0 5px 0;
-    border-top: 1px solid #ebebeb;
+    border-bottom: 1px solid #ebebeb;
     font-family: Pretendard-SemiBold;
 }
 
@@ -371,7 +371,7 @@ _content img{
 
 .addressInputBox{
     margin: 2px 0 2px 0;
-    width: 500px;
+    width: 335px;
 }
 
 .form-check-label{
@@ -379,8 +379,12 @@ _content img{
     font-size: 14px;
 }
 
+.alertItem div{
+    margin: 5px 0 5px 0;
+}
+
 .exchangeContainerHeader{
-    background-color: #ffffff;
+    background-color: transparent;
     font-family: Pretendard-SemiBold;
     font-size: 17px;
     padding: 10px 10px 0 0;
@@ -491,12 +495,34 @@ _content img{
 .contentItemBox{
     background-color: white;
     padding: 15px;
+    position: relative;
+    overflow: hidden;
 }
 
 ._userProfileImg{
     width: 40px;
     height: 40px;
     object-fit: cover;
+}
+
+.statusAlertContainer{
+    z-index: 1000;
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-size: 38px;
+    color: #c5c4c4;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    margin: auto auto auto auto;
+    opacity: 15%;
+    background: #d9d9d9;
+}
+
+.statusAlertTextContainer{
+    color: black;
+    margin: auto auto auto auto;
 }
 
 .contentAuthorBox{
@@ -610,7 +636,7 @@ _content img{
 }
 
 #groupBoardModal{
-    font-family: 'Noto Sans KR', sans-serif;
+    font-family: 'Pretendard-Regular';
     font-size: 15px;
 }
 

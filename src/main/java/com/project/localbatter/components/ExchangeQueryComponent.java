@@ -164,6 +164,7 @@ public class ExchangeQueryComponent {
                             ExpressionUtils.as(
                                     JPAExpressions.select(reviewEntity.reviewId)
                                             .from(reviewEntity)
+                                            .where(writerClientJoinEntity.eq(reviewEntity.writerClientJoinEntity))
                                             .where(reviewEntity.reviewWriterId.eq(transactionDTO.getUserId())),
                                     "isReviewWrite"),
                             writerUserEntity.username.as("reviewWriterUsername"),

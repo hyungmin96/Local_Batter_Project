@@ -63,7 +63,6 @@ function setOtherMaker(map, residence, long, lat){
 }
 
 document.getElementsByClassName('searchButton')[0].addEventListener('click', function (){
-    console.log($('#serachAddrText').val())
     geocoder.addressSearch($('#serachAddrText').val(), function (result, status) {
         if (status === kakao.maps.services.Status.OK) {
             var coords = new kakao.maps.LatLng(result[0].y, result[0].x);

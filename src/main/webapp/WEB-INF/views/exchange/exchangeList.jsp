@@ -435,6 +435,7 @@
             data: data,
             success: function(response){
                 $.each(response.content, function(key, value){
+                    console.log(value)
                     $('#exchangedItemsContainer').append(appendBoardToContainer(key, value, 'complete'))
                     if(key % 2 != 0) document.getElementById('requestBox_' + key).style.background = '#fcfcfc'
                 })

@@ -50,7 +50,6 @@ function loadGroupChatRoomList(e, page = 0){
         data: data,
         success: function(response){
             $.each(response.content, function(key, value){
-                console.log(value)
                 const files = (value.filePath != null) ? value.filePath : '';
                 $('.Group__room__list').append(
                     "<div id='item__box__" + value.id + "' class='group_item_box' style='width: 190px;'>" +

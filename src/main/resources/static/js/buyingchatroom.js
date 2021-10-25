@@ -107,7 +107,7 @@ function GroupRoomImageUpload(e){
         contentType: false,
         processData: false,
         success: function(response){
-            console.log(response)
+
         }
     })
 }

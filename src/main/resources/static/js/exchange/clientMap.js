@@ -41,7 +41,6 @@ function uploadClientExchange(files){
         processData: false,
         contentType: false,
         success: function (response){
-            console.log(response)
             alert('물품 교환을 성공적으로 요청하였습니다.')
             window.location.href = '/view/client/confirm/exchange/' + response.clientId
         }
@@ -70,8 +69,6 @@ $(document).ready(function(){
         data: data,
         contentType: 'application/x-www-form-urlencoded',
         success: function (response){
-
-            console.log(response)
             $('.writerUsername').html(response.username)
             $('.writerId')[0].value = response.id // writer Id
             $('.writerProfile')[0].src = '/upload/' + response.profilePath

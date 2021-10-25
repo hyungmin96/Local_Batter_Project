@@ -9,7 +9,9 @@ import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +48,7 @@ GroupBoardDTO implements Serializable {
     private String longitude;
     private String latitude;
     private String preferTime;
+    private String expireDate;
 
     public GroupBoardEntity toEntity(GroupUserJoinEntity groupUserJoinEntity, WriterExchangeEntity writerExchangeEntity){
         return GroupBoardEntity.builder()
@@ -75,6 +78,7 @@ GroupBoardDTO implements Serializable {
                     .longitude(longitude)
                     .latitude(latitude)
                     .preferTime(preferTime)
+                    .expireDate(convertLocalDateTime())
                     .build();
         } else return null;
     }
@@ -95,6 +99,12 @@ GroupBoardDTO implements Serializable {
             return GroupBoardEntity.BoardCategory.exchange;
         else
             return GroupBoardEntity.BoardCategory.complete;
+    }
+
+    private LocalDateTime convertLocalDateTime(){
+        DateTimeFormatter DATEFORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd");
+        LocalDate ld = LocalDate.parse(this.expireDate, DATEFORMATTER);
+        return LocalDateTime.of(ld, LocalDateTime.now().toLocalTime());
     }
 
     public void addFile(GroupBoardFileEntity file){

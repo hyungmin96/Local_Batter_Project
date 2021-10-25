@@ -6,6 +6,7 @@ import com.project.localbatter.entity.BaseTimeEntity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -52,11 +53,16 @@ public class WriterExchangeEntity extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private exchangeStatus status;
 
+    @Column(name = "expire_date")
+    private LocalDateTime expireDate;
+
     @OneToMany(mappedBy = "writerExchangeEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnore
     private List<WriterClientJoinEntity> writerClientJoinEntity;
 
     public void exchangeComplete(){ this.status = exchangeStatus.complete; }
+
+    public void exchangeExpire(){ this.status = exchangeStatus.expire; }
 
     public void updateCount(int value){
         this.requestCount += value;
@@ -72,7 +78,7 @@ public class WriterExchangeEntity extends BaseTimeEntity {
         this.preferTime = groupBoardDTO.getPreferTime();
     }
 
-    public enum exchangeStatus{ wait, complete }
+    public enum exchangeStatus{ wait, complete, expire }
 
     public enum ExchageOnOff{ on, off }
 

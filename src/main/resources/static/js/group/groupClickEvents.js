@@ -4,7 +4,7 @@ $(document).on('click', '._groupEnterButton', function(){
     enterGroup();
 })
 
-// 그룹 나가기기
+// 그룹 나가기
 $(document).on('click', '._groupExitButton', function(){
     exitGroup();
 })

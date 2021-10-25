@@ -195,8 +195,8 @@
 
 <!-- group board wirte modal -->
 <div class="modal fade" id="groupBoardWriteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" style="margin: 100px auto 20px auto; width: 800px;">
-        <div class="modal-content" style="width: 600px;">
+    <div class="modal-dialog" style="margin: 100px auto 20px auto; width: 1100px;">
+        <div class="modal-content" style="width: 1100px;">
             <div class="modal-header" style="border: none;">
                 <div class="modal-title" id="groupBoardModal" style="margin: 0 0 0 auto">그룹 게시글 작성</div>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -205,7 +205,8 @@
                 <div class="groupTitleBox" style="padding: 10px 10px 0 10px;">
                     <input type="text" class="groupTitleInputBox" value="" placeholder="게시글의 제목을 입력해주세요">
                 </div>
-                <div style="padding: 10px; margin-top: 10px;">
+                <div style="display: flex; flex-direction: row; height: 500px;">
+                <div style="padding: 10px; margin-top: 10px; width: 100%; max-width: 630px; margin-right: 20px;">
                     <div style="padding: 5px; background-color: #f8f9fa;">
                         <div class="upload _contentUploadBox" style="display: inline-flex; width: 100%">
                             <input type="file" id="uploadFile" multiple="multiple" style="display: none;">
@@ -218,65 +219,84 @@
                             <div class="fileArea _locationDialog" style="cursor: pointer;">
                                 <button><img src="/images/group/place_marker_25px.png"></button>
                             </div>
+                            <div class="articleWordsBox" style="margin: 2px 5px 4px 4px;">
+                                <span class="currentWords">0</span> /
+                                <span class="limitWords">300</span>
+                            </div>
                         </div>
                     </div>
                     <div id="board_content_box" class="commentWrite groupContentWriteBox" contentEditable="true" data-text="그룹에 새로운 게시글을 작성해보세요" tabindex="0" spellcheck="true" role="textbox"></div>
-                        <div class="articleWordsBox" style="margin-bottom: 15px;">
-                            <span class="currentWords">0</span> /
-                            <span class="limitWords">300</span>
+                </div>
+
+                <div class="alertNotice" style="width: 40%; background: rgb(252, 253, 253); margin: 19px 0 10px 10px; padding: 15px;">
+                    <div class="LocationContainerTitle">
+                        <h4 class="exchangeContainerHeader">일반글 작성안내</h4>
+                    </div>
+                    <div class="alertItem" style="padding: 10px; font-size: 15px; font-weight: 500;">
+                        <div>그룹에 가입된 멤버만 게시글을 확인할 수 있습니다.</div>
+                        <div>해당 게시글은 검색되지 않습니다.</div>
+                    </div>
+                </div>
+
+                <div class="setExchangeContainer" style="display: none; width: 40%; background: rgb(252, 253, 253); margin: 19px 0 10px 10px; padding: 3px 15px 15px 15px;">
+
+                    <div class="exchangeContainer LocationContainer">
+                        <div class="LocationContainerTitle">
+                            <h5 class="exchangeContainerHeader">물품 교환금액</h5>
                         </div>
-
-                    <div class="setExchangeContainer" style="display: none;">
-
-                        <div class="exchangeContainer LocationContainer">
-                            <div class="LocationContainerTitle">
-                                <h5 class="exchangeContainerHeader">물품 교환금액</h5>
-                            </div>
-                            <div style="padding: 5px;">
-                                <input type="text" onkeyup="convertM(this);" class="inputbox addressInputBox" id="exchange_price" placeholder="판매하실 금액을 입력해주세요" style="margin-top: 5px; width: 235px;">
-                            </div>
+                        <div style="padding: 5px;">
+                            <input type="text" onkeyup="convertM(this);" class="inputbox addressInputBox" id="exchange_price" placeholder="판매하실 금액을 입력해주세요" style="margin-top: 5px; width: 235px;">
                         </div>
+                    </div>
 
-                        <div class="exchangeContainer LocationContainer">
-                            <div class="LocationContainerTitle">
-                                <h5 class="exchangeContainerHeader">물품 교환설정</h5>
-                            </div>
-                            <div style="padding: 5px 5px 5px 5px;">
-                                <div class="form-check form-switch" style="padding: 0;">
-                                    <label class="form-check-label" for="flexSwitchCheckChecked">물품교환</label>
-                                    <input style="width: 45px; height: 20px; margin-left: 4px" class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
-                                </div>
-                            </div>
+                    <div class="exchangeContainer LocationContainer">
+                        <div class="LocationContainerTitle">
+                            <h5 class="exchangeContainerHeader">물품 교환설정</h5>
                         </div>
-
-                        <div class="exchangeContainer LocationContainer">
-                            <div class="LocationContainerTitle">
-                                <h5 class="exchangeContainerHeader">거래지역 설정</h5>
-                            </div>
-                            <div style="padding: 0 5px 5px 5px;">
-                                <input type="text" class="inputbox addressInputBox" id="exchange_address" disabled = "true" placeholder="주소" style="width: 500px;">
-                                <button class="serachButton exchangeLocationSearch" onclick="openSerachContent('/writer/map', ''); getAddress();">검색</button>
-                                <input type="text" class="inputbox addressInputBox locationDetailTinfo" enabled = "true" placeholder="세부내용" style="width: 340px;">
-                                <div>
-                                    <input type="hidden" class="longitudeValue" value="">
-                                    <input type="hidden" class="latitudeValue" value="">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="exchangeContainer exchangeTimeContainer">
-                            <div class="exchangeTimeContainerTitle">
-                                <h5 class="exchangeContainerHeader">거래 선호시간 설정</h5>
-                            </div>
-                            <div style="padding: 5px;">
-                                <input type="text" class="inputbox addressInputBox" id="exchange_time" enabled = "true" placeholder="선호 시간대를 입력해주세요">
+                        <div style="padding: 5px 5px 5px 5px;">
+                            <div class="form-check form-switch" style="padding: 0;">
+                                <label class="form-check-label" for="flexSwitchCheckChecked">물품교환</label>
+                                <input style="width: 45px; height: 20px; margin-left: 4px" class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
                             </div>
                         </div>
                     </div>
 
+                    <div class="exchangeContainer LocationContainer">
+                        <div class="LocationContainerTitle">
+                            <h5 class="exchangeContainerHeader">거래지역 설정</h5>
+                        </div>
+                        <div style="padding: 0 5px 5px 5px;">
+                            <input type="text" class="inputbox addressInputBox" id="exchange_address" disabled = "true" placeholder="주소">
+                            <button class="serachButton exchangeLocationSearch" onclick="openSerachContent('/writer/map', ''); getAddress();">검색</button>
+                            <input type="text" class="inputbox addressInputBox locationDetailTinfo" enabled = "true" placeholder="세부내용" style="width: 340px;">
+                            <div>
+                                <input type="hidden" class="longitudeValue" value="">
+                                <input type="hidden" class="latitudeValue" value="">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="exchangeContainer exchangeTimeContainer">
+                        <div class="exchangeTimeContainerTitle">
+                            <h5 class="exchangeContainerHeader">거래 선호시간 설정</h5>
+                        </div>
+                        <div style="padding: 5px;">
+                            <input type="text" class="inputbox addressInputBox" id="exchange_time" enabled = "true" placeholder="선호 시간대를 입력해주세요">
+                        </div>
+                    </div>
+
+                    <div class="exchangeContainer expireTimeContainer">
+                        <div class="expireTimeContainerTitle">
+                            <h5 class="exchangeContainerHeader">교환 만료기한 설정</h5>
+                        </div>
+                        <div style="padding: 5px;">
+                            <input type="text" class="inputbox addressInputBox" id="endDate" enabled = "true" placeholder="만료기간을 입력해주세요">
+                        </div>
+                    </div>
+                </div>
                 </div>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer" style="border-top: none;">
                 <div class="dropdown">
                     <button type="button" class="boardDropDownButton btn btn-primary dropdown-toggle" data-toggle="dropdown" style="font-size: 12px;">
                         카테고리 선택
@@ -360,6 +380,9 @@
 
 </div>
 <!-- modal -->
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
 <script type="text/javascript" src="/js/group/groupClickEvents.js"></script>
 <script type="text/javascript" src="/js/group/groupAPis.js"></script>
 <script type="text/javascript" src="/js/imgModal.js"></script>
@@ -381,6 +404,25 @@
         loadNotices();
         getBoardList();
         getMemberList();
+        $.datepicker.setDefaults($.datepicker.regional['ko']);
+        $( "#endDate" ).datepicker({
+            changeMonth: true,
+            changeYear: true,
+            nextText: '다음 달',
+            prevText: '이전 달',
+            dayNames: ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'],
+            dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
+            monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+            monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+            dateFormat: "yymmdd",
+            maxDate: 0,                       // 선택할수있는 최대날짜, ( 0 : 오늘 이후 날짜 선택 불가)
+            onClose: function( selectedDate ) {
+                // 종료일(endDate) datepicker가 닫힐때
+                // 시작일(startDate)의 선택할수있는 최대 날짜(maxDate)를 선택한 시작일로 지정
+                $("#startDate").datepicker( "option", "maxDate", selectedDate );
+            }
+
+        });
     })
 
     var checkStatus = true
@@ -412,10 +454,14 @@
     $(document).on('click', '.boardCategoryItem', function(){
         let item = $(this)[0].innerHTML
         $('.boardDropDownButton')[0].innerHTML = item
-        if(item == '교환 글')
+        if(item == '교환 글'){
             $('.setExchangeContainer').show()
-        else
+            $('.alertNotice').hide()
+        }
+        else{
+            $('.alertNotice').show()
             $('.setExchangeContainer').hide()
+        }
     })
     var openWin;
     function openSerachContent(url, title) {

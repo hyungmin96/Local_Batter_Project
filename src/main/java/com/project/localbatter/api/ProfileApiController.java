@@ -56,6 +56,7 @@ public class ProfileApiController {
         private String location;
         private String accountNumber;
         private String preferTime;
+        private Long reviewCount;
 
         public ResponseUserDTO(Long userId, ProfileEntity profile) {
             this.userId = userId;
