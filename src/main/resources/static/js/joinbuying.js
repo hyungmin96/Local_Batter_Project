@@ -50,6 +50,7 @@ function loadGroupChatRoomList(e, page = 0){
         data: data,
         success: function(response){
             $.each(response.content, function(key, value){
+                console.log(value)
                 const files = (value.filePath != null) ? value.filePath : '';
                 $('.Group__room__list').append(
                     "<div id='item__box__" + value.id + "' class='group_item_box' style='width: 190px;'>" +
@@ -77,38 +78,44 @@ function loadGroupChatRoomList(e, page = 0){
 
 function createGroup(){
 
-    let i;
-    const formData = new FormData();
-    const checkboxArary = $(".checkbox");
+    if($('.groupTitle').val() == ''){
+        alert('만드실 그룹의 제목을 설정해주세요')
+    }else if($('.groupDescriptionText').val() == ''){
+        alert('만드실 그룹의 내용을 설정해주세요')
+    }else{
+        let i;
+        const formData = new FormData();
+        const checkboxArary = $(".checkbox");
+        const location = ($('#location').val() == '') ? '상관없음' : $('#location').val()
 
-    formData.append('userId', $('.g_user_id').val());
-    formData.append('title', $('.groupTitle').val());
-    formData.append('description', $('.groupDescriptionText').val());
-    formData.append('owner', $('.g_user_name').val());
-    formData.append('location', $('#location').val());
-    formData.append('tag', $('#tags').val());
-    formData.append('chk_1', $('#' + checkboxArary[0].children[0].id).val());
-    formData.append('chk_2', $('#' + checkboxArary[1].children[0].id).val());
-    formData.append('chk_3', $('#' + checkboxArary[2].children[0].id).val());
+        formData.append('userId', $('.g_user_id').val());
+        formData.append('title', $('.groupTitle').val());
+        formData.append('description', $('.groupDescriptionText').val());
+        formData.append('owner', $('.g_user_name').val());
+        formData.append('location', location);
+        formData.append('tag', $('#tags').val());
+        formData.append('chk_1', $('#' + checkboxArary[0].children[0].id).val());
+        formData.append('chk_2', $('#' + checkboxArary[1].children[0].id).val());
+        formData.append('chk_3', $('#' + checkboxArary[2].children[0].id).val());
 
-    for(i = GroupRoomInfoImgs.length - 1; i > -1; i--)
-        if(GroupRoomInfoImgs[i] == null) GroupRoomInfoImgs.splice(i, 1);
+        for(i = GroupRoomInfoImgs.length - 1; i > -1; i--)
+            if(GroupRoomInfoImgs[i] == null) GroupRoomInfoImgs.splice(i, 1);
 
-    for (i = 0; i < GroupRoomInfoImgs.length; i++)
-        formData.append('files', GroupRoomInfoImgs[i]);
+        for (i = 0; i < GroupRoomInfoImgs.length; i++)
+            formData.append('files', GroupRoomInfoImgs[i]);
 
-    $.ajax({
-
-        url: '/api/group/create',
-        type: 'POST',
-        data: formData,
-        contentType: false,
-        processData: false,
-        success: function(){
-            alert('그룹을 생성하였습니다.')
-            window.location.reload();
-        }
-    })
+        $.ajax({
+            url: '/api/group/create',
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(){
+                alert('그룹을 생성하였습니다.')
+                window.location.reload();
+            }
+        })
+    }
 }
 
 function GroupPreview(e){

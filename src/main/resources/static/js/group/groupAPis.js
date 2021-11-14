@@ -265,6 +265,8 @@ function exitGroup(){
 
 function isMember(){
 
+    var isStatus = false;
+
     const data = {
         userId: $('.g_user_id').val(),
         groupId: $('.groupId').val(),
@@ -274,14 +276,20 @@ function isMember(){
         url: '/api/group/check/isMember',
         type: 'GET',
         data: data,
+        async: false,
         contentType: 'application/x-www-form-urlencoded',
         success: function(response){
-            if(response != '')
+            if(response != ''){
                 $('._groupExitButton').show()
-            else
+                isStatus = true;
+            }
+            else{
                 $('._groupEnterButton').show()
+                isStatus = false;
+            }
         }
     })
+    return isStatus
 }
 
 function deleteComment(e, commentId){
@@ -469,8 +477,9 @@ function showBoardInfo(value, showNoticeBoolean = true){
 function inputPostBox(value) {
     const boardType = (value.type !== 'general') ? "<span class='notice _noticeText'>공지</span>" : '';
     const boardCategory = (value.boardCategory == 'exchange') ? "<span class='boardCategory'>교환 게시글</span>" : '';
-    const isStatus = (value.status == 'wait') ? 'none' : 'flex';
+    const isStatus = (value.status == 'wait' && new Date().getTime() - new Date(value.expireDate).getTime() < 0) ? 'none' : 'flex';
     const statusText = (value.status == 'complete') ? '거래완료' : '기부완료';
+
 
     return "<div class='boardItemBox' style='animation: fadein 1.5s; margin-bottom: 20px; box-shadow: 0 2px 3px 0 rgba(161, 161, 161, 0.12);'>" +
         "<input type='hidden' class='boardId' value=" + value.boardId + ">" +

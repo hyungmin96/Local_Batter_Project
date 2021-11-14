@@ -34,6 +34,7 @@ public class GroupCreateDTO {
                 .description(description)
                 .owner(owner)
                 .filePath(filePath)
+                .location(location)
                 .type(getType())
                 .build();
     }

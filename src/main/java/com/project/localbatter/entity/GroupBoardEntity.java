@@ -3,10 +3,8 @@ package com.project.localbatter.entity;
 import com.project.localbatter.dto.Group.GroupBoardDTO;
 import com.project.localbatter.entity.Exchange.WriterExchangeEntity;
 import lombok.*;
-
 import javax.persistence.*;
 import java.util.List;
-
 import static javax.persistence.FetchType.LAZY;
 
 @Entity

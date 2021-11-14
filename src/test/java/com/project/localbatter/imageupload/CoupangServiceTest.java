@@ -42,7 +42,7 @@ public class CoupangServiceTest {
     void 쿠팡_게시글_가져오기_테스트() throws IOException {
 
         int page = 10;
-        int boardNums = 600;
+        int boardNums = 200;
         String category = "일반";
 
         for (int i = 1; i <= page; i++) {
@@ -64,7 +64,7 @@ public class CoupangServiceTest {
                     String filename = UUID.randomUUID().toString();
                     urlImageDownload(filename, src);
 
-                    GroupUserJoinEntity groupUserJoinEntity = groupUserJoinRepository.findById(3L).get();
+                    GroupUserJoinEntity groupUserJoinEntity = groupUserJoinRepository.findById(24L).get();
 
                     WriterExchangeEntity writerExchangeEntity = WriterExchangeEntity.builder()
                             .price(price)
@@ -79,7 +79,7 @@ public class CoupangServiceTest {
                     GroupBoardDTO groupBoardDTO = new GroupBoardDTO();
                     groupBoardDTO.setThumnbnailPath(filename + ".jpg");
                     groupBoardDTO.setBoardLike(0);
-                    groupBoardDTO.setGroupId(2L);
+                    groupBoardDTO.setGroupId(36L);
                     groupBoardDTO.setCategory("exchange");
                     groupBoardDTO.setTitle(title);
                     groupBoardDTO.setContent(title);
